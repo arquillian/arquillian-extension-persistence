@@ -31,6 +31,23 @@ public class ConfigurationExtractorTest
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
    }
+   
+   @Test
+   public void shouldExtractInitStatementFromExternalConfigurationFile() throws Exception
+   {
+      // given
+      String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
+      ArquillianDescriptor descriptor = Descriptors.importAs(ArquillianDescriptor.class)
+                                                   .from(loadArquillianConfiguration());
+
+      ConfigurationExtractor configurationExtractor = new ConfigurationExtractor(descriptor);
+
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
+   }
 
    // -------
    // Utility methods
