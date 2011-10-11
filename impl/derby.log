@@ -1,8 +1,0 @@
-----------------------------------------------------------------
-2011-10-11 19:07:41.431 GMT:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.2.1 - (999685): instance a816c00e-0132-f462-1546-00000c6c9628 
-on database directory /home/bmajsak/dev/workspace/jboss/arquillian/arquillian-extension-persistence/impl/target/db/derby  with class loader sun.misc.Launcher$AppClassLoader@1f7182c1 
-Loaded from file:/home/bmajsak/.m2/repository/org/glassfish/extras/glassfish-embedded-all/3.1.1/glassfish-embedded-all-3.1.1.jar
-java.vendor=Sun Microsystems Inc.
-java.runtime.version=1.6.0_22-b22
-Database Class Loader started - derby.database.classpath=''
