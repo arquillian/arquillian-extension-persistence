@@ -9,6 +9,10 @@
 *.iws
 .idea
 
+# Gradle
+.gradle/
+.ivy/
+
 # Maven
 target/
 

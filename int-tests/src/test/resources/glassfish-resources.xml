@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+  
+  <jdbc-connection-pool res-type="java.sql.Driver"
+    name="arquillian-hsql-inmemory-pool" 
+    driver-classname="org.hsqldb.jdbcDriver">
+    <property name="databaseName" value="target/db/hsql" />
+    <property name="URL" value="jdbc:hsqldb:mem:arquillian" />
+    <property name="user" value="sa" />
+    <property name="password" value="" />
+  </jdbc-connection-pool>
+  
+  <jdbc-resource jndi-name="arq/hsql" pool-name="arquillian-hsql-inmemory-pool" />
+
+  <jdbc-connection-pool 
+    name="arquillian-derby-inmemory-pool"
+    res-type="javax.sql.DataSource" datasource-classname="org.apache.derby.jdbc.EmbeddedDataSource">
+    <property name="databaseName" value="target/db/derby" />
+    <property name="createDatabase" value="create" />
+  </jdbc-connection-pool>
+
+  <jdbc-resource pool-name="arquillian-derby-inmemory-pool"
+    jndi-name="arq/derby" />
+</resources>
+
+
