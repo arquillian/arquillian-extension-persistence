@@ -11,7 +11,9 @@ import org.jboss.arquillian.core.spi.context.Context;
 import org.jboss.arquillian.persistence.AbstractManagerTestBase;
 import org.jboss.arquillian.persistence.util.ManagerFacade;
 import org.jboss.arquillian.test.impl.context.ClassContextImpl;
+import org.jboss.arquillian.test.impl.context.SuiteContextImpl;
 import org.jboss.arquillian.test.spi.context.ClassContext;
+import org.jboss.arquillian.test.spi.context.SuiteContext;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 import org.junit.Before;
@@ -28,13 +30,13 @@ public class ConfigurationInitializationTest extends AbstractManagerTestBase {
 
 	@Override
 	protected void addContexts(List<Class<? extends Context>> contexts) {
-		contexts.add(ClassContextImpl.class);
+		contexts.add(SuiteContextImpl.class);
 	}
 	
 	@Override
 	protected void startContexts(Manager manager) {
 		super.startContexts(manager);
-		manager.getContext(ClassContext.class).activate(super.getClass());
+		manager.getContext(SuiteContext.class).activate();
 	}
 	
 	@Before
@@ -50,7 +52,7 @@ public class ConfigurationInitializationTest extends AbstractManagerTestBase {
 		
 		// when
 		fire(beforeClassEvent);
-		PersistenceConfiguration persistenceConfiguration = facade.getInstance(PersistenceConfiguration.class, ClassContext.class);
+		PersistenceConfiguration persistenceConfiguration = facade.getInstance(PersistenceConfiguration.class, SuiteContext.class);
 		
 		// then
 		assertThat(persistenceConfiguration).isNotNull();
