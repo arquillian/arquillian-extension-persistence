@@ -25,7 +25,7 @@ public class ConfigurationInitializationTest extends AbstractManagerTestBase {
 
 	@Override
 	protected void addExtensions(List<Class<?>> extensions) {
-		extensions.add(PersistenceConfigurator.class);
+		extensions.add(PersistenceConfigurationProducer.class);
 	}
 
 	@Override

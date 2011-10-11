@@ -11,12 +11,10 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 /**
  * 
- * TODO extend javadoc
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class PersistenceConfigurator
+public class PersistenceConfigurationProducer
 {
    @Inject
    private Instance<ArquillianDescriptor> descriptor;
@@ -32,7 +30,6 @@ public class PersistenceConfigurator
       ConfigurationExtractor extractor = new ConfigurationExtractor(descriptor.get());
       PersistenceConfiguration configuration = extractor.extract();
       configurationProducer.set(configuration);
-      System.out.println("--> Configuration loaded");
    }
    
    public void listen(@Observes ConfigurationCommand configurationCommand)

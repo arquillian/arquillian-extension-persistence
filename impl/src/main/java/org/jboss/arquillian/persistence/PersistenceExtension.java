@@ -3,7 +3,7 @@ package org.jboss.arquillian.persistence;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.persistence.client.PersistenceArchiveAppender;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfigurator;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfigurationProducer;
 
 /**
  * 
@@ -16,7 +16,7 @@ public class PersistenceExtension implements LoadableExtension {
    public void register(ExtensionBuilder builder) 
    {
       builder.service(AuxiliaryArchiveAppender.class, PersistenceArchiveAppender.class)
-             .observer(PersistenceConfigurator.class);
+             .observer(PersistenceConfigurationProducer.class);
    }
 
 }
