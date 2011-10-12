@@ -50,7 +50,7 @@ public class UserPersistenceTest
    }
    
    @Test
-   @Data("datasets/single-user.xml")
+   @Data("datasets/single-user.xls")
    @Transactional(TransactionMode.COMMIT)
    public void shouldPersistUserChanges() throws Exception
    {

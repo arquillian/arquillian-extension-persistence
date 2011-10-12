@@ -6,6 +6,7 @@ import java.util.Set;
 public enum SourceType 
 {
    XML("xml"),
+   XLS("xls"),
    UNSUPPORTED("-none-"), 
    NOT_DEFINED("-undefined-");
    
@@ -16,6 +17,11 @@ public enum SourceType
    private SourceType(String matchingFileExtension)
    {
       this.matchingFileExtension = matchingFileExtension;
+   }
+   
+   public static boolean isRealType(SourceType type)
+   {
+      return !NOT_REAL_FILE_TYPES.contains(type);
    }
    
    public static SourceType inferFromFile(String fileName)

@@ -15,6 +15,8 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.SourceType;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.event.PrepareDataEvent;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
@@ -26,19 +28,22 @@ import org.jboss.arquillian.test.spi.annotation.TestScoped;
 public class DBUnitInitializer
 {
 
-   @Inject @TestScoped
+   @Inject
+   @TestScoped
    private Instance<DataSource> databaseSourceInstance;
 
-   @Inject @TestScoped
+   @Inject
+   @TestScoped
    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
-   
-   @Inject @TestScoped
+
+   @Inject
+   @TestScoped
    private InstanceProducer<IDataSet> dataSetProducer;
-   
+
    public void initialize(@Observes(precedence = 2) PrepareDataEvent prepareDataEvent)
    {
       createDatabaseConnection();
-      createDataSet(prepareDataEvent.getSourceFile());
+      createDataSet(prepareDataEvent.getSourceFile(), prepareDataEvent.getType());
    }
 
    private void createDatabaseConnection()
@@ -47,30 +52,20 @@ public class DBUnitInitializer
       {
          DataSource dataSource = databaseSourceInstance.get();
          DatabaseConnection databaseConnection = new DatabaseConnection(dataSource.getConnection());
-         databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
+         databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+               new DefaultDataTypeFactory());
          databaseConnectionProducer.set(databaseConnection);
       }
       catch (Exception e)
       {
-         throw new DBUnitInitilaztionException("Unable to initialize database connection for dbunit module", e);
+         throw new DBUnitInitializationException("Unable to initialize database connection for dbunit module", e);
       }
    }
 
-
-   private void createDataSet(String file)
+   private void createDataSet(String file, SourceType sourceType)
    {
-      URL xmlUrl = getClass().getClassLoader().getResource(file);
-      FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
-      try
-      {
-         // TODO dynamic dispatch based on file type
-         FlatXmlDataSet fx = flatXmlDataSetBuilder.build(xmlUrl);
-         dataSetProducer.set(fx);
-      }
-      catch (DataSetException e)
-      {
-         throw new DBUnitInitilaztionException("Unable to initialize data set for dbunit module", e);
-      }
+      IDataSet dataSet = DataSetBuilder.from(sourceType).build(file);
+      dataSetProducer.set(dataSet);
    }
 
 }
