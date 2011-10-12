@@ -64,7 +64,7 @@ public class DBUnitInitializer
 
    private void createDataSet(String file, SourceType sourceType)
    {
-      IDataSet dataSet = DataSetBuilder.from(sourceType).build(file);
+      IDataSet dataSet = DataSetBuilder.builderFor(sourceType).build(file);
       dataSetProducer.set(dataSet);
    }
 

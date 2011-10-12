@@ -9,7 +9,7 @@ public abstract class DataSetBuilder
 
    public abstract IDataSet build(String file);
 
-   public static DataSetBuilder from(SourceType type)
+   public static DataSetBuilder builderFor(SourceType type)
    {
       switch (type)
       {
