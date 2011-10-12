@@ -51,7 +51,7 @@ public class PersistenceTestHandler
 
       propagateDataSource();
       
-      prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.dataSetFile(), metadataProvider.dataSetFormat()));
+      prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.dataFile(), metadataProvider.dataFormat()));
    }
 
    public void afterTest(@Observes After afterTestEvent)

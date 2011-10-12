@@ -145,7 +145,7 @@ class MetadataExtractor
       return !Transactional.NOT_DEFINED.equals(classLevelAnnotation) || !Transactional.NOT_DEFINED.equals(methodLevelAnnotation);
    }
    
-   public Format dataSetFormat()
+   public Format dataFormat()
    {
       return getDataAnnotation().format();
    }

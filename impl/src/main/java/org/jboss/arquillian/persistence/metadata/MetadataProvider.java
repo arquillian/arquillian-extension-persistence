@@ -8,7 +8,7 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
-import org.jboss.arquillian.persistence.exception.UnsupportedDataSetTypeException;
+import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
@@ -69,23 +69,24 @@ public class MetadataProvider
       return dataSource;
    }
 
-   public Format dataSetFormat()
+   public Format dataFormat()
    {
-      Format type = metadataExtractor.dataSetFormat();
-      if (Format.NOT_DEFINED.equals(type))
+      Format format = metadataExtractor.dataFormat();
+      
+      if (Format.NOT_DEFINED.equals(format))
       {
-         type = Format.inferFromFile(metadataExtractor.dataSetFile());
+         format = Format.inferFromFile(metadataExtractor.dataSetFile());
       }
       
-      if (Format.UNSUPPORTED.equals(type))
+      if (Format.UNSUPPORTED.equals(format))
       {
-         throw new UnsupportedDataSetTypeException("File " + dataSetFile() + " is not supported.");
+         throw new UnsupportedDataFormatException("File " + dataFile() + " is not supported.");
       }
       
-      return type;
+      return format;
    }
 
-   public String dataSetFile()
+   public String dataFile()
    {
       // TODO if not there follow convention datasets/full-class-name.method-name.(type)
       return metadataExtractor.getDataAnnotation().value();
