@@ -1,19 +1,19 @@
 package org.jboss.arquillian.persistence.event;
 
 import org.jboss.arquillian.core.spi.event.Event;
-import org.jboss.arquillian.persistence.SourceType;
+import org.jboss.arquillian.persistence.Format;
 
 public class PrepareDataEvent implements Event
 {
 
    private final String sourceFile;
    
-   private final SourceType type;
+   private final Format format;
 
-   public PrepareDataEvent(String sourceFile, SourceType type)
+   public PrepareDataEvent(String sourceFile, Format format)
    {
       this.sourceFile = sourceFile;
-      this.type = type;
+      this.format = format;
    }
 
    public String getSourceFile()
@@ -21,9 +21,9 @@ public class PrepareDataEvent implements Event
       return sourceFile;
    }
 
-   public SourceType getType()
+   public Format getType()
    {
-      return type;
+      return format;
    }
    
 }

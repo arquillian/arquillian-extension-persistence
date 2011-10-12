@@ -8,12 +8,6 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/**
- * TODO
- * 
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- */
 @Target(value={TYPE, METHOD})
 @Retention(value=RUNTIME)
 @Inherited

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.SourceType;
+import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -145,9 +145,9 @@ class MetadataExtractor
       return !Transactional.NOT_DEFINED.equals(classLevelAnnotation) || !Transactional.NOT_DEFINED.equals(methodLevelAnnotation);
    }
    
-   public SourceType dataSetType()
+   public Format dataSetFormat()
    {
-      return getDataAnnotation().type();
+      return getDataAnnotation().format();
    }
 
    public String dataSetFile()

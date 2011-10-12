@@ -15,7 +15,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.SourceType;
+import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.event.PrepareDataEvent;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
@@ -62,9 +62,9 @@ public class DBUnitInitializer
       }
    }
 
-   private void createDataSet(String file, SourceType sourceType)
+   private void createDataSet(String file, Format format)
    {
-      IDataSet dataSet = DataSetBuilder.builderFor(sourceType).build(file);
+      IDataSet dataSet = DataSetBuilder.builderFor(format).build(file);
       dataSetProducer.set(dataSet);
    }
 

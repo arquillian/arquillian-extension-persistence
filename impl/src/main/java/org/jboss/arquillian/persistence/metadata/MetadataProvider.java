@@ -3,7 +3,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.reflect.Method;
 
 import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.SourceType;
+import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
@@ -69,17 +69,16 @@ public class MetadataProvider
       return dataSource;
    }
 
-   public SourceType dataSetType()
+   public Format dataSetFormat()
    {
-      SourceType type = metadataExtractor.dataSetType();
-      if (SourceType.NOT_DEFINED.equals(type))
+      Format type = metadataExtractor.dataSetFormat();
+      if (Format.NOT_DEFINED.equals(type))
       {
-         type = SourceType.inferFromFile(metadataExtractor.dataSetFile());
+         type = Format.inferFromFile(metadataExtractor.dataSetFile());
       }
       
-      if (SourceType.UNSUPPORTED.equals(type))
+      if (Format.UNSUPPORTED.equals(type))
       {
-         // TODO more meaningful 
          throw new UnsupportedDataSetTypeException("File " + dataSetFile() + " is not supported.");
       }
       
@@ -88,7 +87,7 @@ public class MetadataProvider
 
    public String dataSetFile()
    {
-      // TODO if not there follow convention datasource/full-class-name.method-name.(type)
+      // TODO if not there follow convention datasets/full-class-name.method-name.(type)
       return metadataExtractor.getDataAnnotation().value();
    }
 

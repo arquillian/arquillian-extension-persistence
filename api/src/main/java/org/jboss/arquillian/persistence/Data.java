@@ -29,9 +29,8 @@ public @interface Data
     */
    String value() default "";
 
-   SourceType type() default SourceType.NOT_DEFINED;
+   Format format() default Format.NOT_DEFINED;
    
-   // TODO NULL OBJECT PATTERN
    public static Data NOT_DEFINED = new Data()
    {
       
@@ -45,9 +44,9 @@ public @interface Data
          return "";
       }
       
-      public SourceType type()
+      public Format format()
       {
-         return SourceType.NOT_DEFINED;
+         return Format.NOT_DEFINED;
       }
    };
 
