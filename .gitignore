@@ -24,3 +24,7 @@ transaction.log
 
 # Logs
 *.log
+
+# Libreoffice leftovers (XLS)
+.~lock*
+
