@@ -5,7 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class MetadataProviderDataSourceTest
 
    private static final String DATA_SOURCE_ON_METHOD_LEVEL = "dataSourceOnMethodLevel";
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
+   private PersistenceConfiguration defaultConfiguration = ConfigurationLoader.createDefaultConfiguration();
 
    @Test
    public void shouldFetchDataSourceNameFromTest() throws Exception
@@ -75,7 +75,7 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = "Ike";
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, TestConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
 
       // when
       String dataSourceName = metadataProvider.getDataSourceName();

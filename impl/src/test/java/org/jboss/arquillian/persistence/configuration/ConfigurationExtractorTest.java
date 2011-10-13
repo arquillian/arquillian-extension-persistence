@@ -13,7 +13,7 @@ public class ConfigurationExtractorTest
    {
       // given
       String expectedDataSource = "Ike";
-      ConfigurationExtractor configurationExtractor = TestConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
 
       // when
       PersistenceConfiguration configuration = configurationExtractor.extract();
@@ -27,7 +27,7 @@ public class ConfigurationExtractorTest
    {
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
-      ConfigurationExtractor configurationExtractor = TestConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
 
       // when
       PersistenceConfiguration configuration = configurationExtractor.extract();
@@ -41,7 +41,7 @@ public class ConfigurationExtractorTest
    {
       // given
       Format expectedFormat = Format.XLS;
-      ConfigurationExtractor configurationExtractor = TestConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
       
       // when
       PersistenceConfiguration configuration = configurationExtractor.extract();
@@ -55,7 +55,7 @@ public class ConfigurationExtractorTest
    {
       // given
       Format expectedFormat = Format.XML;
-      ConfigurationExtractor configurationExtractor = TestConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
       
       // when
       PersistenceConfiguration configuration = configurationExtractor.extract();

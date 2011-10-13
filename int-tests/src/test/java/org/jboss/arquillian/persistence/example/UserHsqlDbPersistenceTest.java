@@ -19,14 +19,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceTest
+public class UserHsqlDbPersistenceTest
 {
 
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addClass(User.class)
+                       .addClass(UserAccount.class)
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("hsql-test-persistence.xml", "persistence.xml");
    }
@@ -43,7 +43,7 @@ public class UserPersistenceTest
       String expectedUsername = "doovde";
 
       // when
-      User user = em.find(User.class, 1L);
+      UserAccount user = em.find(UserAccount.class, 1L);
 
       // then 
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
@@ -56,7 +56,7 @@ public class UserPersistenceTest
    {
       // given
       String newUsername = "doovde";
-      User user = em.find(User.class, 1L);
+      UserAccount user = em.find(UserAccount.class, 1L);
 
       // when
       user.setUsername(newUsername);
@@ -73,7 +73,7 @@ public class UserPersistenceTest
       String expectedUsername = "doovde";
 
       // when
-      User user = em.find(User.class, 1L);
+      UserAccount user = em.find(UserAccount.class, 1L);
 
       // then 
       assertThat(user.getUsername()).isEqualTo(expectedUsername);

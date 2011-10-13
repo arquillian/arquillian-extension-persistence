@@ -2,11 +2,6 @@ package org.jboss.arquillian.persistence;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.core.api.Instance;
@@ -32,11 +27,9 @@ public class TransactionalWrapper
    @Inject @TestScoped
    private Instance<UserTransaction> transaction;
    
-   private MetadataProvider metadataProvider;
-   
-   public void beforeTest(@Observes(precedence = 10) Before beforeTestEvent) throws NotSupportedException, SystemException
+   public void beforeTest(@Observes(precedence = 10) Before beforeTestEvent) throws Exception
    {
-      metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
       if (!metadataProvider.isTransactional())
       {
          return;
@@ -44,8 +37,9 @@ public class TransactionalWrapper
       transaction.get().begin();
    }
    
-   public void afterTest(@Observes(precedence = 10) After AfterTestEvent) throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException
+   public void afterTest(@Observes(precedence = 10) After afterTestEvent) throws Exception
    {
+      MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
       if (!metadataProvider.isTransactional())
       {
          return;

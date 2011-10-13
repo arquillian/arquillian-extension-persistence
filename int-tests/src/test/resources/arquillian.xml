@@ -20,7 +20,6 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">arq/hsql</property>
-    <property name="initStatement">set referential_integrity FALSE</property>
   </extension>
 
 </arquillian>

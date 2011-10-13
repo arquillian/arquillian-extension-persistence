@@ -5,7 +5,7 @@ import java.io.InputStream;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
-public class TestConfigurationLoader
+public class ConfigurationLoader
 {
 
    private static final String DEFAULT_CONFIG_FILENAME = "arquillian.xml";
@@ -19,7 +19,7 @@ public class TestConfigurationLoader
    public static ConfigurationExtractor createConfigurationExtractor(String fileName)
    {
       ArquillianDescriptor descriptor = Descriptors.importAs(ArquillianDescriptor.class).from(
-            TestConfigurationLoader.loadArquillianConfiguration(fileName));
+            ConfigurationLoader.loadArquillianConfiguration(fileName));
 
       ConfigurationExtractor configurationExtractor = new ConfigurationExtractor(descriptor);
       return configurationExtractor;

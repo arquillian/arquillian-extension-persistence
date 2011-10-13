@@ -6,7 +6,7 @@ import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -22,7 +22,7 @@ public class MetadataProviderDataTest
    
    private static final String EXCEL_DATA_SET_ON_METHOD_LEVEL = "datasets/xls/method-level.xls";
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
+   private PersistenceConfiguration defaultConfiguration = ConfigurationLoader.createDefaultConfiguration();
 
    @Test
    public void shouldFetchDataFileNameFromTestLevelAnnotation() throws Exception

@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
  *
  */
 @Entity
-public class User
+public class UserAccount
 {
 
    @Id

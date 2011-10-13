@@ -11,28 +11,29 @@ import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 @DataSource("arq/derby")
-public class User2PersistenceTest
+public class UserDerbyPersistenceTest
 {
 
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(User.class)
-            .addAsManifestResource("derby-test-persistence.xml", "persistence.xml");
-      //                        .addAsResource("-test-persistence.xml", "META-INF/persistence.xml");
+      return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                       .addClass(UserAccount.class)
+                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsManifestResource("derby-test-persistence.xml", "persistence.xml");
    }
 
-// missing @PersistenceContext results with non table creation
-   
    @PersistenceContext(unitName = "arquillian-derby")
    EntityManager em;
    
+   @Test
    @Data("datasets/single-user.xml")
    public void shouldFetchUserUsingClassLevelDataSource() throws Exception
    {
@@ -40,7 +41,7 @@ public class User2PersistenceTest
       String expecteUsername = "doovde";
 
       // when
-      User2 user = em.find(User2.class, 1L);
+      UserAccount user = em.find(UserAccount.class, 1L);
 
       // then 
       assertThat(user.getUsername()).isEqualTo(expecteUsername);

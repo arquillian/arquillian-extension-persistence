@@ -39,24 +39,23 @@ public class PersistenceTestHandler
    @Inject
    private Event<CleanUpDataEvent> cleanUpDataEvent;
    
-   private MetadataProvider metadataProvider;
-   
    public void beforeTest(@Observes Before beforeTestEvent)
    {
-      metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
       if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
       }
 
-      propagateDataSource();
+      String dataSourceName = metadataProvider.getDataSourceName();
+      dataSourceProducer.set(loadDataSource(dataSourceName));
       
       prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.dataFile(), metadataProvider.dataFormat()));
    }
 
    public void afterTest(@Observes After afterTestEvent)
    {
-      metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
       if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
@@ -70,12 +69,6 @@ public class PersistenceTestHandler
 
    // Private methods
    
-   private void propagateDataSource()
-   {
-      DataSource dataSource = loadDataSource(metadataProvider.getDataSourceName());
-      dataSourceProducer.set(dataSource);
-   }
-
    private DataSource loadDataSource(String dataSourceName)
    {
       try

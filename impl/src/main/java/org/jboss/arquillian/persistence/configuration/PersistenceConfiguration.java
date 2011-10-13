@@ -6,8 +6,6 @@ import org.jboss.arquillian.persistence.Format;
 
 /**
  * 
- * TODO extend javadoc
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */

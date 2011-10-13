@@ -3,7 +3,7 @@ package org.jboss.arquillian.persistence.metadata;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, TestConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
@@ -33,7 +33,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
             NonPersistenceTest.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, TestConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
@@ -48,7 +48,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, TestConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
