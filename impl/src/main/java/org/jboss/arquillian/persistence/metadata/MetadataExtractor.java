@@ -48,51 +48,27 @@ class MetadataExtractor
    private void fetchDataMetadata()
    {
       Data dataClassAnnotation = testClass.getAnnotation(Data.class);
-      if (dataClassAnnotation == null)
-      {
-         dataClassAnnotation = Data.NOT_DEFINED;
-      }
       dataAnnotations.put(AnnotationLevel.CLASS, dataClassAnnotation);
       
       Data dataMethodAnnotation = testMethod.getAnnotation(Data.class);
-      if (dataMethodAnnotation == null)
-      {
-         dataMethodAnnotation = Data.NOT_DEFINED;
-      }
       dataAnnotations.put(AnnotationLevel.METHOD, dataMethodAnnotation);
    }
 
    private void fetchDataSourceMetadata()
    {
       DataSource dsClassAnnotation = testClass.getAnnotation(DataSource.class);
-      if (dsClassAnnotation == null)
-      {
-         dsClassAnnotation = DataSource.NOT_DEFINED;
-      }
       dataSourceAnnotations.put(AnnotationLevel.CLASS, dsClassAnnotation);
       
       DataSource dsMethodAnnotation = testMethod.getAnnotation(DataSource.class);
-      if (dsMethodAnnotation == null)
-      {
-         dsMethodAnnotation = DataSource.NOT_DEFINED;
-      }
       dataSourceAnnotations.put(AnnotationLevel.METHOD, dsMethodAnnotation);
    }
    
    private void fetchTransactionalMetaData()
    {
       Transactional transactionalClassAnnotation = testClass.getAnnotation(Transactional.class);
-      if (transactionalClassAnnotation == null)
-      {
-         transactionalClassAnnotation = Transactional.NOT_DEFINED;
-      }
       transactionalAnnotations.put(AnnotationLevel.CLASS, transactionalClassAnnotation);
       
       Transactional transactionalMethodAnnotation = testMethod.getAnnotation(Transactional.class);
-      if (transactionalMethodAnnotation == null)
-      {
-         transactionalMethodAnnotation = Transactional.NOT_DEFINED;
-      }
       transactionalAnnotations.put(AnnotationLevel.METHOD, transactionalMethodAnnotation);
       
    }
@@ -100,7 +76,7 @@ class MetadataExtractor
    public DataSource getDataSourceAnnotation()
    {
       DataSource usedAnnotation = dataSourceAnnotations.get(AnnotationLevel.METHOD);
-      if (usedAnnotation.equals(DataSource.NOT_DEFINED))
+      if (usedAnnotation == null)
       {
          usedAnnotation = dataSourceAnnotations.get(AnnotationLevel.CLASS);
       }
@@ -110,7 +86,7 @@ class MetadataExtractor
    
    public boolean hasDataAnnotationOn(AnnotationLevel level)
    {
-      return !Data.NOT_DEFINED.equals(getDataAnnotationOn(level));
+      return getDataAnnotationOn(level) != null;
    }
 
    public Data getDataAnnotationOn(AnnotationLevel level)
@@ -120,7 +96,7 @@ class MetadataExtractor
    
    public boolean hasTransactionalAnnotationOn(AnnotationLevel level)
    {
-      return !Transactional.NOT_DEFINED.equals(transactionalAnnotations.get(level));
+      return transactionalAnnotations.get(level) != null;
    }
    
    public Transactional getTransactionalAnnotationOn(AnnotationLevel level)
@@ -130,7 +106,7 @@ class MetadataExtractor
 
    public boolean hasDataSourceAnnotationOn(AnnotationLevel level)
    {
-      return !DataSource.NOT_DEFINED.equals(dataSourceAnnotations.get(level));
+      return dataSourceAnnotations.get(level) != null;
    }
 
 }

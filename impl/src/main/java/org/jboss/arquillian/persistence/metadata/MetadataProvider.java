@@ -69,12 +69,12 @@ public class MetadataProvider
       }
       
       DataSource dataSourceAnnotation = metadataExtractor.getDataSourceAnnotation();
-      if (!DataSource.NOT_DEFINED.equals(dataSourceAnnotation))
+      if (dataSourceAnnotation != null)
       {
          dataSource = dataSourceAnnotation.value();
       }
 
-      if ("".equals(dataSource))
+      if ("".equals(dataSource.trim()))
       {
          throw new DataSourceNotDefinedException("DataSource not defined");
       }
@@ -99,6 +99,24 @@ public class MetadataProvider
       return format;
    }
 
+   /**
+    * Resolves path to data set file defined in {@link Data} annotation.
+    * In it's not specified following strategy is applied:
+    * <ul>
+    *   <li>Assumption that files are stored in <code>datasets</code> folder</li>
+    *   <li>
+    *       If {@link Data} annotation is defined on method level, file name has following format:
+    *       <i>[fully qualified class name]#[test method name].[default format]</i> 
+    *   </li>
+    *   <li>
+    *       If {@link Data} annotation is defined on class level, file name has following format:
+    *       <i>[fully qualified class name]#.[default format]</i></li>
+    * </ul>
+    * If not specified otherwise in arquillian.xml, it's assumed that data set is in
+    * xml format.
+    * 
+    * @return path to data set file
+    */
    public String dataFile()
    {
       // TODO if not there follow convention datasets/full-class-name.method-name.(type)

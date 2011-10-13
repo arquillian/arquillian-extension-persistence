@@ -12,13 +12,18 @@ public enum Format
    
    private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED, NOT_DEFINED);
    
-   private final String matchingFileExtension;
+   private final String fileExtension;
 
-   private Format(String matchingFileExtension)
+   private Format(String fileExtension)
    {
-      this.matchingFileExtension = matchingFileExtension;
+      this.fileExtension = fileExtension;
    }
    
+   public String extension()
+   {
+      return "." + fileExtension;
+   }
+
    public static boolean isSupported(Format format)
    {
       return !NOT_REAL_FILE_TYPES.contains(format);
@@ -31,7 +36,7 @@ public enum Format
       
       for (Format format : validFormats)
       {
-         if (fileName.endsWith(format.matchingFileExtension))
+         if (fileName.endsWith(format.fileExtension))
          {
             return format;
          }

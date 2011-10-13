@@ -15,22 +15,5 @@ public @interface Transactional
 {
 
    TransactionMode value() default TransactionMode.ROLLBACK;
-   
-   public static Transactional NOT_DEFINED = new Transactional()
-   {
-      
-      @Override
-      public Class<? extends Annotation> annotationType()
-      {
-         return Transactional.class;
-      }
-      
-      @Override
-      public TransactionMode value()
-      {
-         return null;
-      }
-
-   };
 
 }
