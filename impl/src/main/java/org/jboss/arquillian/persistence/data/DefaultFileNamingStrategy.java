@@ -18,5 +18,10 @@ public class DefaultFileNamingStrategy
    {
       return testClass.getName() + "#" + testMethod.getName() + format.extension();
    }
+   
+   public String createFileName(Class<?> testClass)
+   {
+      return testClass.getName() + format.extension();
+   }
 
 }

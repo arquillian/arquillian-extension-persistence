@@ -8,6 +8,7 @@ import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.DefaultFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -20,10 +21,16 @@ public class MetadataProvider
    
    private final MetadataExtractor metadataExtractor;
    
+   private final TestClass testClass;
+   
+   private final Method testMethod;
+   
    public MetadataProvider(TestClass testClass, Method testMethod, PersistenceConfiguration configuration)
    {
       this.metadataExtractor = new MetadataExtractor(testClass, testMethod);
       this.configuration = configuration;
+      this.testClass = testClass;
+      this.testMethod = testMethod;
    }
    
    public MetadataProvider(TestEvent testEvent, PersistenceConfiguration configuration)
@@ -119,9 +126,29 @@ public class MetadataProvider
     */
    public String dataFile()
    {
-      // TODO if not there follow convention datasets/full-class-name.method-name.(type)
       Data dataAnnotation = getDataAnnotation();
-      return dataAnnotation.value();
+      String specifiedFileName = dataAnnotation.value();
+      if ("".equals(specifiedFileName.trim()))
+      {
+         specifiedFileName = getDefaultNamingForDataSetFile();
+      }
+      return specifiedFileName;
+   }
+
+   private String getDefaultNamingForDataSetFile()
+   {
+      Format format = getDataAnnotation().format();
+      if (Format.NOT_DEFINED.equals(format))
+      {
+         format = configuration.getDefaultDataSetFormat();
+      }
+      
+      if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD)) 
+      {
+         return new DefaultFileNamingStrategy(format).createFileName(testClass.getJavaClass(), testMethod);
+      }
+      
+      return new DefaultFileNamingStrategy(format).createFileName(testClass.getJavaClass());
    }
 
    public Data getDataAnnotation()

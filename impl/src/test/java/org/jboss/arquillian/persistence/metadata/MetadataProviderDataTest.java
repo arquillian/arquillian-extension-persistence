@@ -114,6 +114,36 @@ public class MetadataProviderDataTest
       // exception should be thrown      
    }
    
+   @Test
+   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotation() throws Exception
+   {
+      // given
+      String expectedFileName = DataAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.xls";
+      TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+
+      // when
+      String file = metadataProvider.dataFile();
+
+      // then
+      assertThat(file).isEqualTo(expectedFileName);
+   }
+   
+   @Test
+   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotationOnClassLevel() throws Exception
+   {
+      // given
+      String expectedFileName = DataAnnotatedOnClassLevelOnly.class.getName() + ".xls";
+      TestEvent testEvent = new TestEvent(new DataAnnotatedOnClassLevelOnly(), DataAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+
+      // when
+      String file = metadataProvider.dataFile();
+
+      // then
+      assertThat(file).isEqualTo(expectedFileName);
+   }
+   
    // ---------------------------------------------------------------------------------------- 
    
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
@@ -136,6 +166,14 @@ public class MetadataProviderDataTest
       @Data("arquillian.ike")
       public void shouldFailWithNonSupportedFileExtension() {}
       
+      @Data
+      public void shouldPassWithDataFileNotSpecified() {}
+   }
+   
+   @Data
+   private static class DataAnnotatedOnClassLevelOnly
+   {
+      public void shouldPass() {}
    }
    
 }
