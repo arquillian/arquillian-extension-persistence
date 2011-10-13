@@ -2,6 +2,8 @@ package org.jboss.arquillian.persistence.configuration;
 
 import java.io.Serializable;
 
+import org.jboss.arquillian.persistence.Format;
+
 /**
  * 
  * TODO extend javadoc
@@ -18,6 +20,8 @@ public class PersistenceConfiguration implements Serializable
    
    private String initStatement;
 
+   private Format defaultDataSetFormat = Format.XML;
+   
    public String getDefaultDataSource()
    {
       return defaultDataSource;
@@ -51,6 +55,16 @@ public class PersistenceConfiguration implements Serializable
    private boolean isDefined(String toVerify)
    {
       return toVerify != null && !"".equals(toVerify.trim());
+   }
+
+   public Format getDefaultDataSetFormat()
+   {
+      return defaultDataSetFormat;
+   }
+   
+   public void setDefaultDataSetFormat(Format defaultDataSetFormat)
+   {
+      this.defaultDataSetFormat = defaultDataSetFormat;
    }
    
 }

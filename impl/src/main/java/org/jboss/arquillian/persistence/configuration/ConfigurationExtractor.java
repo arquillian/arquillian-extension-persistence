@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
+import org.jboss.arquillian.persistence.Format;
 
 class ConfigurationExtractor
 {
 
+   private static final String PERSISTENCE_EXTENSION_QUALIFIER = "persistence";
+   
    private final ArquillianDescriptor descriptor;
    
    ConfigurationExtractor(ArquillianDescriptor descriptor)
@@ -18,10 +21,15 @@ class ConfigurationExtractor
 
    PersistenceConfiguration extract()
    {
-      final Map<String, String> extensionProperties = extractProperties("persistence");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+      final Map<String, String> extensionProperties = extractProperties(PERSISTENCE_EXTENSION_QUALIFIER);
+      final PersistenceConfiguration configuration = new PersistenceConfiguration();
       configuration.setDefaultDataSource(extensionProperties.get("defaultDataSource"));
       configuration.setInitStatement(extensionProperties.get("initStatement"));
+      String defaultDataSetFormat = extensionProperties.get("defaultDataSetFormat");
+      if (defaultDataSetFormat != null)
+      {
+         configuration.setDefaultDataSetFormat(Format.valueOf(defaultDataSetFormat.toUpperCase()));
+      }
       return configuration;
    }
 
