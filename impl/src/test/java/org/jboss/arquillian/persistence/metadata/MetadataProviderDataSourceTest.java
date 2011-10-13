@@ -2,6 +2,7 @@ package org.jboss.arquillian.persistence.metadata;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
@@ -24,8 +25,8 @@ public class MetadataProviderDataSourceTest
    {
       // given
       String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
-      TestEvent testEvent = new TestEvent(new DataSourceAnnotatedClass(),
-            DataSourceAnnotatedClass.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
+      TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
+            DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
@@ -40,8 +41,8 @@ public class MetadataProviderDataSourceTest
    {
       // given
       String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
-      TestEvent testEvent = new TestEvent(new DataSourceAnnotatedClass(),
-            DataSourceAnnotatedClass.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
+      TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
+            DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
@@ -82,19 +83,20 @@ public class MetadataProviderDataSourceTest
       // then
       // exception should be thrown
    }   
-
+   
    @DataSource(DATA_SOURCE_ON_CLASS_LEVEL)
-   private static class DataSourceAnnotatedClass
+   private static class DataSourceAnnotated
    {
       public void shouldPassWithoutDataSourceDefinedOnMethodLevel() {}
 
       @DataSource(DATA_SOURCE_ON_METHOD_LEVEL)
       public void shouldPassWithDataSourceDefinedOnMethodLevel() {}
    }
-   
+
+   @Data
    private static class DataSourceExpectedFromDefaultConfiguration
    {
       public void shouldPass() {}
    }
-
+   
 }

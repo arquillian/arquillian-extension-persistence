@@ -2,6 +2,7 @@ package org.jboss.arquillian.persistence.metadata;
 
 import java.lang.reflect.Method;
 
+import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
@@ -30,22 +31,34 @@ public class MetadataProvider
       this(testEvent.getTestClass(), testEvent.getTestMethod(), configuration);
    }
    
-   public boolean isPersistenceInteractionApplicable()
+   public boolean isPersistenceFeatureEnabled()
    {
 
-      if (!metadataExtractor.hasDataAnnotation())
+      if (!hasDataAnnotation())
       {
          return false;
       }
 
-      if (!metadataExtractor.hasDataSourceAnnotation() && !configuration.isDefaultDataSourceDefined())
+      if (!hasDataSourceAnnotation() && !configuration.isDefaultDataSourceDefined())
       {
-         throw new RuntimeException("Data source not defined!");
+         throw new DataSourceNotDefinedException("Data source not defined!");
       }
 
       return true;
    }
    
+   public boolean hasDataAnnotation()
+   {
+      return metadataExtractor.hasDataAnnotationOn(AnnotationLevel.CLASS) 
+            || metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD);
+   }
+
+   public boolean hasDataSourceAnnotation()
+   {
+      return metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.CLASS) 
+            || metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD);
+   }
+
    public String getDataSourceName()
    {
       String dataSource = "";
@@ -71,11 +84,11 @@ public class MetadataProvider
 
    public Format dataFormat()
    {
-      Format format = metadataExtractor.dataFormat();
+      Format format = getDataAnnotation().format();
       
       if (Format.NOT_DEFINED.equals(format))
       {
-         format = Format.inferFromFile(metadataExtractor.dataSetFile());
+         format = Format.inferFromFile(dataFile());
       }
       
       if (Format.UNSUPPORTED.equals(format))
@@ -89,17 +102,35 @@ public class MetadataProvider
    public String dataFile()
    {
       // TODO if not there follow convention datasets/full-class-name.method-name.(type)
-      return metadataExtractor.getDataAnnotation().value();
+      Data dataAnnotation = getDataAnnotation();
+      return dataAnnotation.value();
+   }
+
+   public Data getDataAnnotation()
+   {
+      Data usedAnnotation = metadataExtractor.getDataAnnotationOn(AnnotationLevel.CLASS);
+      if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
+      {
+         usedAnnotation = metadataExtractor.getDataAnnotationOn(AnnotationLevel.METHOD);
+      }
+      
+      return usedAnnotation;
    }
 
    public boolean isTransactional()
    {
-      return metadataExtractor.isTransactional();
+      return metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.CLASS)
+            || metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.METHOD);
    }
 
    public TransactionMode getTransactionalMode()
    {
-      Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotation();
+      Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.CLASS);
+      if (metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.METHOD))
+      {
+         transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.METHOD);
+      }
+      
       return transactionalAnnotation.value();
    }
    

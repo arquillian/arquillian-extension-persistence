@@ -44,7 +44,7 @@ public class PersistenceTestHandler
    public void beforeTest(@Observes Before beforeTestEvent)
    {
       metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
-      if (!metadataProvider.isPersistenceInteractionApplicable())
+      if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
       }
@@ -57,7 +57,7 @@ public class PersistenceTestHandler
    public void afterTest(@Observes After afterTestEvent)
    {
       metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
-      if (!metadataProvider.isPersistenceInteractionApplicable())
+      if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
       }

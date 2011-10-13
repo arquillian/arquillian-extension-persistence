@@ -41,7 +41,7 @@ public @interface Data
       
       public String value()
       {
-         return "";
+         return "-null object pattern-";
       }
       
       public Format format()

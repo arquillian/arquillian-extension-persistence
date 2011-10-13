@@ -33,7 +33,7 @@ public @interface DataSource
 
       public String value()
       {
-         return "";
+         return "-null object pattern-";
       }
    };
 

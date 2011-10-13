@@ -28,7 +28,7 @@ public @interface Transactional
       @Override
       public TransactionMode value()
       {
-         return TransactionMode.ROLLBACK;
+         return null;
       }
 
    };
