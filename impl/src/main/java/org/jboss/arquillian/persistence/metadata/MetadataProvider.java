@@ -88,18 +88,18 @@ public class MetadataProvider
       return dataSource;
    }
 
-   public Format dataFormat()
+   public Format getDataFormat()
    {
       Format format = getDataAnnotation().format();
       
       if (Format.NOT_DEFINED.equals(format))
       {
-         format = Format.inferFromFile(dataFile());
+         format = Format.inferFromFile(getDataFileName());
       }
       
       if (Format.UNSUPPORTED.equals(format))
       {
-         throw new UnsupportedDataFormatException("File " + dataFile() + " is not supported.");
+         throw new UnsupportedDataFormatException("File " + getDataFileName() + " is not supported.");
       }
       
       return format;
@@ -123,7 +123,7 @@ public class MetadataProvider
     * 
     * @return path to data set file
     */
-   public String dataFile()
+   public String getDataFileName()
    {
       Data dataAnnotation = getDataAnnotation();
       String specifiedFileName = dataAnnotation.value();

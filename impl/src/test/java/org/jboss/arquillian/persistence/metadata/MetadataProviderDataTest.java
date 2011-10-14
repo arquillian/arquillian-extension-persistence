@@ -33,7 +33,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      String dataFile = metadataProvider.dataFile();
+      String dataFile = metadataProvider.getDataFileName();
 
       // then
       assertThat(dataFile).isEqualTo(expectedDataFile);
@@ -48,7 +48,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      String dataFile = metadataProvider.dataFile();
+      String dataFile = metadataProvider.getDataFileName();
 
       // then
       assertThat(dataFile).isEqualTo(expectedDataFile);
@@ -63,7 +63,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      Format dataFormat = metadataProvider.dataFormat();
+      Format dataFormat = metadataProvider.getDataFormat();
 
       // then
       assertThat(dataFormat).isEqualTo(expectedFormat);
@@ -78,7 +78,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      Format dataFormat = metadataProvider.dataFormat();
+      Format dataFormat = metadataProvider.getDataFormat();
 
       // then
       assertThat(dataFormat).isEqualTo(expectedFormat);
@@ -93,7 +93,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      Format dataFormat = metadataProvider.dataFormat();
+      Format dataFormat = metadataProvider.getDataFormat();
 
       // then
       assertThat(dataFormat).isEqualTo(expectedFormat);
@@ -108,7 +108,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      Format dataFormat = metadataProvider.dataFormat();
+      Format dataFormat = metadataProvider.getDataFormat();
 
       // then
       // exception should be thrown      
@@ -123,7 +123,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      String file = metadataProvider.dataFile();
+      String file = metadataProvider.getDataFileName();
 
       // then
       assertThat(file).isEqualTo(expectedFileName);
@@ -138,7 +138,7 @@ public class MetadataProviderDataTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      String file = metadataProvider.dataFile();
+      String file = metadataProvider.getDataFileName();
 
       // then
       assertThat(file).isEqualTo(expectedFileName);

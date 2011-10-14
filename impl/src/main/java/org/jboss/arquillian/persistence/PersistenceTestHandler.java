@@ -50,7 +50,7 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.dataFile(), metadataProvider.dataFormat()));
+      prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.getDataFileName(), metadataProvider.getDataFormat()));
    }
 
    public void afterTest(@Observes After afterTestEvent)
