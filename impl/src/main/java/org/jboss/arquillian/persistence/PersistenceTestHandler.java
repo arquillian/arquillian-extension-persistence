@@ -33,10 +33,10 @@ public class PersistenceTestHandler
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
    
-   @Inject
+   @Inject @TestScoped
    private Event<PrepareDataEvent> prepareDataEvent;
    
-   @Inject
+   @Inject @TestScoped
    private Event<CleanUpDataEvent> cleanUpDataEvent;
    
    public void beforeTest(@Observes Before beforeTestEvent)

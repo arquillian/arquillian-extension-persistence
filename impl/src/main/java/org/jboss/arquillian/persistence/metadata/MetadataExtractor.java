@@ -73,17 +73,6 @@ class MetadataExtractor
       
    }
 
-   public DataSource getDataSourceAnnotation()
-   {
-      DataSource usedAnnotation = dataSourceAnnotations.get(AnnotationLevel.METHOD);
-      if (usedAnnotation == null)
-      {
-         usedAnnotation = dataSourceAnnotations.get(AnnotationLevel.CLASS);
-      }
-      
-      return usedAnnotation;
-   }
-   
    public boolean hasDataAnnotationOn(AnnotationLevel level)
    {
       return getDataAnnotationOn(level) != null;
@@ -107,6 +96,11 @@ class MetadataExtractor
    public boolean hasDataSourceAnnotationOn(AnnotationLevel level)
    {
       return dataSourceAnnotations.get(level) != null;
+   }
+
+   public DataSource getDataSourceAnnotationOn(AnnotationLevel level)
+   {
+      return dataSourceAnnotations.get(level);
    }
 
 }

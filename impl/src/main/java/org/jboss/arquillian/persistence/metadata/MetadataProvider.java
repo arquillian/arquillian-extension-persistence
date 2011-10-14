@@ -75,10 +75,9 @@ public class MetadataProvider
          dataSource = configuration.getDefaultDataSource();
       }
       
-      DataSource dataSourceAnnotation = metadataExtractor.getDataSourceAnnotation();
-      if (dataSourceAnnotation != null)
+      if (hasDataSourceAnnotation())
       {
-         dataSource = dataSourceAnnotation.value();
+         dataSource = getDataSourceAnnotation().value();
       }
 
       if ("".equals(dataSource.trim()))
@@ -157,6 +156,17 @@ public class MetadataProvider
       if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
       {
          usedAnnotation = metadataExtractor.getDataAnnotationOn(AnnotationLevel.METHOD);
+      }
+      
+      return usedAnnotation;
+   }
+   
+   public DataSource getDataSourceAnnotation()
+   {
+      DataSource usedAnnotation = metadataExtractor.getDataSourceAnnotationOn(AnnotationLevel.CLASS);
+      if (metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD))
+      {
+         usedAnnotation = metadataExtractor.getDataSourceAnnotationOn(AnnotationLevel.METHOD);
       }
       
       return usedAnnotation;
