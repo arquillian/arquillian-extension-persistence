@@ -18,6 +18,8 @@ import org.jboss.arquillian.test.spi.event.suite.Before;
 public class TransactionalWrapper
 {
 
+   private static final String USER_TRANSACTION_JNDI_NAME = "java:comp/UserTransaction";
+
    @Inject @SuiteScoped
    private Instance<PersistenceConfiguration> configuration;
 
@@ -58,11 +60,10 @@ public class TransactionalWrapper
    
    public void obtainTransaction(@Observes(precedence = 100) Before beforeTestEvent)
    {
-      System.out.println("Obtaining transaction...");
       try
       {
          final InitialContext context = new InitialContext();
-         UserTransaction userTransaction = (UserTransaction) context.lookup("java:comp/UserTransaction");
+         UserTransaction userTransaction = (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
          transactionProducer.set(userTransaction);
       }
       catch (NamingException e)
