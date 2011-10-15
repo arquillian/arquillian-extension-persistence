@@ -37,13 +37,28 @@ public class UserHsqlDbPersistenceTest
    @Test
    @Data("datasets/single-user.xml")
    @DataSource("arq/hsql")
-   public void shouldFindUserUsingDefinedDatasetAndDataSource() throws Exception
+   public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
       // given
       String expectedUsername = "doovde";
 
       // when
       UserAccount user = em.find(UserAccount.class, 1L);
+
+      // then 
+      assertThat(user.getUsername()).isEqualTo(expectedUsername);
+   }
+   
+   @Test
+   @Data("datasets/users.yml")
+   @DataSource("arq/hsql")
+   public void shouldFindUserUsingYamlDatasetAndDataSource() throws Exception
+   {
+      // given
+      String expectedUsername = "superman";
+
+      // when
+      UserAccount user = em.find(UserAccount.class, 2L);
 
       // then 
       assertThat(user.getUsername()).isEqualTo(expectedUsername);

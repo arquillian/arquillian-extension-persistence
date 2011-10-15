@@ -1,24 +1,23 @@
-package org.jboss.arquillian.persistence.data.dbunit.dataset;
+package org.jboss.arquillian.persistence.data.dbunit.dataset.yaml;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 
-public class XmlDataSetBuilder extends DataSetBuilder
+public class YamlDataSetBuilder extends DataSetBuilder
 {
 
    @Override
    public IDataSet build(String file)
    {
-      URL fileLocation = getClass().getClassLoader().getResource(file);
-      FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
+      InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file);
       IDataSet dataSet = null;
       try
       {
-         dataSet = flatXmlDataSetBuilder.build(fileLocation);
+         dataSet = new YamlDataSet(inputStream);
       }
       catch (DataSetException e)
       {

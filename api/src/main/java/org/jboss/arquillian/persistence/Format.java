@@ -7,6 +7,7 @@ public enum Format
 {
    XML("xml"),
    XLS("xls"),
+   YAML("yml"),
    UNSUPPORTED("-none-"), 
    NOT_DEFINED("-undefined-");
    

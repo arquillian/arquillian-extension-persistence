@@ -1,10 +1,11 @@
-package org.jboss.arquillian.persistence.data.dbunit.dataset;
+package org.jboss.arquillian.persistence.data.dbunit.dataset.excel;
 
 import java.io.InputStream;
 
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 
 public class ExcelDataSetBuilder extends DataSetBuilder
 {
