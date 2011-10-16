@@ -1,11 +1,13 @@
 package org.jboss.arquillian.persistence.metadata;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.EnumMap;
 import java.util.Map;
 
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
+import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -23,6 +25,9 @@ class MetadataExtractor
    private final Map<AnnotationLevel, Data> dataAnnotations = new EnumMap<AnnotationLevel, Data>(
          AnnotationLevel.class);
 
+   private final Map<AnnotationLevel, Expected> expectedAnnotations = new EnumMap<AnnotationLevel, Expected>(
+         AnnotationLevel.class);
+   
    private final Map<AnnotationLevel, Transactional> transactionalAnnotations = new EnumMap<AnnotationLevel, Transactional>(
          AnnotationLevel.class);
    
@@ -40,39 +45,21 @@ class MetadataExtractor
 
    private void prefetch()
    {
-      fetchDataMetadata();
-      fetchDataSourceMetadata();
-      fetchTransactionalMetaData();
+      fetch(Data.class, dataAnnotations);
+      fetch(Expected.class, expectedAnnotations);
+      fetch(DataSource.class, dataSourceAnnotations);
+      fetch(Transactional.class, transactionalAnnotations);
    }
 
-   private void fetchDataMetadata()
+   private <T extends Annotation> void fetch(Class<T> annotation, Map<AnnotationLevel, T> map)
    {
-      Data dataClassAnnotation = testClass.getAnnotation(Data.class);
-      dataAnnotations.put(AnnotationLevel.CLASS, dataClassAnnotation);
+      T classAnnotation = testClass.getAnnotation(annotation);
+      map.put(AnnotationLevel.CLASS, classAnnotation);
       
-      Data dataMethodAnnotation = testMethod.getAnnotation(Data.class);
-      dataAnnotations.put(AnnotationLevel.METHOD, dataMethodAnnotation);
-   }
-
-   private void fetchDataSourceMetadata()
-   {
-      DataSource dsClassAnnotation = testClass.getAnnotation(DataSource.class);
-      dataSourceAnnotations.put(AnnotationLevel.CLASS, dsClassAnnotation);
-      
-      DataSource dsMethodAnnotation = testMethod.getAnnotation(DataSource.class);
-      dataSourceAnnotations.put(AnnotationLevel.METHOD, dsMethodAnnotation);
+      T methodAnnotation = testMethod.getAnnotation(annotation);
+      map.put(AnnotationLevel.METHOD, methodAnnotation);
    }
    
-   private void fetchTransactionalMetaData()
-   {
-      Transactional transactionalClassAnnotation = testClass.getAnnotation(Transactional.class);
-      transactionalAnnotations.put(AnnotationLevel.CLASS, transactionalClassAnnotation);
-      
-      Transactional transactionalMethodAnnotation = testMethod.getAnnotation(Transactional.class);
-      transactionalAnnotations.put(AnnotationLevel.METHOD, transactionalMethodAnnotation);
-      
-   }
-
    public boolean hasDataAnnotationOn(AnnotationLevel level)
    {
       return getDataAnnotationOn(level) != null;
@@ -101,6 +88,16 @@ class MetadataExtractor
    public DataSource getDataSourceAnnotationOn(AnnotationLevel level)
    {
       return dataSourceAnnotations.get(level);
+   }
+
+   public boolean hasExpectedAnnotationOn(AnnotationLevel level)
+   {
+      return expectedAnnotations.get(level) != null;
+   }
+   
+   public Expected getExpectedAnnotationOn(AnnotationLevel level)
+   {
+      return expectedAnnotations.get(level);
    }
 
 }

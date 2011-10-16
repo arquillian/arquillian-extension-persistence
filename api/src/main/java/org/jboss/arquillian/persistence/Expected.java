@@ -8,8 +8,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+
 /**
- * Loads given data to the underlying data store before test execution. 
+ * Verifies state of underlying data store with the data given by
+ * this annotation after test execution.  
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
@@ -17,7 +19,7 @@ import java.lang.annotation.Target;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface Data 
+public @interface Expected 
 {
 
    /**
@@ -27,11 +29,11 @@ public @interface Data
     *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
     *   <li>
     *       If {@link Data} annotation is defined on method level, file name has following format:
-    *       <i>[fully qualified class name]#[test method name].[default format]</i>.
+    *       <i>expected-[fully qualified class name]#[test method name].[default format]</i>.
     *   </li>
     *   <li>
     *       If {@link Data} annotation is defined on class level, file name has following format:
-    *       <i>[fully qualified class name]#.[default format]</i></li>.
+    *       <i>expected-[fully qualified class name]#.[default format]</i></li>.
     * </ul>
     * <br /><br />
     * If not specified in <code>arquillian.xml</code> expected format is XML.
@@ -39,7 +41,7 @@ public @interface Data
    String value() default "";
 
    /**
-    * Format of the given file used to seed data before the test execution. 
+    * Format of the given file used to verify data after the test execution. 
     * If not specified (using {@link Format#NOT_DEFINED}) type
     * is inferred from the file name.
     * 
@@ -47,5 +49,4 @@ public @interface Data
     * @return
     */
    Format format() default Format.NOT_DEFINED;
-   
 }

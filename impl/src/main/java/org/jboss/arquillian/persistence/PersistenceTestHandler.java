@@ -10,8 +10,10 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.event.CleanUpDataEvent;
-import org.jboss.arquillian.persistence.event.PrepareDataEvent;
+import org.jboss.arquillian.persistence.event.CleanUpData;
+import org.jboss.arquillian.persistence.event.CompareData;
+import org.jboss.arquillian.persistence.event.PrepareData;
+import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
@@ -34,10 +36,16 @@ public class PersistenceTestHandler
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
    
    @Inject @TestScoped
-   private Event<PrepareDataEvent> prepareDataEvent;
+   private Event<PrepareData> prepareDataEvent;
    
    @Inject @TestScoped
-   private Event<CleanUpDataEvent> cleanUpDataEvent;
+   private Event<CompareData> compareDataEvent;
+   
+   @Inject @TestScoped
+   private Event<CleanUpData> cleanUpDataEvent;
+   
+   @Inject @TestScoped
+   private Event<TransactionFinished> transactionFinishedEvent;
    
    public void beforeTest(@Observes Before beforeTestEvent)
    {
@@ -50,7 +58,7 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      prepareDataEvent.fire(new PrepareDataEvent(metadataProvider.getDataFileName(), metadataProvider.getDataFormat()));
+      prepareDataEvent.fire(new PrepareData(metadataProvider.getDataFileName(), metadataProvider.getDataFormat()));
    }
 
    public void afterTest(@Observes After afterTestEvent)
@@ -61,10 +69,24 @@ public class PersistenceTestHandler
          return;
       }
       
+      if (metadataProvider.isTransactional())
+      {
+         transactionFinishedEvent.fire(new TransactionFinished(afterTestEvent));
+      }
+
+      if (metadataProvider.isDataVerificationExpected())
+      {
+         String expectedDataFileName = metadataProvider.getExpectedDataFileName();
+         Format expectedDataFormat = metadataProvider.getExpectedDataFormat();
+         compareDataEvent.fire(new CompareData(expectedDataFileName, expectedDataFormat));
+      }
+      
       if (!metadataProvider.isTransactional() || TransactionMode.ROLLBACK.equals(metadataProvider.getTransactionalMode()))
       {
-         cleanUpDataEvent.fire(new CleanUpDataEvent());
       }
+
+      cleanUpDataEvent.fire(new CleanUpData());
+      
    }
 
    // Private methods

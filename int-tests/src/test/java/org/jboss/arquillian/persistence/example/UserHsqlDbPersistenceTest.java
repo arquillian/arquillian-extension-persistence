@@ -9,6 +9,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
+import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
@@ -35,7 +36,7 @@ public class UserHsqlDbPersistenceTest
    EntityManager em;
    
    @Test
-   @Data("datasets/single-user.xml")
+   @Data("datasets/single-user.xls")
    @DataSource("arq/hsql")
    public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
@@ -65,33 +66,35 @@ public class UserHsqlDbPersistenceTest
    }
    
    @Test
-   @Data("datasets/single-user.xls")
    @Transactional(TransactionMode.COMMIT)
-   public void shouldPersistUserChanges() throws Exception
+   @Data("datasets/users.yml")
+   @Expected("datasets/expected-users.yml")
+   public void shouldChangeUserPassword() throws Exception
    {
       // given
-      String newUsername = "doovde";
-      UserAccount user = em.find(UserAccount.class, 1L);
+      String expectedPassword = "LexLuthor";
+      UserAccount user = em.find(UserAccount.class, 2L);
 
       // when
-      user.setUsername(newUsername);
-      em.persist(user);
-
+      user.setPassword("LexLuthor");
+      em.merge(user);
+      
       // then 
-      assertThat(user.getUsername()).isEqualTo(newUsername);
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
    
+   
    @Test
-   public void shouldHaveNewNamePersisted() throws Exception
+   public void shouldHaveNewPasswordPersisted() throws Exception
    {
       // given
-      String expectedUsername = "doovde";
+      String expectedPassword = "LexLuthor";
 
       // when
-      UserAccount user = em.find(UserAccount.class, 1L);
+      UserAccount user = em.find(UserAccount.class, 2L);
 
       // then 
-      assertThat(user.getUsername()).isEqualTo(expectedUsername);
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
 
 }

@@ -12,7 +12,9 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
-import org.jboss.arquillian.persistence.event.PrepareDataEvent;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
+import org.jboss.arquillian.persistence.event.CompareData;
+import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 /**
@@ -23,22 +25,24 @@ import org.jboss.arquillian.test.spi.annotation.TestScoped;
 public class DBUnitInitializer
 {
 
-   @Inject
-   @TestScoped
+   @Inject @TestScoped
    private Instance<DataSource> databaseSourceInstance;
 
-   @Inject
-   @TestScoped
+   @Inject @TestScoped
    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
 
-   @Inject
-   @TestScoped
-   private InstanceProducer<IDataSet> dataSetProducer;
-
-   public void initialize(@Observes(precedence = 2) PrepareDataEvent prepareDataEvent)
+   @Inject @TestScoped
+   private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
+   
+   public void initializeDataSeeding(@Observes(precedence = 2) PrepareData prepareDataEvent)
    {
       createDatabaseConnection();
-      createDataSet(prepareDataEvent.getSourceFile(), prepareDataEvent.getType());
+      createInitialDataSet(prepareDataEvent.getSourceFile(), prepareDataEvent.getFormat());
+   }
+   
+   public void initializeDataVerification(@Observes(precedence = 2) CompareData compareDataEvent)
+   {
+      createExpectedDataSet(compareDataEvent.getSourceFile(), compareDataEvent.getFormat());
    }
 
    private void createDatabaseConnection()
@@ -57,10 +61,19 @@ public class DBUnitInitializer
       }
    }
 
-   private void createDataSet(String file, Format format)
+   private void createInitialDataSet(String file, Format format)
    {
-      IDataSet dataSet = DataSetBuilder.builderFor(format).build(file);
-      dataSetProducer.set(dataSet);
+      IDataSet initial = DataSetBuilder.builderFor(format).build(file);
+      DataSetRegister dataSetRegister = new DataSetRegister();
+      dataSetRegister.addInitial(initial);
+      dataSetRegisterProducer.set(dataSetRegister);
+   }
+   
+   private void createExpectedDataSet(String file, Format format)
+   {
+      IDataSet expected = DataSetBuilder.builderFor(format).build(file);
+      DataSetRegister dataSetRegister = dataSetRegisterProducer.get();
+      dataSetRegister.addExpected(expected);
    }
 
 }

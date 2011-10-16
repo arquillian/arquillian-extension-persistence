@@ -9,10 +9,10 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
-import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 
 public class TransactionalWrapper
@@ -39,13 +39,9 @@ public class TransactionalWrapper
       transaction.get().begin();
    }
    
-   public void afterTest(@Observes(precedence = 10) After afterTestEvent) throws Exception
+   public void afterTest(@Observes(precedence = 10) TransactionFinished transactionFinished) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
-      if (!metadataProvider.isTransactional())
-      {
-         return;
-      }
+      MetadataProvider metadataProvider = new MetadataProvider(transactionFinished, configuration.get());
 
       TransactionMode mode = metadataProvider.getTransactionalMode();
       if (TransactionMode.COMMIT.equals(mode))

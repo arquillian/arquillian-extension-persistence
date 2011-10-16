@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 
 import org.jboss.arquillian.persistence.Format;
 
-public class DefaultFileNamingStrategy
+public class DataSetFileNamingStrategy
 {
 
    private final Format format;
 
-   public DefaultFileNamingStrategy(Format format)
+   public DataSetFileNamingStrategy(Format format)
    {
       this.format = format;
    }

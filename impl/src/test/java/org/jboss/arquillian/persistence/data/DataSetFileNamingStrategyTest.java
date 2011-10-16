@@ -5,14 +5,14 @@ import static org.fest.assertions.Assertions.*;
 import org.jboss.arquillian.persistence.Format;
 import org.junit.Test;
 
-public class DefaultFileNamingStrategyTest
+public class DataSetFileNamingStrategyTest
 {
 
    @Test
-   public void shouldProduceDefaultFileNameForTestUsingFullClassNameAndMethodName() throws Exception
+   public void shouldProduceDefaultFileNameOfDataSetForTestUsingFullClassNameAndMethodName() throws Exception
    {
       // given
-      DefaultFileNamingStrategy defaultFileNamingStrategy = new DefaultFileNamingStrategy(Format.XML);
+      DataSetFileNamingStrategy defaultFileNamingStrategy = new DataSetFileNamingStrategy(Format.XML);
 
       // when
       String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
