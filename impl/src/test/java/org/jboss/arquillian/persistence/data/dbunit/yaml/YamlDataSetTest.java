@@ -50,6 +50,21 @@ public class YamlDataSetTest
    }
    
    @Test
+   public void shouldLoadAllRowsWithContentForTableFromYamlFile() throws Exception
+   {
+      // given
+      final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.yml");
+
+      // when
+      YamlDataSet yamlDataSet = new YamlDataSet(input);
+      
+      // then
+      TableAssert.assertThat(yamlDataSet.getTable("useraccount"))
+                 .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
+                 .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
+   }
+   
+   @Test
    public void shouldLoadTwoTablesFromYamlFile() throws Exception
    {
       // given

@@ -3,7 +3,6 @@ package org.jboss.arquillian.persistence.data.dbunit.dataset.yaml;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,8 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.Row;
+import org.jboss.arquillian.persistence.data.dbunit.dataset.Table;
 import org.yaml.snakeyaml.Yaml;
 
 public class YamlDataSetProducer implements IDataSetProducer
@@ -51,7 +52,7 @@ public class YamlDataSetProducer implements IDataSetProducer
       {
          ITableMetaData tableMetaData = createTableMetaData(table);
          consumer.startTable(tableMetaData);
-         for (Row row : table.rows)
+         for (Row row : table.getRows())
          {
             List<String> values = new ArrayList<String>();
             for (Column column : tableMetaData.getColumns())
@@ -70,7 +71,7 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    private ITableMetaData createTableMetaData(Table table)
    {
-      return new DefaultTableMetaData(table.tableName, createColumns(table.columns));
+      return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
    }
 
    private Column[] createColumns(Collection<String> columnNames)
@@ -117,47 +118,7 @@ public class YamlDataSetProducer implements IDataSetProducer
       return columns;
    }
 
-   private static class Table
-   {
-      private final String tableName;
-      
-      private Set<String> columns = new HashSet<String>();
-      
-      private List<Row> rows = new ArrayList<Row>();
-
-      public Table(String tableName)
-      {
-         this.tableName = tableName;
-      }
-
-      public void addRows(Collection<Row> rows)
-      {
-         this.rows.addAll(rows);
-      }
-
-      public void addColumns(Collection<String> columns)
-      {
-         this.columns.addAll(columns);
-      }
-      
-   }
-   
-   private static class Row
-   {
-      private final Map<String, String> cells = new HashMap<String, String>();
-      
-      public Row(Map<String, String> cells)
-      {
-         this.cells.putAll(cells);
-      }
-
-      public String valueOf(String name)
-      {
-         return String.valueOf(cells.get(name));
-      }
-   }
-   
-   /// Getters & Setters
+   // Getters & Setters
    
    public boolean isCaseSensitiveTableNames()
    {
