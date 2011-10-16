@@ -110,7 +110,7 @@ public class DBUnitDatasetHandler implements DataHandler
 
    private void fillDatabase(String file) throws IOException, SQLException, DatabaseUnitException
    {
-      DatabaseOperation.INSERT.execute(databaseConnectionInstance.get(), dataSetRegisterInstance.get().getInitial());
+      DatabaseOperation.CLEAN_INSERT.execute(databaseConnectionInstance.get(), dataSetRegisterInstance.get().getInitial());
    }
 
    private void cleanDatabase() throws DatabaseUnitException, SQLException

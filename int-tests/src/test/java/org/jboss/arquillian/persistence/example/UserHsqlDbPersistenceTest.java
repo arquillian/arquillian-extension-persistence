@@ -66,7 +66,7 @@ public class UserHsqlDbPersistenceTest
    }
    
    @Test
-   @Transactional(TransactionMode.COMMIT)
+   @Transactional
    @Data("datasets/users.yml")
    @Expected("datasets/expected-users.yml")
    public void shouldChangeUserPassword() throws Exception

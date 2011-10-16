@@ -81,12 +81,6 @@ public class PersistenceTestHandler
          compareDataEvent.fire(new CompareData(expectedDataFileName, expectedDataFormat));
       }
       
-      if (!metadataProvider.isTransactional() || TransactionMode.ROLLBACK.equals(metadataProvider.getTransactionalMode()))
-      {
-      }
-
-      cleanUpDataEvent.fire(new CleanUpData());
-      
    }
 
    // Private methods

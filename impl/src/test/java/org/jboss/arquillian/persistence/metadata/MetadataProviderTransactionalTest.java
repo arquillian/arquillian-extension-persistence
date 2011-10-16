@@ -72,11 +72,11 @@ public class MetadataProviderTransactionalTest
       TransactionMode transactionalMode = metadataProvider.getTransactionalMode();
 
       // then
-      assertThat(transactionalMode).isEqualTo(TransactionMode.COMMIT);
+      assertThat(transactionalMode).isEqualTo(TransactionMode.ROLLBACK);
    }
 
    @Test
-   public void shouldHaveRollbackAsDefaultTransactionalModeWhenNotSpecifiedOnAnyLevel() throws Exception
+   public void shouldHaveCommitAsDefaultTransactionalModeWhenNotSpecifiedOnAnyLevel() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClassWithDefaultOnMethodLevel(),
@@ -87,10 +87,10 @@ public class MetadataProviderTransactionalTest
       TransactionMode transactionalMode = metadataProvider.getTransactionalMode();
 
       // then
-      assertThat(transactionalMode).isEqualTo(TransactionMode.ROLLBACK);
+      assertThat(transactionalMode).isEqualTo(TransactionMode.COMMIT);
    }
    
-   @Transactional(TransactionMode.COMMIT)
+   @Transactional(TransactionMode.ROLLBACK)
    private static class TransactionalAnnotatedClass
    {
       public void shouldPassWithoutTransactionalDefinedOnMethodLevel()
