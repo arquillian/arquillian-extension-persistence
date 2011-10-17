@@ -27,12 +27,12 @@ public class UserDerbyPersistenceTest
    public static Archive<?> createDeploymentPackage()
    {
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addClass(UserAccount.class)
+                       .addPackage(UserAccount.class.getPackage())
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("derby-test-persistence.xml", "persistence.xml");
    }
 
-   @PersistenceContext(unitName = "arquillian-derby")
+   @PersistenceContext
    EntityManager em;
    
    @Test

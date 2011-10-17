@@ -1,10 +1,15 @@
 package org.jboss.arquillian.persistence.example;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,25 +27,36 @@ public class UserAccount
    private Long id;
 
    @Basic
-   @NotNull
-   @Size(min = 3, max = 20)
+   @NotNull @Size(min = 3, max = 32)
    private String username;
 
    @Basic
-   @NotNull
-   @Size(min = 8, max = 20)
+   @NotNull @Size(min = 8)
    private String password;
 
    @Basic
-   @NotNull
-   @Size(max = 128)
+   @NotNull @Size(max = 128)
    private String firstname;
 
    @Basic
-   @NotNull
-   @Size(max = 128)
+   @NotNull @Size(max = 128)
    private String lastname;
+   
+   @OneToMany
+   private Set<Address> addresses = new HashSet<Address>();
 
+   UserAccount()
+   {
+      // To satisfy JPA
+   }
+   
+   public void addAddress(Address address)
+   {
+      this.addresses.add(address);
+   }
+   
+   // Getters and setters
+   
    public Long getId()
    {
       return id;
@@ -90,5 +106,17 @@ public class UserAccount
    {
       this.lastname = lastname;
    }
+
+   public Set<Address> getAddresses()
+   {
+      return Collections.unmodifiableSet(addresses);
+   }
+
+   void setAddresses(Set<Address> addresses)
+   {
+      this.addresses = addresses;
+   }
+   
+   
 
 }

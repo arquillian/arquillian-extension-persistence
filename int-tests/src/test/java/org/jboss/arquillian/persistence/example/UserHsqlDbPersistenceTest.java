@@ -10,7 +10,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -26,7 +25,7 @@ public class UserHsqlDbPersistenceTest
    public static Archive<?> createDeploymentPackage()
    {
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addClass(UserAccount.class)
+                       .addPackage(UserAccount.class.getPackage())
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("hsql-test-persistence.xml", "persistence.xml");
    }
@@ -65,7 +64,6 @@ public class UserHsqlDbPersistenceTest
    }
    
    @Test
-   @Transactional
    @Data("datasets/users.yml")
    @Expected("datasets/expected-users.yml")
    public void shouldChangeUserPassword() throws Exception
@@ -84,16 +82,20 @@ public class UserHsqlDbPersistenceTest
    
    
    @Test
-   public void shouldHaveNewPasswordPersisted() throws Exception
+   @Data("datasets/user-with-address.yml")
+   public void shouldHaveAddressLinkedToUserAccount() throws Exception
    {
       // given
-      String expectedPassword = "LexLuthor";
+      String expectedCity = "Metropolis";
+      long userAccountId = 1L;
 
       // when
-      UserAccount user = em.find(UserAccount.class, 2L);
-
-      // then 
-      assertThat(user.getPassword()).isEqualTo(expectedPassword);
+      UserAccount user = em.find(UserAccount.class, userAccountId);
+      Address address = user.getAddresses().iterator().next();
+      
+      // then
+      assertThat(user.getAddresses()).hasSize(1);
+      assertThat(address.getCity()).isEqualTo(expectedCity);
    }
 
 }
