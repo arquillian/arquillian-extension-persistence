@@ -10,7 +10,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
-import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -38,7 +37,7 @@ public class UserHsqlDbPersistenceTest
    @Test
    @Data("datasets/single-user.xls")
    @DataSource("arq/hsql")
-   public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
+   public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
    {
       // given
       String expectedUsername = "doovde";
@@ -51,15 +50,15 @@ public class UserHsqlDbPersistenceTest
    }
    
    @Test
-   @Data("datasets/users.yml")
+   @Data("datasets/single-user.xml")
    @DataSource("arq/hsql")
-   public void shouldFindUserUsingYamlDatasetAndDataSource() throws Exception
+   public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
       // given
-      String expectedUsername = "superman";
+      String expectedUsername = "doovde";
 
       // when
-      UserAccount user = em.find(UserAccount.class, 2L);
+      UserAccount user = em.find(UserAccount.class, 1L);
 
       // then 
       assertThat(user.getUsername()).isEqualTo(expectedUsername);

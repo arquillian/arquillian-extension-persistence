@@ -42,9 +42,6 @@ public class PersistenceTestHandler
    private Event<CompareData> compareDataEvent;
    
    @Inject @TestScoped
-   private Event<CleanUpData> cleanUpDataEvent;
-   
-   @Inject @TestScoped
    private Event<TransactionFinished> transactionFinishedEvent;
    
    public void beforeTest(@Observes Before beforeTestEvent)

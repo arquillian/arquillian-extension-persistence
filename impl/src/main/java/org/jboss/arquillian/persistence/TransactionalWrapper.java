@@ -29,6 +29,20 @@ public class TransactionalWrapper
    @Inject @TestScoped
    private Instance<UserTransaction> transaction;
    
+   public void obtainTransaction(@Observes(precedence = 100) Before beforeTestEvent)
+   {
+      try
+      {
+         final InitialContext context = new InitialContext();
+         UserTransaction userTransaction = (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
+         transactionProducer.set(userTransaction);
+      }
+      catch (NamingException e)
+      {
+         throw new RuntimeException("Failed obtaining transaction.");
+      }
+   }
+   
    public void beforeTest(@Observes(precedence = 10) Before beforeTestEvent) throws Exception
    {
       MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
@@ -54,18 +68,5 @@ public class TransactionalWrapper
       }
    }
    
-   public void obtainTransaction(@Observes(precedence = 100) Before beforeTestEvent)
-   {
-      try
-      {
-         final InitialContext context = new InitialContext();
-         UserTransaction userTransaction = (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
-         transactionProducer.set(userTransaction);
-      }
-      catch (NamingException e)
-      {
-         throw new RuntimeException("Failed obtaining transaction.");
-      }
-   }
    
 }
