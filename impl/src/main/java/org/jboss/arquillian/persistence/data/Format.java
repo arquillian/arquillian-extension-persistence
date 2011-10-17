@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence;
+package org.jboss.arquillian.persistence.data;
 
 import java.util.EnumSet;
 import java.util.Set;

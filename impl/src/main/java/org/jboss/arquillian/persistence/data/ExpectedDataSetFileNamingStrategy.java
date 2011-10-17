@@ -2,7 +2,6 @@ package org.jboss.arquillian.persistence.data;
 
 import java.lang.reflect.Method;
 
-import org.jboss.arquillian.persistence.Format;
 
 public class ExpectedDataSetFileNamingStrategy
 {

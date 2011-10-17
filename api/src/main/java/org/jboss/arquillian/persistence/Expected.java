@@ -40,13 +40,4 @@ public @interface Expected
     */
    String value() default "";
 
-   /**
-    * Format of the given file used to verify data after the test execution. 
-    * If not specified (using {@link Format#NOT_DEFINED}) type
-    * is inferred from the file name.
-    * 
-    * @see Format
-    * @return
-    */
-   Format format() default Format.NOT_DEFINED;
 }

@@ -2,8 +2,8 @@ package org.jboss.arquillian.persistence.configuration;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.data.Format;
 import org.junit.Test;
 
 public class ConfigurationExtractorTest

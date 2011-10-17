@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
-import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.data.Format;
 
 class ConfigurationExtractor
 {

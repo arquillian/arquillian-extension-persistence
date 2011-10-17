@@ -1,7 +1,7 @@
 package org.jboss.arquillian.persistence.event;
 
 import org.jboss.arquillian.core.spi.event.Event;
-import org.jboss.arquillian.persistence.Format;
+import org.jboss.arquillian.persistence.data.Format;
 
 public class PrepareData implements Event
 {

@@ -1,7 +1,7 @@
 package org.jboss.arquillian.persistence.data.dbunit.dataset;
 
 import org.dbunit.dataset.IDataSet;
-import org.jboss.arquillian.persistence.Format;
+import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.excel.ExcelDataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.xml.XmlDataSetBuilder;

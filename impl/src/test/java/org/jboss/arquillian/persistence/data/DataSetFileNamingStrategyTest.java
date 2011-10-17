@@ -2,7 +2,6 @@ package org.jboss.arquillian.persistence.data;
 
 import static org.fest.assertions.Assertions.*;
 
-import org.jboss.arquillian.persistence.Format;
 import org.junit.Test;
 
 public class DataSetFileNamingStrategyTest

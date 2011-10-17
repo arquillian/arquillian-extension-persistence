@@ -5,12 +5,12 @@ import java.lang.reflect.Method;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
-import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.ExpectedDataSetFileNamingStrategy;
+import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -92,12 +92,7 @@ public class MetadataProvider
 
    public Format getDataFormat()
    {
-      Format format = getDataAnnotation().format();
-
-      if (Format.NOT_DEFINED.equals(format))
-      {
-         format = Format.inferFromFile(getDataFileName());
-      }
+      Format format = Format.inferFromFile(getDataFileName());
 
       if (Format.UNSUPPORTED.equals(format))
       {
@@ -120,11 +115,7 @@ public class MetadataProvider
 
    private String getDefaultNamingForDataSetFile()
    {
-      Format format = getDataAnnotation().format();
-      if (Format.NOT_DEFINED.equals(format))
-      {
-         format = configuration.getDefaultDataSetFormat();
-      }
+      Format format = configuration.getDefaultDataSetFormat();
 
       if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
       {
@@ -190,12 +181,7 @@ public class MetadataProvider
 
    public Format getExpectedDataFormat()
    {
-      Format format = getExpectedAnnotation().format();
-
-      if (Format.NOT_DEFINED.equals(format))
-      {
-         format = Format.inferFromFile(getExpectedDataFileName());
-      }
+      Format format = Format.inferFromFile(getExpectedDataFileName());
 
       if (Format.UNSUPPORTED.equals(format))
       {
@@ -218,11 +204,7 @@ public class MetadataProvider
 
    private String getDefaultNamingForExpectedDataSetFile()
    {
-      Format format = getExpectedAnnotation().format();
-      if (Format.NOT_DEFINED.equals(format))
-      {
-         format = configuration.getDefaultDataSetFormat();
-      }
+      Format format = configuration.getDefaultDataSetFormat(); // TODO
 
       if (metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD))
       {

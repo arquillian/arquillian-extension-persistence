@@ -5,9 +5,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
-import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
+import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -162,7 +162,7 @@ public class MetadataProviderExpectedTest
       @Expected(XML_EXPECTED_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataButWithoutFormatDefinedOnMethodLevel () {}
       
-      @Expected(value = EXCEL_EXPECTED_DATA_SET_ON_METHOD_LEVEL, format = Format.XLS)
+      @Expected(value = EXCEL_EXPECTED_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataAndFormatDefinedOnMethodLevel() {}
       
       @Expected("arquillian.ike")

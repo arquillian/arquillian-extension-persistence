@@ -2,8 +2,8 @@ package org.jboss.arquillian.persistence.configuration;
 
 import java.io.Serializable;
 
-import org.jboss.arquillian.persistence.Format;
 import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.data.Format;
 
 /**
  * 
