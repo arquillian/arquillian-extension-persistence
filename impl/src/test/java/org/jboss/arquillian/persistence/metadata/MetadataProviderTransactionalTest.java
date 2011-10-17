@@ -15,6 +15,51 @@ public class MetadataProviderTransactionalTest
    private PersistenceConfiguration defaultConfiguration = ConfigurationLoader.createDefaultConfiguration();
 
    @Test
+   public void shouldHaveTransactionalSupportEnabledByDefault() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
+            TransactionalSupportEnabledByDefault.class.getMethod("shouldPassWithTransactionalSupportEnabledByDefault"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+
+      // when
+      boolean transactional = metadataProvider.isTransactional();
+
+      // then
+      assertThat(transactional).isTrue();
+   }
+   
+   @Test
+   public void shouldHaveTransactionalSupportDisabledOnMethodLevel() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
+            TransactionalSupportEnabledByDefault.class.getMethod("shouldPassWithDisabledTransaction"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+
+      // when
+      boolean transactional = metadataProvider.isTransactional();
+
+      // then
+      assertThat(transactional).isFalse();
+   }
+   
+   @Test
+   public void shouldHaveTransactionalSupportDisabledOnClassLevel() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new TransactionalSupportDisabledOnClassLevel(),
+            TransactionalSupportDisabledOnClassLevel.class.getMethod("shouldPassWithDisabledTransaction"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+
+      // when
+      boolean transactional = metadataProvider.isTransactional();
+
+      // then
+      assertThat(transactional).isFalse();
+   }
+   
+   @Test
    public void shouldObtainTransactionalFromTestMethod() throws Exception
    {
       // given
@@ -42,7 +87,6 @@ public class MetadataProviderTransactionalTest
 
       // then
       assertThat(transactionalMode).isEqualTo(TransactionMode.ROLLBACK);
-
    }
 
    @Test
@@ -107,6 +151,24 @@ public class MetadataProviderTransactionalTest
       @Transactional
       public void shouldPassWithTransactionalDefaultModeDefinedOnMethodLevel()
       {}
+   }
+   
+   private static class TransactionalSupportEnabledByDefault
+   {
+      @Transactional(TransactionMode.DISABLED)
+      public void shouldPassWithDisabledTransaction()
+      {}
+      
+      public void shouldPassWithTransactionalSupportEnabledByDefault()
+      {}
+   }
+   
+   @Transactional(TransactionMode.DISABLED)
+   private static class TransactionalSupportDisabledOnClassLevel
+   {
+      public void shouldPassWithDisabledTransaction()
+      {}
+      
    }
 
 }

@@ -158,8 +158,12 @@ public class MetadataProvider
 
    public boolean isTransactional()
    {
-      return metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.CLASS)
-            || metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.METHOD);
+      boolean transactionalSupportDefinitionOnClassLevel = metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.CLASS);
+      if (transactionalSupportDefinitionOnClassLevel)
+      {
+         return metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.METHOD);
+      }
+      return transactionalSupportDefinitionOnClassLevel;  
    }
 
    public boolean isDataVerificationExpected()
@@ -176,7 +180,12 @@ public class MetadataProvider
          transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.METHOD);
       }
 
-      return transactionalAnnotation.value();
+      TransactionMode mode = configuration.getDefaultTransactionalMode();
+      if (transactionalAnnotation != null)
+      {
+         mode = transactionalAnnotation.value();
+      }
+      return mode;
    }
 
    public Format getExpectedDataFormat()

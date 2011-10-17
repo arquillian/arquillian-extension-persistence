@@ -3,6 +3,7 @@ package org.jboss.arquillian.persistence.configuration;
 import java.io.Serializable;
 
 import org.jboss.arquillian.persistence.Format;
+import org.jboss.arquillian.persistence.TransactionMode;
 
 /**
  * 
@@ -63,6 +64,11 @@ public class PersistenceConfiguration implements Serializable
    public void setDefaultDataSetFormat(Format defaultDataSetFormat)
    {
       this.defaultDataSetFormat = defaultDataSetFormat;
+   }
+
+   public TransactionMode getDefaultTransactionalMode()
+   {
+      return TransactionMode.COMMIT;
    }
    
 }

@@ -9,6 +9,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
+import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -35,6 +37,7 @@ public class UserDerbyPersistenceTest
    
    @Test
    @Data("datasets/single-user.xml")
+   @Transactional(TransactionMode.DISABLED) // TODO Derby throws timeout exception while obtaining lock
    public void shouldFetchUserUsingClassLevelDataSource() throws Exception
    {
       // given

@@ -4,11 +4,15 @@ public enum TransactionMode
 {
    /**
     * Rollback transaction after every test. 
-    * Default bevahiour.
     */
    ROLLBACK,
    /**
     * Commit transaction after test execution.
+    * Default bevahiour.
     */
-   COMMIT;
+   COMMIT, 
+   /**
+    * Instructs extension to not use transactions for tests execution.
+    */
+   DISABLED;
 }

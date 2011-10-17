@@ -14,8 +14,7 @@
 
   <!-- Artifact Configuration -->
   <artifactId>arquillian-persistence-integration-tests</artifactId>
-  <name>Arquillian Persistence Extension Integration tests</name>
-  <description>Extension for controlling data sources</description>
+  <name>Arquillian Persistence Extension Integration Tests</name>
 
   <developers>
     <developer>
@@ -112,4 +111,5 @@
   </dependencies>
 
 
+  <description>Demonstrates usage of Arquillian Persistence extension .</description>
 </project>

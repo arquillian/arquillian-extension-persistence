@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -22,15 +23,14 @@ class MetadataExtractor
    private final Map<AnnotationLevel, DataSource> dataSourceAnnotations = new EnumMap<AnnotationLevel, DataSource>(
          AnnotationLevel.class);
 
-   private final Map<AnnotationLevel, Data> dataAnnotations = new EnumMap<AnnotationLevel, Data>(
-         AnnotationLevel.class);
+   private final Map<AnnotationLevel, Data> dataAnnotations = new EnumMap<AnnotationLevel, Data>(AnnotationLevel.class);
 
    private final Map<AnnotationLevel, Expected> expectedAnnotations = new EnumMap<AnnotationLevel, Expected>(
          AnnotationLevel.class);
-   
+
    private final Map<AnnotationLevel, Transactional> transactionalAnnotations = new EnumMap<AnnotationLevel, Transactional>(
          AnnotationLevel.class);
-   
+
    public MetadataExtractor(TestClass testClass, Method testMethod)
    {
       this.testClass = testClass;
@@ -55,11 +55,11 @@ class MetadataExtractor
    {
       T classAnnotation = testClass.getAnnotation(annotation);
       map.put(AnnotationLevel.CLASS, classAnnotation);
-      
+
       T methodAnnotation = testMethod.getAnnotation(annotation);
       map.put(AnnotationLevel.METHOD, methodAnnotation);
    }
-   
+
    public boolean hasDataAnnotationOn(AnnotationLevel level)
    {
       return getDataAnnotationOn(level) != null;
@@ -69,12 +69,23 @@ class MetadataExtractor
    {
       return dataAnnotations.get(level);
    }
-   
+
    public boolean hasTransactionalAnnotationOn(AnnotationLevel level)
    {
       return transactionalAnnotations.get(level) != null;
    }
    
+   public boolean hasTransactionalSupportEnabledOn(AnnotationLevel level)
+   {
+      boolean isTransactionalSupportEnabled = true;
+      if (hasTransactionalAnnotationOn(level))
+      {
+         Transactional transactional = getTransactionalAnnotationOn(level);
+         isTransactionalSupportEnabled = !TransactionMode.DISABLED.equals(transactional.value());
+      }
+      return isTransactionalSupportEnabled;
+   }
+
    public Transactional getTransactionalAnnotationOn(AnnotationLevel level)
    {
       return transactionalAnnotations.get(level);
@@ -94,7 +105,7 @@ class MetadataExtractor
    {
       return expectedAnnotations.get(level) != null;
    }
-   
+
    public Expected getExpectedAnnotationOn(AnnotationLevel level)
    {
       return expectedAnnotations.get(level);
