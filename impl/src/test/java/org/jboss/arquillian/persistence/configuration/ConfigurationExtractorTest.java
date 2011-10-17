@@ -3,6 +3,7 @@ package org.jboss.arquillian.persistence.configuration;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.Format;
+import org.jboss.arquillian.persistence.TransactionMode;
 import org.junit.Test;
 
 public class ConfigurationExtractorTest
@@ -62,6 +63,34 @@ public class ConfigurationExtractorTest
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
+   }
+   
+   @Test
+   public void shouldObtainDefaultTransactionMode() throws Exception
+   {
+      // given
+      TransactionMode expectedMode = TransactionMode.ROLLBACK;
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+      
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
+   }
+   
+   @Test
+   public void shouldHaveCommitAsDefaultTransactionModeIfNotDefinedInConfigurationFile() throws Exception
+   {
+      // given
+      TransactionMode expectedMode = TransactionMode.COMMIT;
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+      
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
    }
 
 }

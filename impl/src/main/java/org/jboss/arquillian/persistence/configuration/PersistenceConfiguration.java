@@ -21,6 +21,8 @@ public class PersistenceConfiguration implements Serializable
 
    private Format defaultDataSetFormat = Format.XML;
    
+   private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
+   
    public String getDefaultDataSource()
    {
       return defaultDataSource;
@@ -66,9 +68,14 @@ public class PersistenceConfiguration implements Serializable
       this.defaultDataSetFormat = defaultDataSetFormat;
    }
 
-   public TransactionMode getDefaultTransactionalMode()
+   public TransactionMode getDefaultTransactionMode()
    {
-      return TransactionMode.COMMIT;
+      return defaultTransactionMode;
+   }
+   
+   public void setDefaultTransactionMode(TransactionMode defaultTransactionMode)
+   {
+      this.defaultTransactionMode = defaultTransactionMode;
    }
    
 }

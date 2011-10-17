@@ -8,6 +8,7 @@
     <property name="defaultDataSource">Ike</property>
     <property name="initStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
     <property name="defaultDataSetFormat">XLS</property>
+    <property name="defaultTransactionMode">ROLLBACK</property>
   </extension>
 
 </arquillian>

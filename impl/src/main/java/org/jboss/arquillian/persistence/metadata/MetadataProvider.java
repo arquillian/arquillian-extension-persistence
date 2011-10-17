@@ -180,7 +180,7 @@ public class MetadataProvider
          transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.METHOD);
       }
 
-      TransactionMode mode = configuration.getDefaultTransactionalMode();
+      TransactionMode mode = configuration.getDefaultTransactionMode();
       if (transactionalAnnotation != null)
       {
          mode = transactionalAnnotation.value();

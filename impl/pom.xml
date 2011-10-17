@@ -14,7 +14,7 @@
 
   <!-- Artifact Configuration -->
   <artifactId>arquillian-persistence-impl</artifactId>
-  <name>Arquillian Persistence Extension</name>
+  <name>Arquillian Persistence Extension Implementation</name>
   <description>Extension for controlling data sources</description>
 
   <developers>
