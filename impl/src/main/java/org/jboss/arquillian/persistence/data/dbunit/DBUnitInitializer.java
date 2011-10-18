@@ -1,5 +1,7 @@
 package org.jboss.arquillian.persistence.data.dbunit;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.dbunit.database.DatabaseConfig;
@@ -10,6 +12,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
@@ -37,12 +40,12 @@ public class DBUnitInitializer
    public void initializeDataSeeding(@Observes(precedence = 2) PrepareData prepareDataEvent)
    {
       createDatabaseConnection();
-      createInitialDataSet(prepareDataEvent.getSourceFile(), prepareDataEvent.getFormat());
+      createInitialDataSets(prepareDataEvent.getDataSetDescriptors());
    }
-   
+
    public void initializeDataVerification(@Observes(precedence = 2) CompareData compareDataEvent)
    {
-      createExpectedDataSet(compareDataEvent.getSourceFile(), compareDataEvent.getFormat());
+      createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
    }
 
    private void createDatabaseConnection()
@@ -61,19 +64,52 @@ public class DBUnitInitializer
       }
    }
 
-   private void createInitialDataSet(String file, Format format)
+
+   private void createInitialDataSets(List<DataSetDescriptor> dataSetDescriptors)
    {
-      IDataSet initial = DataSetBuilder.builderFor(format).build(file);
-      DataSetRegister dataSetRegister = new DataSetRegister();
-      dataSetRegister.addInitial(initial);
+      DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
+      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
+      {
+         IDataSet initialDataSet = createInitialDataSet(dataSetDescriptor);
+         dataSetRegister.addInitial(initialDataSet);
+      }
       dataSetRegisterProducer.set(dataSetRegister);
    }
    
-   private void createExpectedDataSet(String file, Format format)
+   private IDataSet createInitialDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      IDataSet expected = DataSetBuilder.builderFor(format).build(file);
-      DataSetRegister dataSetRegister = dataSetRegisterProducer.get();
-      dataSetRegister.addExpected(expected);
+      String file = dataSetDescriptor.getFileName();
+      Format format = dataSetDescriptor.getFormat();
+      IDataSet initial = DataSetBuilder.builderFor(format).build(file);
+      return initial;
    }
 
+   private void createExpectedDataSets(List<DataSetDescriptor> dataSetDescriptors)
+   {
+      DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
+      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
+      {
+         IDataSet expectedDataSet = createExpectedDataSet(dataSetDescriptor);
+         dataSetRegister.addExpected(expectedDataSet);
+      }
+      dataSetRegisterProducer.set(dataSetRegister);
+   }
+
+   private IDataSet createExpectedDataSet(DataSetDescriptor dataSetDescriptor)
+   {
+      String file = dataSetDescriptor.getFileName();
+      Format format = dataSetDescriptor.getFormat();
+      return DataSetBuilder.builderFor(format).build(file);
+   }
+
+   private DataSetRegister getOrCreateDataSetRegister()
+   {
+      DataSetRegister dataSetRegister = dataSetRegisterProducer.get();
+      if (dataSetRegister == null)
+      {
+         dataSetRegister = new DataSetRegister();
+      }
+      return dataSetRegister;
+   }
+   
 }

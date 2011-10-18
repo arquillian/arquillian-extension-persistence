@@ -36,6 +36,14 @@ public class Address
       // To satisfy JPA
    }
 
+   public Address(String streetName, Integer houseNumber, String city, Integer zipCode)
+   {
+      this.streetName = streetName;
+      this.houseNumber = houseNumber;
+      this.city = city;
+      this.zipCode = zipCode;
+   }
+
    // Getters and setters
 
    public Long getId()

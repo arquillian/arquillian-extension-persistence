@@ -3,10 +3,13 @@ package org.jboss.arquillian.persistence.data.dbunit;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.operation.DatabaseOperation;
@@ -32,10 +35,10 @@ public class DBUnitDatasetHandler implements DataHandler
 {
 
    @Inject @TestScoped
-   private Instance<DatabaseConnection> databaseConnectionInstance;
+   private Instance<DatabaseConnection> databaseConnection;
    
    @Inject @TestScoped
-   private Instance<DataSetRegister> dataSetRegisterInstance;
+   private Instance<DataSetRegister> dataSetRegister;
    
    @Inject @SuiteScoped
    private Instance<PersistenceConfiguration> configuration;
@@ -46,13 +49,12 @@ public class DBUnitDatasetHandler implements DataHandler
       try
       {
          applyInitStatement();
-         fillDatabase(prepareDataEvent.getSourceFile());
+         fillDatabase();
       }
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException(e);
       }
-
    }
 
    @Override
@@ -60,8 +62,8 @@ public class DBUnitDatasetHandler implements DataHandler
    {
       try
       {
-         IDataSet currentDataSet = databaseConnectionInstance.get().createDataSet();
-         IDataSet expectedDataSet = dataSetRegisterInstance.get().getExpected();
+         IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
          String[] tableNames = expectedDataSet.getTableNames();
          for (String tableName : tableNames)
          {
@@ -99,7 +101,7 @@ public class DBUnitDatasetHandler implements DataHandler
       
       try
       {
-         Statement initStatement = databaseConnectionInstance.get().getConnection().createStatement();
+         Statement initStatement = databaseConnection.get().getConnection().createStatement();
          initStatement.execute(persistenceConfiguration.getInitStatement());
       }
       catch (Exception e)
@@ -108,15 +110,22 @@ public class DBUnitDatasetHandler implements DataHandler
       }
    }
 
-   private void fillDatabase(String file) throws IOException, SQLException, DatabaseUnitException
+   private void fillDatabase() throws IOException, SQLException, DatabaseUnitException
    {
-      DatabaseOperation.CLEAN_INSERT.execute(databaseConnectionInstance.get(), dataSetRegisterInstance.get().getInitial());
+      final DatabaseConnection connection = databaseConnection.get();
+      IDataSet initialDataSet = mergeDataSets(dataSetRegister.get().getInitial());
+      DatabaseOperation.CLEAN_INSERT.execute(connection, initialDataSet);
    }
 
    private void cleanDatabase() throws DatabaseUnitException, SQLException
    {
-      DatabaseConnection connection = databaseConnectionInstance.get();
+      DatabaseConnection connection = databaseConnection.get();
       DatabaseOperation.DELETE_ALL.execute(connection, connection.createDataSet());
+   }
+   
+   private IDataSet mergeDataSets(List<IDataSet> dataSets) throws DataSetException
+   {
+      return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));
    }
 
 }

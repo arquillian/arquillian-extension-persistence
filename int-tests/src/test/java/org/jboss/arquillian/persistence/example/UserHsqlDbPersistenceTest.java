@@ -97,5 +97,40 @@ public class UserHsqlDbPersistenceTest
       assertThat(user.getAddresses()).hasSize(1);
       assertThat(address.getCity()).isEqualTo(expectedCity);
    }
+   
+   @Test
+   @Data({"datasets/single-user.xml", "datasets/address.yml"})
+   public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
+   {
+      // given
+      String expectedCity = "Metropolis";
+      long userAccountId = 1L;
+
+      // when
+      UserAccount user = em.find(UserAccount.class, userAccountId);
+      Address address = user.getAddresses().iterator().next();
+      
+      // then
+      assertThat(user.getAddresses()).hasSize(1);
+      assertThat(address.getCity()).isEqualTo(expectedCity);
+   }
+   
+   @Test
+   @Data("datasets/single-user.xml")
+   @Expected({"datasets/single-user.xls", "datasets/expected-address.yml"})
+   public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
+   {
+      // given
+      long userAccountId = 1L;
+      UserAccount user = em.find(UserAccount.class, userAccountId);
+      Address address = new Address("Testing Street", 7, "JavaPolis", 1234); 
+
+      // when
+      user.addAddress(address);
+      em.merge(user);
+      
+      // then
+      assertThat(user.getAddresses()).hasSize(1);
+   }
 
 }

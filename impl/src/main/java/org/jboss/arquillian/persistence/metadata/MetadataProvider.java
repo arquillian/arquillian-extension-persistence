@@ -1,6 +1,9 @@
 package org.jboss.arquillian.persistence.metadata;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
@@ -8,6 +11,7 @@ import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.DataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.Format;
@@ -39,10 +43,13 @@ public class MetadataProvider
    {
       this(testEvent.getTestClass(), testEvent.getTestMethod(), configuration);
    }
-
+   
+   // ---------------------------------------------------------------------------------------------------
+   // Public API methods
+   // ---------------------------------------------------------------------------------------------------
+   
    public boolean isPersistenceFeatureEnabled()
    {
-
       if (!hasDataAnnotation())
       {
          return false;
@@ -55,17 +62,37 @@ public class MetadataProvider
 
       return true;
    }
-
-   public boolean hasDataAnnotation()
+   
+   public boolean isDataVerificationExpected()
    {
-      return metadataExtractor.hasDataAnnotationOn(AnnotationLevel.CLASS)
-            || metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD);
+      return metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.CLASS)
+            || metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD);
    }
-
-   public boolean hasDataSourceAnnotation()
+   
+   public boolean isTransactional()
    {
-      return metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.CLASS)
-            || metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD);
+      boolean transactionalSupportDefinitionOnClassLevel = metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.CLASS);
+      if (transactionalSupportDefinitionOnClassLevel)
+      {
+         return metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.METHOD);
+      }
+      return transactionalSupportDefinitionOnClassLevel;  
+   }
+   
+   public TransactionMode getTransactionalMode()
+   {
+      Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.CLASS);
+      if (metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.METHOD))
+      {
+         transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.METHOD);
+      }
+      
+      TransactionMode mode = configuration.getDefaultTransactionMode();
+      if (transactionalAnnotation != null)
+      {
+         mode = transactionalAnnotation.value();
+      }
+      return mode;
    }
 
    public String getDataSourceName()
@@ -89,43 +116,48 @@ public class MetadataProvider
 
       return dataSource;
    }
-
-   public Format getDataFormat()
+   
+   public List<DataSetDescriptor> getDataSetDescriptors()
    {
-      Format format = Format.inferFromFile(getDataFileName());
-
-      if (Format.UNSUPPORTED.equals(format))
+      final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
+      for (String dataFileName : getDataFileNames())
       {
-         throw new UnsupportedDataFormatException("File " + getDataFileName() + " is not supported.");
+         DataSetDescriptor dataSetDescriptor = new DataSetDescriptor(dataFileName, inferFormat(dataFileName));
+         dataSetDescriptors.add(dataSetDescriptor);
       }
-
-      return format;
+      
+      return dataSetDescriptors;
+   }
+   
+   public List<DataSetDescriptor> getExpectedtDataSetDescriptors()
+   {
+      final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
+      for (String dataFileName : getExpectedDataFileNames())
+      {
+         DataSetDescriptor dataSetDescriptor = new DataSetDescriptor(dataFileName, inferFormat(dataFileName));
+         dataSetDescriptors.add(dataSetDescriptor);
+      }
+      
+      return dataSetDescriptors;
    }
 
-   public String getDataFileName()
+   // ---------------------------------------------------------------------------------------------------
+   // Internal methods
+   // ---------------------------------------------------------------------------------------------------
+
+   boolean hasDataAnnotation()
    {
-      Data dataAnnotation = getDataAnnotation();
-      String specifiedFileName = dataAnnotation.value();
-      if ("".equals(specifiedFileName.trim()))
-      {
-         specifiedFileName = getDefaultNamingForDataSetFile();
-      }
-      return specifiedFileName;
+      return metadataExtractor.hasDataAnnotationOn(AnnotationLevel.CLASS)
+            || metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD);
    }
 
-   private String getDefaultNamingForDataSetFile()
+   boolean hasDataSourceAnnotation()
    {
-      Format format = configuration.getDefaultDataSetFormat();
-
-      if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
-      {
-         return new DataSetFileNamingStrategy(format).createFileName(testClass.getJavaClass(), testMethod);
-      }
-
-      return new DataSetFileNamingStrategy(format).createFileName(testClass.getJavaClass());
+      return metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.CLASS)
+            || metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD);
    }
 
-   public Data getDataAnnotation()
+   Data getDataAnnotation()
    {
       Data usedAnnotation = metadataExtractor.getDataAnnotationOn(AnnotationLevel.CLASS);
       if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
@@ -135,8 +167,8 @@ public class MetadataProvider
 
       return usedAnnotation;
    }
-
-   public DataSource getDataSourceAnnotation()
+   
+   DataSource getDataSourceAnnotation()
    {
       DataSource usedAnnotation = metadataExtractor.getDataSourceAnnotationOn(AnnotationLevel.CLASS);
       if (metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD))
@@ -147,64 +179,85 @@ public class MetadataProvider
       return usedAnnotation;
    }
 
-   public boolean isTransactional()
+   Expected getExpectedAnnotation()
    {
-      boolean transactionalSupportDefinitionOnClassLevel = metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.CLASS);
-      if (transactionalSupportDefinitionOnClassLevel)
+      Expected usedAnnotation = metadataExtractor.getExpectedAnnotationOn(AnnotationLevel.CLASS);
+      if (metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD))
       {
-         return metadataExtractor.hasTransactionalSupportEnabledOn(AnnotationLevel.METHOD);
+         usedAnnotation = metadataExtractor.getExpectedAnnotationOn(AnnotationLevel.METHOD);
       }
-      return transactionalSupportDefinitionOnClassLevel;  
+      
+      return usedAnnotation;
    }
-
-   public boolean isDataVerificationExpected()
+   
+   List<Format> getDataFormats()
    {
-      return metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.CLASS)
-            || metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD);
-   }
-
-   public TransactionMode getTransactionalMode()
-   {
-      Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.CLASS);
-      if (metadataExtractor.hasTransactionalAnnotationOn(AnnotationLevel.METHOD))
+      final List<Format> formats = new ArrayList<Format>();
+      for (String dataFileName : getDataFileNames())
       {
-         transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(AnnotationLevel.METHOD);
+         formats.add(inferFormat(dataFileName));
       }
-
-      TransactionMode mode = configuration.getDefaultTransactionMode();
-      if (transactionalAnnotation != null)
-      {
-         mode = transactionalAnnotation.value();
-      }
-      return mode;
+      return formats;
    }
-
-   public Format getExpectedDataFormat()
+   
+   private Format inferFormat(String dataFileName)
    {
-      Format format = Format.inferFromFile(getExpectedDataFileName());
-
+      Format format = Format.inferFromFile(dataFileName);
       if (Format.UNSUPPORTED.equals(format))
       {
-         throw new UnsupportedDataFormatException("File " + getDataFileName() + " is not supported.");
+         throw new UnsupportedDataFormatException("File " + getDataFileNames() + " is not supported.");
       }
-
       return format;
    }
-
-   public String getExpectedDataFileName()
+   
+   List<String> getDataFileNames()
    {
-      Expected dataAnnotation = getExpectedAnnotation();
-      String specifiedFileName = dataAnnotation.value();
-      if ("".equals(specifiedFileName.trim()))
+      Data dataAnnotation = getDataAnnotation();
+      String[] specifiedFileNames = dataAnnotation.value();
+      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
-         specifiedFileName = getDefaultNamingForExpectedDataSetFile();
+         return Arrays.asList(getDefaultNamingForDataSetFile());
       }
-      return specifiedFileName;
+      return Arrays.asList(specifiedFileNames);
+   }
+   
+   List<Format> getExpectedDataFormats()
+   {
+      final List<Format> formats = new ArrayList<Format>();
+      for (String dataFileName : getExpectedDataFileNames())
+      {
+         formats.add(inferFormat(dataFileName));
+      }
+      return formats;
    }
 
+   List<String> getExpectedDataFileNames()
+   {
+      Expected expectedAnnotation = getExpectedAnnotation();
+      String[] specifiedFileNames = expectedAnnotation.value();
+      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
+      {
+         return Arrays.asList(getDefaultNamingForExpectedDataSetFile());
+      }
+      return Arrays.asList(specifiedFileNames);
+   }
+   
+   private String getDefaultNamingForDataSetFile()
+   {
+      Format format = configuration.getDefaultDataSetFormat();
+      
+      if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
+      {
+         return new DataSetFileNamingStrategy(format).createFileName(testClass.getJavaClass(), testMethod);
+      }
+      
+      return new DataSetFileNamingStrategy(format).createFileName(testClass.getJavaClass());
+   }
+
+   
    private String getDefaultNamingForExpectedDataSetFile()
    {
-      Format format = configuration.getDefaultDataSetFormat(); // TODO
+      Format format = configuration.getDefaultDataSetFormat();
 
       if (metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD))
       {
@@ -213,17 +266,5 @@ public class MetadataProvider
 
       return new ExpectedDataSetFileNamingStrategy(format).createFileName(testClass.getJavaClass());
    }
-
-   public Expected getExpectedAnnotation()
-   {
-      Expected usedAnnotation = metadataExtractor.getExpectedAnnotationOn(AnnotationLevel.CLASS);
-      if (metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD))
-      {
-         usedAnnotation = metadataExtractor.getExpectedAnnotationOn(AnnotationLevel.METHOD);
-      }
-
-      return usedAnnotation;
-   }
-
 
 }

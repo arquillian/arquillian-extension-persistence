@@ -41,7 +41,7 @@ public class ConfigurationExtractorTest
    public void shouldExtractDefaultDataSetFormatDefinedInPropertyFile() throws Exception
    {
       // given
-      Format expectedFormat = Format.XLS;
+      Format expectedFormat = Format.EXCEL;
       ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
       
       // when

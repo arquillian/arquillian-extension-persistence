@@ -21,8 +21,8 @@ public @interface Data
 {
 
    /**
-    * The file name of the data set used to seed in database. 
-    * In it's not specified explicitly, following strategy is applied:
+    * Data set files used to seed in database. 
+    * If it's not specified explicitly, following strategy is applied:
     * <ul>
     *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
     *   <li>
@@ -36,6 +36,6 @@ public @interface Data
     * <br /><br />
     * If not specified in <code>arquillian.xml</code> expected format is XML.
     */
-   String value() default "";
+   String[] value() default "";
 
 }

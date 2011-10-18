@@ -18,7 +18,7 @@ public abstract class DataSetBuilder
       {
          case XML:
             return new XmlDataSetBuilder();
-         case XLS:
+         case EXCEL:
             return new ExcelDataSetBuilder();
          case YAML:
             return new YamlDataSetBuilder();

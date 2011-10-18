@@ -1,5 +1,7 @@
 package org.jboss.arquillian.persistence;
 
+import java.util.Arrays;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -10,8 +12,8 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
-import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
@@ -56,7 +58,7 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      prepareDataEvent.fire(new PrepareData(metadataProvider.getDataFileName(), metadataProvider.getDataFormat()));
+      prepareDataEvent.fire(new PrepareData(metadataProvider.getDataSetDescriptors()));
    }
 
    public void afterTest(@Observes After afterTestEvent)
@@ -74,9 +76,7 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isDataVerificationExpected())
       {
-         String expectedDataFileName = metadataProvider.getExpectedDataFileName();
-         Format expectedDataFormat = metadataProvider.getExpectedDataFormat();
-         compareDataEvent.fire(new CompareData(expectedDataFileName, expectedDataFormat));
+         compareDataEvent.fire(new CompareData(metadataProvider.getExpectedtDataSetDescriptors()));
       }
       
    }

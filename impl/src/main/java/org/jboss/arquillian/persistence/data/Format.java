@@ -6,7 +6,7 @@ import java.util.Set;
 public enum Format 
 {
    XML("xml"),
-   XLS("xls"),
+   EXCEL("xls"),
    YAML("yml"),
    UNSUPPORTED("-none-");
    

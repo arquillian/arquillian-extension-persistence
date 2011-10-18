@@ -1,29 +1,15 @@
 package org.jboss.arquillian.persistence.event;
 
-import org.jboss.arquillian.core.spi.event.Event;
-import org.jboss.arquillian.persistence.data.Format;
+import java.util.List;
 
-public class PrepareData implements Event
+import org.jboss.arquillian.persistence.data.DataSetDescriptor;
+
+public class PrepareData extends DataEvent
 {
 
-   private final String sourceFile;
-   
-   private final Format format;
-
-   public PrepareData(String sourceFile, Format format)
+   public PrepareData(List<DataSetDescriptor> dataSDataSetDescriptors)
    {
-      this.sourceFile = sourceFile;
-      this.format = format;
-   }
-
-   public String getSourceFile()
-   {
-      return sourceFile;
-   }
-
-   public Format getFormat()
-   {
-      return format;
+      super(dataSDataSetDescriptors);
    }
    
 }

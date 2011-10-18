@@ -23,8 +23,8 @@ public @interface Expected
 {
 
    /**
-    * The file name of the data set used to seed in database. 
-    * In it's not specified explicitly, following strategy is applied:
+    * The file names of the data set used to seed in database. 
+    * If it's not specified explicitly, following strategy is applied:
     * <ul>
     *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
     *   <li>
@@ -38,6 +38,6 @@ public @interface Expected
     * <br /><br />
     * If not specified in <code>arquillian.xml</code> expected format is XML.
     */
-   String value() default "";
+   String[] value() default "";
 
 }

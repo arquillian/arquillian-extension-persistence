@@ -7,7 +7,7 @@
   <extension qualifier="persistence">
     <property name="defaultDataSource">Ike</property>
     <property name="initStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
-    <property name="defaultDataSetFormat">XLS</property>
+    <property name="defaultDataSetFormat">EXCEL</property>
     <property name="defaultTransactionMode">ROLLBACK</property>
   </extension>
 
