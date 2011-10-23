@@ -7,6 +7,11 @@
     <jta-data-source>arq/hsql</jta-data-source>
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+      <!-- 
+        It's important to turn of caching, otherwise entity manager 
+        won't be aware of changes made by dbunit. 
+      -->
+      <property name="eclipselink.cache.shared.default" value="false"/>
     </properties>
   </persistence-unit>
 
