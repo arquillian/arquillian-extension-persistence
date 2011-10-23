@@ -1,7 +1,5 @@
 package org.jboss.arquillian.persistence;
 
-import java.util.Arrays;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -12,11 +10,11 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
+import org.jboss.arquillian.persistence.event.TransactionStarted;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
@@ -43,9 +41,16 @@ public class PersistenceTestHandler
    
    @Inject @TestScoped
    private Event<CompareData> compareDataEvent;
+
+   @Inject @TestScoped
+   private Event<CleanUpData> cleanUpDataEvent;
    
    @Inject @TestScoped
+   private Event<TransactionStarted> transactionStartedEvent;
+
+   @Inject @TestScoped
    private Event<TransactionFinished> transactionFinishedEvent;
+   
    
    public void beforeTest(@Observes Before beforeTestEvent)
    {
@@ -58,7 +63,12 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      prepareDataEvent.fire(new PrepareData(metadataProvider.getDataSetDescriptors()));
+      prepareDataEvent.fire(new PrepareData(beforeTestEvent, metadataProvider.getDataSetDescriptors()));
+      
+      if (metadataProvider.isTransactional())
+      {
+         transactionStartedEvent.fire(new TransactionStarted(beforeTestEvent));
+      }
    }
 
    public void afterTest(@Observes After afterTestEvent)
@@ -76,9 +86,10 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isDataVerificationExpected())
       {
-         compareDataEvent.fire(new CompareData(metadataProvider.getExpectedtDataSetDescriptors()));
+         compareDataEvent.fire(new CompareData(afterTestEvent, metadataProvider.getExpectedDataSetDescriptors()));
       }
       
+      cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));
    }
 
    // Private methods

@@ -129,7 +129,7 @@ public class MetadataProvider
       return dataSetDescriptors;
    }
    
-   public List<DataSetDescriptor> getExpectedtDataSetDescriptors()
+   public List<DataSetDescriptor> getExpectedDataSetDescriptors()
    {
       final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
       for (String dataFileName : getExpectedDataFileNames())

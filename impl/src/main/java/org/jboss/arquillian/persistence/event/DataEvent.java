@@ -3,17 +3,18 @@ package org.jboss.arquillian.persistence.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.arquillian.core.spi.event.Event;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class DataEvent implements Event
+public class DataEvent extends TestEvent
 {
 
    private final List<DataSetDescriptor> dataSetDescriptors;
    
-   public DataEvent(List<DataSetDescriptor> dataSDataSetDescriptors)
+   public DataEvent(TestEvent testEvent, List<DataSetDescriptor> dataSetDescriptors)
    {
-      this.dataSetDescriptors = new ArrayList<DataSetDescriptor>(dataSDataSetDescriptors);
+      super(testEvent.getTestInstance(), testEvent.getTestMethod());
+      this.dataSetDescriptors = new ArrayList<DataSetDescriptor>(dataSetDescriptors);
    }
 
    public List<DataSetDescriptor> getDataSetDescriptors()

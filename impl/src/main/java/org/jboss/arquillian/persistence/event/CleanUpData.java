@@ -1,8 +1,13 @@
 package org.jboss.arquillian.persistence.event;
 
-import org.jboss.arquillian.core.spi.event.Event;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class CleanUpData implements Event
+public class CleanUpData extends TestEvent
 {
+
+   public CleanUpData(TestEvent testEvent)
+   {
+      super(testEvent.getTestInstance(), testEvent.getTestMethod());
+   }
 
 }

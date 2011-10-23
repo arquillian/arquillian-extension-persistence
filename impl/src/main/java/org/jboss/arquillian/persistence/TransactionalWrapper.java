@@ -5,15 +5,13 @@ import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
+import org.jboss.arquillian.persistence.event.TransactionStarted;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
-import org.jboss.arquillian.test.spi.annotation.TestScoped;
-import org.jboss.arquillian.test.spi.event.suite.Before;
 
 public class TransactionalWrapper
 {
@@ -23,19 +21,12 @@ public class TransactionalWrapper
    @Inject @SuiteScoped
    private Instance<PersistenceConfiguration> configuration;
 
-   @Inject @TestScoped
-   private InstanceProducer<UserTransaction> transactionProducer;
-   
-   @Inject @TestScoped
-   private Instance<UserTransaction> transaction;
-   
-   public void obtainTransaction(@Observes(precedence = 100) Before beforeTestEvent)
+   private UserTransaction obtainTransaction()
    {
       try
       {
          final InitialContext context = new InitialContext();
-         UserTransaction userTransaction = (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
-         transactionProducer.set(userTransaction);
+         return (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
       }
       catch (NamingException e)
       {
@@ -43,28 +34,28 @@ public class TransactionalWrapper
       }
    }
    
-   public void beforeTest(@Observes(precedence = 10) Before beforeTestEvent) throws Exception
+   public void beforeTest(@Observes TransactionStarted transactionStarted) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(transactionStarted, configuration.get());
       if (!metadataProvider.isTransactional())
       {
          return;
       }
-      transaction.get().begin();
+      obtainTransaction().begin();
    }
    
-   public void afterTest(@Observes(precedence = 10) TransactionFinished transactionFinished) throws Exception
+   public void afterTest(@Observes TransactionFinished transactionFinished) throws Exception
    {
       MetadataProvider metadataProvider = new MetadataProvider(transactionFinished, configuration.get());
 
       TransactionMode mode = metadataProvider.getTransactionalMode();
       if (TransactionMode.COMMIT.equals(mode))
       {
-         transaction.get().commit();
+         obtainTransaction().commit();
       }
       else
       {
-         transaction.get().rollback();
+         obtainTransaction().rollback();
       }
    }
    

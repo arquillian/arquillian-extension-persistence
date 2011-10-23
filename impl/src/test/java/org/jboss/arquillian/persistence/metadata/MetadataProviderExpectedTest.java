@@ -159,7 +159,7 @@ public class MetadataProviderExpectedTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = metadataProvider.getExpectedtDataSetDescriptors();
+      List<DataSetDescriptor> dataSetDescriptors = metadataProvider.getExpectedDataSetDescriptors();
       
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
