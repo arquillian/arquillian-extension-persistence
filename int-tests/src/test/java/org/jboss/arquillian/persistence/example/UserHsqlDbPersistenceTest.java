@@ -32,6 +32,22 @@ public class UserHsqlDbPersistenceTest
 
    @PersistenceContext
    EntityManager em;
+
+   @Test
+   @Data({"datasets/single-user.xml", "datasets/address.yml"})
+   public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
+   {
+      // given
+      String expectedCity = "Metropolis";
+      UserAccount user = em.find(UserAccount.class, 1L);
+
+      // when
+      Address address = user.getAddresses().iterator().next();
+      
+      // then
+      assertThat(user.getAddresses()).hasSize(1);
+      assertThat(address.getCity()).isEqualTo(expectedCity);
+   }
    
    @Test
    @Data("datasets/single-user.xls")
@@ -50,7 +66,6 @@ public class UserHsqlDbPersistenceTest
    
    @Test
    @Data("datasets/single-user.xml")
-   @DataSource("arq/hsql")
    public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
       // given
@@ -80,7 +95,6 @@ public class UserHsqlDbPersistenceTest
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
    
-   
    @Test
    @Data("datasets/user-with-address.yml")
    public void shouldHaveAddressLinkedToUserAccount() throws Exception
@@ -97,32 +111,15 @@ public class UserHsqlDbPersistenceTest
       assertThat(user.getAddresses()).hasSize(1);
       assertThat(address.getCity()).isEqualTo(expectedCity);
    }
-   
-   @Test
-   @Data({"datasets/single-user.xml", "datasets/address.yml"})
-   public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
-   {
-      // given
-      String expectedCity = "Metropolis";
-      long userAccountId = 1L;
 
-      // when
-      UserAccount user = em.find(UserAccount.class, userAccountId);
-      Address address = user.getAddresses().iterator().next();
-      
-      // then
-      assertThat(user.getAddresses()).hasSize(1);
-      assertThat(address.getCity()).isEqualTo(expectedCity);
-   }
-   
+
    @Test
    @Data("datasets/single-user.xml")
    @Expected({"datasets/single-user.xls", "datasets/expected-address.yml"})
    public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
    {
       // given
-      long userAccountId = 1L;
-      UserAccount user = em.find(UserAccount.class, userAccountId);
+      UserAccount user = em.find(UserAccount.class, 1L);
       Address address = new Address("Testing Street", 7, "JavaPolis", 1234); 
 
       // when
@@ -133,4 +130,6 @@ public class UserHsqlDbPersistenceTest
       assertThat(user.getAddresses()).hasSize(1);
    }
 
+   // TODO test ignoring columns not specified
+   
 }
