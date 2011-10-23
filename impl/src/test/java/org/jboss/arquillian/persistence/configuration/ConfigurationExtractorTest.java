@@ -92,5 +92,57 @@ public class ConfigurationExtractorTest
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
    }
+   
+   @Test
+   public void shouldBeAbleToTurnOnDatabaseDumps() throws Exception
+   {
+      // given
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+      
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
 
+      // then
+      assertThat(configuration.isDumpData()).isTrue();
+   }
+   
+   @Test
+   public void shouldHaveDatabaseDumpsDisbaledByDefault() throws Exception
+   {
+      // given
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+      
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.isDumpData()).isFalse();
+   }
+   
+   public void shouldHaveSystemTempDirDefinedAsDefaultDumpDirectory() throws Exception
+   {
+      // given
+      String systemTmpDir = System.getProperty("java.io.tmpdir");
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+      
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
+   }
+   
+   @Test
+   public void shouldBeAbleToDefineDumpDirectory() throws Exception
+   {
+      // given
+      String dumpDirectory = "/home/ike/dump";
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
+   }
 }

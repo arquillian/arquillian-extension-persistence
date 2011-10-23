@@ -23,6 +23,10 @@ public class PersistenceConfiguration implements Serializable
    
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
    
+   private boolean dumpData;
+   
+   private String dumpDirectory = System.getProperty("java.io.tmpdir");
+   
    public String getDefaultDataSource()
    {
       return defaultDataSource;
@@ -77,5 +81,27 @@ public class PersistenceConfiguration implements Serializable
    {
       this.defaultTransactionMode = defaultTransactionMode;
    }
+
+   public boolean isDumpData()
+   {
+      return dumpData;
+   }
+
+   public void setDumpData(boolean dumpData)
+   {
+      this.dumpData = dumpData;
+   }
+
+   public String getDumpDirectory()
+   {
+      return dumpDirectory;
+   }
+
+   public void setDumpDirectory(String dumpDirectory)
+   {
+      this.dumpDirectory = dumpDirectory;
+   }
+   
+   
    
 }

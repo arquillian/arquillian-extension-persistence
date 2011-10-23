@@ -23,19 +23,30 @@ class ConfigurationExtractor
    PersistenceConfiguration extract()
    {
       final Map<String, String> extensionProperties = extractProperties(PERSISTENCE_EXTENSION_QUALIFIER);
+      
       final PersistenceConfiguration configuration = new PersistenceConfiguration();
       configuration.setDefaultDataSource(extensionProperties.get("defaultDataSource"));
       configuration.setInitStatement(extensionProperties.get("initStatement"));
+
       String defaultDataSetFormat = extensionProperties.get("defaultDataSetFormat");
       if (defaultDataSetFormat != null)
       {
          configuration.setDefaultDataSetFormat(Format.valueOf(defaultDataSetFormat.toUpperCase()));
       }
+      
       String defaultTransactionMode = extensionProperties.get("defaultTransactionMode");
       if (defaultTransactionMode != null)
       {
          configuration.setDefaultTransactionMode(TransactionMode.valueOf(defaultTransactionMode.toUpperCase()));
       }
+      
+      configuration.setDumpData(Boolean.parseBoolean(extensionProperties.get("dumpData")));
+      String dumpDirectory = extensionProperties.get("dumpDirectory");
+      if (dumpDirectory != null)
+      {
+         configuration.setDumpDirectory(dumpDirectory);
+      }
+      
       return configuration;
    }
 

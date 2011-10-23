@@ -9,6 +9,8 @@
     <property name="initStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
     <property name="defaultDataSetFormat">EXCEL</property>
     <property name="defaultTransactionMode">ROLLBACK</property>
+    <property name="dumpData">true</property>
+    <property name="dumpDirectory">/home/ike/dump</property>
   </extension>
 
 </arquillian>
