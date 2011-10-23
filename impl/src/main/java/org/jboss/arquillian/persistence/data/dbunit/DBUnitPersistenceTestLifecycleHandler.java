@@ -1,5 +1,6 @@
 package org.jboss.arquillian.persistence.data.dbunit;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,10 +13,14 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
+import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitConnectionException;
+import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
@@ -25,7 +30,7 @@ import org.jboss.arquillian.test.spi.annotation.TestScoped;
  * @author Bartosz Majsak
  *
  */
-public class DBUnitInitializer
+public class DBUnitPersistenceTestLifecycleHandler
 {
 
    @Inject @TestScoped
@@ -37,17 +42,40 @@ public class DBUnitInitializer
    @Inject @TestScoped
    private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
    
-   public void initializeDataSeeding(@Observes(precedence = 2) PrepareData prepareDataEvent)
+   // ------------------------------------------------------------------------------------------------
+   // Intercepting data handling events
+   // ------------------------------------------------------------------------------------------------
+   
+   public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
    {
+      PrepareData prepareDataEvent = context.getEvent();
       createDatabaseConnection();
       createInitialDataSets(prepareDataEvent.getDataSetDescriptors());
+      context.proceed();
    }
 
-   public void initializeDataVerification(@Observes(precedence = 2) CompareData compareDataEvent)
+   public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
    {
+      CompareData compareDataEvent = context.getEvent();
       createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
+      context.proceed();
    }
-
+   
+   public void closeConnection(@Observes(precedence = 1000) EventContext<CleanUpData> context)
+   {
+      try
+      {
+         context.proceed();
+         databaseConnectionProducer.get().getConnection().close();
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitConnectionException("Unable to close connection", e);
+      }
+   }
+   
+   // ------------------------------------------------------------------------------------------------
+   
    private void createDatabaseConnection()
    {
       try

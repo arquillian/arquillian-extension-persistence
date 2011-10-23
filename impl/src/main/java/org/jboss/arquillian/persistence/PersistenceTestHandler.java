@@ -51,7 +51,6 @@ public class PersistenceTestHandler
    @Inject @TestScoped
    private Event<TransactionFinished> transactionFinishedEvent;
    
-   
    public void beforeTest(@Observes Before beforeTestEvent)
    {
       MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());

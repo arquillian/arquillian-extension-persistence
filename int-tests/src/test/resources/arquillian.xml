@@ -13,13 +13,16 @@
       <!-- 
       <property name="configurationXml">file:////home/bmajsak/dev/workspace/jboss/arquillian/arquillian-extension-persistence/impl/src/test/resources/glassfish-config.xml</property>
        -->
-      <property name="sunResourcesXml">src/test/resources/glassfish-resources.xml</property>
+      <property name="sunResourcesXml">src/test/resources-glassfish-3.1/glassfish-resources.xml</property>
       <property name="bindHttpPort">9090</property>
     </configuration>
   </container>
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">arq/hsql</property>
+    <property name="dumpData">true</property>
+    <property name="dumpDirectory">/home/bmajsak/db-dumps</property>
+    <property name="initStatement">set referential_integrity FALSE</property>
   </extension>
 
 </arquillian>

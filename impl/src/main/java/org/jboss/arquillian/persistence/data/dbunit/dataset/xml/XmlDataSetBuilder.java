@@ -5,8 +5,8 @@ import java.net.URL;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.jboss.arquillian.persistence.data.dbunit.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
+import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 
 public class XmlDataSetBuilder extends DataSetBuilder
 {

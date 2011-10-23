@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.data.dbunit;
+package org.jboss.arquillian.persistence.data.dbunit.exception;
 
 public class DBUnitInitializationException extends RuntimeException
 {

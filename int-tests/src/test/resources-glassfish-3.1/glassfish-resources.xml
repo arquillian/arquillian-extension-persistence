@@ -12,16 +12,7 @@
   </jdbc-connection-pool>
   
   <jdbc-resource jndi-name="arq/hsql" pool-name="arquillian-hsql-inmemory-pool" />
-
-  <jdbc-connection-pool 
-    name="arquillian-derby-inmemory-pool"
-    res-type="javax.sql.DataSource" datasource-classname="org.apache.derby.jdbc.EmbeddedDataSource">
-    <property name="databaseName" value="target/db/derby" />
-    <property name="createDatabase" value="create" />
-  </jdbc-connection-pool>
-
-  <jdbc-resource pool-name="arquillian-derby-inmemory-pool"
-    jndi-name="arq/derby" />
+  
 </resources>
 
 

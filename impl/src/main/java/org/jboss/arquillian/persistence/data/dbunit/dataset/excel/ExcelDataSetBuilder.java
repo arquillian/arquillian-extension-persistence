@@ -4,8 +4,8 @@ import java.io.InputStream;
 
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
-import org.jboss.arquillian.persistence.data.dbunit.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
+import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 
 public class ExcelDataSetBuilder extends DataSetBuilder
 {

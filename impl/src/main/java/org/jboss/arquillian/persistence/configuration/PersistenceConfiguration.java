@@ -99,6 +99,10 @@ public class PersistenceConfiguration implements Serializable
 
    public void setDumpDirectory(String dumpDirectory)
    {
+      if (dumpDirectory.endsWith("/"))
+      {
+         dumpDirectory = dumpDirectory.substring(0, dumpDirectory.length() - 2);
+      }
       this.dumpDirectory = dumpDirectory;
    }
    
