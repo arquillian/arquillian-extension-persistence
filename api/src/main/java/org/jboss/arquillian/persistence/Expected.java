@@ -30,6 +30,7 @@ import java.lang.annotation.Target;
  * Verifies state of underlying data store using data sets 
  * defined by this annotation. Verification is invoked after test's
  * execution (including transaction if enabled).
+ * 
  * <br />
  * If files are not specified explicitly, following strategy is applied:                            
  * <ul>                                                                                        
@@ -43,7 +44,9 @@ import java.lang.annotation.Target;
  *       <i>expected-[fully qualified class name]#.[default format]</i></li>.                  
  * </ul>                                                                                       
  * <br /><br />                                                                                
- * If not specified in <code>arquillian.xml</code> expected format is XML.                       
+ * If not specified in <code>arquillian.xml</code>, then expected format is XML.                       
+ * 
+ * Presence of this annotation in the test class will enable Arquillian Persistence Extension.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

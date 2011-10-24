@@ -43,6 +43,8 @@ import java.lang.annotation.Target;
  * <br /><br />                                                                                 
  * If not specified in <code>arquillian.xml</code> expected format is XML.                      
  * 
+ * Presence of this annotation in the test class will enable Arquillian Persistence Extension.
+ * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */

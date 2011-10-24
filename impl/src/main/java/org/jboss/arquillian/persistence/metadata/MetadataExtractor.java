@@ -25,6 +25,7 @@ import java.util.Map;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -126,6 +127,11 @@ class MetadataExtractor
    public Expected getExpectedAnnotationOn(AnnotationLevel level)
    {
       return expectedAnnotations.get(level);
+   }
+
+   public boolean hasPersistenceTestAnnotation()
+   {
+      return testClass.getAnnotation(PersistenceTest.class) != null;
    }
 
 }

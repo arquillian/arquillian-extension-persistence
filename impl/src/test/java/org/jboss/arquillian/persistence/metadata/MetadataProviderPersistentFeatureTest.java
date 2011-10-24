@@ -20,6 +20,8 @@ package org.jboss.arquillian.persistence.metadata;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.Data;
+import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -41,7 +43,6 @@ public class MetadataProviderPersistentFeatureTest
 
       // then
       // exception should be thrown
-      
    }
    
    @Test
@@ -57,6 +58,36 @@ public class MetadataProviderPersistentFeatureTest
 
       // then
       assertThat(persistenceFeatureEnabled).isFalse();
+   }
+   
+   @Test
+   public void shouldAcceptClassWithPersistenceTestAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
+            PersistenceTestClass.class.getMethod("shouldPass"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createDefaultConfiguration());
+
+      // when
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+
+      // then
+      assertThat(persistenceFeatureEnabled).isTrue();
+   }
+   
+   @Test
+   public void shouldAcceptClassWithExpectedAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
+            PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createDefaultConfiguration());
+
+      // when
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+
+      // then
+      assertThat(persistenceFeatureEnabled).isTrue();
    }
    
    @Test
@@ -80,10 +111,23 @@ public class MetadataProviderPersistentFeatureTest
       public void shouldPass() {}
    }
    
+   @PersistenceTest
+   private static class PersistenceTestClass
+   {
+      public void shouldPass() {}
+   }
+   
+   private static class PersistenceTestWithExpectedAnnotation
+   {
+      @Expected
+      public void shouldPass() {}
+   }
+
    private static class NonPersistenceTest
    {
       public void shouldPass() {}
    }
+   
 
    
 }

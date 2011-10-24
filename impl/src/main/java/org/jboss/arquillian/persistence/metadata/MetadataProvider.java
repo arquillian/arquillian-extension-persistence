@@ -67,17 +67,12 @@ public class MetadataProvider
    
    public boolean isPersistenceFeatureEnabled()
    {
-      if (!hasDataAnnotation())
-      {
-         return false;
-      }
-
       if (!hasDataSourceAnnotation() && !configuration.isDefaultDataSourceDefined())
       {
          throw new DataSourceNotDefinedException("Data source not defined!");
       }
 
-      return true;
+      return (hasDataAnnotation() || hasExpectedAnnotation() || hasPersistenceTestAnnotation());
    }
    
    public boolean isDataVerificationExpected()
@@ -167,14 +162,25 @@ public class MetadataProvider
       return metadataExtractor.hasDataAnnotationOn(AnnotationLevel.CLASS)
             || metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD);
    }
+   
+   private boolean hasExpectedAnnotation()
+   {
+      return metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.CLASS)
+            || metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD);
+   }
+   
+   private boolean hasPersistenceTestAnnotation()
+   {
+      return metadataExtractor.hasPersistenceTestAnnotation();
+   }
 
-   boolean hasDataSourceAnnotation()
+   private boolean hasDataSourceAnnotation()
    {
       return metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.CLASS)
             || metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD);
    }
 
-   Data getDataAnnotation()
+   private Data getDataAnnotation()
    {
       Data usedAnnotation = metadataExtractor.getDataAnnotationOn(AnnotationLevel.CLASS);
       if (metadataExtractor.hasDataAnnotationOn(AnnotationLevel.METHOD))
@@ -185,7 +191,7 @@ public class MetadataProvider
       return usedAnnotation;
    }
    
-   DataSource getDataSourceAnnotation()
+   private DataSource getDataSourceAnnotation()
    {
       DataSource usedAnnotation = metadataExtractor.getDataSourceAnnotationOn(AnnotationLevel.CLASS);
       if (metadataExtractor.hasDataSourceAnnotationOn(AnnotationLevel.METHOD))
@@ -196,7 +202,7 @@ public class MetadataProvider
       return usedAnnotation;
    }
 
-   Expected getExpectedAnnotation()
+   private Expected getExpectedAnnotation()
    {
       Expected usedAnnotation = metadataExtractor.getExpectedAnnotationOn(AnnotationLevel.CLASS);
       if (metadataExtractor.hasExpectedAnnotationOn(AnnotationLevel.METHOD))
