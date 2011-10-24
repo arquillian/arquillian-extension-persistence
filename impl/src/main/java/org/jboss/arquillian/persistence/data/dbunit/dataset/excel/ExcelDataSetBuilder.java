@@ -30,7 +30,7 @@ public class ExcelDataSetBuilder extends DataSetBuilder
    @Override
    public IDataSet build(String file)
    {
-      InputStream xlsStream = getClass().getClassLoader().getResourceAsStream(file);
+      InputStream xlsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
       IDataSet dataSet = null;
       try
       {

@@ -30,7 +30,7 @@ public class YamlDataSetBuilder extends DataSetBuilder
    @Override
    public IDataSet build(String file)
    {
-      InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file);
+      InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
       IDataSet dataSet = null;
       try
       {

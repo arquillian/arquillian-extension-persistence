@@ -31,7 +31,7 @@ public class XmlDataSetBuilder extends DataSetBuilder
    @Override
    public IDataSet build(String file)
    {
-      URL fileLocation = getClass().getClassLoader().getResource(file);
+      URL fileLocation = Thread.currentThread().getContextClassLoader().getResource(file);
       FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
       IDataSet dataSet = null;
       try
