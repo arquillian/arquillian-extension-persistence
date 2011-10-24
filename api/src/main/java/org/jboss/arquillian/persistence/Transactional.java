@@ -25,6 +25,23 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * 
+ * Indicates that test needs to be wrapped within the transaction.
+ * By default it's enabled for all tests which are using Arquillian Persistence
+ * extension. It might be defined either on a class or a method level, where
+ * latter takes precedence if used.
+ * <br />
+ * Following modes are available:
+ * <ul>
+ *      <li>{@link TransactionMode#COMMIT} which is the defaul mode</li>
+ *      <li>{@link TransactionMode#ROLLBACK}</li>
+ *      <li>{@link TransactionMode#DISABLED}</li>
+ * </ul>
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 @Target(value={TYPE, METHOD})
 @Retention(value=RUNTIME)
 @Inherited

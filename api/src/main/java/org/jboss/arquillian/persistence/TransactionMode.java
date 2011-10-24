@@ -17,6 +17,13 @@
  */
 package org.jboss.arquillian.persistence;
 
+/**
+ * Available transaction modes used for transactional wrapper of
+ * test methods.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public enum TransactionMode 
 {
    /**

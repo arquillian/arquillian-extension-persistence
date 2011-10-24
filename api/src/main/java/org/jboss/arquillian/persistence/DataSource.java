@@ -26,7 +26,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Defines data source to be used for test.
+ * Defines data source to be used for test. Takes precedence over default
+ * data source defined in the configuration (<code>arquillian.xml</code>).
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
