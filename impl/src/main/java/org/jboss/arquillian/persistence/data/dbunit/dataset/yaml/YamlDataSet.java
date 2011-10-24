@@ -26,6 +26,32 @@ import java.io.InputStream;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 
+/**
+ * DBUnit data set produced from YAML format. Each table has its own
+ * section in the YAML document, where its' name is the root element
+ * indicating that following entries are describing rows using column name : value pairs.
+ * Each new row is denoted by '-', as in following example:
+ * <pre><code>
+ * useraccount:
+ *   - id: 1
+ *     firstname: Clark
+ *     lastname: Kent
+ *     username: superman
+ *     password: kryptonite 
+ * address:  
+ *   - id: 1    
+ *     streetname: "Kryptonite Street"    
+ *     houseNumber: 7    
+ *     city: Metropolis    
+ *     zipCode: 1234 
+ * useraccount_address: 
+ *   - useraccount_id: 1
+ *     addresses_id: 1  
+ * </code></pre>
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class YamlDataSet extends CachedDataSet
 {
 

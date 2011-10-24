@@ -37,6 +37,14 @@ import org.jboss.arquillian.persistence.data.dbunit.dataset.Row;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.Table;
 import org.yaml.snakeyaml.Yaml;
 
+/**
+ * Produces YAML data set from the given file.
+ * 
+ * @see YamlDataSet
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class YamlDataSetProducer implements IDataSetProducer
 {
 

@@ -25,6 +25,15 @@ import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.data.Format;
 
+/**
+ * 
+ * Fetches persistence-related configuration from <code>arquillian.xml</code>
+ * and creates {@see PersistenceConfiguration} instance used during tests
+ * execution.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 class ConfigurationExtractor
 {
 

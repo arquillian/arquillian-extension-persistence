@@ -20,6 +20,12 @@ package org.jboss.arquillian.persistence.data.dbunit.dataset;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents row entry in the data set file. 
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class Row
 {
 

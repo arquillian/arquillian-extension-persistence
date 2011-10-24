@@ -24,6 +24,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents table described in data set, storing information such as
+ * table's name, list of columns and {@link Row}s.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class Table
 {
    private final String tableName;

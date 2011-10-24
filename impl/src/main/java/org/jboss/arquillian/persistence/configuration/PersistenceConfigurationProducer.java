@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.container.test.spi.command.Command;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -27,6 +28,9 @@ import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 /**
+ * 
+ * Triggers configuration creation before executing tests and expose
+ * it to the remote containers through {@link Command} mechanism.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
