@@ -24,6 +24,13 @@ import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDatasetHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
 
+/**
+ * Defines all the bindings for Arquillian extension run in the
+ * container.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class RemotePersistenceExtension implements RemoteLoadableExtension
 {
 

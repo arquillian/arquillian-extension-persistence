@@ -21,6 +21,14 @@ package org.jboss.arquillian.persistence.command;
 import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 
+/**
+ * Command used to communicate between local test executor and remote
+ * container to obtain {@link PersistenceConfiguration configuration}
+ * instance.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class ConfigurationCommand extends AbstractCommand<PersistenceConfiguration>
 {
 

@@ -25,6 +25,15 @@ import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
+/**
+ * 
+ * Creates <code>arquillian-persistence.jar</code> archive
+ * containing all required dependencies to run Persistence Extension and
+ * extension SPI itself.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * 
+ */
 public class PersistenceArchiveAppender implements AuxiliaryArchiveAppender
 {
 
@@ -38,6 +47,7 @@ public class PersistenceArchiveAppender implements AuxiliaryArchiveAppender
                   Filters.exclude(".*/package-info.*"),
                   "org.dbunit")
             .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
+            // TODO resolve all datasets
             .addAsManifestResource("datasets/single-user.xml");
    }
 }

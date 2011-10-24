@@ -29,7 +29,8 @@ import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 /**
- * Loads configuration from the client-side test environment.
+ * Loads configuration from the client-side test environment and exposes
+ * it to the remote container through {@link ConfigurationCommand} mechanism.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

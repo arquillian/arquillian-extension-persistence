@@ -17,6 +17,13 @@
  */
 package org.jboss.arquillian.persistence.data;
 
+/**
+ * 
+ * Contains information about the file - it's name and {@link Format format}.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class DataSetDescriptor
 {
 
