@@ -27,6 +27,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.event.TransactionStarted;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 
@@ -37,6 +38,9 @@ public class TransactionalWrapper
 
    @Inject @SuiteScoped
    private Instance<PersistenceConfiguration> configuration;
+   
+   @Inject @SuiteScoped
+   private Instance<MetadataExtractor> metadataExtractor;
 
    private UserTransaction obtainTransaction()
    {
@@ -53,7 +57,7 @@ public class TransactionalWrapper
    
    public void beforeTest(@Observes TransactionStarted transactionStarted) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(transactionStarted, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(transactionStarted.getTestMethod(), metadataExtractor.get(), configuration.get());
       if (!metadataProvider.isTransactional())
       {
          return;
@@ -63,7 +67,7 @@ public class TransactionalWrapper
    
    public void afterTest(@Observes TransactionFinished transactionFinished) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(transactionFinished, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(transactionFinished.getTestMethod(), metadataExtractor.get(), configuration.get());
 
       TransactionMode mode = metadataProvider.getTransactionalMode();
       if (TransactionMode.COMMIT.equals(mode))

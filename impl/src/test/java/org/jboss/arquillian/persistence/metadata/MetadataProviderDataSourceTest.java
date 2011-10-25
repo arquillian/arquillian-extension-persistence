@@ -44,7 +44,7 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
       TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
             DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
       String dataSourceName = metadataProvider.getDataSourceName();
@@ -60,7 +60,7 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
       TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
             DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
       String dataSourceName = metadataProvider.getDataSourceName();
@@ -76,7 +76,7 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = "Ike";
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
       String dataSourceName = metadataProvider.getDataSourceName();
@@ -92,7 +92,7 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = "Ike";
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, ConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), ConfigurationLoader.createConfiguration("arquillian-without-persistence-properties.xml"));
 
       // when
       String dataSourceName = metadataProvider.getDataSourceName();

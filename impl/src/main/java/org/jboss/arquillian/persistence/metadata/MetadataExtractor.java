@@ -19,119 +19,144 @@ package org.jboss.arquillian.persistence.metadata;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.PersistenceTest;
-import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-class MetadataExtractor
+public class MetadataExtractor
 {
 
    private final TestClass testClass;
 
-   private final Method testMethod;
+   private Map<Method,DataSource> dataSourceAnnotations;
 
-   private final Map<AnnotationLevel, DataSource> dataSourceAnnotations = new EnumMap<AnnotationLevel, DataSource>(
-         AnnotationLevel.class);
+   private Map<Method,Data> dataAnnotations;
+   
+   private Map<Method,Expected> expectedAnnotations;
 
-   private final Map<AnnotationLevel, Data> dataAnnotations = new EnumMap<AnnotationLevel, Data>(AnnotationLevel.class);
+   private Map<Method,Transactional> transactionalAnnotations;
 
-   private final Map<AnnotationLevel, Expected> expectedAnnotations = new EnumMap<AnnotationLevel, Expected>(
-         AnnotationLevel.class);
-
-   private final Map<AnnotationLevel, Transactional> transactionalAnnotations = new EnumMap<AnnotationLevel, Transactional>(
-         AnnotationLevel.class);
-
-   public MetadataExtractor(TestClass testClass, Method testMethod)
+   public MetadataExtractor(TestClass testClass)
    {
       this.testClass = testClass;
-      this.testMethod = testMethod;
-      prefetch();
+      prefetchPersistenceAnnotations();
    }
 
-   public MetadataExtractor(TestEvent testEvent)
+   public boolean hasDataAnnotationOn(Method testMethod)
    {
-      this(testEvent.getTestClass(), testEvent.getTestMethod());
+      return getDataAnnotationOn(testMethod) != null;
    }
 
-   private void prefetch()
+   public Data getDataAnnotationOn(Method testMethod)
    {
-      fetch(Data.class, dataAnnotations);
-      fetch(Expected.class, expectedAnnotations);
-      fetch(DataSource.class, dataSourceAnnotations);
-      fetch(Transactional.class, transactionalAnnotations);
+      return dataAnnotations.get(testMethod);
    }
 
-   private <T extends Annotation> void fetch(Class<T> annotation, Map<AnnotationLevel, T> map)
+   public boolean hasTransactionalAnnotationOn(Method testMethod)
    {
-      T classAnnotation = testClass.getAnnotation(annotation);
-      map.put(AnnotationLevel.CLASS, classAnnotation);
-
-      T methodAnnotation = testMethod.getAnnotation(annotation);
-      map.put(AnnotationLevel.METHOD, methodAnnotation);
-   }
-
-   public boolean hasDataAnnotationOn(AnnotationLevel level)
-   {
-      return getDataAnnotationOn(level) != null;
-   }
-
-   public Data getDataAnnotationOn(AnnotationLevel level)
-   {
-      return dataAnnotations.get(level);
-   }
-
-   public boolean hasTransactionalAnnotationOn(AnnotationLevel level)
-   {
-      return transactionalAnnotations.get(level) != null;
+      return transactionalAnnotations.get(testMethod) != null;
    }
    
-   public boolean hasTransactionalSupportEnabledOn(AnnotationLevel level)
+   public Transactional getTransactionalAnnotationOn(Method testMethod)
    {
-      boolean isTransactionalSupportEnabled = true;
-      if (hasTransactionalAnnotationOn(level))
-      {
-         Transactional transactional = getTransactionalAnnotationOn(level);
-         isTransactionalSupportEnabled = !TransactionMode.DISABLED.equals(transactional.value());
-      }
-      return isTransactionalSupportEnabled;
+      return transactionalAnnotations.get(testMethod);
    }
 
-   public Transactional getTransactionalAnnotationOn(AnnotationLevel level)
+   public boolean hasDataSourceAnnotationOn(Method testMethod)
    {
-      return transactionalAnnotations.get(level);
+      return dataSourceAnnotations.get(testMethod) != null;
    }
 
-   public boolean hasDataSourceAnnotationOn(AnnotationLevel level)
+   public DataSource getDataSourceAnnotationOn(Method testMethod)
    {
-      return dataSourceAnnotations.get(level) != null;
+      return dataSourceAnnotations.get(testMethod);
    }
 
-   public DataSource getDataSourceAnnotationOn(AnnotationLevel level)
+   public boolean hasExpectedAnnotationOn(Method testMethod)
    {
-      return dataSourceAnnotations.get(level);
+      return expectedAnnotations.get(testMethod) != null;
    }
 
-   public boolean hasExpectedAnnotationOn(AnnotationLevel level)
+   public Expected getExpectedAnnotationOn(Method testMethod)
    {
-      return expectedAnnotations.get(level) != null;
-   }
-
-   public Expected getExpectedAnnotationOn(AnnotationLevel level)
-   {
-      return expectedAnnotations.get(level);
+      return expectedAnnotations.get(testMethod);
    }
 
    public boolean hasPersistenceTestAnnotation()
    {
       return testClass.getAnnotation(PersistenceTest.class) != null;
    }
+   
+   public Transactional getTransactionalAnnotationOnClassLevel()
+   {
+      return getAnnotationOnClassLevel(Transactional.class);
+   }
 
+   public Expected getExpectedAnnotationOnClassLevel()
+   {
+      return getAnnotationOnClassLevel(Expected.class);
+   }
+   
+   public boolean hasExpectedAnnotationOnClassLevel()
+   {
+      return getExpectedAnnotationOnClassLevel() != null;
+   }
+
+   public Data getDataAnnotationOnClassLevel()
+   {
+      return getAnnotationOnClassLevel(Data.class);
+   }
+
+   public boolean hasDataAnnotationOnClassLevel()
+   {
+      return getDataAnnotationOnClassLevel() != null;
+   }
+
+   public DataSource getDataSourceAnnotationOnClassLevel()
+   {
+      return getAnnotationOnClassLevel(DataSource.class);
+   }
+
+   public boolean hasDataSourceAnnotationOnClassLevel()
+   {
+      return getDataSourceAnnotationOnClassLevel() != null;
+   }
+
+   // Private
+   
+   private void prefetchPersistenceAnnotations()
+   {
+      dataAnnotations = fetch(Data.class);
+      expectedAnnotations = fetch(Expected.class);
+      dataSourceAnnotations = fetch(DataSource.class);
+      transactionalAnnotations = fetch(Transactional.class);
+   }
+
+   private <T extends Annotation> Map<Method, T> fetch(Class<T> annotation)
+   {
+      final Map<Method, T> map = new HashMap<Method, T>();
+      
+      for (Method testMethod : testClass.getMethods(annotation))
+      {
+         map.put(testMethod, testMethod.getAnnotation(annotation));
+      }
+      
+      return map;
+   }
+
+   public Class<?> getJavaClass()
+   {
+      return testClass.getJavaClass();
+   }
+   
+   private <T extends Annotation> T getAnnotationOnClassLevel(Class<T> annotation)
+   {
+      return testClass.getAnnotation(annotation);
+   }
 }

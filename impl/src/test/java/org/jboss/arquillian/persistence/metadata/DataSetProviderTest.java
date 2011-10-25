@@ -22,18 +22,15 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
-import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-@SuppressWarnings("unused")
-public class MetadataProviderDataTest
+public class DataSetProviderTest
 {
 
    private static final String XML_DATA_SET_ON_CLASS_LEVEL = "datasets/xml/class-level.xml";
@@ -50,10 +47,10 @@ public class MetadataProviderDataTest
       // given
       String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = metadataProvider.getDataFileNames();
+      List<String> dataFiles = dataSetProvider.getDataFileNames();
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -65,10 +62,10 @@ public class MetadataProviderDataTest
       // given
       String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = metadataProvider.getDataFileNames();
+      List<String> dataFiles = dataSetProvider.getDataFileNames();
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -80,10 +77,10 @@ public class MetadataProviderDataTest
       // given
       Format expectedFormat = Format.EXCEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataAndFormatDefinedOnMethodLevel");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = metadataProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats();
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -95,10 +92,10 @@ public class MetadataProviderDataTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = metadataProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats();
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -110,10 +107,10 @@ public class MetadataProviderDataTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = metadataProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats();
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -125,10 +122,10 @@ public class MetadataProviderDataTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldFailWithNonSupportedFileExtension");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = metadataProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats();
 
       // then
       // exception should be thrown      
@@ -140,10 +137,10 @@ public class MetadataProviderDataTest
       // given
       String expectedFileName = DataAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.xls";
       TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = metadataProvider.getDataFileNames();
+      List<String> files = dataSetProvider.getDataFileNames();
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -155,10 +152,10 @@ public class MetadataProviderDataTest
       // given
       String expectedFileName = DataAnnotatedOnClassLevelOnly.class.getName() + ".xls";
       TestEvent testEvent = new TestEvent(new DataAnnotatedOnClassLevelOnly(), DataAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = metadataProvider.getDataFileNames();
+      List<String> files = dataSetProvider.getDataFileNames();
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -172,10 +169,10 @@ public class MetadataProviderDataTest
       DataSetDescriptor xls = new DataSetDescriptor("two.xls", Format.EXCEL);
       DataSetDescriptor yml = new DataSetDescriptor("three.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new DataAnnotatedClass(), DataAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent, defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = metadataProvider.getDataSetDescriptors();
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors();
       
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);

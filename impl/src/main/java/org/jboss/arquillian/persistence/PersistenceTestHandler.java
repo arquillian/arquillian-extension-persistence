@@ -33,17 +33,23 @@ import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.event.TransactionStarted;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
+import org.jboss.arquillian.persistence.metadata.DataSetProvider;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
+import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
+import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 public class PersistenceTestHandler
 {
 
-   @Inject @SuiteScoped
+   @Inject @ClassScoped
    private Instance<PersistenceConfiguration> configuration;
+   
+   @Inject @ClassScoped
+   private InstanceProducer<MetadataExtractor> metadataExtractor;
    
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
@@ -63,9 +69,14 @@ public class PersistenceTestHandler
    @Inject @TestScoped
    private Event<TransactionFinished> transactionFinishedEvent;
    
+   public void beforeSuite(@Observes BeforeClass beforeClass)
+   {
+      metadataExtractor.set(new MetadataExtractor(beforeClass.getTestClass()));
+   }
+   
    public void beforeTest(@Observes Before beforeTestEvent)
    {
-      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
       if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
@@ -74,7 +85,8 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      prepareDataEvent.fire(new PrepareData(beforeTestEvent, metadataProvider.getDataSetDescriptors()));
+      DataSetProvider dataSetProvider = new DataSetProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
+      prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors()));
       
       if (metadataProvider.isTransactional())
       {
@@ -84,7 +96,7 @@ public class PersistenceTestHandler
 
    public void afterTest(@Observes After afterTestEvent)
    {
-      MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent, configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
       if (!metadataProvider.isPersistenceFeatureEnabled())
       {
          return;
@@ -97,7 +109,8 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isDataVerificationExpected())
       {
-         compareDataEvent.fire(new CompareData(afterTestEvent, metadataProvider.getExpectedDataSetDescriptors()));
+         DataSetProvider dataSetProvider = new DataSetProvider(afterTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
+         compareDataEvent.fire(new CompareData(afterTestEvent, dataSetProvider.getExpectedDataSetDescriptors()));
       }
       
       cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));

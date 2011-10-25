@@ -24,6 +24,7 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.command.ConfigurationCommand;
+import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
@@ -40,12 +41,9 @@ public class PersistenceConfigurationProducer
    @Inject
    private Instance<ArquillianDescriptor> descriptor;
    
-   @Inject @SuiteScoped
+   @Inject @ClassScoped
    InstanceProducer<PersistenceConfiguration> configurationProducer;
    
-   @Inject @SuiteScoped
-   Instance<PersistenceConfiguration> configuration;
-
    public void configure(@Observes BeforeClass beforeClassEvent)
    {
       ConfigurationExtractor extractor = new ConfigurationExtractor(descriptor.get());
@@ -55,7 +53,7 @@ public class PersistenceConfigurationProducer
    
    public void listen(@Observes ConfigurationCommand configurationCommand)
    {
-      configurationCommand.setResult(configuration.get());
+      configurationCommand.setResult(configurationProducer.get());
    }
 
 }
