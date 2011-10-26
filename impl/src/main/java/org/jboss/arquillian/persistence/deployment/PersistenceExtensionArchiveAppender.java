@@ -15,28 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.jboss.arquillian.persistence.deployment;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfigurationProducer;
-import org.jboss.arquillian.persistence.deployment.PersistenceExtensionArchiveAppender;
-import org.jboss.arquillian.persistence.deployment.PersistenceExtensionDynamicDependencyAppender;
+import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
  * 
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a> 
- *
+ * Creates <code>arquillian-persistence.jar</code> archive
+ * to run Persistence Extension.
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * 
  */
-public class PersistenceExtension implements LoadableExtension {
+public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
+{
 
    @Override
-   public void register(ExtensionBuilder builder) 
+   public Archive<?> createAuxiliaryArchive()
    {
-      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
-             .service(ApplicationArchiveProcessor.class, PersistenceExtensionDynamicDependencyAppender.class)
-             .observer(PersistenceConfigurationProducer.class);
+      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
+                       .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
    }
-
 }

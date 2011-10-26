@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.metadata;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
@@ -30,8 +31,10 @@ import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-public class DataSetProviderTest
+public class DataSetProviderDataTest
 {
+
+   private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = DataAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.xls";
 
    private static final String XML_DATA_SET_ON_CLASS_LEVEL = "datasets/xml/class-level.xml";
 
@@ -42,15 +45,31 @@ public class DataSetProviderTest
    private PersistenceConfiguration defaultConfiguration = ConfigurationLoader.createDefaultConfiguration();
 
    @Test
+   public void shouldFetchAllDataSetsDefinedForTestClass() throws Exception
+   {
+      // given
+      TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestClass());
+
+      // then
+      DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_DATA_SET_ON_CLASS_LEVEL, 
+            XML_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, EXCEL_DATA_SET_ON_METHOD_LEVEL, "one.xml", "two.xls", "three.yml");
+
+   }
+   
+   @Test
    public void shouldFetchDataFileNameFromTestLevelAnnotation() throws Exception
    {
       // given
       String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getDataFileNames();
+      List<String> dataFiles = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -60,12 +79,12 @@ public class DataSetProviderTest
    public void shouldFetchDataFromClassLevelAnnotationWhenNotDefinedForTestMethod() throws Exception
    {
       // given
-      String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
-      TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      String expectedDataFile = XML_DATA_SET_ON_CLASS_LEVEL;
+      TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getDataFileNames();
+      List<String> dataFiles = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -77,10 +96,10 @@ public class DataSetProviderTest
       // given
       Format expectedFormat = Format.EXCEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataAndFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -92,10 +111,10 @@ public class DataSetProviderTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -107,10 +126,10 @@ public class DataSetProviderTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -121,11 +140,11 @@ public class DataSetProviderTest
    {
       // given
       Format expectedFormat = Format.XML;
-      TestEvent testEvent = createTestEvent("shouldFailWithNonSupportedFileExtension");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      TestEvent testEvent = new TestEvent(new DataAnnotationWithUnsupportedFormat(), DataAnnotationWithUnsupportedFormat.class.getMethod("shouldFailWithNonSupportedFileExtension"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getDataFormats();
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       // exception should be thrown      
@@ -135,12 +154,12 @@ public class DataSetProviderTest
    public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotation() throws Exception
    {
       // given
-      String expectedFileName = DataAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.xls";
+      String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
       TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getDataFileNames();
+      List<String> files = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -152,10 +171,10 @@ public class DataSetProviderTest
       // given
       String expectedFileName = DataAnnotatedOnClassLevelOnly.class.getName() + ".xls";
       TestEvent testEvent = new TestEvent(new DataAnnotatedOnClassLevelOnly(), DataAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getDataFileNames();
+      List<String> files = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -169,10 +188,10 @@ public class DataSetProviderTest
       DataSetDescriptor xls = new DataSetDescriptor("two.xls", Format.EXCEL);
       DataSetDescriptor yml = new DataSetDescriptor("three.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new DataAnnotatedClass(), DataAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
-      DataSetProvider dataSetProvider = new DataSetProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors();
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
       
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
@@ -197,14 +216,17 @@ public class DataSetProviderTest
       @Data(value = EXCEL_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataAndFormatDefinedOnMethodLevel() {}
       
-      @Data("arquillian.ike")
-      public void shouldFailWithNonSupportedFileExtension() {}
-      
       @Data
       public void shouldPassWithDataFileNotSpecified() {}
       
       @Data({"one.xml", "two.xls", "three.yml"})
       public void shouldPassWithMultipleFilesDefined() {}
+   }
+   
+   private static class DataAnnotationWithUnsupportedFormat
+   {
+      @Data("arquillian.ike")
+      public void shouldFailWithNonSupportedFileExtension() {}
    }
    
    @Data

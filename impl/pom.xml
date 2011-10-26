@@ -94,7 +94,7 @@
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-spi</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-test-impl-base</artifactId>
@@ -121,6 +121,16 @@
       <version>3.2-FINAL</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.jboss.shrinkwrap</groupId>
+      <artifactId>shrinkwrap-impl-base</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.jboss.arquillian.test</groupId>
@@ -128,14 +138,14 @@
       <scope>test</scope>
       <classifier>tests</classifier>
     </dependency>
-    
+
     <dependency>
       <groupId>org.jboss.arquillian.core</groupId>
       <artifactId>arquillian-core-impl-base</artifactId>
       <scope>test</scope>
       <classifier>tests</classifier>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

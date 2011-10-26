@@ -85,8 +85,8 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
       
-      DataSetProvider dataSetProvider = new DataSetProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
-      prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors()));
+      DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
+      prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors(beforeTestEvent.getTestMethod())));
       
       if (metadataProvider.isTransactional())
       {
@@ -109,8 +109,8 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isDataVerificationExpected())
       {
-         DataSetProvider dataSetProvider = new DataSetProvider(afterTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
-         compareDataEvent.fire(new CompareData(afterTestEvent, dataSetProvider.getExpectedDataSetDescriptors()));
+         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
+         compareDataEvent.fire(new CompareData(afterTestEvent, dataSetProvider.getExpectedDataSetDescriptors(afterTestEvent.getTestMethod())));
       }
       
       cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));

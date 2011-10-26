@@ -72,5 +72,14 @@ public class DataSetDescriptor
       result = prime * result + ((format == null) ? 0 : format.hashCode());
       return result;
    }
+ 
+   /* (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString()
+   {
+      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + fileName + ", " + format + "]";
+   }
    
 }
