@@ -16,18 +16,17 @@
  */
 package org.jboss.arquillian.persistence.deployment;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -54,38 +53,87 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      resolveDependencies(applicationArchive, testClass);
-      addDataSets(applicationArchive, testClass);
+      final Set<DataSetDescriptor> allDataSets = fetchAllDataSets(testClass);
+      addDataSets(applicationArchive, allDataSets);
+      resolveDependencies(applicationArchive, fetchFormats(allDataSets));
+      // tmp
+//      System.out.println(applicationArchive.toString(true));
    }
 
-   private void addDataSets(Archive<?> applicationArchive, TestClass testClass)
+   private Set<DataSetDescriptor> fetchAllDataSets(TestClass testClass)
    {
-      MetadataExtractor metadataExtractor = new MetadataExtractor(testClass);
-      JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
-
-      DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor, configuration.get());
-
-      Set<DataSetDescriptor> allDataSets = new HashSet<DataSetDescriptor>();
+      final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
+      final Set<DataSetDescriptor> allDataSets = new HashSet<DataSetDescriptor>();
+      
       allDataSets.addAll(dataSetProvider.getDataSetDescriptors(testClass));
       allDataSets.addAll(dataSetProvider.getExpectedDataSetDescriptors(testClass));
-      for (DataSetDescriptor dataSetDescriptor : allDataSets)
+      return allDataSets;
+   }
+
+   private void addDataSets(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   {
+      JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
       {
          dataSetsArchive.addAsManifestResource(dataSetDescriptor.getFileName());
       }
       applicationArchive.merge(dataSetsArchive);
    }
 
-   private void resolveDependencies(Archive<?> applicationArchive, TestClass testClass)
+   private void resolveDependencies(Archive<?> applicationArchive, Set<Format> formats)
    {
-      // TODO scan for formats
-      Collection<GenericArchive> dependencies = DependencyResolvers.use(MavenDependencyResolver.class)
-                                                             .artifact("org.dbunit:dbunit:2.4.8")
-                                                             .exclusions("junit:junit")
-                                                             .resolveAs(GenericArchive.class);
-      for (Archive<?> archive : dependencies)
+      MavenDependencyResolver dependencies = DependencyResolvers.use(MavenDependencyResolver.class)
+                                                                // always required
+                                                                .artifact("org.dbunit:dbunit:2.4.8")
+                                                                .exclusions("junit:junit");
+      resolveDependeciesForUsedFormats(formats, dependencies);
+      mergeDependenciesToArchive(applicationArchive, dependencies);
+   }
+
+   private void resolveDependeciesForUsedFormats(Set<Format> formats, MavenDependencyResolver dependencies)
+   {
+      for (Format format : formats)
+      {
+            resolveFor(format, dependencies);
+      }
+   }
+
+   private void mergeDependenciesToArchive(Archive<?> applicationArchive, MavenDependencyResolver dependencies)
+   {
+      final Collection<GenericArchive> dependecyArchives = dependencies.resolveAs(GenericArchive.class);
+      for (Archive<?> archive : dependecyArchives)
       {
          applicationArchive.merge(archive);
       }
+   }
+   
+   private void resolveFor(Format format, MavenDependencyResolver mavenResolver)
+   {
+      switch (format)
+      {
+         case YAML :
+            mavenResolver.artifact("org.yaml:snakeyaml:1.9");
+            break;
+         case EXCEL:
+            mavenResolver.artifact("org.apache.poi:poi:3.2-FINAL");
+            break;
+         case XML:
+            // XML is supported in dbunit by default
+            break;
+         default:
+            throw new RuntimeException("Cannot resolve dependency for " + format);
+      }
+
+   }
+
+   private Set<Format> fetchFormats(Set<DataSetDescriptor> dataSetDescriptors)
+   {
+      Set<Format> formats = EnumSet.noneOf(Format.class);
+      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
+      {
+         formats.add(dataSetDescriptor.getFormat());
+      }
+      return formats ;
    }
 
 }
