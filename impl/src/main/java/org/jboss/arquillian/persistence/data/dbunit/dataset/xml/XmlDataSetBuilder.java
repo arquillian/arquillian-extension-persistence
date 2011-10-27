@@ -29,21 +29,18 @@ public class XmlDataSetBuilder extends DataSetBuilder
 {
 
    @Override
-   public IDataSet build(String file)
+   public IDataSet build(final String file)
    {
       URL fileLocation = Thread.currentThread().getContextClassLoader().getResource(file);
       FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
-      IDataSet dataSet = null;
       try
       {
-         dataSet = flatXmlDataSetBuilder.build(fileLocation);
+         return flatXmlDataSetBuilder.build(fileLocation);
       }
       catch (DataSetException e)
       {
          throw new DBUnitInitializationException("Unable to load data set from given file : " + file, e);
       }
-      
-      return dataSet;
    }
 
 }

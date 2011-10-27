@@ -25,7 +25,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.command.ConfigurationCommand;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 /**

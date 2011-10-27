@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.data.dbunit;
 
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.dbunit.Assertion;
@@ -106,15 +107,29 @@ public class DBUnitDatasetHandler implements DataHandler
       {
          return;
       }
-      
+      Statement initStatement = null;
       try
       {
-         Statement initStatement = databaseConnection.get().getConnection().createStatement();
+         initStatement = databaseConnection.get().getConnection().createStatement();
          initStatement.execute(persistenceConfiguration.getInitStatement());
       }
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException(e);
+      } 
+      finally 
+      {
+         if (initStatement != null)
+         {
+            try
+            {
+               initStatement.close();
+            }
+            catch (SQLException e)
+            {
+               throw new DBUnitDataSetHandlingException("Unable to close init statement", e);
+            }
+         }
       }
    }
 

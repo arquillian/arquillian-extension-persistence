@@ -27,9 +27,9 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializati
 public abstract class DataSetBuilder
 {
 
-   public abstract IDataSet build(String file);
+   public abstract IDataSet build(final String file);
 
-   public static DataSetBuilder builderFor(Format format)
+   public static DataSetBuilder builderFor(final Format format)
    {
       switch (format)
       {

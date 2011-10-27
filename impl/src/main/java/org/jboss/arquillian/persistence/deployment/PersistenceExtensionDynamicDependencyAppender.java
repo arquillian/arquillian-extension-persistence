@@ -121,14 +121,14 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
             // XML is supported in dbunit by default
             break;
          default:
-            throw new RuntimeException("Cannot resolve dependency for " + format);
+            throw new UnresolvedDenpendencyException("Cannot resolve dependency for " + format);
       }
 
    }
 
    private Set<Format> fetchFormats(Set<DataSetDescriptor> dataSetDescriptors)
    {
-      Set<Format> formats = EnumSet.noneOf(Format.class);
+      final Set<Format> formats = EnumSet.noneOf(Format.class);
       for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
       {
          formats.add(dataSetDescriptor.getFormat());

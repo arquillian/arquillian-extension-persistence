@@ -153,7 +153,7 @@ public class DataSetProvider
       }
       catch (Exception e)
       {
-         throw new RuntimeException("Unable to evaluate annotation value", e); 
+         throw new MetadataProcessingException("Unable to evaluate annotation value", e); 
       }
       
       return dataSetDescriptors;

@@ -122,10 +122,9 @@ public class DBUnitPersistenceTestLifecycleHandler
    
    private IDataSet createInitialDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      String file = dataSetDescriptor.getFileName();
-      Format format = dataSetDescriptor.getFormat();
-      IDataSet initial = DataSetBuilder.builderFor(format).build(file);
-      return initial;
+      final String file = dataSetDescriptor.getFileName();
+      final Format format = dataSetDescriptor.getFormat();
+      return DataSetBuilder.builderFor(format).build(file);
    }
 
    private void createExpectedDataSets(List<DataSetDescriptor> dataSetDescriptors)

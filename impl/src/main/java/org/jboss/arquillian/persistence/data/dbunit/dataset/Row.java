@@ -57,7 +57,7 @@ public class Row
          return false;
       }
 
-      Row other = (Row) obj;
+      final Row other = (Row) obj;
       
       final Map<String, String> otherCells = other.cells;
       

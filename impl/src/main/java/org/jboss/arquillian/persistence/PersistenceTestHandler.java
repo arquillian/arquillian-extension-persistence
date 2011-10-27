@@ -127,7 +127,7 @@ public class PersistenceTestHandler
       }
       catch (NamingException e)
       {
-         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName);
+         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
       }
    }
 

@@ -78,8 +78,6 @@ class ConfigurationExtractor
 
    private Map<String, String> extractProperties(String extenstionName)
    {
-      Map<String, String> properties = Collections.emptyMap();
-
       for (ExtensionDef extension : descriptor.getExtensions())
       {
          if (extenstionName.equals(extension.getExtensionName()))
@@ -88,7 +86,7 @@ class ConfigurationExtractor
          }
       }
 
-      return properties;
+      return Collections.<String, String>emptyMap();
    }
 
 }

@@ -30,18 +30,15 @@ public class ExcelDataSetBuilder extends DataSetBuilder
    @Override
    public IDataSet build(String file)
    {
-      InputStream xlsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-      IDataSet dataSet = null;
+      final InputStream xlsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
       try
       {
-         dataSet = new XlsDataSet(xlsStream);
+         return new XlsDataSet(xlsStream);
       }
       catch (Exception e)
       {
          throw new DBUnitInitializationException("Unable to load data set from given file : " + file, e);
       }
-      
-      return dataSet;
    }
 
 }

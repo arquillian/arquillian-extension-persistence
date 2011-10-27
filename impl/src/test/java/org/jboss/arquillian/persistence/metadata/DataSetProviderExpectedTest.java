@@ -143,7 +143,6 @@ public class DataSetProviderExpectedTest
    public void shouldThrowExceptionWhenFormatCannotBeInferedFromFileExtension() throws Exception
    {
       // given
-      Format expectedFormat = Format.XML;
       TestEvent testEvent= new TestEvent(new ExpectedAnnotationWithUnsupportedFormat(), ExpectedAnnotationWithUnsupportedFormat.class.getMethod("shouldFailWithNonSupportedFileExtension"));
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 

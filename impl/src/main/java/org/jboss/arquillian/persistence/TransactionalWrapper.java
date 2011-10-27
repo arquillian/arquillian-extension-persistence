@@ -51,7 +51,7 @@ public class TransactionalWrapper
       }
       catch (NamingException e)
       {
-         throw new RuntimeException("Failed obtaining transaction.");
+         throw new TransactionNotAvailableException("Failed obtaining transaction.");
       }
    }
    

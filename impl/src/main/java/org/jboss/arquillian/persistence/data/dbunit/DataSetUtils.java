@@ -56,8 +56,8 @@ public class DataSetUtils
    public static String[] columnsNotSpecifiedInExpectedDataSet(ITable expectedTableState, ITable currentTableState) throws DataSetException
    {
       final List<String> columnsNotSpecifiedInExpectedDataSet = new ArrayList<String>();
-      Set<Column> allColumns = new HashSet<Column>(Arrays.asList(currentTableState.getTableMetaData().getColumns()));
-      Set<Column> expectedColumns = new HashSet<Column>(Arrays.asList(expectedTableState.getTableMetaData().getColumns()));
+      final Set<Column> allColumns = new HashSet<Column>(Arrays.asList(currentTableState.getTableMetaData().getColumns()));
+      final Set<Column> expectedColumns = new HashSet<Column>(Arrays.asList(expectedTableState.getTableMetaData().getColumns()));
       for (Column column : allColumns)
       {
          if (!expectedColumns.contains(column))
