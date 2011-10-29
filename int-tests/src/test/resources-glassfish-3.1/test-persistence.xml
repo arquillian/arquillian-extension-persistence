@@ -8,7 +8,7 @@
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
       <!-- 
-        It's important to turn of caching, otherwise entity manager 
+        It's important to turn off caching, otherwise entity manager 
         won't be aware of changes made by dbunit. 
       -->
       <property name="eclipselink.cache.shared.default" value="false"/>

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.example;
+package org.jboss.arquillian.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -23,9 +23,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.example.Address;
+import org.jboss.arquillian.example.UserAccount;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.Expected;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -35,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserHsqlDbPersistenceTest
+public class UserPersistenceTest
 {
 
    @Deployment
@@ -44,7 +45,7 @@ public class UserHsqlDbPersistenceTest
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("hsql-test-persistence.xml", "persistence.xml");
+                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
    }
 
    @PersistenceContext
@@ -68,7 +69,6 @@ public class UserHsqlDbPersistenceTest
    
    @Test
    @Data("datasets/single-user.xls")
-   @DataSource("arq/hsql")
    public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
    {
       // given
@@ -129,7 +129,6 @@ public class UserHsqlDbPersistenceTest
       assertThat(address.getCity()).isEqualTo(expectedCity);
    }
 
-
    @Test
    @Data("datasets/single-user.xml")
    @Expected({"datasets/single-user.xls", "datasets/expected-address.yml"})
@@ -147,6 +146,4 @@ public class UserHsqlDbPersistenceTest
       assertThat(user.getAddresses()).hasSize(1);
    }
 
-   // TODO test ignoring columns not specified
-   
 }

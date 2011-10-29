@@ -15,125 +15,105 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.example;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+package org.jboss.arquillian.example;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * 
- * @author Bartosz Majsak
- *
- */
 @Entity
-public class UserAccount
+public class Address
 {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-
-   @Basic
-   @NotNull @Size(min = 3, max = 32)
-   private String username;
-
-   @Basic
-   @NotNull @Size(min = 8)
-   private String password;
-
-   @Basic
-   @NotNull @Size(max = 128)
-   private String firstname;
-
-   @Basic
-   @NotNull @Size(max = 128)
-   private String lastname;
    
-   @OneToMany
-   private Set<Address> addresses = new HashSet<Address>();
-
-   UserAccount()
+   @Basic
+   @NotNull @Size(min = 4)
+   private String streetName;
+   
+   @Basic
+   private Integer houseNumber;
+   
+   @Basic
+   @NotNull
+   private String city;
+   
+   @Basic
+   @NotNull
+   private Integer zipCode;
+   
+   Address()
    {
       // To satisfy JPA
    }
-   
-   public void addAddress(Address address)
+
+   public Address(String streetName, Integer houseNumber, String city, Integer zipCode)
    {
-      this.addresses.add(address);
+      this.streetName = streetName;
+      this.houseNumber = houseNumber;
+      this.city = city;
+      this.zipCode = zipCode;
    }
-   
+
    // Getters and setters
-   
+
    public Long getId()
    {
       return id;
    }
-
+   
    void setId(Long id)
    {
       this.id = id;
    }
-
-   public String getUsername()
+   
+   public String getStreetName()
    {
-      return username;
+      return streetName;
    }
 
-   public void setUsername(String username)
+   public void setStreetName(String streetName)
    {
-      this.username = username;
+      this.streetName = streetName;
    }
 
-   public String getPassword()
+   public Integer getHouseNumber()
    {
-      return password;
+      return houseNumber;
    }
 
-   public void setPassword(String password)
+   public void setHouseNumber(Integer houseNumber)
    {
-      this.password = password;
+      this.houseNumber = houseNumber;
    }
 
-   public String getFirstname()
+   public String getCity()
    {
-      return firstname;
+      return city;
    }
 
-   public void setFirstname(String firstname)
+   public void setCity(String city)
    {
-      this.firstname = firstname;
+      this.city = city;
    }
 
-   public String getLastname()
+   public Integer getZipCode()
    {
-      return lastname;
+      return zipCode;
    }
 
-   public void setLastname(String lastname)
+   public void setZipCode(Integer zipCode)
    {
-      this.lastname = lastname;
-   }
-
-   public Set<Address> getAddresses()
-   {
-      return Collections.unmodifiableSet(addresses);
-   }
-
-   void setAddresses(Set<Address> addresses)
-   {
-      this.addresses = addresses;
+      this.zipCode = zipCode;
    }
    
    
-
+   
+   
 }
