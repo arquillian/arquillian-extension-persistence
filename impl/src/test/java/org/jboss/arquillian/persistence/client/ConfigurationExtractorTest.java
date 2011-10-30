@@ -15,11 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.configuration;
+package org.jboss.arquillian.persistence.client;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.client.ConfigurationExtractor;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.Format;
 import org.junit.Test;
 
@@ -161,5 +163,33 @@ public class ConfigurationExtractorTest
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
+   }
+   
+   @Test
+   public void shouldBeAbleToDefineUserTransactionJndi() throws Exception
+   {
+      // given
+      String expectedUserTransactionJndi = "java:jboss/UserTransaction";
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
+   }
+   
+   @Test
+   public void shouldHaveDefaultUserTransactionJndi() throws Exception
+   {
+      // given
+      String expectedUserTransactionJndi = "java:comp/UserTransaction";
+      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+
+      // when
+      PersistenceConfiguration configuration = configurationExtractor.extract();
+
+      // then
+      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
    }
 }

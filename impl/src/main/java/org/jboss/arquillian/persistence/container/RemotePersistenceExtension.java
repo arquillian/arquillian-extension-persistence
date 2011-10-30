@@ -19,10 +19,10 @@ package org.jboss.arquillian.persistence.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.persistence.PersistenceTestHandler;
-import org.jboss.arquillian.persistence.TransactionalWrapper;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDatasetHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
+import org.jboss.arquillian.persistence.transaction.TransactionalWrapper;
 
 /**
  * Defines all the bindings for Arquillian extension run in the

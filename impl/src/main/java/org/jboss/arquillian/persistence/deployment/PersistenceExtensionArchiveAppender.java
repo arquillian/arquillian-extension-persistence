@@ -19,15 +19,23 @@ package org.jboss.arquillian.persistence.deployment;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.persistence.PersistenceTestHandler;
+import org.jboss.arquillian.persistence.client.PersistenceExtension;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
+import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
  * 
  * Creates <code>arquillian-persistence.jar</code> archive
- * to run Persistence Extension.
+ * to run Persistence Extension. Includes all dependencies required
+ * by the extension.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  * 
@@ -35,10 +43,30 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
 
+   @Inject
+   Instance<TestClass> testClass;
+   
+   @Inject
+   Instance<PersistenceConfiguration> configuration;
+   
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
-                       .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
+      JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
+                                      .addPackages(true,
+                                            Filters.exclude(PersistenceExtension.class.getPackage()),
+                                            PersistenceTestHandler.class.getPackage())
+                                      .addPackages(true, 
+                                            "org.dbunit",
+                                            "org.apache.poi",
+                                            "org.apache.commons",
+                                            "org.apache.log4j",
+                                            "org.slf4j",
+                                            "org.yaml")
+                                      .addAsServiceProvider(RemoteLoadableExtension.class, 
+                                            RemotePersistenceExtension.class);
+      
+      return archive;
    }
+
 }

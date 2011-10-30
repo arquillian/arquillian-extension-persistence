@@ -11,6 +11,7 @@
     <property name="defaultTransactionMode">ROLLBACK</property>
     <property name="dumpData">true</property>
     <property name="dumpDirectory">/home/ike/dump</property>
+    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
   </extension>
 
 </arquillian>

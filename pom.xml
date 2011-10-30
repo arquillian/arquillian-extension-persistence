@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>6-beta-2</version>
+    <version>7</version>
     <relativePath />
   </parent>
 
@@ -18,15 +18,16 @@
   <artifactId>arquillian-persistence-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Arquillian Extension Persistence Aggregator</name>
+  
+  <name>Arquillian Persistence Extension Aggregator</name>
   <url>http://www.jboss.org</url>
-  <description>Arquillian Extension Persistence Aggregator</description>
+  <description>Arquillian Persistence Extension Aggregator</description>
 
   <!-- Properties -->
   <properties>
 
     <!-- Versioning -->
-    <version.arquillian_core>1.0.0.CR4</version.arquillian_core>
+    <version.arquillian_core>1.0.0.Final-SNAPSHOT</version.arquillian_core>
 
     <!-- override from parent -->
     <version.release.plugin>2.1</version.release.plugin>

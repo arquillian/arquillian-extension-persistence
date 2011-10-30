@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.jboss.arquillian.persistence.transaction;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -24,6 +24,7 @@ import javax.transaction.UserTransaction;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.event.TransactionStarted;
@@ -33,8 +34,6 @@ import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 
 public class TransactionalWrapper
 {
-
-   private static final String USER_TRANSACTION_JNDI_NAME = "java:comp/UserTransaction";
 
    @Inject @SuiteScoped
    private Instance<PersistenceConfiguration> configuration;
@@ -47,11 +46,11 @@ public class TransactionalWrapper
       try
       {
          final InitialContext context = new InitialContext();
-         return (UserTransaction) context.lookup(USER_TRANSACTION_JNDI_NAME);
+         return (UserTransaction) context.lookup(configuration.get().getUserTransactionJndi());
       }
       catch (NamingException e)
       {
-         throw new TransactionNotAvailableException("Failed obtaining transaction.");
+         throw new TransactionNotAvailableException("Failed obtaining transaction.", e);
       }
    }
    

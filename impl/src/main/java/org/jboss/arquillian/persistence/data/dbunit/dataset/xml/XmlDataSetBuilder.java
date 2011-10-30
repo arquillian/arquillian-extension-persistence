@@ -19,7 +19,6 @@ package org.jboss.arquillian.persistence.data.dbunit.dataset.xml;
 
 import java.net.URL;
 
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
@@ -37,7 +36,7 @@ public class XmlDataSetBuilder extends DataSetBuilder
       {
          return flatXmlDataSetBuilder.build(fileLocation);
       }
-      catch (DataSetException e)
+      catch (Exception e)
       {
          throw new DBUnitInitializationException("Unable to load data set from given file : " + file, e);
       }

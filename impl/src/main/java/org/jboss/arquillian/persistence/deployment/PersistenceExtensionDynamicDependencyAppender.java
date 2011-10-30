@@ -16,8 +16,6 @@
  */
 package org.jboss.arquillian.persistence.deployment;
 
-import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,20 +24,15 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 /**
- * Appends all data sets defined for the test class and resolves
- * all required dependencies to run persistence tests.
+ * Appends all data sets defined for the test class to the test archive.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
@@ -53,11 +46,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      final Set<DataSetDescriptor> allDataSets = fetchAllDataSets(testClass);
-      addDataSets(applicationArchive, allDataSets);
-      resolveDependencies(applicationArchive, fetchFormats(allDataSets));
-      // tmp
-//      System.out.println(applicationArchive.toString(true));
+      addDataSets(applicationArchive, fetchAllDataSets(testClass));
    }
 
    private Set<DataSetDescriptor> fetchAllDataSets(TestClass testClass)
@@ -75,65 +64,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
       for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         dataSetsArchive.addAsManifestResource(dataSetDescriptor.getFileName());
+         dataSetsArchive.addAsResource(dataSetDescriptor.getFileName());
       }
       applicationArchive.merge(dataSetsArchive);
    }
-
-   private void resolveDependencies(Archive<?> applicationArchive, Set<Format> formats)
-   {
-      MavenDependencyResolver dependencies = DependencyResolvers.use(MavenDependencyResolver.class)
-                                                                // always required
-                                                                .artifact("org.dbunit:dbunit:2.4.8")
-                                                                .exclusions("junit:junit");
-      resolveDependeciesForUsedFormats(formats, dependencies);
-      mergeDependenciesToArchive(applicationArchive, dependencies);
-   }
-
-   private void resolveDependeciesForUsedFormats(Set<Format> formats, MavenDependencyResolver dependencies)
-   {
-      for (Format format : formats)
-      {
-            resolveFor(format, dependencies);
-      }
-   }
-
-   private void mergeDependenciesToArchive(Archive<?> applicationArchive, MavenDependencyResolver dependencies)
-   {
-      final Collection<GenericArchive> dependecyArchives = dependencies.resolveAs(GenericArchive.class);
-      for (Archive<?> archive : dependecyArchives)
-      {
-         applicationArchive.merge(archive);
-      }
-   }
-   
-   private void resolveFor(Format format, MavenDependencyResolver mavenResolver)
-   {
-      switch (format)
-      {
-         case YAML :
-            mavenResolver.artifact("org.yaml:snakeyaml:1.9");
-            break;
-         case EXCEL:
-            mavenResolver.artifact("org.apache.poi:poi:3.2-FINAL");
-            break;
-         case XML:
-            // XML is supported in dbunit by default
-            break;
-         default:
-            throw new UnresolvedDenpendencyException("Cannot resolve dependency for " + format);
-      }
-
-   }
-
-   private Set<Format> fetchFormats(Set<DataSetDescriptor> dataSetDescriptors)
-   {
-      final Set<Format> formats = EnumSet.noneOf(Format.class);
-      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
-      {
-         formats.add(dataSetDescriptor.getFormat());
-      }
-      return formats ;
-   }
-
 }

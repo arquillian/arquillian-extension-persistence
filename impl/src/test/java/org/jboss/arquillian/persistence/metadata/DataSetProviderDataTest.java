@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
+import org.jboss.arquillian.persistence.client.ConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;

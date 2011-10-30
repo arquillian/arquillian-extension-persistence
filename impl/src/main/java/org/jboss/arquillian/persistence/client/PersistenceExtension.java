@@ -15,12 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.jboss.arquillian.persistence.client;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfigurationProducer;
 import org.jboss.arquillian.persistence.deployment.PersistenceExtensionArchiveAppender;
 import org.jboss.arquillian.persistence.deployment.PersistenceExtensionDynamicDependencyAppender;
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.jboss.arquillian.persistence.transaction;
 
 public class TransactionNotAvailableException extends RuntimeException
 {

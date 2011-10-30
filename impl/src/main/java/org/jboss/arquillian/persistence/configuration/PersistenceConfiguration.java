@@ -40,9 +40,11 @@ public class PersistenceConfiguration implements Serializable
    
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
    
-   private boolean dumpData;
+   private boolean dumpData = false;
    
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
+   
+   private String userTransactionJndi = "java:comp/UserTransaction";
    
    public String getDefaultDataSource()
    {
@@ -122,7 +124,15 @@ public class PersistenceConfiguration implements Serializable
       }
       this.dumpDirectory = dumpDirectory;
    }
-   
-   
+
+   public String getUserTransactionJndi()
+   {
+      return userTransactionJndi;
+   }
+
+   public void setUserTransactionJndi(String userTransactionJndi)
+   {
+      this.userTransactionJndi = userTransactionJndi;
+   }
    
 }

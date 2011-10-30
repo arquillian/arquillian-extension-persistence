@@ -15,7 +15,7 @@
 
     <!-- Artifact Configuration -->
     <artifactId>arquillian-persistence-api</artifactId>
-    <name>Arquillian Extension Persistence API</name>
+    <name>Arquillian Persistence Extension API</name>
     <description>Extension API for persistence tests</description>
 
 </project>

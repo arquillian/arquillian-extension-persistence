@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.configuration;
+package org.jboss.arquillian.persistence.client;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,6 +23,7 @@ import java.util.Map;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.Format;
 
 /**
@@ -71,6 +72,12 @@ class ConfigurationExtractor
       if (dumpDirectory != null)
       {
          configuration.setDumpDirectory(dumpDirectory);
+      }
+
+      String userTransactionJndi = extensionProperties.get("userTransactionJndi");
+      if (userTransactionJndi != null)
+      {
+         configuration.setUserTransactionJndi(userTransactionJndi);
       }
       
       return configuration;
