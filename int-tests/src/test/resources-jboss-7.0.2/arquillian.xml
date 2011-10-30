@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://jboss.org/schema/arquillian"
+  xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+  <container qualifier="jboss7" default="true">
+    <protocol type="jmx-as7">
+      <property name="executionType">REMOTE</property>
+    </protocol>
+  </container>
+
+  <extension qualifier="persistence">
+    <property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
+    <property name="initStatement">SET REFERENTIAL_INTEGRITY FALSE</property>
+    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
+  </extension>
+
+</arquillian>
