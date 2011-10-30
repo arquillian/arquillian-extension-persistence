@@ -6,7 +6,6 @@
 
   <container qualifier="jboss7" default="true">
     <protocol type="jmx-as7">
-      <property name="jbossHome">/home/bmajsak/dev/as/jboss/jboss-as-web-7.0.2.Final</property>
       <property name="executionType">REMOTE</property>
     </protocol>
   </container>
@@ -14,6 +13,7 @@
   <extension qualifier="persistence">
     <property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
     <property name="initStatement">SET REFERENTIAL_INTEGRITY FALSE</property>
+    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
   </extension>
 
 </arquillian>

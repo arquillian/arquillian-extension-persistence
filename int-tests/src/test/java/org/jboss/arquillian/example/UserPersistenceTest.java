@@ -44,6 +44,8 @@ public class UserPersistenceTest
    {
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
+                       // required for remote containers in order to run tests with FEST-Asserts
+                       .addPackages(true, "org.fest")
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("test-persistence.xml", "persistence.xml");
    }

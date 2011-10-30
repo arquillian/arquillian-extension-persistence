@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -59,7 +60,7 @@ public class UserAccount
    @NotNull @Size(max = 128)
    private String lastname;
    
-   @OneToMany
+   @OneToMany(cascade = {CascadeType.ALL})
    private Set<Address> addresses = new HashSet<Address>();
 
    UserAccount()
