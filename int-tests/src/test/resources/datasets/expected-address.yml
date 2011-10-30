@@ -1,0 +1,9 @@
+address:
+  - id: 1
+    streetname: "Testing Street"
+    houseNumber: 7
+    city: JavaPolis
+    zipCode: 1234 
+useraccount_address:
+  - useraccount_id: 1
+    addresses_id: 1  
