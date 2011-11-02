@@ -33,8 +33,6 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandl
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
-import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
@@ -72,10 +70,10 @@ public class DBUnitDataStateLogger implements DataStateLogger
 
    private static final String FILENAME_PATTERN = "[%s]-%s#%s-%s.xml";
    
-   @Inject @TestScoped
+   @Inject
    private Instance<DatabaseConnection> databaseConnection;
    
-   @Inject @SuiteScoped
+   @Inject
    private Instance<PersistenceConfiguration> configuration;
    
    @Override

@@ -49,7 +49,7 @@ import org.jboss.arquillian.test.spi.annotation.TestScoped;
 public class DBUnitPersistenceTestLifecycleHandler
 {
 
-   @Inject @TestScoped
+   @Inject
    private Instance<DataSource> databaseSourceInstance;
 
    @Inject @TestScoped
