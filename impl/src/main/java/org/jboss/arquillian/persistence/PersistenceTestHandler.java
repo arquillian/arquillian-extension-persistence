@@ -17,7 +17,7 @@
  */
 package org.jboss.arquillian.persistence;
 
-import javax.naming.InitialContext;
+import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -32,6 +32,7 @@ import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.event.TransactionStarted;
+import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
@@ -45,7 +46,7 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 public class PersistenceTestHandler
 {
 
-   @Inject @ClassScoped
+   @Inject
    private Instance<PersistenceConfiguration> configuration;
    
    @Inject @ClassScoped
@@ -54,21 +55,24 @@ public class PersistenceTestHandler
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
    
-   @Inject @TestScoped
+   @Inject
    private Event<PrepareData> prepareDataEvent;
    
-   @Inject @TestScoped
+   @Inject
    private Event<CompareData> compareDataEvent;
 
-   @Inject @TestScoped
+   @Inject
    private Event<CleanUpData> cleanUpDataEvent;
    
-   @Inject @TestScoped
+   @Inject
    private Event<TransactionStarted> transactionStartedEvent;
 
-   @Inject @TestScoped
+   @Inject
    private Event<TransactionFinished> transactionFinishedEvent;
    
+   @Inject
+   private Instance<Context> contextInst;
+
    public void beforeSuite(@Observes BeforeClass beforeClass)
    {
       metadataExtractor.set(new MetadataExtractor(beforeClass.getTestClass()));
@@ -122,7 +126,11 @@ public class PersistenceTestHandler
    {
       try
       {
-         final InitialContext context = new InitialContext();
+         final Context context = contextInst.get();
+         if(context == null)
+         {
+            throw new ContextNotAvailableException("No Naming Context available");
+         }
          return (javax.sql.DataSource) context.lookup(dataSourceName);
       }
       catch (NamingException e)

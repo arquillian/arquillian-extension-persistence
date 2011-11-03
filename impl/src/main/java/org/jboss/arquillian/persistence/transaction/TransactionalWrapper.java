@@ -17,7 +17,7 @@
  */
 package org.jboss.arquillian.persistence.transaction;
 
-import javax.naming.InitialContext;
+import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 
@@ -28,24 +28,31 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.TransactionFinished;
 import org.jboss.arquillian.persistence.event.TransactionStarted;
+import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 
 public class TransactionalWrapper
 {
 
-   @Inject @SuiteScoped
+   @Inject
    private Instance<PersistenceConfiguration> configuration;
    
-   @Inject @SuiteScoped
+   @Inject
    private Instance<MetadataExtractor> metadataExtractor;
+
+   @Inject
+   private Instance<Context> contextInst;
 
    private UserTransaction obtainTransaction()
    {
       try
       {
-         final InitialContext context = new InitialContext();
+         final Context context = contextInst.get();
+         if(context == null)
+         {
+            throw new ContextNotAvailableException("No Naming Context available");
+         }
          return (UserTransaction) context.lookup(configuration.get().getUserTransactionJndi());
       }
       catch (NamingException e)

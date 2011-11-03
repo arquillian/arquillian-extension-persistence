@@ -36,19 +36,17 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandl
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
-import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 public class DBUnitDatasetHandler implements DataHandler
 {
 
-   @Inject @TestScoped
+   @Inject
    private Instance<DatabaseConnection> databaseConnection;
    
-   @Inject @TestScoped
+   @Inject
    private Instance<DataSetRegister> dataSetRegister;
    
-   @Inject @SuiteScoped
+   @Inject
    private Instance<PersistenceConfiguration> configuration;
    
    @Override
