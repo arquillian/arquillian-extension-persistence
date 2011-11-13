@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -24,18 +24,19 @@ import org.jboss.arquillian.persistence.deployment.PersistenceExtensionArchiveAp
 import org.jboss.arquillian.persistence.deployment.PersistenceExtensionDynamicDependencyAppender;
 
 /**
- * 
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a> 
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
 public class PersistenceExtension implements LoadableExtension {
 
    @Override
-   public void register(ExtensionBuilder builder) 
+   public void register(ExtensionBuilder builder)
    {
       builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
              .service(ApplicationArchiveProcessor.class, PersistenceExtensionDynamicDependencyAppender.class)
-             .observer(PersistenceConfigurationProducer.class);
+             .observer(PersistenceConfigurationProducer.class)
+             .observer(DatabaseStateDumper.class);
    }
 
 }

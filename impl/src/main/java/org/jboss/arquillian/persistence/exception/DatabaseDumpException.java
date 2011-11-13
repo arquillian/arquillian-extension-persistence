@@ -10,22 +10,35 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.exception;
 
-import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.persistence.event.CleanUpData;
-import org.jboss.arquillian.persistence.event.PrepareData;
-
-public interface DataStateLogger
+public class DatabaseDumpException extends RuntimeException
 {
 
-   void aroundDataSeeding(EventContext<PrepareData> context);
+   private static final long serialVersionUID = 1530509676042166133L;
 
-   void aroundCleanup(EventContext<CleanUpData> context);
+   public DatabaseDumpException()
+   {
+   }
+
+   public DatabaseDumpException(String message)
+   {
+      super(message);
+   }
+
+   public DatabaseDumpException(Throwable cause)
+   {
+      super(cause);
+   }
+
+   public DatabaseDumpException(String message, Throwable cause)
+   {
+      super(message, cause);
+   }
 
 }

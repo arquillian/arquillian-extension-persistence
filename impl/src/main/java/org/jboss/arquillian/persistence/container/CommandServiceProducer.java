@@ -22,31 +22,34 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.command.ConfigurationCommand;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
-/**
- * Loads configuration from the client-side test environment and exposes
- * it to the remote container through {@link ConfigurationCommand} mechanism.
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- */
-public class ConfigurationLoader
+public class CommandServiceProducer
 {
 
    @Inject
-   Instance<CommandService> commandService;
+   private Instance<ServiceLoader> serviceLoaderInstance;
 
    @Inject @SuiteScoped
-   private InstanceProducer<PersistenceConfiguration> configuration;
+   InstanceProducer<CommandService> commandServiceProducer;
 
-   public void fetchConfiguration(@Observes BeforeSuite beforeSuite)
+   public void createCommandService(@Observes(precedence = 100) BeforeSuite beforeSuite)
    {
-      ConfigurationCommand command = new ConfigurationCommand();
-      configuration.set(commandService.get().execute(command));
+      final ServiceLoader serviceLoader = serviceLoaderInstance.get();
+      if (serviceLoader == null)
+      {
+         throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
+      }
+
+      final CommandService commandService = serviceLoader.onlyOne(CommandService.class);
+      if (commandService == null)
+      {
+         throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
+      }
+
+      commandServiceProducer.set(commandService);
    }
 
 }
