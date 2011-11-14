@@ -18,14 +18,13 @@
   <artifactId>arquillian-persistence-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  
+
   <name>Arquillian Persistence Extension Aggregator</name>
   <url>http://www.jboss.org</url>
   <description>Arquillian Persistence Extension Aggregator</description>
 
   <!-- Properties -->
   <properties>
-
     <!-- Versioning -->
     <version.arquillian_core>1.0.0.CR5</version.arquillian_core>
 
@@ -33,7 +32,6 @@
     <version.release.plugin>2.1</version.release.plugin>
     <maven.compiler.target>1.5</maven.compiler.target>
     <maven.compiler.source>1.5</maven.compiler.source>
-
   </properties>
 
   <dependencyManagement>

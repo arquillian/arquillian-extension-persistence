@@ -16,7 +16,7 @@
   <artifactId>arquillian-persistence-integration-tests</artifactId>
   <name>Arquillian Persistence Extension Integration Tests</name>
   <description>Demonstrates usage of Arquillian Persistence extension.</description>
-  
+
   <developers>
     <developer>
       <name>Bartosz Majsak</name>
@@ -30,14 +30,14 @@
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
     <version.cdi>1.0-SP1</version.cdi>
+    <version.validation.api>1.0.0.GA</version.validation.api>
+    <version.glassfish>3.1.1</version.glassfish>
     <version.hsqldb>1.8.0.10</version.hsqldb>
     <version.fest.assert>1.4</version.fest.assert>
-    <version.glassfish>3.1.1</version.glassfish>
-    <version.validation.api>1.0.0.GA</version.validation.api>
   </properties>
 
   <dependencies>
-  
+
     <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-persistence-api</artifactId>
@@ -55,7 +55,7 @@
       <artifactId>validation-api</artifactId>
       <version>${version.validation.api}</version>
     </dependency>
-    
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
@@ -97,7 +97,7 @@
     </dependency>
 
   </dependencies>
-  
+
   <profiles>
     <profile>
       <id>glassfish-3.1-embedded</id>
