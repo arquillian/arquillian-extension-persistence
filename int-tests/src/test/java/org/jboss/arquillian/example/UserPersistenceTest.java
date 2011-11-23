@@ -131,7 +131,7 @@ public class UserPersistenceTest
 
    @Test
    @Data("datasets/single-user.xml")
-   @Expected({"datasets/single-user.xls", "datasets/expected-address.yml"})
+   @Expected(value = {"datasets/single-user.xls", "datasets/expected-address.yml"})
    public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
    {
       // given

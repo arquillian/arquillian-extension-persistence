@@ -22,8 +22,13 @@ import java.sql.Statement;
 
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.SortedTable.AbstractRowComparator;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
@@ -36,6 +41,7 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandl
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
+import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 
 public class DBUnitDatasetHandler implements DataHandler
 {
@@ -48,6 +54,9 @@ public class DBUnitDatasetHandler implements DataHandler
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
+
+   @Inject
+   private Instance<AssertionErrorCollector> assertionErrorCollector;
 
    @Override
    public void prepare(@Observes PrepareData prepareDataEvent)
@@ -73,20 +82,23 @@ public class DBUnitDatasetHandler implements DataHandler
          String[] tableNames = expectedDataSet.getTableNames();
          for (String tableName : tableNames)
          {
-            ITable currentTableState = currentDataSet.getTable(tableName);
-            ITable expectedTableState = expectedDataSet.getTable(tableName);
+            SortedTable expectedTableState = new SortedTable(expectedDataSet.getTable(tableName));
+            SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName), expectedTableState.getTableMetaData());
             String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState, currentTableState);
-            Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
+            try
+            {
+               Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
+            }
+            catch (AssertionError error)
+            {
+               assertionErrorCollector.get().collect(error);
+            }
+
          }
       }
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException(e);
-      }
-      catch (AssertionError error)
-      {
-         System.out.println("this should be collected");
-         error.printStackTrace();
       }
    }
 
@@ -150,4 +162,19 @@ public class DBUnitDatasetHandler implements DataHandler
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
    }
 
+
+   private static class RowComparator extends AbstractRowComparator {
+
+      public RowComparator(ITable table, Column[] sortColumns) {
+          super(table, sortColumns);
+      }
+
+      protected int compare(Column column, Object value1, Object value2)
+              throws TypeCastException {
+          DataType dataType = column.getDataType();
+          int result = dataType.compare(value1, value2);
+          return result;
+      }
+
+  }
 }

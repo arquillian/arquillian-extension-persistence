@@ -37,6 +37,7 @@ import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -54,6 +55,9 @@ public class PersistenceTestHandler
 
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
+
+   @Inject @TestScoped
+   private InstanceProducer<AssertionErrorCollector> assertionErrorCollectorProducer;
 
    @Inject
    private Event<PrepareData> prepareDataEvent;
@@ -85,6 +89,7 @@ public class PersistenceTestHandler
       {
          return;
       }
+      assertionErrorCollectorProducer.set(new AssertionErrorCollector());
 
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
@@ -121,6 +126,7 @@ public class PersistenceTestHandler
       }
 
       cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));
+      assertionErrorCollectorProducer.get().report();
    }
 
    // Private methods
