@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -48,28 +48,28 @@ public class PersistenceTestHandler
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-   
+
    @Inject @ClassScoped
    private InstanceProducer<MetadataExtractor> metadataExtractor;
-   
+
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
-   
+
    @Inject
    private Event<PrepareData> prepareDataEvent;
-   
+
    @Inject
    private Event<CompareData> compareDataEvent;
 
    @Inject
    private Event<CleanUpData> cleanUpDataEvent;
-   
+
    @Inject
    private Event<TransactionStarted> transactionStartedEvent;
 
    @Inject
    private Event<TransactionFinished> transactionFinishedEvent;
-   
+
    @Inject
    private Instance<Context> contextInst;
 
@@ -77,7 +77,7 @@ public class PersistenceTestHandler
    {
       metadataExtractor.set(new MetadataExtractor(beforeClass.getTestClass()));
    }
-   
+
    public void beforeTest(@Observes Before beforeTestEvent)
    {
       MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
@@ -88,10 +88,13 @@ public class PersistenceTestHandler
 
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
-      
-      DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
-      prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors(beforeTestEvent.getTestMethod())));
-      
+
+      if (metadataProvider.isDataSeedOperationRequested())
+      {
+         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
+         prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors(beforeTestEvent.getTestMethod())));
+      }
+
       if (metadataProvider.isTransactional())
       {
          transactionStartedEvent.fire(new TransactionStarted(beforeTestEvent));
@@ -105,23 +108,23 @@ public class PersistenceTestHandler
       {
          return;
       }
-      
+
       if (metadataProvider.isTransactional())
       {
          transactionFinishedEvent.fire(new TransactionFinished(afterTestEvent));
       }
 
-      if (metadataProvider.isDataVerificationExpected())
+      if (metadataProvider.isDataVerificationRequested())
       {
          DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
          compareDataEvent.fire(new CompareData(afterTestEvent, dataSetProvider.getExpectedDataSetDescriptors(afterTestEvent.getTestMethod())));
       }
-      
+
       cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));
    }
 
    // Private methods
-   
+
    private DataSource loadDataSource(String dataSourceName)
    {
       try

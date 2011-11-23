@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -42,13 +42,13 @@ public class DBUnitDatasetHandler implements DataHandler
 
    @Inject
    private Instance<DatabaseConnection> databaseConnection;
-   
+
    @Inject
    private Instance<DataSetRegister> dataSetRegister;
-   
+
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-   
+
    @Override
    public void prepare(@Observes PrepareData prepareDataEvent)
    {
@@ -75,7 +75,7 @@ public class DBUnitDatasetHandler implements DataHandler
          {
             ITable currentTableState = currentDataSet.getTable(tableName);
             ITable expectedTableState = expectedDataSet.getTable(tableName);
-            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState,currentTableState);
+            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState, currentTableState);
             Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
          }
       }
@@ -83,8 +83,13 @@ public class DBUnitDatasetHandler implements DataHandler
       {
          throw new DBUnitDataSetHandlingException(e);
       }
+      catch (AssertionError error)
+      {
+         System.out.println("this should be collected");
+         error.printStackTrace();
+      }
    }
-   
+
    @Override
    public void cleanup(@Observes CleanUpData cleanupDataEvent)
    {
@@ -114,8 +119,8 @@ public class DBUnitDatasetHandler implements DataHandler
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException(e);
-      } 
-      finally 
+      }
+      finally
       {
          if (initStatement != null)
          {
@@ -144,5 +149,5 @@ public class DBUnitDatasetHandler implements DataHandler
       IDataSet dataSet = connection.createDataSet();
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
    }
-   
+
 }

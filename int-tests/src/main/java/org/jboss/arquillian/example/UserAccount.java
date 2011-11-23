@@ -68,6 +68,14 @@ public class UserAccount
       // To satisfy JPA
    }
    
+   public UserAccount(String firstName, String lastName, String username, String password)
+   {
+      this.firstname = firstName;
+      this.lastname = lastName;
+      this.username = username;
+      this.password = password;
+   }
+
    public void addAddress(Address address)
    {
       this.addresses.add(address);

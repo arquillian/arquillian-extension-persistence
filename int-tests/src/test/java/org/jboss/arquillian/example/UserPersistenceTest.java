@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -61,12 +61,12 @@ public class UserPersistenceTest
 
       // when
       Address address = user.getAddresses().iterator().next();
-      
+
       // then
       assertThat(user.getAddresses()).hasSize(1);
       assertThat(address.getCity()).isEqualTo(expectedCity);
    }
-   
+
    @Test
    @Data("datasets/single-user.xls")
    public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
@@ -77,10 +77,10 @@ public class UserPersistenceTest
       // when
       UserAccount user = em.find(UserAccount.class, 1L);
 
-      // then 
+      // then
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
    }
-   
+
    @Test
    @Data("datasets/single-user.xml")
    public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
@@ -91,10 +91,10 @@ public class UserPersistenceTest
       // when
       UserAccount user = em.find(UserAccount.class, 1L);
 
-      // then 
+      // then
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
    }
-   
+
    @Test
    @Data("datasets/users.yml")
    @Expected("datasets/expected-users.yml")
@@ -107,11 +107,11 @@ public class UserPersistenceTest
       // when
       user.setPassword("LexLuthor");
       em.merge(user);
-      
-      // then 
+
+      // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
-   
+
    @Test
    @Data("datasets/user-with-address.yml")
    public void shouldHaveAddressLinkedToUserAccount() throws Exception
@@ -123,7 +123,7 @@ public class UserPersistenceTest
       // when
       UserAccount user = em.find(UserAccount.class, userAccountId);
       Address address = user.getAddresses().iterator().next();
-      
+
       // then
       assertThat(user.getAddresses()).hasSize(1);
       assertThat(address.getCity()).isEqualTo(expectedCity);
@@ -136,14 +136,31 @@ public class UserPersistenceTest
    {
       // given
       UserAccount user = em.find(UserAccount.class, 1L);
-      Address address = new Address("Testing Street", 7, "JavaPolis", 1234); 
+      Address address = new Address("Testing Street", 7, "JavaPolis", 1234);
 
       // when
       user.addAddress(address);
       em.merge(user);
-      
+
       // then
       assertThat(user.getAddresses()).hasSize(1);
+   }
+
+   @Test
+   @Expected("datasets/expected-users.yml")
+   public void shouldPersistUsersAndVerifyUsingExpectedMechanism() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+
+      // then
+      // should be persisted - verified by @Expected annotation
+
    }
 
 }
