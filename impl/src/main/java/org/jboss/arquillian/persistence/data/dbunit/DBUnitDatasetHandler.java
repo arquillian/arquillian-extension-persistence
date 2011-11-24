@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -22,8 +22,13 @@ import java.sql.Statement;
 
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.SortedTable.AbstractRowComparator;
+import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
@@ -36,19 +41,23 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandl
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
+import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 
 public class DBUnitDatasetHandler implements DataHandler
 {
 
    @Inject
    private Instance<DatabaseConnection> databaseConnection;
-   
+
    @Inject
    private Instance<DataSetRegister> dataSetRegister;
-   
+
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-   
+
+   @Inject
+   private Instance<AssertionErrorCollector> assertionErrorCollector;
+
    @Override
    public void prepare(@Observes PrepareData prepareDataEvent)
    {
@@ -73,10 +82,18 @@ public class DBUnitDatasetHandler implements DataHandler
          String[] tableNames = expectedDataSet.getTableNames();
          for (String tableName : tableNames)
          {
-            ITable currentTableState = currentDataSet.getTable(tableName);
-            ITable expectedTableState = expectedDataSet.getTable(tableName);
-            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState,currentTableState);
-            Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
+            SortedTable expectedTableState = new SortedTable(expectedDataSet.getTable(tableName));
+            SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName), expectedTableState.getTableMetaData());
+            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState, currentTableState);
+            try
+            {
+               Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
+            }
+            catch (AssertionError error)
+            {
+               assertionErrorCollector.get().collect(error);
+            }
+
          }
       }
       catch (Exception e)
@@ -84,7 +101,7 @@ public class DBUnitDatasetHandler implements DataHandler
          throw new DBUnitDataSetHandlingException(e);
       }
    }
-   
+
    @Override
    public void cleanup(@Observes CleanUpData cleanupDataEvent)
    {
@@ -114,8 +131,8 @@ public class DBUnitDatasetHandler implements DataHandler
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException(e);
-      } 
-      finally 
+      }
+      finally
       {
          if (initStatement != null)
          {
@@ -144,5 +161,20 @@ public class DBUnitDatasetHandler implements DataHandler
       IDataSet dataSet = connection.createDataSet();
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
    }
-   
+
+
+   private static class RowComparator extends AbstractRowComparator {
+
+      public RowComparator(ITable table, Column[] sortColumns) {
+          super(table, sortColumns);
+      }
+
+      protected int compare(Column column, Object value1, Object value2)
+              throws TypeCastException {
+          DataType dataType = column.getDataType();
+          int result = dataType.compare(value1, value2);
+          return result;
+      }
+
+  }
 }

@@ -11,7 +11,7 @@
   <container qualifier="glassfish-embedded" default="true">
     <configuration>
       <property name="sunResourcesXml">src/test/resources-glassfish-3.1/glassfish-resources.xml</property>
-      <property name="bindHttpPort">9090</property>
+      <property name="bindHttpPort">9999</property>
     </configuration>
   </container>
 

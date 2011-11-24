@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -28,13 +28,13 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
- * 
+ *
  * Creates <code>arquillian-persistence.jar</code> archive
  * to run Persistence Extension. Includes all dependencies required
  * by the extension.
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- * 
+ *
  */
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
@@ -43,18 +43,19 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
                                       .addPackages(true,
+                                            // exclude client package
                                             Filters.exclude(PersistenceExtension.class.getPackage()),
                                             PersistenceTestHandler.class.getPackage())
-                                      .addPackages(true, 
+                                      .addPackages(true,
                                             "org.dbunit",
                                             "org.apache.poi",
                                             "org.apache.commons",
                                             "org.apache.log4j",
                                             "org.slf4j",
                                             "org.yaml")
-                                      .addAsServiceProvider(RemoteLoadableExtension.class, 
+                                      .addAsServiceProvider(RemoteLoadableExtension.class,
                                             RemotePersistenceExtension.class);
-      
+
       return archive;
    }
 
