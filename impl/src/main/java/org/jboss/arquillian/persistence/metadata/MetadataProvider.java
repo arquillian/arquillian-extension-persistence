@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -31,7 +31,7 @@ public class MetadataProvider
    private final PersistenceConfiguration configuration;
 
    private final MetadataExtractor metadataExtractor;
-   
+
    private final Method testMethod;
 
    public MetadataProvider(Method testMethod, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
@@ -44,7 +44,7 @@ public class MetadataProvider
    // ---------------------------------------------------------------------------------------------------
    // Public API methods
    // ---------------------------------------------------------------------------------------------------
-   
+
    public boolean isPersistenceFeatureEnabled()
    {
       if (!hasDataSourceAnnotation() && !configuration.isDefaultDataSourceDefined())
@@ -54,18 +54,24 @@ public class MetadataProvider
 
       return (hasDataAnnotation() || hasExpectedAnnotation() || hasPersistenceTestAnnotation());
    }
-   
-   public boolean isDataVerificationExpected()
+
+   public boolean isDataSeedOperationRequested()
+   {
+      return metadataExtractor.hasDataAnnotationOnClassLevel()
+            || metadataExtractor.hasDataAnnotationOn(testMethod);
+   }
+
+   public boolean isDataVerificationRequested()
    {
       return metadataExtractor.hasExpectedAnnotationOnClassLevel()
             || metadataExtractor.hasExpectedAnnotationOn(testMethod);
    }
-   
+
    public boolean isTransactional()
    {
-      return !TransactionMode.DISABLED.equals(getTransactionalMode()); 
+      return !TransactionMode.DISABLED.equals(getTransactionalMode());
    }
-   
+
    public TransactionMode getTransactionalMode()
    {
       Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOnClassLevel();
@@ -73,7 +79,7 @@ public class MetadataProvider
       {
          transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(testMethod);
       }
-      
+
       TransactionMode mode = configuration.getDefaultTransactionMode();
       if (transactionalAnnotation != null)
       {
@@ -103,7 +109,7 @@ public class MetadataProvider
 
       return dataSource;
    }
-   
+
    // ---------------------------------------------------------------------------------------------------
    // Internal methods
    // ---------------------------------------------------------------------------------------------------
@@ -113,13 +119,13 @@ public class MetadataProvider
       return metadataExtractor.hasDataAnnotationOnClassLevel()
             || metadataExtractor.hasDataAnnotationOn(testMethod);
    }
-   
+
    private boolean hasExpectedAnnotation()
    {
       return metadataExtractor.hasExpectedAnnotationOnClassLevel()
             || metadataExtractor.hasExpectedAnnotationOn(testMethod);
    }
-   
+
    private boolean hasPersistenceTestAnnotation()
    {
       return metadataExtractor.hasPersistenceTestAnnotation();
@@ -142,5 +148,4 @@ public class MetadataProvider
       return usedAnnotation;
    }
 
-   
 }

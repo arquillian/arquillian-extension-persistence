@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -42,7 +42,7 @@ import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 /**
- * 
+ *
  * @author Bartosz Majsak
  *
  */
@@ -57,11 +57,11 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    @Inject @TestScoped
    private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
-   
+
    // ------------------------------------------------------------------------------------------------
    // Intercepting data handling events
    // ------------------------------------------------------------------------------------------------
-   
+
    public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
    {
       PrepareData prepareDataEvent = context.getEvent();
@@ -73,10 +73,11 @@ public class DBUnitPersistenceTestLifecycleHandler
    public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
    {
       CompareData compareDataEvent = context.getEvent();
+      createDatabaseConnection();
       createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
       context.proceed();
    }
-   
+
    public void closeConnection(@Observes(precedence = 1000) EventContext<CleanUpData> context)
    {
       try
@@ -89,11 +90,16 @@ public class DBUnitPersistenceTestLifecycleHandler
          throw new DBUnitConnectionException("Unable to close connection", e);
       }
    }
-   
+
    // ------------------------------------------------------------------------------------------------
-   
+
    private void createDatabaseConnection()
    {
+      if (databaseConnectionProducer.get() != null)
+      {
+         return;
+      }
+
       try
       {
          DataSource dataSource = databaseSourceInstance.get();
@@ -119,7 +125,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
       dataSetRegisterProducer.set(dataSetRegister);
    }
-   
+
    private IDataSet createInitialDataSet(DataSetDescriptor dataSetDescriptor)
    {
       final String file = dataSetDescriptor.getFileName();
@@ -154,5 +160,5 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
       return dataSetRegister;
    }
-   
+
 }
