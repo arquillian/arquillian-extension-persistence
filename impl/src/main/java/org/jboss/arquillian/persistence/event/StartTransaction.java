@@ -21,15 +21,15 @@ import java.lang.reflect.Method;
 
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class TransactionStarted extends TestEvent
+public class StartTransaction extends TestEvent
 {
 
-   public TransactionStarted(Object testInstance, Method testMethod)
+   public StartTransaction(Object testInstance, Method testMethod)
    {
       super(testInstance, testMethod);
    }
    
-   public TransactionStarted(TestEvent testEvent)
+   public StartTransaction(TestEvent testEvent)
    {
       super(testEvent.getTestInstance(), testEvent.getTestMethod());
    }

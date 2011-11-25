@@ -26,8 +26,8 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.event.TransactionFinished;
-import org.jboss.arquillian.persistence.event.TransactionStarted;
+import org.jboss.arquillian.persistence.event.EndTransaction;
+import org.jboss.arquillian.persistence.event.StartTransaction;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
@@ -42,13 +42,13 @@ public class TransactionalWrapper
    private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
-   private Instance<Context> contextInst;
+   private Instance<Context> contextInstance;
 
    private UserTransaction obtainTransaction()
    {
       try
       {
-         final Context context = contextInst.get();
+         final Context context = contextInstance.get();
          if(context == null)
          {
             throw new ContextNotAvailableException("No Naming Context available");
@@ -61,9 +61,9 @@ public class TransactionalWrapper
       }
    }
    
-   public void beforeTest(@Observes TransactionStarted transactionStarted) throws Exception
+   public void beforeTest(@Observes StartTransaction startTransaction) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(transactionStarted.getTestMethod(), metadataExtractor.get(), configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(startTransaction.getTestMethod(), metadataExtractor.get(), configuration.get());
       if (!metadataProvider.isTransactional())
       {
          return;
@@ -71,9 +71,9 @@ public class TransactionalWrapper
       obtainTransaction().begin();
    }
    
-   public void afterTest(@Observes TransactionFinished transactionFinished) throws Exception
+   public void afterTest(@Observes EndTransaction endTransaction) throws Exception
    {
-      MetadataProvider metadataProvider = new MetadataProvider(transactionFinished.getTestMethod(), metadataExtractor.get(), configuration.get());
+      MetadataProvider metadataProvider = new MetadataProvider(endTransaction.getTestMethod(), metadataExtractor.get(), configuration.get());
 
       TransactionMode mode = metadataProvider.getTransactionalMode();
       if (TransactionMode.COMMIT.equals(mode))

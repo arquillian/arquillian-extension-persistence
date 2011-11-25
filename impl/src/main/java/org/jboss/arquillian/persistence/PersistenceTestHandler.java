@@ -30,8 +30,8 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
-import org.jboss.arquillian.persistence.event.TransactionFinished;
-import org.jboss.arquillian.persistence.event.TransactionStarted;
+import org.jboss.arquillian.persistence.event.EndTransaction;
+import org.jboss.arquillian.persistence.event.StartTransaction;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
@@ -69,13 +69,13 @@ public class PersistenceTestHandler
    private Event<CleanUpData> cleanUpDataEvent;
 
    @Inject
-   private Event<TransactionStarted> transactionStartedEvent;
+   private Event<StartTransaction> startTransactionEvent;
 
    @Inject
-   private Event<TransactionFinished> transactionFinishedEvent;
+   private Event<EndTransaction> endTransactionEvent;
 
    @Inject
-   private Instance<Context> contextInst;
+   private Instance<Context> contextInstance;
 
    public void beforeSuite(@Observes BeforeClass beforeClass)
    {
@@ -102,7 +102,7 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isTransactional())
       {
-         transactionStartedEvent.fire(new TransactionStarted(beforeTestEvent));
+         startTransactionEvent.fire(new StartTransaction(beforeTestEvent));
       }
    }
 
@@ -116,7 +116,7 @@ public class PersistenceTestHandler
 
       if (metadataProvider.isTransactional())
       {
-         transactionFinishedEvent.fire(new TransactionFinished(afterTestEvent));
+         endTransactionEvent.fire(new EndTransaction(afterTestEvent));
       }
 
       if (metadataProvider.isDataVerificationRequested())
@@ -135,7 +135,7 @@ public class PersistenceTestHandler
    {
       try
       {
-         final Context context = contextInst.get();
+         final Context context = contextInstance.get();
          if(context == null)
          {
             throw new ContextNotAvailableException("No Naming Context available");

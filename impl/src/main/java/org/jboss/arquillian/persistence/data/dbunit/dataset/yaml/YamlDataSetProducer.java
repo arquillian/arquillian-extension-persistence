@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -39,9 +39,9 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * Produces YAML data set from the given file.
- * 
+ *
  * @see YamlDataSet
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
@@ -86,10 +86,10 @@ public class YamlDataSetProducer implements IDataSetProducer
             }
             consumer.row(values.toArray());
          }
-         
+
          consumer.endTable();
       }
-      
+
       consumer.endDataSet();
 
    }
@@ -132,7 +132,7 @@ public class YamlDataSetProducer implements IDataSetProducer
       }
       return extractedRows;
    }
-   
+
    private Collection<String> extractColumns(List<Map<String, String>> rows)
    {
       final Set<String> columns = new HashSet<String>();
@@ -144,7 +144,7 @@ public class YamlDataSetProducer implements IDataSetProducer
    }
 
    // Getters & Setters
-   
+
    public boolean isCaseSensitiveTableNames()
    {
       return caseSensitiveTableNames;
