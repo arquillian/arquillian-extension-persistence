@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.persistence.PersistenceTestHandler;
+import org.jboss.arquillian.persistence.configuration.RemotePersistenceConfigurationProducer;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDatasetHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
@@ -37,7 +38,7 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.observer(ConfigurationLoader.class)
+      builder.observer(RemotePersistenceConfigurationProducer.class)
              .observer(CommandServiceProducer.class)
              .observer(PersistenceTestHandler.class)
              .observer(TransactionalWrapper.class);
@@ -45,6 +46,7 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
       builder.observer(DBUnitDatasetHandler.class)
              .observer(DBUnitPersistenceTestLifecycleHandler.class)
              .observer(DBUnitDataStateLogger.class);
+
    }
 
 }

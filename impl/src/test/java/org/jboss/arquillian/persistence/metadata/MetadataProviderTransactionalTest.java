@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
-import org.jboss.arquillian.persistence.client.ConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;

@@ -15,12 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.client;
+package org.jboss.arquillian.persistence.configuration;
 
 import java.io.InputStream;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.persistence.client.ConfigurationExtractor;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 

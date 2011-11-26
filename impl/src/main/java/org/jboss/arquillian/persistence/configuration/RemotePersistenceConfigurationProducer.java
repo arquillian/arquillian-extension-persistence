@@ -15,38 +15,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.container;
+package org.jboss.arquillian.persistence.configuration;
 
-import org.jboss.arquillian.container.test.spi.command.CommandService;
-import org.jboss.arquillian.core.api.Instance;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.jboss.arquillian.container.test.spi.command.Command;
 import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.command.ConfigurationCommand;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.yaml.snakeyaml.Yaml;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 /**
- * Loads configuration from the client-side test environment and exposes
- * it to the remote container through {@link ConfigurationCommand} mechanism.
+ *
+ * Triggers configuration creation on the container side.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class ConfigurationLoader
+public class RemotePersistenceConfigurationProducer
 {
+   private static final String ARQUILLIAN_CONFIG_IN_YAML = "persistence-config.yml";
 
-   @Inject
-   Instance<CommandService> commandService;
+   @Inject @ApplicationScoped
+   InstanceProducer<PersistenceConfiguration> configurationProducer;
 
-   @Inject @SuiteScoped
-   private InstanceProducer<PersistenceConfiguration> configuration;
-
-   public void fetchConfiguration(@Observes BeforeSuite beforeSuite)
+   public void configure(@Observes BeforeSuite beforeClassEvent)
    {
-      ConfigurationCommand command = new ConfigurationCommand();
-      configuration.set(commandService.get().execute(command));
+      PersistenceConfiguration configuration = (PersistenceConfiguration) new Yaml().load(loadArquillianYaml());
+      configurationProducer.set(configuration);
+   }
+
+   // Private methods
+
+   private InputStream loadArquillianYaml()
+   {
+      return Thread.currentThread().getContextClassLoader().getResourceAsStream(ARQUILLIAN_CONFIG_IN_YAML);
    }
 
 }
