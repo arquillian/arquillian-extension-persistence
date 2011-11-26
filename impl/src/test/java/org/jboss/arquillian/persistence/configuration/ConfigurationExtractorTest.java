@@ -15,12 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.client;
+package org.jboss.arquillian.persistence.configuration;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.client.ConfigurationExtractor;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.Format;
 import org.junit.Test;
