@@ -23,8 +23,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.example.Address;
-import org.jboss.arquillian.example.UserAccount;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.Expected;

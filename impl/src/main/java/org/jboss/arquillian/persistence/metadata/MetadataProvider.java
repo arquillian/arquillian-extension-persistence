@@ -47,11 +47,6 @@ public class MetadataProvider
 
    public boolean isPersistenceFeatureEnabled()
    {
-      if (!hasDataSourceAnnotation() && !configuration.isDefaultDataSourceDefined())
-      {
-         throw new DataSourceNotDefinedException("Data source not defined!");
-      }
-
       return (hasDataAnnotation() || hasExpectedAnnotation() || hasPersistenceTestAnnotation());
    }
 
