@@ -17,20 +17,14 @@
  */
 package org.jboss.arquillian.persistence.configuration;
 
-import java.io.IOException;
 import java.io.InputStream;
 
-import org.jboss.arquillian.container.test.spi.command.Command;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 import org.yaml.snakeyaml.Yaml;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 
 /**
  *
