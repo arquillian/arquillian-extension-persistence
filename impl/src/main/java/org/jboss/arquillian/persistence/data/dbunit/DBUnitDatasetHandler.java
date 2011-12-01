@@ -22,13 +22,8 @@ import java.sql.Statement;
 
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
-import org.dbunit.dataset.SortedTable.AbstractRowComparator;
-import org.dbunit.dataset.datatype.DataType;
-import org.dbunit.dataset.datatype.TypeCastException;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
@@ -162,19 +157,4 @@ public class DBUnitDatasetHandler implements DataHandler
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
    }
 
-
-   private static class RowComparator extends AbstractRowComparator {
-
-      public RowComparator(ITable table, Column[] sortColumns) {
-          super(table, sortColumns);
-      }
-
-      protected int compare(Column column, Object value1, Object value2)
-              throws TypeCastException {
-          DataType dataType = column.getDataType();
-          int result = dataType.compare(value1, value2);
-          return result;
-      }
-
-  }
 }
