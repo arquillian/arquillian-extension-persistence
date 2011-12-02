@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 /**
  * 
  * Marker annotation which enables Arquillian Persistence Extension.
- * Might be used interchangeably with {@link Data} or {@link Expected}.
+ * Might be used interchangeably with {@link UsingDataSet} or {@link ShouldMatchDataSet}.
  * 
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

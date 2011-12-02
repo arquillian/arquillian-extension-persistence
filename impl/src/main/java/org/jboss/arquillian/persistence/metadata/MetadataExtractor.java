@@ -22,9 +22,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.arquillian.persistence.Data;
+import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -36,9 +36,9 @@ public class MetadataExtractor
 
    private Map<Method,DataSource> dataSourceAnnotations;
 
-   private Map<Method,Data> dataAnnotations;
+   private Map<Method,UsingDataSet> dataAnnotations;
 
-   private Map<Method,Expected> expectedAnnotations;
+   private Map<Method,ShouldMatchDataSet> expectedAnnotations;
 
    private Map<Method,Transactional> transactionalAnnotations;
 
@@ -53,7 +53,7 @@ public class MetadataExtractor
       return getDataAnnotationOn(testMethod) != null;
    }
 
-   public Data getDataAnnotationOn(Method testMethod)
+   public UsingDataSet getDataAnnotationOn(Method testMethod)
    {
       return dataAnnotations.get(testMethod);
    }
@@ -83,7 +83,7 @@ public class MetadataExtractor
       return expectedAnnotations.get(testMethod) != null;
    }
 
-   public Expected getExpectedAnnotationOn(Method testMethod)
+   public ShouldMatchDataSet getExpectedAnnotationOn(Method testMethod)
    {
       return expectedAnnotations.get(testMethod);
    }
@@ -103,9 +103,9 @@ public class MetadataExtractor
       return getTransactionalAnnotationOnClassLevel() != null;
    }
 
-   public Expected getExpectedAnnotationOnClassLevel()
+   public ShouldMatchDataSet getExpectedAnnotationOnClassLevel()
    {
-      return getAnnotationOnClassLevel(Expected.class);
+      return getAnnotationOnClassLevel(ShouldMatchDataSet.class);
    }
 
    public boolean hasExpectedAnnotationOnClassLevel()
@@ -113,9 +113,9 @@ public class MetadataExtractor
       return getExpectedAnnotationOnClassLevel() != null;
    }
 
-   public Data getDataAnnotationOnClassLevel()
+   public UsingDataSet getDataAnnotationOnClassLevel()
    {
-      return getAnnotationOnClassLevel(Data.class);
+      return getAnnotationOnClassLevel(UsingDataSet.class);
    }
 
    public boolean hasDataAnnotationOnClassLevel()
@@ -137,8 +137,8 @@ public class MetadataExtractor
 
    private void prefetchPersistenceAnnotations()
    {
-      dataAnnotations = fetch(Data.class);
-      expectedAnnotations = fetch(Expected.class);
+      dataAnnotations = fetch(UsingDataSet.class);
+      expectedAnnotations = fetch(ShouldMatchDataSet.class);
       dataSourceAnnotations = fetch(DataSource.class);
       transactionalAnnotations = fetch(Transactional.class);
    }

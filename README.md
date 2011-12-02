@@ -4,7 +4,7 @@ Arquillian Persistence Extension
 ### What is this?
 
 Arquillian Persistence Extension was created to help you writing tests where persistence layer is involved.
-Inspired by great framework called [Unitils](http://unitils.org/), it brings bunch of annotations to help you 
+Inspired by great framework called [Unitils](http://unitils.org/), it brings bunch of annotations to help you
 deal with the underlying data storage.
 
 Arquillian Persistence Extension comes with following features:
@@ -18,7 +18,7 @@ Currently tested on **Glassfish 3.1 Embedded** and **JBoss AS 7.0.2 Final** (man
 Enough talking, let's see it in action!
 
 ### Code example
-    
+
     @RunWith(Arquillian.class)
     public class UserPersistenceTest
     {
@@ -35,27 +35,27 @@ Enough talking, let's see it in action!
 
       @PersistenceContext
       EntityManager em;
-   
+
       @Test
-      @Data("datasets/users.yml")
-      @Expected("datasets/expected-users.yml")
+      @UsingDataSet("datasets/users.yml")
+      @ShouldMatchDataSet("datasets/expected-users.yml")
       public void shouldChangeUserPassword() throws Exception
       {
           // given
           String expectedPassword = "LexLuthor";
           UserAccount user = em.find(UserAccount.class, 2L);
-    
+
           // when
           user.setPassword("LexLuthor");
           em.merge(user);
-      
-          // then 
+
+          // then
           assertThat(user.getPassword()).isEqualTo(expectedPassword);
       }
     }
 
-There are just two things which are different from the standard Arquillian test - `@Data` and `@Expected` annotations. Former 
-seeds the database using file in YAML format, and latter verifies database state using given file. 
+There are just two things which are different from the standard Arquillian test - `@UsingDataSet` and `@ShouldMatchDataSet` annotations. Former
+seeds the database using file in YAML format, and latter verifies database state using given file.
 
 This example is taken from **integration tests** written for this project, so feel free to have a closer look. But it's that easy! And there's more to come!
 

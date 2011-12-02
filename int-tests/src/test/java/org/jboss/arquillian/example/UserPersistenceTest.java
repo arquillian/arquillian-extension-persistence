@@ -24,8 +24,8 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -53,7 +53,7 @@ public class UserPersistenceTest
    EntityManager em;
 
    @Test
-   @Data({"datasets/single-user.xml", "datasets/address.yml"})
+   @UsingDataSet({"datasets/single-user.xml", "datasets/address.yml"})
    public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
    {
       // given
@@ -69,7 +69,7 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Data("datasets/single-user.xls")
+   @UsingDataSet("datasets/single-user.xls")
    public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
    {
       // given
@@ -83,7 +83,7 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Data("datasets/single-user.xml")
+   @UsingDataSet("datasets/single-user.xml")
    public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
       // given
@@ -97,8 +97,8 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Data("datasets/users.yml")
-   @Expected("datasets/expected-users.yml")
+   @UsingDataSet("datasets/users.yml")
+   @ShouldMatchDataSet("datasets/expected-users.yml")
    public void shouldChangeUserPassword() throws Exception
    {
       // given
@@ -114,7 +114,7 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Data("datasets/user-with-address.yml")
+   @UsingDataSet("datasets/user-with-address.yml")
    public void shouldHaveAddressLinkedToUserAccount() throws Exception
    {
       // given
@@ -131,8 +131,8 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Data("datasets/single-user.xml")
-   @Expected(value = {"datasets/single-user.xls", "datasets/expected-address.yml"})
+   @UsingDataSet("datasets/single-user.xml")
+   @ShouldMatchDataSet({"datasets/single-user.xls", "datasets/expected-address.yml"})
    public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
    {
       // given
@@ -164,8 +164,8 @@ public class UserPersistenceTest
    }
 
    @Test
-   @Expected("datasets/expected-users.yml")
-   public void shouldPersistUsersAndVerifyUsingExpectedMechanism() throws Exception
+   @ShouldMatchDataSet("datasets/expected-users.yml")
+   public void shouldPersistUsersAndVerifyUsingMatchingMechanism() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -176,7 +176,7 @@ public class UserPersistenceTest
       em.persist(clarkKent);
 
       // then
-      // should be persisted - verified by @Expected annotation
+      // should be persisted - verified by @ShouldMatchDataSet annotation
 
    }
 

@@ -19,7 +19,7 @@ package org.jboss.arquillian.persistence.metadata;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.jboss.arquillian.persistence.Data;
+import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
@@ -125,7 +125,7 @@ public class MetadataProviderDataSourceTest
       public void shouldPassWithDataSourceDefinedOnMethodLevel() {}
    }
 
-   @Data
+   @UsingDataSet
    private static class DataSourceExpectedFromDefaultConfiguration
    {
       public void shouldPass() {}

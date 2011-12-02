@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -29,30 +29,29 @@ import java.lang.annotation.Target;
  * Provides information about data sets needs to be used for
  * seeding test database before test method execution.
  * <br />
- * If files are not specified explicitly, following strategy is applied:                             
- * <ul>                                                                                         
- *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>                 
- *   <li>                                                                                       
- *       If {@link Data} annotation is defined on method level, file name has following format: 
- *       <i>[fully qualified class name]#[test method name].[default format]</i>.               
- *   </li>                                                                                      
- *   <li>                                                                                       
- *       If {@link Data} annotation is defined on class level, file name has following format:  
- *       <i>[fully qualified class name]#.[default format]</i></li>.                            
- * </ul>                                                                                        
- * <br /><br />                                                                                 
- * If not specified in <code>arquillian.xml</code> expected format is XML.                      
- * 
+ * If files are not specified explicitly, following strategy is applied:
+ * <ul>
+ *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
+ *   <li>
+ *       If {@link UsingDataSet} annotation is defined on method level, file name has following format:
+ *       <i>[fully qualified class name]#[test method name].[default format]</i>.
+ *   </li>
+ *   <li>
+ *       If {@link UsingDataSet} annotation is defined on class level, file name has following format:
+ *       <i>[fully qualified class name]#.[default format]</i></li>.
+ * </ul>
+ * <br /><br />
+ * If not specified in <code>arquillian.xml</code> expected format is XML.
+ *
  * Presence of this annotation in the test class will enable Arquillian Persistence Extension.
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-@Target(
-{TYPE, METHOD})
+@Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface Data {
+public @interface UsingDataSet {
 
    String[] value() default "";
 

@@ -19,8 +19,8 @@ package org.jboss.arquillian.persistence.metadata;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -89,7 +89,7 @@ public class MetadataProviderPersistentFeatureTest
       assertThat(persistenceFeatureEnabled).isTrue();
    }
 
-   @Data
+   @UsingDataSet
    private static class DataSourceExpectedFromDefaultConfiguration
    {
       public void shouldPass() {}
@@ -103,7 +103,7 @@ public class MetadataProviderPersistentFeatureTest
 
    private static class PersistenceTestWithExpectedAnnotation
    {
-      @Expected
+      @ShouldMatchDataSet
       public void shouldPass() {}
    }
 
@@ -111,7 +111,4 @@ public class MetadataProviderPersistentFeatureTest
    {
       public void shouldPass() {}
    }
-
-
-
 }

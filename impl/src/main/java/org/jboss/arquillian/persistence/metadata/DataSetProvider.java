@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.DataSetFileNamingStrategy;
@@ -62,11 +62,11 @@ public class DataSetProvider
    public Set<DataSetDescriptor> getDataSetDescriptors(TestClass testClass)
    {
       final Set<DataSetDescriptor> dataSetDescriptors = new HashSet<DataSetDescriptor>();
-      for (Method testMethod : testClass.getMethods(Data.class))
+      for (Method testMethod : testClass.getMethods(UsingDataSet.class))
       {
          dataSetDescriptors.addAll(getDataSetDescriptors(testMethod));
       }
-      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(Data.class)));
+      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(UsingDataSet.class)));
       return dataSetDescriptors ;
    }
    
@@ -80,11 +80,11 @@ public class DataSetProvider
    public Set<DataSetDescriptor> getExpectedDataSetDescriptors(TestClass testClass)
    {
       final Set<DataSetDescriptor> dataSetDescriptors = new HashSet<DataSetDescriptor>();
-      for (Method testMethod : testClass.getMethods(Expected.class))
+      for (Method testMethod : testClass.getMethods(ShouldMatchDataSet.class))
       {
          dataSetDescriptors.addAll(getExpectedDataSetDescriptors(testMethod));
       }
-      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(Expected.class)));
+      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(ShouldMatchDataSet.class)));
       return dataSetDescriptors ;
    }
 
@@ -181,7 +181,7 @@ public class DataSetProvider
    
    List<String> getDataFileNames(Method testMethod)
    {
-      Data dataAnnotation = getDataAnnotation(testMethod);
+      UsingDataSet dataAnnotation = getDataAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();
       if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
@@ -202,7 +202,7 @@ public class DataSetProvider
 
    List<String> getExpectedDataFileNames(Method testMethod)
    {
-      Expected expectedAnnotation = getExpectedAnnotation(testMethod);
+      ShouldMatchDataSet expectedAnnotation = getExpectedAnnotation(testMethod);
       String[] specifiedFileNames = expectedAnnotation.value();
       if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
@@ -236,9 +236,9 @@ public class DataSetProvider
       return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
    
-   private Data getDataAnnotation(Method testMethod)
+   private UsingDataSet getDataAnnotation(Method testMethod)
    {
-      Data usedAnnotation = metadataExtractor.getDataAnnotationOnClassLevel();
+      UsingDataSet usedAnnotation = metadataExtractor.getDataAnnotationOnClassLevel();
       if (metadataExtractor.hasDataAnnotationOn(testMethod))
       {
          usedAnnotation = metadataExtractor.getDataAnnotationOn(testMethod);
@@ -247,9 +247,9 @@ public class DataSetProvider
       return usedAnnotation;
    }
    
-   private Expected getExpectedAnnotation(Method testMethod)
+   private ShouldMatchDataSet getExpectedAnnotation(Method testMethod)
    {
-      Expected usedAnnotation = metadataExtractor.getExpectedAnnotationOnClassLevel();
+      ShouldMatchDataSet usedAnnotation = metadataExtractor.getExpectedAnnotationOnClassLevel();
       if (metadataExtractor.hasExpectedAnnotationOn(testMethod))
       {
          usedAnnotation = metadataExtractor.getExpectedAnnotationOn(testMethod);

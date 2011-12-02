@@ -25,7 +25,6 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-
 /**
  * Verifies state of underlying data store using data sets
  * defined by this annotation. Verification is invoked after test's
@@ -36,11 +35,11 @@ import java.lang.annotation.Target;
  * <ul>
  *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
  *   <li>
- *       If {@link Data} annotation is defined on method level, file name has following format:
+ *       If {@link UsingDataSet} annotation is defined on method level, file name has following format:
  *       <i>expected-[fully qualified class name]#[test method name].[default format]</i>.
  *   </li>
  *   <li>
- *       If {@link Data} annotation is defined on class level, file name has following format:
+ *       If {@link UsingDataSet} annotation is defined on class level, file name has following format:
  *       <i>expected-[fully qualified class name]#.[default format]</i></li>.
  * </ul>
  * <br /><br />
@@ -54,7 +53,7 @@ import java.lang.annotation.Target;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface Expected
+public @interface ShouldMatchDataSet
 {
 
    String[] value() default "";
