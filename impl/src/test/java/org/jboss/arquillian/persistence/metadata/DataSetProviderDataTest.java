@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jboss.arquillian.persistence.Data;
-import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
@@ -42,7 +42,7 @@ public class DataSetProviderDataTest
    
    private static final String EXCEL_DATA_SET_ON_METHOD_LEVEL = "datasets/xls/method-level.xls";
 
-   private PersistenceConfiguration defaultConfiguration = ConfigurationLoader.createDefaultConfiguration();
+   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
    public void shouldFetchAllDataSetsDefinedForTestClass() throws Exception

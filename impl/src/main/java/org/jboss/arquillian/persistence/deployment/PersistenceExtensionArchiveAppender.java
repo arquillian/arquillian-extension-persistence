@@ -17,22 +17,22 @@
  */
 package org.jboss.arquillian.persistence.deployment;
 
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import java.io.ByteArrayOutputStream;
+
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.PersistenceTestHandler;
 import org.jboss.arquillian.persistence.client.PersistenceExtension;
+import org.jboss.arquillian.persistence.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.Asset;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  *
@@ -45,13 +45,14 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
+   private static final String ARQ_PROPERTIES = "arquillian.properties";
+
    @Inject
    Instance<PersistenceConfiguration> configuration;
 
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      final String persistenceConfigurationInYaml = new Yaml().dump(configuration.get());
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
                                       .addPackages(true,
                                             // exclude client package
@@ -64,11 +65,18 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                                             "org.apache.log4j",
                                             "org.slf4j",
                                             "org.yaml")
-                                      .addAsResource(new StringAsset(persistenceConfigurationInYaml),
-                                            "persistence-config.yml")
+                                      .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
                                       .addAsServiceProvider(RemoteLoadableExtension.class,
                                             RemotePersistenceExtension.class);
       return archive;
+   }
+
+   private ByteArrayOutputStream exportConfigurationAsProperties()
+   {
+      final ByteArrayOutputStream output = new ByteArrayOutputStream();
+      final ConfigurationExporter exporter = new ConfigurationExporter(configuration.get());
+      exporter.toProperties(output);
+      return output;
    }
 
 }

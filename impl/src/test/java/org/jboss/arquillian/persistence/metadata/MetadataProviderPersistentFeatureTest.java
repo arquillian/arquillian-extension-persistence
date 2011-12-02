@@ -22,7 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.Expected;
 import org.jboss.arquillian.persistence.PersistenceTest;
-import org.jboss.arquillian.persistence.configuration.ConfigurationLoader;
+import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
             NonPersistenceTest.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), ConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
@@ -50,7 +50,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
             PersistenceTestClass.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), ConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
@@ -65,7 +65,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
             PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), ConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
@@ -80,7 +80,7 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), ConfigurationLoader.createDefaultConfiguration());
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
       boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();

@@ -17,14 +17,15 @@
  */
 package org.jboss.arquillian.persistence.configuration;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.exception.PersistenceExtensionInitializationException;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  *
@@ -35,22 +36,33 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class RemotePersistenceConfigurationProducer
 {
-   private static final String ARQUILLIAN_CONFIG_IN_YAML = "persistence-config.yml";
+
+   private static final String ARQ_PROPERTIES = "arquillian.properties";
 
    @Inject @ApplicationScoped
    InstanceProducer<PersistenceConfiguration> configurationProducer;
 
    public void configure(@Observes BeforeSuite beforeClassEvent)
    {
-      PersistenceConfiguration configuration = (PersistenceConfiguration) new Yaml().load(loadArquillianYaml());
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(loadProperties());
       configurationProducer.set(configuration);
    }
 
    // Private methods
 
-   private InputStream loadArquillianYaml()
+   private Properties loadProperties()
    {
-      return Thread.currentThread().getContextClassLoader().getResourceAsStream(ARQUILLIAN_CONFIG_IN_YAML);
+
+      Properties properties = new Properties();
+      try
+      {
+         properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(ARQ_PROPERTIES));
+      }
+      catch (IOException e)
+      {
+         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties.", e);
+      }
+      return properties ;
    }
 
 }

@@ -47,7 +47,8 @@ public class MetadataProvider
 
    public boolean isPersistenceFeatureEnabled()
    {
-      return (hasDataAnnotation() || hasExpectedAnnotation() || hasPersistenceTestAnnotation());
+      return (hasDataAnnotation() || hasExpectedAnnotation()
+            || hasPersistenceTestAnnotation() || hasTransactionalAnnotation());
    }
 
    public boolean isDataSeedOperationRequested()
@@ -130,6 +131,12 @@ public class MetadataProvider
    {
       return metadataExtractor.hasDataSourceAnnotationOnClassLevel()
             || metadataExtractor.hasDataSourceAnnotationOn(testMethod);
+   }
+
+   boolean hasTransactionalAnnotation()
+   {
+      return metadataExtractor.hasTransactionalAnnotationOnClassLevel()
+            || metadataExtractor.hasTransactionalAnnotationOn(testMethod);
    }
 
    private DataSource getDataSourceAnnotation()

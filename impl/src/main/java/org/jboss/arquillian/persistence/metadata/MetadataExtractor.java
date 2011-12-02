@@ -98,6 +98,11 @@ public class MetadataExtractor
       return getAnnotationOnClassLevel(Transactional.class);
    }
 
+   public boolean hasTransactionalAnnotationOnClassLevel()
+   {
+      return getTransactionalAnnotationOnClassLevel() != null;
+   }
+
    public Expected getExpectedAnnotationOnClassLevel()
    {
       return getAnnotationOnClassLevel(Expected.class);

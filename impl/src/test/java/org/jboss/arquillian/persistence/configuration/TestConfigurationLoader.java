@@ -10,20 +10,22 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package org.jboss.arquillian.persistence.configuration;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
-public class ConfigurationLoader
+public class TestConfigurationLoader
 {
 
    private static final String DEFAULT_CONFIG_FILENAME = "arquillian.xml";
@@ -34,29 +36,33 @@ public class ConfigurationLoader
       return classLoader.getResourceAsStream(fileName);
    }
 
-   public static ConfigurationExtractor createConfigurationExtractor(String fileName)
+   public static ArquillianDescriptor createArquillianDescriptor(String fileName)
    {
-      ArquillianDescriptor descriptor = Descriptors.importAs(ArquillianDescriptor.class).from(
-            ConfigurationLoader.loadArquillianConfiguration(fileName));
-
-      ConfigurationExtractor configurationExtractor = new ConfigurationExtractor(descriptor);
-      return configurationExtractor;
+      return Descriptors.importAs(ArquillianDescriptor.class).from(
+            TestConfigurationLoader.loadArquillianConfiguration(fileName));
    }
 
-   public static ConfigurationExtractor createConfigurationExtractorForDefaultConfiguration()
+   public static ArquillianDescriptor createArquillianDescriptorFromDefaultConfigurationFile()
    {
-      return createConfigurationExtractor(DEFAULT_CONFIG_FILENAME);
+      return createArquillianDescriptor(DEFAULT_CONFIG_FILENAME);
    }
 
    public static PersistenceConfiguration createDefaultConfiguration()
    {
-      return createConfiguration(DEFAULT_CONFIG_FILENAME);
+      return createPersistenceConfigurationFrom(DEFAULT_CONFIG_FILENAME);
    }
-   
-   public static PersistenceConfiguration createConfiguration(String fileName)
+
+   public static Properties createPropertiesFromCustomConfigurationFile() throws IOException
    {
-      ConfigurationExtractor configurationExtractor = createConfigurationExtractor(fileName);
-      return configurationExtractor.extract();
+      Properties properties = new Properties();
+      properties.load(loadArquillianConfiguration("properties/custom.arquillian.persistence.properties"));
+      return properties;
+   }
+
+   public static PersistenceConfiguration createPersistenceConfigurationFrom(String fileName)
+   {
+      ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
+      return new ConfigurationImporter().from(descriptor);
    }
 
 }

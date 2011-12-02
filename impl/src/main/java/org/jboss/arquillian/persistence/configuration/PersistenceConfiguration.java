@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -23,7 +23,7 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.data.Format;
 
 /**
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
@@ -33,24 +33,103 @@ public class PersistenceConfiguration implements Serializable
    private static final long serialVersionUID = -6930645145050348980L;
 
    private String defaultDataSource;
-   
+
    private String initStatement;
 
    private Format defaultDataSetFormat = Format.XML;
-   
+
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
-   
+
    private boolean dumpData = false;
-   
+
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
-   
+
    private String userTransactionJndi = "java:comp/UserTransaction";
-   
+
+   // Builder pattern
+
+   public static PersistenceConfigurationBuilder builder()
+   {
+      return new PersistenceConfigurationBuilder();
+   }
+
+   public static class PersistenceConfigurationBuilder
+   {
+
+      private final PersistenceConfiguration configuration;
+
+      private PersistenceConfigurationBuilder()
+      {
+         this.configuration = new PersistenceConfiguration();
+      }
+
+      public PersistenceConfigurationBuilder withDefaultDataSource(String defaultDataSource)
+      {
+         configuration.setDefaultDataSource(defaultDataSource);
+         return this;
+      }
+
+      public PersistenceConfigurationBuilder withTransactionMode(TransactionMode mode)
+      {
+         configuration.setDefaultTransactionMode(mode);
+         return this;
+      }
+
+      public PersistenceConfigurationBuilder.DataDumpBuilder enableDataDump()
+      {
+
+         return new DataDumpBuilder(this);
+      }
+
+      public PersistenceConfigurationBuilder usingTransactionJndi(String transactionJndi)
+      {
+         configuration.setUserTransactionJndi(transactionJndi);
+         return this;
+      }
+
+      public PersistenceConfiguration.PersistenceConfigurationBuilder withInitStatement(String initStatement)
+      {
+         configuration.setInitStatement(initStatement);
+         return this;
+      }
+
+      public PersistenceConfiguration build()
+      {
+         return configuration;
+      }
+
+      private static class DataDumpBuilder
+      {
+
+         private final PersistenceConfigurationBuilder persistenceConfigurationBuilder;
+
+         private DataDumpBuilder(PersistenceConfigurationBuilder persistenceConfigurationBuilder)
+         {
+            this.persistenceConfigurationBuilder = persistenceConfigurationBuilder;
+         }
+
+         public PersistenceConfigurationBuilder to(String dumpDirectory)
+         {
+            persistenceConfigurationBuilder.configuration.setDumpDirectory(dumpDirectory);
+            return persistenceConfigurationBuilder;
+         }
+
+         public PersistenceConfigurationBuilder usingDefault()
+         {
+            return persistenceConfigurationBuilder;
+         }
+
+      }
+
+   }
+
+   // Accessors
+
    public String getDefaultDataSource()
    {
       return defaultDataSource;
    }
-   
+
    public void setDefaultDataSource(String defaultDataSource)
    {
       this.defaultDataSource = defaultDataSource;
@@ -70,7 +149,7 @@ public class PersistenceConfiguration implements Serializable
    {
       this.initStatement = initStatement;
    }
-   
+
    public boolean isInitStatementDefined()
    {
       return isDefined(initStatement);
@@ -85,7 +164,7 @@ public class PersistenceConfiguration implements Serializable
    {
       return defaultDataSetFormat;
    }
-   
+
    public void setDefaultDataSetFormat(Format defaultDataSetFormat)
    {
       this.defaultDataSetFormat = defaultDataSetFormat;
@@ -95,7 +174,7 @@ public class PersistenceConfiguration implements Serializable
    {
       return defaultTransactionMode;
    }
-   
+
    public void setDefaultTransactionMode(TransactionMode defaultTransactionMode)
    {
       this.defaultTransactionMode = defaultTransactionMode;
@@ -134,5 +213,5 @@ public class PersistenceConfiguration implements Serializable
    {
       this.userTransactionJndi = userTransactionJndi;
    }
-   
+
 }

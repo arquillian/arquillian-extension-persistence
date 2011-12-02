@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -19,12 +19,13 @@ package org.jboss.arquillian.persistence.configuration;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.Format;
 import org.junit.Test;
 
-public class ConfigurationExtractorTest
+public class ConfigurationImporterFromXmlTest
 {
 
    @Test
@@ -32,10 +33,10 @@ public class ConfigurationExtractorTest
    {
       // given
       String expectedDataSource = "Ike";
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
 
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -46,147 +47,147 @@ public class ConfigurationExtractorTest
    {
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
 
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
    }
-   
+
    @Test
    public void shouldExtractDefaultDataSetFormatDefinedInPropertyFile() throws Exception
    {
       // given
       Format expectedFormat = Format.EXCEL;
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractorForDefaultConfiguration();
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
    }
-   
+
    @Test
    public void shouldUseXmlAsDefaultDataSetFormatWhenNotDefinedInConfiguration() throws Exception
    {
       // given
       Format expectedFormat = Format.XML;
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
    }
-   
+
    @Test
    public void shouldObtainDefaultTransactionMode() throws Exception
    {
       // given
       TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
    }
-   
+
    @Test
    public void shouldHaveCommitAsDefaultTransactionModeIfNotDefinedInConfigurationFile() throws Exception
    {
       // given
       TransactionMode expectedMode = TransactionMode.COMMIT;
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
    }
-   
+
    @Test
    public void shouldBeAbleToTurnOnDatabaseDumps() throws Exception
    {
       // given
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
    }
-   
+
    @Test
-   public void shouldHaveDatabaseDumpsDisbaledByDefault() throws Exception
+   public void shouldHaveDatabaseDumpsDisabledByDefault() throws Exception
    {
       // given
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isFalse();
    }
-   
+
    public void shouldHaveSystemTempDirDefinedAsDefaultDumpDirectory() throws Exception
    {
       // given
       String systemTmpDir = System.getProperty("java.io.tmpdir");
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
-      
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
    }
-   
+
    @Test
    public void shouldBeAbleToDefineDumpDirectory() throws Exception
    {
       // given
       String dumpDirectory = "/home/ike/dump";
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
 
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
    }
-   
+
    @Test
    public void shouldBeAbleToDefineUserTransactionJndi() throws Exception
    {
       // given
       String expectedUserTransactionJndi = "java:jboss/UserTransaction";
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian.xml");
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
 
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
    }
-   
+
    @Test
    public void shouldHaveDefaultUserTransactionJndi() throws Exception
    {
       // given
       String expectedUserTransactionJndi = "java:comp/UserTransaction";
-      ConfigurationExtractor configurationExtractor = ConfigurationLoader.createConfigurationExtractor("arquillian-without-persistence-properties.xml");
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
 
       // when
-      PersistenceConfiguration configuration = configurationExtractor.extract();
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
 
       // then
       assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
