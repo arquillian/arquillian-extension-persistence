@@ -38,7 +38,7 @@ public class MetadataProviderPersistentFeatureTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
-      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceExtensionRequired();
 
       // then
       assertThat(persistenceFeatureEnabled).isFalse();
@@ -53,7 +53,7 @@ public class MetadataProviderPersistentFeatureTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
-      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceExtensionRequired();
 
       // then
       assertThat(persistenceFeatureEnabled).isTrue();
@@ -68,7 +68,7 @@ public class MetadataProviderPersistentFeatureTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
-      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceExtensionRequired();
 
       // then
       assertThat(persistenceFeatureEnabled).isTrue();
@@ -83,7 +83,7 @@ public class MetadataProviderPersistentFeatureTest
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
-      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceFeatureEnabled();
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceExtensionRequired();
 
       // then
       assertThat(persistenceFeatureEnabled).isTrue();

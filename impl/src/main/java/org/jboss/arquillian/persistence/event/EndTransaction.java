@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class EndTransaction extends TestEvent
+public class EndTransaction extends TestEvent implements PersistenceEvent
 {
 
    public EndTransaction(Object testInstance, Method testMethod)

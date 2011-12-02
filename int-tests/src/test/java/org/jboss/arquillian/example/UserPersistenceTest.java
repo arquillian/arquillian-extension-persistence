@@ -26,6 +26,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Data;
 import org.jboss.arquillian.persistence.Expected;
+import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -144,6 +145,22 @@ public class UserPersistenceTest
 
       // then
       assertThat(user.getAddresses()).hasSize(1);
+   }
+
+   @Test
+   @Transactional
+   public void shouldPersistUsersWithinTransaction() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+
+      // then
+      // should be persisted
    }
 
    @Test

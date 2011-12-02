@@ -85,10 +85,12 @@ public class PersistenceTestHandler
    public void beforeTest(@Observes Before beforeTestEvent)
    {
       MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
-      if (!metadataProvider.isPersistenceFeatureEnabled())
+
+      if (!metadataProvider.isPersistenceExtensionRequired())
       {
          return;
       }
+
       assertionErrorCollectorProducer.set(new AssertionErrorCollector());
 
       String dataSourceName = metadataProvider.getDataSourceName();
@@ -109,7 +111,8 @@ public class PersistenceTestHandler
    public void afterTest(@Observes After afterTestEvent)
    {
       MetadataProvider metadataProvider = new MetadataProvider(afterTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
-      if (!metadataProvider.isPersistenceFeatureEnabled())
+
+      if (!metadataProvider.isPersistenceExtensionRequired())
       {
          return;
       }
@@ -126,6 +129,7 @@ public class PersistenceTestHandler
       }
 
       cleanUpDataEvent.fire(new CleanUpData(afterTestEvent));
+
       assertionErrorCollectorProducer.get().report();
    }
 

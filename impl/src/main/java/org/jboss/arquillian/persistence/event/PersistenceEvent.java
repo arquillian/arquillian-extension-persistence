@@ -17,25 +17,13 @@
  */
 package org.jboss.arquillian.persistence.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-public class DataEvent extends TestEvent implements PersistenceEvent
+/**
+ * Marker interface indicating that event is part of Persistence Extension lifecycle.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public interface PersistenceEvent
 {
 
-   private final List<DataSetDescriptor> dataSetDescriptors;
-
-   public DataEvent(TestEvent testEvent, List<DataSetDescriptor> dataSetDescriptors)
-   {
-      super(testEvent.getTestInstance(), testEvent.getTestMethod());
-      this.dataSetDescriptors = new ArrayList<DataSetDescriptor>(dataSetDescriptors);
-   }
-
-   public List<DataSetDescriptor> getDataSetDescriptors()
-   {
-      return dataSetDescriptors;
-   }
 }

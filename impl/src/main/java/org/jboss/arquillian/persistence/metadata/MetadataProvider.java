@@ -45,7 +45,7 @@ public class MetadataProvider
    // Public API methods
    // ---------------------------------------------------------------------------------------------------
 
-   public boolean isPersistenceFeatureEnabled()
+   public boolean isPersistenceExtensionRequired()
    {
       return (hasDataAnnotation() || hasExpectedAnnotation()
             || hasPersistenceTestAnnotation() || hasTransactionalAnnotation());

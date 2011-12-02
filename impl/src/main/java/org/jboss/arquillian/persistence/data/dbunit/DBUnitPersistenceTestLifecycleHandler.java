@@ -38,6 +38,7 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitConnectionEx
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
+import org.jboss.arquillian.persistence.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
@@ -62,10 +63,18 @@ public class DBUnitPersistenceTestLifecycleHandler
    // Intercepting data handling events
    // ------------------------------------------------------------------------------------------------
 
+   public void createDatabaseConnection(@Observes(precedence = 1000) EventContext<PersistenceEvent> context)
+   {
+      if (databaseConnectionProducer.get() == null)
+      {
+         createDatabaseConnection();
+      }
+      context.proceed();
+   }
+
    public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
    {
       PrepareData prepareDataEvent = context.getEvent();
-      createDatabaseConnection();
       createInitialDataSets(prepareDataEvent.getDataSetDescriptors());
       context.proceed();
    }
@@ -73,7 +82,6 @@ public class DBUnitPersistenceTestLifecycleHandler
    public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
    {
       CompareData compareDataEvent = context.getEvent();
-      createDatabaseConnection();
       createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
       context.proceed();
    }
@@ -95,11 +103,6 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    private void createDatabaseConnection()
    {
-      if (databaseConnectionProducer.get() != null)
-      {
-         return;
-      }
-
       try
       {
          DataSource dataSource = databaseSourceInstance.get();
@@ -113,7 +116,6 @@ public class DBUnitPersistenceTestLifecycleHandler
          throw new DBUnitInitializationException("Unable to initialize database connection for dbunit module", e);
       }
    }
-
 
    private void createInitialDataSets(List<DataSetDescriptor> dataSetDescriptors)
    {
