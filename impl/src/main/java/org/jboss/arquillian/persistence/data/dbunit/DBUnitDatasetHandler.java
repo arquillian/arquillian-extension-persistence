@@ -29,10 +29,10 @@ import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
+import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
@@ -48,17 +48,24 @@ public class DBUnitDatasetHandler implements DataHandler
    private Instance<DataSetRegister> dataSetRegister;
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
-
-   @Inject
    private Instance<AssertionErrorCollector> assertionErrorCollector;
+
+   @Override
+   public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
+   {
+      final String initStatementString = applyInitStatementEvent.getInitStatement();
+      if (initStatementString == null || initStatementString.isEmpty())
+      {
+         return;
+      }
+      applyInitStatement(initStatementString);
+   }
 
    @Override
    public void prepare(@Observes PrepareData prepareDataEvent)
    {
       try
       {
-         applyInitStatement();
          fillDatabase();
       }
       catch (Exception e)
@@ -110,18 +117,15 @@ public class DBUnitDatasetHandler implements DataHandler
       }
    }
 
-   private void applyInitStatement()
+   // Private methods
+
+   private void applyInitStatement(String initStatementString)
    {
-      PersistenceConfiguration persistenceConfiguration = configuration.get();
-      if (!persistenceConfiguration.isInitStatementDefined())
-      {
-         return;
-      }
       Statement initStatement = null;
       try
       {
          initStatement = databaseConnection.get().getConnection().createStatement();
-         initStatement.execute(persistenceConfiguration.getInitStatement());
+         initStatement.execute(initStatementString);
       }
       catch (Exception e)
       {

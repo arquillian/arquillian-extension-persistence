@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
@@ -55,6 +56,20 @@ public class UserPersistenceTest
    EntityManager em;
 
    @Test
+   @UsingDataSet("datasets/single-user.xls")
+   public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
+   {
+      // given
+      String expectedUsername = "doovde";
+
+      // when
+      UserAccount user = em.find(UserAccount.class, 1L);
+
+      // then
+      assertThat(user.getUsername()).isEqualTo(expectedUsername);
+   }
+
+   @Test
    @UsingDataSet({"single-user.xml", "address.yml"}) // Convention over configuration - no need to specify 'datasets' folder
    public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
    {
@@ -68,20 +83,6 @@ public class UserPersistenceTest
       // then
       assertThat(user.getAddresses()).hasSize(1);
       assertThat(address.getCity()).isEqualTo(expectedCity);
-   }
-
-   @Test
-   @UsingDataSet("datasets/single-user.xls")
-   public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
-   {
-      // given
-      String expectedUsername = "doovde";
-
-      // when
-      UserAccount user = em.find(UserAccount.class, 1L);
-
-      // then
-      assertThat(user.getUsername()).isEqualTo(expectedUsername);
    }
 
    @Test
@@ -164,7 +165,28 @@ public class UserPersistenceTest
       em.clear();
 
       // then
-      List savedUserAccounts = em.createQuery("SELECT u FROM " + UserAccount.class.getSimpleName() + " u").getResultList();
+      @SuppressWarnings("unchecked")
+      List<UserAccount> savedUserAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
+      assertThat(savedUserAccounts).hasSize(2);
+   }
+
+   @Test
+   @Transactional(TransactionMode.ROLLBACK)
+   public void shouldPersistUsersAndRollbackTransactionAfterTestExecution() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+      em.flush();
+      em.clear();
+
+      // then
+      @SuppressWarnings("unchecked")
+      List<UserAccount> savedUserAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
       assertThat(savedUserAccounts).hasSize(2);
    }
 
@@ -182,6 +204,13 @@ public class UserPersistenceTest
 
       // then
       // should be persisted - verified by @ShouldMatchDataSet annotation
+   }
+
+   // Private helper methods
+
+   private String selectAllInJPQL(Class<?> clazz)
+   {
+      return "SELECT entity FROM " + clazz.getSimpleName() + " entity";
    }
 
 }

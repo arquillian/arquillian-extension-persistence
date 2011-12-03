@@ -27,6 +27,7 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
@@ -75,6 +76,9 @@ public class PersistenceTestHandler
    private Event<EndTransaction> endTransactionEvent;
 
    @Inject
+   private Event<ApplyInitStatement> applyInitStatementEvent;
+
+   @Inject
    private Instance<Context> contextInstance;
 
    public void beforeSuite(@Observes BeforeClass beforeClass)
@@ -84,7 +88,8 @@ public class PersistenceTestHandler
 
    public void beforeTest(@Observes Before beforeTestEvent)
    {
-      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), configuration.get());
+      PersistenceConfiguration persistenceConfiguration = configuration.get();
+      MetadataProvider metadataProvider = new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), persistenceConfiguration);
 
       if (!metadataProvider.isPersistenceExtensionRequired())
       {
@@ -96,9 +101,11 @@ public class PersistenceTestHandler
       String dataSourceName = metadataProvider.getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
 
+      applyInitStatementEvent.fire(new ApplyInitStatement(persistenceConfiguration.getInitStatement()));
+
       if (metadataProvider.isDataSeedOperationRequested())
       {
-         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
+         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), persistenceConfiguration);
          prepareDataEvent.fire(new PrepareData(beforeTestEvent, dataSetProvider.getDataSetDescriptors(beforeTestEvent.getTestMethod())));
       }
 
