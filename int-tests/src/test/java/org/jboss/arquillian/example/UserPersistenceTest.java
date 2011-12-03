@@ -19,6 +19,8 @@ package org.jboss.arquillian.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -53,7 +55,7 @@ public class UserPersistenceTest
    EntityManager em;
 
    @Test
-   @UsingDataSet({"datasets/single-user.xml", "datasets/address.yml"})
+   @UsingDataSet({"single-user.xml", "address.yml"}) // Convention over configuration - no need to specify 'datasets' folder
    public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
    {
       // given
@@ -83,7 +85,7 @@ public class UserPersistenceTest
    }
 
    @Test
-   @UsingDataSet("datasets/single-user.xml")
+   @UsingDataSet("single-user.xml")
    public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
    {
       // given
@@ -97,8 +99,8 @@ public class UserPersistenceTest
    }
 
    @Test
-   @UsingDataSet("datasets/users.yml")
-   @ShouldMatchDataSet("datasets/expected-users.yml")
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet("expected-users.yml")
    public void shouldChangeUserPassword() throws Exception
    {
       // given
@@ -114,7 +116,7 @@ public class UserPersistenceTest
    }
 
    @Test
-   @UsingDataSet("datasets/user-with-address.yml")
+   @UsingDataSet("user-with-address.yml")
    public void shouldHaveAddressLinkedToUserAccount() throws Exception
    {
       // given
@@ -131,8 +133,8 @@ public class UserPersistenceTest
    }
 
    @Test
-   @UsingDataSet("datasets/single-user.xml")
-   @ShouldMatchDataSet({"datasets/single-user.xls", "datasets/expected-address.yml"})
+   @UsingDataSet("single-user.xml")
+   @ShouldMatchDataSet({"single-user.xls", "datasets/expected-address.yml"})
    public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
    {
       // given
@@ -158,13 +160,16 @@ public class UserPersistenceTest
       // when
       em.persist(johnSmith);
       em.persist(clarkKent);
+      em.flush();
+      em.clear();
 
       // then
-      // should be persisted
+      List savedUserAccounts = em.createQuery("SELECT u FROM " + UserAccount.class.getSimpleName() + " u").getResultList();
+      assertThat(savedUserAccounts).hasSize(2);
    }
 
    @Test
-   @ShouldMatchDataSet("datasets/expected-users.yml")
+   @ShouldMatchDataSet("expected-users.yml")
    public void shouldPersistUsersAndVerifyUsingMatchingMechanism() throws Exception
    {
       // given
@@ -177,7 +182,6 @@ public class UserPersistenceTest
 
       // then
       // should be persisted - verified by @ShouldMatchDataSet annotation
-
    }
 
 }

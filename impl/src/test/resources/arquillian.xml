@@ -9,6 +9,7 @@
     <property name="initStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
     <property name="defaultDataSetFormat">EXCEL</property>
     <property name="defaultTransactionMode">ROLLBACK</property>
+    <property name="defaultDataSetLocation">datasets</property>
     <property name="dumpData">true</property>
     <property name="dumpDirectory">/home/ike/dump</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>

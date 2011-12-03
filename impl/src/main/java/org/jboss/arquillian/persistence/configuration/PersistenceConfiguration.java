@@ -34,6 +34,8 @@ public class PersistenceConfiguration implements Serializable
 
    private String defaultDataSource;
 
+   private String defaultDataSetLocation = "datasets/";
+
    private String initStatement;
 
    private Format defaultDataSetFormat = Format.XML;
@@ -46,88 +48,21 @@ public class PersistenceConfiguration implements Serializable
 
    private String userTransactionJndi = "java:comp/UserTransaction";
 
-   // Builder pattern
-
-   public static PersistenceConfigurationBuilder builder()
-   {
-      return new PersistenceConfigurationBuilder();
-   }
-
-   public static class PersistenceConfigurationBuilder
-   {
-
-      private final PersistenceConfiguration configuration;
-
-      private PersistenceConfigurationBuilder()
-      {
-         this.configuration = new PersistenceConfiguration();
-      }
-
-      public PersistenceConfigurationBuilder withDefaultDataSource(String defaultDataSource)
-      {
-         configuration.setDefaultDataSource(defaultDataSource);
-         return this;
-      }
-
-      public PersistenceConfigurationBuilder withTransactionMode(TransactionMode mode)
-      {
-         configuration.setDefaultTransactionMode(mode);
-         return this;
-      }
-
-      public PersistenceConfigurationBuilder.DataDumpBuilder enableDataDump()
-      {
-
-         return new DataDumpBuilder(this);
-      }
-
-      public PersistenceConfigurationBuilder usingTransactionJndi(String transactionJndi)
-      {
-         configuration.setUserTransactionJndi(transactionJndi);
-         return this;
-      }
-
-      public PersistenceConfiguration.PersistenceConfigurationBuilder withInitStatement(String initStatement)
-      {
-         configuration.setInitStatement(initStatement);
-         return this;
-      }
-
-      public PersistenceConfiguration build()
-      {
-         return configuration;
-      }
-
-      private static class DataDumpBuilder
-      {
-
-         private final PersistenceConfigurationBuilder persistenceConfigurationBuilder;
-
-         private DataDumpBuilder(PersistenceConfigurationBuilder persistenceConfigurationBuilder)
-         {
-            this.persistenceConfigurationBuilder = persistenceConfigurationBuilder;
-         }
-
-         public PersistenceConfigurationBuilder to(String dumpDirectory)
-         {
-            persistenceConfigurationBuilder.configuration.setDumpDirectory(dumpDirectory);
-            return persistenceConfigurationBuilder;
-         }
-
-         public PersistenceConfigurationBuilder usingDefault()
-         {
-            return persistenceConfigurationBuilder;
-         }
-
-      }
-
-   }
-
    // Accessors
 
    public String getDefaultDataSource()
    {
       return defaultDataSource;
+   }
+
+   public String getDefaultDataSetLocation()
+   {
+      return defaultDataSetLocation;
+   }
+
+   public void setDefaultDataSetLocation(String defaultDataSetLocation)
+   {
+      this.defaultDataSetLocation = defaultDataSetLocation;
    }
 
    public void setDefaultDataSource(String defaultDataSource)

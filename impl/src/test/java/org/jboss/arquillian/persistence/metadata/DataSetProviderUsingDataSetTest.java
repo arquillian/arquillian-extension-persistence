@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -27,6 +27,7 @@ import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class DataSetProviderUsingDataSetTest
    private static final String XML_DATA_SET_ON_CLASS_LEVEL = "datasets/xml/class-level.xml";
 
    private static final String XML_DATA_SET_ON_METHOD_LEVEL = "datasets/xml/method-level.xml";
-   
+
    private static final String EXCEL_DATA_SET_ON_METHOD_LEVEL = "datasets/xls/method-level.xls";
 
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
@@ -55,11 +56,11 @@ public class DataSetProviderUsingDataSetTest
       Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestClass());
 
       // then
-      DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_DATA_SET_ON_CLASS_LEVEL, 
+      DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_DATA_SET_ON_CLASS_LEVEL,
             XML_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, EXCEL_DATA_SET_ON_METHOD_LEVEL, "one.xml", "two.xls", "three.yml");
 
    }
-   
+
    @Test
    public void shouldFetchDataFileNameFromTestLevelAnnotation() throws Exception
    {
@@ -74,7 +75,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
    }
-   
+
    @Test
    public void shouldFetchDataFromClassLevelAnnotationWhenNotDefinedForTestMethod() throws Exception
    {
@@ -89,7 +90,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
    }
-   
+
    @Test
    public void shouldFetchDataFormatFromMethodLevelAnnotation() throws Exception
    {
@@ -104,7 +105,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
    }
-   
+
    @Test
    public void shouldInferDataFormatFromFileNameWhenNotDefinedOnMethodLevelAnnotation() throws Exception
    {
@@ -119,7 +120,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
    }
-   
+
    @Test
    public void shouldInferDataFormatFromFileNameWhenNotDefinedOnClassLevelAnnotation() throws Exception
    {
@@ -134,7 +135,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
    }
-   
+
    @Test(expected = UnsupportedDataFormatException.class)
    public void shouldThrowExceptionWhenFormatCannotBeInferedFromFileExtension() throws Exception
    {
@@ -146,9 +147,9 @@ public class DataSetProviderUsingDataSetTest
       List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
-      // exception should be thrown      
+      // exception should be thrown
    }
-   
+
    @Test
    public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotation() throws Exception
    {
@@ -163,7 +164,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(files).containsOnly(expectedFileName);
    }
-   
+
    @Test
    public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotationOnClassLevel() throws Exception
    {
@@ -178,7 +179,7 @@ public class DataSetProviderUsingDataSetTest
       // then
       assertThat(files).containsOnly(expectedFileName);
    }
-   
+
    @Test
    public void shouldExtractAllDataSetFiles() throws Exception
    {
@@ -191,19 +192,65 @@ public class DataSetProviderUsingDataSetTest
 
       // when
       List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
-      
+
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
    }
-   
-   // ---------------------------------------------------------------------------------------- 
-   
+
+   @Test(expected = InvalidDataSetLocation.class)
+   public void shouldThrowExceptionForNonExistingFileInferedFromClassLevelAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile(),
+            UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      // exception should be thrown
+   }
+
+   @Test(expected = InvalidDataSetLocation.class)
+   public void shouldThrowExceptionForNonExistingFileDefinedOnMethodLevelAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+            UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      // exception should be thrown
+   }
+
+   @Test
+   public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
+   {
+      // given
+      DataSetDescriptor expectedFile = new DataSetDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);
+      TestEvent testEvent = new TestEvent(new UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+            UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      assertThat(dataSetDescriptors).containsOnly(expectedFile);
+   }
+
+   // ----------------------------------------------------------------------------------------
+
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
    {
       TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedClass(), UsingDataSetAnnotatedClass.class.getMethod(testMethod));
       return testEvent;
    }
-   
+
    @UsingDataSet(XML_DATA_SET_ON_CLASS_LEVEL)
    private static class UsingDataSetAnnotatedClass
    {
@@ -211,27 +258,44 @@ public class DataSetProviderUsingDataSetTest
 
       @UsingDataSet(XML_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataButWithoutFormatDefinedOnMethodLevel () {}
-      
+
       @UsingDataSet(value = EXCEL_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataAndFormatDefinedOnMethodLevel() {}
-      
+
       @UsingDataSet
       public void shouldPassWithDataFileNotSpecified() {}
-      
+
       @UsingDataSet({"one.xml", "two.xls", "three.yml"})
       public void shouldPassWithMultipleFilesDefined() {}
+
    }
-   
+
    private static class UsingDataSetAnnotationWithUnsupportedFormat
    {
       @UsingDataSet("arquillian.ike")
       public void shouldFailWithNonSupportedFileExtension() {}
    }
-   
+
    @UsingDataSet
    private static class UsingDataSetAnnotatedOnClassLevelOnly
    {
       public void shouldPass() {}
    }
-   
+
+   @UsingDataSet
+   private static class UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile
+   {
+      public void shouldFail() {}
+   }
+
+   private static class UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation
+   {
+      @UsingDataSet("non-existing.xml")
+      public void shouldFailForNonExistingFile() {}
+
+      @UsingDataSet("tables-in-datasets-folder.yml")
+      public void shouldPassForFileStoredInDefaultLocation() {}
+
+   }
+
 }

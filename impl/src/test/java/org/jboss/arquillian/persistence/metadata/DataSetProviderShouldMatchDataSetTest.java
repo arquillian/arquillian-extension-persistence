@@ -28,6 +28,7 @@ import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -197,6 +198,52 @@ public class DataSetProviderShouldMatchDataSetTest
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
    }
 
+   @Test(expected = InvalidDataSetLocation.class)
+   public void shouldThrowExceptionForNonExistingFileInferedFromClassLevelAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedOnClassLevelOnlyNonExistingFile(),
+            ShouldMatchDataSetAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      // exception should be thrown
+   }
+
+   @Test(expected = InvalidDataSetLocation.class)
+   public void shouldThrowExceptionForNonExistingFileDefinedOnMethodLevelAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+            ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      // exception should be thrown
+   }
+
+   @Test
+   public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
+   {
+      // given
+      DataSetDescriptor expectedFile = new DataSetDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);
+      TestEvent testEvent = new TestEvent(new ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+            ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
+      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+
+      // then
+      assertThat(dataSetDescriptors).containsOnly(expectedFile);
+   }
+
    // ----------------------------------------------------------------------------------------
 
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
@@ -234,6 +281,22 @@ public class DataSetProviderShouldMatchDataSetTest
    private static class ShouldMatchDataSetAnnotatedOnClassLevelOnly
    {
       public void shouldPass() {}
+   }
+
+   @ShouldMatchDataSet
+   private static class ShouldMatchDataSetAnnotatedOnClassLevelOnlyNonExistingFile
+   {
+      public void shouldFail() {}
+   }
+
+   private static class ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation
+   {
+      @ShouldMatchDataSet("non-existing.xml")
+      public void shouldFailForNonExistingFile() {}
+
+      @ShouldMatchDataSet("tables-in-datasets-folder.yml")
+      public void shouldPassForFileStoredInDefaultLocation() {}
+
    }
 
 }

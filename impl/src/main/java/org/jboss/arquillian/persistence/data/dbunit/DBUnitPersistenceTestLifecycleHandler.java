@@ -130,7 +130,7 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    private IDataSet createInitialDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      final String file = dataSetDescriptor.getFileName();
+      final String file = dataSetDescriptor.getFileLocation();
       final Format format = dataSetDescriptor.getFormat();
       return DataSetBuilder.builderFor(format).build(file);
    }
@@ -148,7 +148,7 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    private IDataSet createExpectedDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      String file = dataSetDescriptor.getFileName();
+      String file = dataSetDescriptor.getFileLocation();
       Format format = dataSetDescriptor.getFormat();
       return DataSetBuilder.builderFor(format).build(file);
    }

@@ -53,10 +53,10 @@ public class ConfigurationExporterToPropertyFilesTest
       // given
       Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
 
-      PersistenceConfiguration persistenceConfiguration = PersistenceConfiguration.builder()
-                                                                                  .withDefaultDataSource("DefaultDS")
-                                                                                  .withTransactionMode(TransactionMode.ROLLBACK)
-                                                                                  .build();
+      PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
+      persistenceConfiguration.setDefaultDataSource("DefaultDS");
+      persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
+      persistenceConfiguration.setDefaultDataSetLocation("ds");
 
       ConfigurationExporter exporter = new ConfigurationExporter(persistenceConfiguration);
 

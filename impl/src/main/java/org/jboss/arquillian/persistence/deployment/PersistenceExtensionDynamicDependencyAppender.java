@@ -33,7 +33,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
@@ -42,7 +42,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
    @Inject
    Instance<PersistenceConfiguration> configuration;
-   
+
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
@@ -53,7 +53,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    {
       final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
       final Set<DataSetDescriptor> allDataSets = new HashSet<DataSetDescriptor>();
-      
+
       allDataSets.addAll(dataSetProvider.getDataSetDescriptors(testClass));
       allDataSets.addAll(dataSetProvider.getExpectedDataSetDescriptors(testClass));
       return allDataSets;
@@ -64,7 +64,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
       for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         dataSetsArchive.addAsResource(dataSetDescriptor.getFileName());
+         dataSetsArchive.addAsResource(dataSetDescriptor.getFileLocation());
       }
       applicationArchive.merge(dataSetsArchive);
    }
