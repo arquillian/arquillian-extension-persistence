@@ -16,6 +16,7 @@
  */
 package org.jboss.arquillian.persistence.deployment;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.container.LibraryContainer;
+import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
@@ -49,6 +52,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       addDataSets(applicationArchive, fetchAllDataSets(testClass));
    }
 
+   // Private helper methods
+
    private Set<DataSetDescriptor> fetchAllDataSets(TestClass testClass)
    {
       final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
@@ -56,16 +61,48 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
       allDataSets.addAll(dataSetProvider.getDataSetDescriptors(testClass));
       allDataSets.addAll(dataSetProvider.getExpectedDataSetDescriptors(testClass));
+
       return allDataSets;
    }
 
    private void addDataSets(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
    {
-      JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+      if (applicationArchive instanceof JavaArchive)
+      {
+         addAsResource(applicationArchive, dataSetDescriptors);
+      }
+      else
+      {
+         addAsLibrary(applicationArchive, dataSetDescriptors);
+      }
+
+   }
+
+   private void addAsResource(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   {
+      final ResourceContainer<?> resourceContainer = (ResourceContainer<?>) applicationArchive;
+
+      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
+      {
+         resourceContainer.addAsResource(dataSetDescriptor.getFileLocation());
+      }
+   }
+
+   private void addAsLibrary(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   {
+      final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
+      libraryContainer.addAsLibrary(toJavaArchive(dataSetDescriptors));
+   }
+
+   private JavaArchive toJavaArchive(final Collection<DataSetDescriptor> dataSetDescriptors)
+   {
+      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+
       for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
       {
          dataSetsArchive.addAsResource(dataSetDescriptor.getFileLocation());
       }
-      applicationArchive.merge(dataSetsArchive);
+      return dataSetsArchive;
    }
+
 }
