@@ -53,23 +53,23 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
-                                      .addPackages(true,
-                                            // exclude client package
-                                            Filters.exclude(PersistenceExtension.class.getPackage()),
-                                            PersistenceTestHandler.class.getPackage())
-                                      .addPackages(true,
-                                            "org.dbunit",
-                                            "org.apache.poi",
-                                            "org.apache.commons",
-                                            "org.apache.log4j",
-                                            "org.slf4j",
-                                            "org.yaml")
-                                      .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
-                                      .addAsServiceProvider(RemoteLoadableExtension.class,
-                                            RemotePersistenceExtension.class);
-      return archive;
+      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
+                       .addPackages(true,
+                             // exclude client package
+                             Filters.exclude(PersistenceExtension.class.getPackage()),
+                             PersistenceTestHandler.class.getPackage())
+                       .addPackages(true,
+                             "org.dbunit",
+                             "org.apache.poi",
+                             "org.apache.commons",
+                             "org.apache.log4j",
+                             "org.slf4j",
+                             "org.yaml")
+                       .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
+                       .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
    }
+
+   // Private helper methods
 
    private ByteArrayOutputStream exportConfigurationAsProperties()
    {
