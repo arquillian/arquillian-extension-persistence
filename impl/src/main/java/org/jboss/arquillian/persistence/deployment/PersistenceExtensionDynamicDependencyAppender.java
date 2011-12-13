@@ -31,7 +31,6 @@ import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
-import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
@@ -67,31 +66,28 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
    private void addDataSets(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
    {
+      final JavaArchive dataSetsArchive = toJavaArchive(dataSetDescriptors);
+
       if (applicationArchive instanceof JavaArchive)
       {
-         addAsResource(applicationArchive, dataSetDescriptors);
+         addAsResource(applicationArchive, dataSetsArchive);
       }
       else
       {
-         addAsLibrary(applicationArchive, dataSetDescriptors);
+         addAsLibrary(applicationArchive, dataSetsArchive);
       }
 
    }
 
-   private void addAsResource(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   private void addAsResource(Archive<?> applicationArchive, JavaArchive dataSetsArchive)
    {
-      final ResourceContainer<?> resourceContainer = (ResourceContainer<?>) applicationArchive;
-
-      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
-      {
-         resourceContainer.addAsResource(dataSetDescriptor.getFileLocation());
-      }
+      applicationArchive.merge(dataSetsArchive);
    }
 
-   private void addAsLibrary(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataSetsArchive)
    {
       final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-      libraryContainer.addAsLibrary(toJavaArchive(dataSetDescriptors));
+      libraryContainer.addAsLibrary(dataSetsArchive);
    }
 
    private JavaArchive toJavaArchive(final Collection<DataSetDescriptor> dataSetDescriptors)
