@@ -117,6 +117,23 @@ public class UserPersistenceTest
    }
 
    @Test
+   @UsingDataSet("users.json")
+   @ShouldMatchDataSet("expected-users.json")
+   public void shouldChangeUserPasswordUsingJsonDataSets() throws Exception
+   {
+      // given
+      String expectedPassword = "LexLuthor";
+      UserAccount user = em.find(UserAccount.class, 2L);
+
+      // when
+      user.setPassword("LexLuthor");
+      em.merge(user);
+
+      // then
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
+   }
+
+   @Test
    @UsingDataSet("user-with-address.yml")
    public void shouldHaveAddressLinkedToUserAccount() throws Exception
    {
