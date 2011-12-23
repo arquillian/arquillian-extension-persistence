@@ -64,7 +64,8 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                              "org.apache.commons",
                              "org.apache.log4j",
                              "org.slf4j",
-                             "org.yaml")
+                             "org.yaml",
+                             "org.codehaus.jackson")
                        .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
                        .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
    }
