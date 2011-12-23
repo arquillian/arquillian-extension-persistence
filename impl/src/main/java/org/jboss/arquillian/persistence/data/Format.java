@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -20,22 +20,23 @@ package org.jboss.arquillian.persistence.data;
 import java.util.EnumSet;
 import java.util.Set;
 
-public enum Format 
+public enum Format
 {
    XML("xml"),
    EXCEL("xls"),
    YAML("yml"),
+   JSON("json"),
    UNSUPPORTED("-none-");
-   
+
    private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED);
-   
+
    private final String fileExtension;
 
    private Format(String fileExtension)
    {
       this.fileExtension = fileExtension;
    }
-   
+
    public String extension()
    {
       return "." + fileExtension;
@@ -45,7 +46,7 @@ public enum Format
    {
       Format result = UNSUPPORTED;
       final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
-      
+
       for (Format format : validFormats)
       {
          if (fileName.endsWith(format.fileExtension))
@@ -53,9 +54,9 @@ public enum Format
             return format;
          }
       }
-      
+
       return result;
-      
+
    }
-   
+
 }

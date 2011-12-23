@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data.dbunit.yaml;
+package org.jboss.arquillian.persistence.data.dbunit.dataset.yaml;
 
 import java.io.InputStream;
 
