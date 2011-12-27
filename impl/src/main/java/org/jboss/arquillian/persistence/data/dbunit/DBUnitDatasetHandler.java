@@ -38,6 +38,11 @@ import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class DBUnitDatasetHandler implements DataHandler
 {
 

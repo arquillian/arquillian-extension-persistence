@@ -39,6 +39,7 @@ import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
@@ -275,7 +276,7 @@ public class DataSetProvider
    {
       Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.hasDataAnnotationOn(testMethod))
+      if (metadataExtractor.usingDataSet().isDefinedOn(testMethod))
       {
          return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
@@ -288,7 +289,7 @@ public class DataSetProvider
    {
       Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.hasExpectedAnnotationOn(testMethod))
+      if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod))
       {
          return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
@@ -298,25 +299,12 @@ public class DataSetProvider
 
    private UsingDataSet getDataAnnotation(Method testMethod)
    {
-      UsingDataSet usedAnnotation = metadataExtractor.getDataAnnotationOnClassLevel();
-      if (metadataExtractor.hasDataAnnotationOn(testMethod))
-      {
-         usedAnnotation = metadataExtractor.getDataAnnotationOn(testMethod);
-      }
-
-      return usedAnnotation;
+      return metadataExtractor.usingDataSet().getUsingPrecedence(testMethod);
    }
 
    private ShouldMatchDataSet getExpectedAnnotation(Method testMethod)
    {
-      ShouldMatchDataSet usedAnnotation = metadataExtractor.getExpectedAnnotationOnClassLevel();
-      if (metadataExtractor.hasExpectedAnnotationOn(testMethod))
-      {
-         usedAnnotation = metadataExtractor.getExpectedAnnotationOn(testMethod);
-      }
-
-      return usedAnnotation;
+      return metadataExtractor.shouldMatchDataSet().getUsingPrecedence(testMethod);
    }
-
 
 }

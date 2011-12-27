@@ -27,6 +27,11 @@ import org.jboss.arquillian.persistence.data.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class DataSetBuilder
 {
 
@@ -59,7 +64,7 @@ public class DataSetBuilder
       }
       catch (Exception e)
       {
-         throw new DBUnitInitializationException("Unable to load data set from given file : " + file, e);
+         throw new DBUnitInitializationException("Unable to load data set from given file: " + file, e);
       }
    }
 

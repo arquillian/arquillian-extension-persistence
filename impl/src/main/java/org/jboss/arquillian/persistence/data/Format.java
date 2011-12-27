@@ -20,6 +20,11 @@ package org.jboss.arquillian.persistence.data;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public enum Format
 {
    XML("xml"),
