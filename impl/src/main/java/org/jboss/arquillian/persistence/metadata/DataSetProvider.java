@@ -73,7 +73,6 @@ public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
       return Arrays.asList(specifiedFileNames);
    }
 
-
    // Private methods
 
    private Format inferFormat(String dataFileName)
