@@ -18,11 +18,16 @@
 package org.jboss.arquillian.persistence.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.persistence.PersistenceTestHandler;
 import org.jboss.arquillian.persistence.configuration.RemotePersistenceConfigurationProducer;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDatasetHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
+import org.jboss.arquillian.persistence.lifecycle.CustomScriptsAroundTestExecutor;
+import org.jboss.arquillian.persistence.lifecycle.DataSourceProducer;
+import org.jboss.arquillian.persistence.lifecycle.DatasetHandler;
+import org.jboss.arquillian.persistence.lifecycle.ErrorCollectorHandler;
+import org.jboss.arquillian.persistence.lifecycle.PersistenceTestHandler;
+import org.jboss.arquillian.persistence.lifecycle.TransactionHandler;
 import org.jboss.arquillian.persistence.transaction.TransactionalWrapper;
 
 /**
@@ -38,15 +43,31 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
+      registerTestLifecycleHandlers(builder);
+      registerDBUnitHandlers(builder);
+
       builder.observer(RemotePersistenceConfigurationProducer.class)
              .observer(CommandServiceProducer.class)
-             .observer(PersistenceTestHandler.class)
              .observer(TransactionalWrapper.class);
 
+
+   }
+
+   private void registerDBUnitHandlers(ExtensionBuilder builder)
+   {
       builder.observer(DBUnitDatasetHandler.class)
              .observer(DBUnitPersistenceTestLifecycleHandler.class)
              .observer(DBUnitDataStateLogger.class);
+   }
 
+   private void registerTestLifecycleHandlers(ExtensionBuilder builder)
+   {
+      builder.observer(PersistenceTestHandler.class)
+             .observer(CustomScriptsAroundTestExecutor.class)
+             .observer(DatasetHandler.class)
+             .observer(DataSourceProducer.class)
+             .observer(ErrorCollectorHandler.class)
+             .observer(TransactionHandler.class);
    }
 
 }

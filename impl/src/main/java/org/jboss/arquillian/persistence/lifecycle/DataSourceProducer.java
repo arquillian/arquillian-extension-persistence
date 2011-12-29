@@ -15,27 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.transaction;
+package org.jboss.arquillian.persistence.lifecycle;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.transaction.UserTransaction;
+import javax.sql.DataSource;
 
 import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.event.EndTransaction;
-import org.jboss.arquillian.persistence.event.StartTransaction;
+import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
+import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
-public class TransactionalWrapper
+public class DataSourceProducer
 {
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   @TestScoped
+   private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
 
    @Inject
    private Instance<MetadataProvider> metadataProvider;
@@ -43,26 +44,13 @@ public class TransactionalWrapper
    @Inject
    private Instance<Context> contextInstance;
 
-   public void beforeTest(@Observes StartTransaction startTransaction) throws Exception
+   public void createDataSource(@Observes(precedence = 50) BeforePersistenceTest beforePersistenceTest)
    {
-      obtainTransaction().begin();
+      String dataSourceName = metadataProvider.get().getDataSourceName();
+      dataSourceProducer.set(loadDataSource(dataSourceName));
    }
 
-   public void afterTest(@Observes EndTransaction endTransaction) throws Exception
-   {
-      final TransactionMode mode = metadataProvider.get().getTransactionalMode();
-
-      if (TransactionMode.COMMIT.equals(mode))
-      {
-         obtainTransaction().commit();
-      }
-      else
-      {
-         obtainTransaction().rollback();
-      }
-   }
-
-   private UserTransaction obtainTransaction()
+   private DataSource loadDataSource(String dataSourceName)
    {
       try
       {
@@ -71,13 +59,12 @@ public class TransactionalWrapper
          {
             throw new ContextNotAvailableException("No Naming Context available");
          }
-         return (UserTransaction) context.lookup(configuration.get().getUserTransactionJndi());
+         return (javax.sql.DataSource) context.lookup(dataSourceName);
       }
       catch (NamingException e)
       {
-         throw new TransactionNotAvailableException("Failed obtaining transaction.", e);
+         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
       }
    }
-
 
 }
