@@ -22,7 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.Properties;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.junit.Test;
 
 public class ConfigurationImporterFromPropertyFileTest

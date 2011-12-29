@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.ExpectedDataSetFileNamingStrategy;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
+import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 
 /**

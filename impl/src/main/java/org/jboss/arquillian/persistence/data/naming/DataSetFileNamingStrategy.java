@@ -15,28 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.data.naming;
 
-public abstract class ResourceDescriptor<T>
+import org.jboss.arquillian.persistence.data.descriptor.Format;
+
+public class DataSetFileNamingStrategy extends FileNamingStrategy<Format>
 {
-   protected final String location;
 
-   protected final T format;
-
-   public ResourceDescriptor(String location, T format)
+   public DataSetFileNamingStrategy(Format format)
    {
-      this.location = location;
-      this.format = format;
+      super(format);
    }
 
-   public String getLocation()
+   @Override
+   public String getFileExtension()
    {
-      return location;
-   }
-
-   public T getFormat()
-   {
-      return format;
+      return extension.extension();
    }
 
 }

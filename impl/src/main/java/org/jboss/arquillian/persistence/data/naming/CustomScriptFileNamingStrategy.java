@@ -15,20 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.data.naming;
 
-public class DataSetFileNamingStrategy extends FileNamingStrategy<Format>
+public class CustomScriptFileNamingStrategy extends FileNamingStrategy<String>
 {
 
-   public DataSetFileNamingStrategy(Format format)
+   public CustomScriptFileNamingStrategy(String extension)
    {
-      super(format);
+      super(extension);
    }
 
    @Override
    public String getFileExtension()
    {
-      return extension.extension();
+      return extension;
    }
 
 }

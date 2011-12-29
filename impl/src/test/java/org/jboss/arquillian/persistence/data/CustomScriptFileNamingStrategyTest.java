@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.data;
 
 import static org.fest.assertions.Assertions.*;
 
+import org.jboss.arquillian.persistence.data.naming.CustomScriptFileNamingStrategy;
 import org.junit.Test;
 
 public class CustomScriptFileNamingStrategyTest

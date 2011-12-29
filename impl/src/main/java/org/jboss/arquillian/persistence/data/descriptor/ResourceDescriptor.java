@@ -15,20 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.data.descriptor;
 
-public class CustomScriptFileNamingStrategy extends FileNamingStrategy<String>
+public abstract class ResourceDescriptor<T>
 {
+   protected final String location;
 
-   public CustomScriptFileNamingStrategy(String extension)
+   protected final T format;
+
+   public ResourceDescriptor(String location, T format)
    {
-      super(extension);
+      this.location = location;
+      this.format = format;
    }
 
-   @Override
-   public String getFileExtension()
+   public String getLocation()
    {
-      return extension;
+      return location;
+   }
+
+   public T getFormat()
+   {
+      return format;
    }
 
 }

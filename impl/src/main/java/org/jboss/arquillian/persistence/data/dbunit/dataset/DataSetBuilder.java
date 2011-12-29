@@ -22,10 +22,10 @@ import java.io.InputStream;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 /**
  *
