@@ -17,36 +17,18 @@
  */
 package org.jboss.arquillian.persistence.data;
 
-import java.lang.reflect.Method;
-
-
-public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format>
+public class CustomScriptFileNamingStrategy extends FileNamingStrategy<String>
 {
 
-   private final DataSetFileNamingStrategy dataSetFileNamingStrategy;
-
-   public ExpectedDataSetFileNamingStrategy(Format format)
+   public CustomScriptFileNamingStrategy(String extension)
    {
-      super(format);
-      this.dataSetFileNamingStrategy = new DataSetFileNamingStrategy(format);
-   }
-
-   @Override
-   public String createFileName(Class<?> testClass, Method testMethod)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass, testMethod);
-   }
-
-   @Override
-   public String createFileName(Class<?> testClass)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass);
+      super(extension);
    }
 
    @Override
    public String getFileExtension()
    {
-      return dataSetFileNamingStrategy.getFileExtension();
+      return extension;
    }
 
 }

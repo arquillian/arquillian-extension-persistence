@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.DataSetFileNamingStrategy;
+import org.jboss.arquillian.persistence.data.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 
@@ -33,12 +33,12 @@ import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
+public class ExpectedDataSetProvider extends ResourceProvider<DataSetDescriptor>
 {
 
-   public DataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   public ExpectedDataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
    {
-      super(UsingDataSet.class, configuration, metadataExtractor);
+      super(ShouldMatchDataSet.class, configuration, metadataExtractor);
    }
 
    @Override
@@ -57,14 +57,14 @@ public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
    protected String defaultFileName()
    {
       Format format = configuration.getDefaultDataSetFormat();
-      String defaultFileName = new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+      String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
       return defaultFileName;
    }
 
    @Override
    List<String> getResourceFileNames(Method testMethod)
    {
-      UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
+      ShouldMatchDataSet dataAnnotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();
       if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
@@ -96,21 +96,21 @@ public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
       return formats;
    }
 
-   private UsingDataSet getResourceAnnotation(Method testMethod)
+   private ShouldMatchDataSet getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.usingDataSet().getUsingPrecedence(testMethod);
+      return metadataExtractor.shouldMatchDataSet().getUsingPrecedence(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)
    {
       Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.usingDataSet().isDefinedOn(testMethod))
+      if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod))
       {
-         return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
 
-      return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+      return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
 
 }

@@ -72,7 +72,7 @@ public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert
       final List<String> fileNames = new ArrayList<String>();
       for (DataSetDescriptor dataSetDescriptor : actual)
       {
-         fileNames.add(dataSetDescriptor.getFileLocation());
+         fileNames.add(dataSetDescriptor.getLocation());
       }
       return fileNames;
    }

@@ -17,36 +17,24 @@
  */
 package org.jboss.arquillian.persistence.data;
 
-import java.lang.reflect.Method;
+import static org.fest.assertions.Assertions.*;
 
+import org.junit.Test;
 
-public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format>
+public class CustomScriptFileNamingStrategyTest
 {
 
-   private final DataSetFileNamingStrategy dataSetFileNamingStrategy;
-
-   public ExpectedDataSetFileNamingStrategy(Format format)
+   @Test
+   public void shouldProduceDefaultFileNameOfCForTestUsingFullClassNameAndMethodName() throws Exception
    {
-      super(format);
-      this.dataSetFileNamingStrategy = new DataSetFileNamingStrategy(format);
-   }
+      // given
+      CustomScriptFileNamingStrategy defaultFileNamingStrategy = new CustomScriptFileNamingStrategy(".sql");
 
-   @Override
-   public String createFileName(Class<?> testClass, Method testMethod)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass, testMethod);
-   }
+      // when
+      String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
-   @Override
-   public String createFileName(Class<?> testClass)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass);
-   }
-
-   @Override
-   public String getFileExtension()
-   {
-      return dataSetFileNamingStrategy.getFileExtension();
+      // then
+      assertThat(fileName).isEqualTo("org.jboss.arquillian.persistence.data.DummyClass#shouldPass.sql");
    }
 
 }

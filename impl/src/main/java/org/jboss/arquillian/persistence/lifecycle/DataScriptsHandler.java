@@ -15,20 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.lifecycle;
 
-public class DataSetFileNamingStrategy extends FileNamingStrategy<Format>
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
+
+public class DataScriptsHandler
 {
 
-   public DataSetFileNamingStrategy(Format format)
+   public void seedDataBaseUsingScripts(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest)
    {
-      super(format);
-   }
-
-   @Override
-   public String getFileExtension()
-   {
-      return extension.extension();
+      // TODO fire event with custom scripts
    }
 
 }

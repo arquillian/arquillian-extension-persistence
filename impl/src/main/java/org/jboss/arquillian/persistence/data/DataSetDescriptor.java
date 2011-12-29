@@ -25,27 +25,12 @@ package org.jboss.arquillian.persistence.data;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetDescriptor
+public class DataSetDescriptor extends ResourceDescriptor<Format>
 {
 
-   private final String fileLocation;
-
-   private final Format format;
-
-   public DataSetDescriptor(String fileLocation, Format format)
+   public DataSetDescriptor(String location, Format format)
    {
-      this.fileLocation = fileLocation;
-      this.format = format;
-   }
-
-   public String getFileLocation()
-   {
-      return fileLocation;
-   }
-
-   public Format getFormat()
-   {
-      return format;
+      super(location, format);
    }
 
    @Override
@@ -62,7 +47,7 @@ public class DataSetDescriptor
       }
 
       final DataSetDescriptor other = (DataSetDescriptor) obj;
-      return fileLocation.equals(other.fileLocation) && format.equals(other.format);
+      return location.equals(other.location) && format.equals(other.format);
    }
 
    @Override
@@ -70,7 +55,7 @@ public class DataSetDescriptor
    {
       final int prime = 17;
       int result = 1;
-      result = prime * result + ((fileLocation == null) ? 0 : fileLocation.hashCode());
+      result = prime * result + ((location == null) ? 0 : location.hashCode());
       result = prime * result + ((format == null) ? 0 : format.hashCode());
       return result;
    }
@@ -78,7 +63,7 @@ public class DataSetDescriptor
    @Override
    public String toString()
    {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + fileLocation + ", " + format + "]";
+      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + ", " + format + "]";
    }
 
 }

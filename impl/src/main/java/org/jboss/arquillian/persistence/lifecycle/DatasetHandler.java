@@ -28,6 +28,7 @@ import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
+import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 
@@ -57,7 +58,7 @@ public class DatasetHandler
       if (metadataProvider.get().isDataSeedOperationRequested())
       {
          DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
-         prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDataSetDescriptors(beforePersistenceTest.getTestMethod())));
+         prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
       }
 
    }
@@ -66,8 +67,8 @@ public class DatasetHandler
    {
       if (metadataProvider.get().isDataVerificationRequested())
       {
-         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
-         compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getExpectedDataSetDescriptors(afterPersistenceTest.getTestMethod())));
+         ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor.get(), configuration.get());
+         compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
       }
       // TODO seperated?
       cleanUpDataEvent.fire(new CleanUpData(afterPersistenceTest));
