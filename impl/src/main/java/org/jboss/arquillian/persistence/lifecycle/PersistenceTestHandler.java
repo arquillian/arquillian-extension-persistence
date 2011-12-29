@@ -61,22 +61,19 @@ public class PersistenceTestHandler
       PersistenceConfiguration persistenceConfiguration = configuration.get();
       metadataProvider.set(new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), persistenceConfiguration));
 
-      if (!metadataProvider.get().isPersistenceExtensionRequired())
+      if (metadataProvider.get().isPersistenceExtensionRequired())
       {
-         return;
+         beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
       }
 
-      beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
    }
 
    public void afterTest(@Observes After afterTestEvent)
    {
-      if (!metadataProvider.get().isPersistenceExtensionRequired())
+      if (metadataProvider.get().isPersistenceExtensionRequired())
       {
-         return;
+         afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
       }
-
-      afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
    }
 
 }

@@ -28,6 +28,7 @@ import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.metadata.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -56,12 +57,15 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
    private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
    {
+      final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
+
       final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
       final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), configuration.get());
-      final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
+      final SqlScriptProvider sqlScriptsProvider = new SqlScriptProvider(new MetadataExtractor(testClass), configuration.get());
 
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
+      allDataSets.addAll(sqlScriptsProvider.getDescriptors(testClass));
 
       return allDataSets;
    }

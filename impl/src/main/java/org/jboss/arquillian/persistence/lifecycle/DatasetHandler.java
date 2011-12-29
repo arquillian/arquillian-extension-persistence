@@ -70,7 +70,7 @@ public class DatasetHandler
          ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor.get(), configuration.get());
          compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
       }
-      // TODO seperated?
+
       cleanUpDataEvent.fire(new CleanUpData(afterPersistenceTest));
    }
 

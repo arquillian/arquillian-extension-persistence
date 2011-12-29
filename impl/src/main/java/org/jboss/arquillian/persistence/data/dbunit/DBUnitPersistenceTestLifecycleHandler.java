@@ -75,14 +75,14 @@ public class DBUnitPersistenceTestLifecycleHandler
    public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
    {
       PrepareData prepareDataEvent = context.getEvent();
-      createInitialDataSets(prepareDataEvent.getDataSetDescriptors());
+      createInitialDataSets(prepareDataEvent.getDescriptors());
       context.proceed();
    }
 
    public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
    {
       CompareData compareDataEvent = context.getEvent();
-      createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
+      createExpectedDataSets(compareDataEvent.getDescriptors());
       context.proceed();
    }
 

@@ -74,7 +74,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetDescriptor>
    }
 
 
-   // Internals
+   // Private methods
 
    private Format inferFormat(String dataFileName)
    {

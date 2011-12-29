@@ -20,22 +20,22 @@ package org.jboss.arquillian.persistence.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class DataEvent extends TestEvent implements PersistenceEvent
+public class DataEvent<T extends ResourceDescriptor<?>> extends TestEvent implements PersistenceEvent
 {
 
-   private final List<DataSetDescriptor> dataSetDescriptors;
+   private final List<T> descriptors;
 
-   public DataEvent(TestEvent testEvent, List<DataSetDescriptor> dataSetDescriptors)
+   public DataEvent(TestEvent testEvent, List<T> descriptors)
    {
       super(testEvent.getTestInstance(), testEvent.getTestMethod());
-      this.dataSetDescriptors = new ArrayList<DataSetDescriptor>(dataSetDescriptors);
+      this.descriptors = new ArrayList<T>(descriptors);
    }
 
-   public List<DataSetDescriptor> getDataSetDescriptors()
+   public List<T> getDescriptors()
    {
-      return dataSetDescriptors;
+      return descriptors;
    }
 }

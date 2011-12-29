@@ -17,51 +17,53 @@
  */
 package org.jboss.arquillian.persistence.data.descriptor;
 
-import java.util.EnumSet;
-import java.util.Set;
 
 /**
+ *
+ * Contains information about the SQL script.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public enum Format
+public class SqlScriptDescriptor extends ResourceDescriptor<String>
 {
-   XML("xml"),
-   EXCEL("xls"),
-   YAML("yml"),
-   JSON("json"),
-   UNSUPPORTED("-none-");
 
-   private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED);
-
-   private final String fileExtension;
-
-   private Format(String fileExtension)
+   public SqlScriptDescriptor(String location)
    {
-      this.fileExtension = fileExtension;
+      super(location, "sql");
    }
 
-   public String extension()
+   @Override
+   public boolean equals(Object obj)
    {
-      return fileExtension;
-   }
-
-   public static Format inferFromFile(String fileName)
-   {
-      Format result = UNSUPPORTED;
-      final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
-
-      for (Format format : validFormats)
+      if (this == obj)
       {
-         if (fileName.endsWith(format.fileExtension))
-         {
-            return format;
-         }
+         return true;
       }
 
-      return result;
+      if (!(obj instanceof SqlScriptDescriptor))
+      {
+         return false;
+      }
 
+      final SqlScriptDescriptor other = (SqlScriptDescriptor) obj;
+      return location.equals(other.location) && format.equals(other.format);
+   }
+
+   @Override
+   public int hashCode()
+   {
+      final int prime = 13;
+      int result = 1;
+      result = prime * result + ((location == null) ? 0 : location.hashCode());
+      result = prime * result + ((format == null) ? 0 : format.hashCode());
+      return result;
+   }
+
+   @Override
+   public String toString()
+   {
+      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + ", " + format + "]";
    }
 
 }

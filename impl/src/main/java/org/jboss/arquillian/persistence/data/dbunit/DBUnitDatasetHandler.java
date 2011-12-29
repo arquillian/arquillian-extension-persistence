@@ -17,6 +17,10 @@
  */
 package org.jboss.arquillian.persistence.data.dbunit;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -32,9 +36,11 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.data.DataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
+import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 
@@ -58,12 +64,12 @@ public class DBUnitDatasetHandler implements DataHandler
    @Override
    public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
    {
-      final String initStatementString = applyInitStatementEvent.getInitStatement();
-      if (initStatementString == null || initStatementString.isEmpty())
+      final String initScript = applyInitStatementEvent.getInitStatement();
+      if (initScript == null || initScript.isEmpty())
       {
          return;
       }
-      applyInitStatement(initStatementString);
+      executeScript(initScript);
    }
 
    @Override
@@ -90,8 +96,10 @@ public class DBUnitDatasetHandler implements DataHandler
          for (String tableName : tableNames)
          {
             SortedTable expectedTableState = new SortedTable(expectedDataSet.getTable(tableName));
-            SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName), expectedTableState.getTableMetaData());
-            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState, currentTableState);
+            SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName),
+                  expectedTableState.getTableMetaData());
+            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState,
+                  currentTableState);
             try
             {
                Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
@@ -122,15 +130,35 @@ public class DBUnitDatasetHandler implements DataHandler
       }
    }
 
+   @Override
+   public void executeScripts(@Observes ExecuteScripts executeScriptsEvent)
+   {
+      for (SqlScriptDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
+      {
+         final String script = loadScript(scriptDescriptor.getLocation());
+         executeScript(script);
+      }
+
+   }
+
    // Private methods
 
-   private void applyInitStatement(String initStatementString)
+   private String loadScript(String location)
    {
-      Statement initStatement = null;
+      final StringBuilder builder = new StringBuilder();
+
+      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+
+      BufferedReader reader = null;
+      String line = null;
+
       try
       {
-         initStatement = databaseConnection.get().getConnection().createStatement();
-         initStatement.execute(initStatementString);
+         reader = new BufferedReader(new InputStreamReader(inputStream));
+         while ((line  = reader.readLine()) != null)
+         {
+            builder.append(' ').append(line);
+         }
       }
       catch (Exception e)
       {
@@ -138,15 +166,45 @@ public class DBUnitDatasetHandler implements DataHandler
       }
       finally
       {
-         if (initStatement != null)
+         if (reader != null)
          {
             try
             {
-               initStatement.close();
+               reader.close();
+            }
+            catch (IOException e)
+            {
+               throw new DBUnitDataSetHandlingException("Unable to close script.", e);
+            }
+         }
+      }
+
+      return builder.toString();
+   }
+
+   private void executeScript(String script)
+   {
+      Statement statement = null;
+      try
+      {
+         statement = databaseConnection.get().getConnection().createStatement();
+         statement.execute(script);
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitDataSetHandlingException(e);
+      }
+      finally
+      {
+         if (statement != null)
+         {
+            try
+            {
+               statement.close();
             }
             catch (SQLException e)
             {
-               throw new DBUnitDataSetHandlingException("Unable to close init statement", e);
+               throw new DBUnitDataSetHandlingException("Unable to close statement", e);
             }
          }
       }

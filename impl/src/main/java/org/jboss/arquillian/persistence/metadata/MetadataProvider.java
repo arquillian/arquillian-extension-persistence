@@ -62,6 +62,12 @@ public class MetadataProvider
             || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
    }
 
+   public boolean isCustomScriptExecutionRequested()
+   {
+      return  metadataExtractor.usingScript().isDefinedOnClassLevel()
+            || metadataExtractor.usingScript().isDefinedOn(testMethod);
+   }
+
    public boolean isDataVerificationRequested()
    {
       return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()

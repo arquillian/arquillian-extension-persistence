@@ -15,29 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data.descriptor;
+package org.jboss.arquillian.persistence.event;
 
-public abstract class ResourceDescriptor<T>
+import java.util.List;
+
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
+
+public class ExecuteScripts extends DataEvent<SqlScriptDescriptor>
 {
 
-   protected final String location;
-
-   protected final T format;
-
-   public ResourceDescriptor(String location, T format)
+   public ExecuteScripts(TestEvent testEvent, List<SqlScriptDescriptor> dataSetDescriptors)
    {
-      this.location = location;
-      this.format = format;
-   }
-
-   public String getLocation()
-   {
-      return location;
-   }
-
-   public T getFormat()
-   {
-      return format;
+      super(testEvent, dataSetDescriptors);
    }
 
 }

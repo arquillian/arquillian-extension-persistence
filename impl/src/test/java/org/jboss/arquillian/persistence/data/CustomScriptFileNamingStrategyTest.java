@@ -29,7 +29,7 @@ public class CustomScriptFileNamingStrategyTest
    public void shouldProduceDefaultFileNameOfCForTestUsingFullClassNameAndMethodName() throws Exception
    {
       // given
-      CustomScriptFileNamingStrategy defaultFileNamingStrategy = new CustomScriptFileNamingStrategy(".sql");
+      CustomScriptFileNamingStrategy defaultFileNamingStrategy = new CustomScriptFileNamingStrategy("sql");
 
       // when
       String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));

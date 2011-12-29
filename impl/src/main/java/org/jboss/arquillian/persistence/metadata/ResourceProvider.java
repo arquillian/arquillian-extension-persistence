@@ -50,7 +50,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
    }
 
    /**
-    * Returns all data sets defined for this test class
+    * Returns all resources defined for this test class
     * including those defined on the test method level.
     *
     * @param testClass
@@ -134,13 +134,10 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
    }
 
    /**
-    * Checks if data set file exists in the default location {@link PersistenceConfiguration#getDefaultDataSetLocation()}.
+    * Checks if data set file exists in the default location.
     * If that's not the case, file is looked up starting from the root.
     *
     * @return determined file location
-    *
-    * @throws
-    *
     */
    protected String determineLocation(String location)
    {
@@ -151,7 +148,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       if (!existsInGivenLocation(location))
       {
          throw new InvalidDataSetLocation("Unable to locate " + location +
-               ". File does not exist even in default location " + configuration.getDefaultDataSetLocation());
+               ". File does not exist even in default location " + defaultLocation());
       }
       return location;
    }
@@ -168,7 +165,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       }
       catch (URISyntaxException e)
       {
-         throw new InvalidDataSetLocation("Unable to open data set file", e);
+         throw new InvalidDataSetLocation("Unable to open resource file", e);
       }
 
       return true;

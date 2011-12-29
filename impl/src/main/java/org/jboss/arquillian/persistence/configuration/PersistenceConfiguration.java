@@ -36,6 +36,8 @@ public class PersistenceConfiguration implements Serializable
 
    private String defaultDataSetLocation = "datasets/";
 
+   private String defaultSqlScriptLocation = "scripts/";
+
    private String initStatement;
 
    private Format defaultDataSetFormat = Format.XML;
@@ -147,6 +149,16 @@ public class PersistenceConfiguration implements Serializable
    public void setUserTransactionJndi(String userTransactionJndi)
    {
       this.userTransactionJndi = userTransactionJndi;
+   }
+
+   public String getDefaultSqlScriptLocation()
+   {
+      return defaultSqlScriptLocation;
+   }
+
+   public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
+   {
+      this.defaultSqlScriptLocation = defaultSqlScriptLocation;
    }
 
 }

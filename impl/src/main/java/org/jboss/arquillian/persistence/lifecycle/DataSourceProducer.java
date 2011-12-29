@@ -59,7 +59,7 @@ public class DataSourceProducer
          {
             throw new ContextNotAvailableException("No Naming Context available");
          }
-         return (javax.sql.DataSource) context.lookup(dataSourceName);
+         return (DataSource) context.lookup(dataSourceName);
       }
       catch (NamingException e)
       {

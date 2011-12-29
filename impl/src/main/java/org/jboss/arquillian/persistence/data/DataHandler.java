@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.data;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
+import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.event.PrepareData;
 
 public interface DataHandler
@@ -32,5 +33,7 @@ public interface DataHandler
    void compare(CompareData cleanupDataEvent);
 
    void cleanup(CleanUpData cleanupDataEvent);
+
+   void executeScripts(ExecuteScripts executeScriptsEvent);
 
 }

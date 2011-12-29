@@ -34,12 +34,12 @@ public abstract class FileNamingStrategy<T>
 
    public String createFileName(Class<?> testClass, Method testMethod)
    {
-      return testClass.getName() + "#" + testMethod.getName() + getFileExtension();
+      return testClass.getName() + "#" + testMethod.getName() + "." + getFileExtension();
    }
 
    public String createFileName(Class<?> testClass)
    {
-      return testClass.getName() + getFileExtension();
+      return testClass.getName() + "." + getFileExtension();
    }
 
 }
