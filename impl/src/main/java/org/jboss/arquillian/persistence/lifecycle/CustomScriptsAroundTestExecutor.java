@@ -22,6 +22,9 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.script.ScriptHelper;
+import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 
@@ -34,10 +37,28 @@ public class CustomScriptsAroundTestExecutor
    @Inject
    private Event<ApplyInitStatement> applyInitStatementEvent;
 
+   @Inject
+   private Event<ApplyCleanupStatement> applyCleanupStatementEvent;
+
    public void applyInitStatement(@Observes(precedence = 40) BeforePersistenceTest beforePersistenceTest)
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      applyInitStatementEvent.fire(new ApplyInitStatement(persistenceConfiguration.getInitStatement()));
+      String initStatement = persistenceConfiguration.getInitStatement();
+      if (ScriptHelper.isSqlScriptFile(initStatement))
+      {
+         initStatement = ScriptHelper.loadScript(initStatement);
+      }
+      applyInitStatementEvent.fire(new ApplyInitStatement(initStatement));
    }
 
+   public void applyCleanupStatement(@Observes(precedence = 20) AfterPersistenceTest afterPersistenceTest)
+   {
+      final PersistenceConfiguration persistenceConfiguration = configuration.get();
+      String cleanupStatement = persistenceConfiguration.getCleanupStatement();
+      if (ScriptHelper.isSqlScriptFile(cleanupStatement))
+      {
+         cleanupStatement = ScriptHelper.loadScript(cleanupStatement);
+      }
+      applyCleanupStatementEvent.fire(new ApplyCleanupStatement(cleanupStatement));
+   }
 }

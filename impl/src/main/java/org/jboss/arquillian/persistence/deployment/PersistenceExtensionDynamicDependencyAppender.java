@@ -16,8 +16,10 @@
  */
 package org.jboss.arquillian.persistence.deployment;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
@@ -25,6 +27,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.data.script.ScriptHelper;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
@@ -50,7 +53,9 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      addDataResources(applicationArchive, fetchAllDataResources(testClass));
+      addResources(applicationArchive, toJavaArchive(fetchAllDataResources(testClass)));
+      addSqlScriptAsResource(applicationArchive, configuration.get().getCleanupStatement());
+      addSqlScriptAsResource(applicationArchive, configuration.get().getInitStatement());
    }
 
    // Private helper methods
@@ -70,10 +75,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       return allDataSets;
    }
 
-   private void addDataResources(Archive<?> applicationArchive, Set<? extends ResourceDescriptor<?>> descriptors)
+   private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
    {
-      final JavaArchive dataArchive = toJavaArchive(descriptors);
-
       if (applicationArchive instanceof JavaArchive)
       {
          addAsResource(applicationArchive, dataArchive);
@@ -82,7 +85,6 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       {
          addAsLibrary(applicationArchive, dataArchive);
       }
-
    }
 
    private void addAsResource(Archive<?> applicationArchive, JavaArchive dataArchive)
@@ -98,13 +100,34 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
    private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors)
    {
-      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+      final List<String> paths = new ArrayList<String>(descriptors.size());
 
       for (ResourceDescriptor<?> descriptor : descriptors)
       {
-         dataSetsArchive.addAsResource(descriptor.getLocation());
+         paths.add(descriptor.getLocation());
       }
+
+      return createArchiveWithResources(paths.toArray(new String[descriptors.size()]));
+   }
+
+   private JavaArchive createArchiveWithResources(String ... resourcePaths)
+   {
+      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+
+      for (String path : resourcePaths)
+      {
+         dataSetsArchive.addAsResource(path);
+      }
+
       return dataSetsArchive;
+   }
+
+   private void addSqlScriptAsResource(Archive<?> applicationArchive, String script)
+   {
+      if (ScriptHelper.isSqlScriptFile(script))
+      {
+         addResources(applicationArchive, createArchiveWithResources(script));
+      }
    }
 
 }

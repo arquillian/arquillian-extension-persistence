@@ -15,28 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.event;
 
-import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
-import org.jboss.arquillian.persistence.event.ApplyInitStatement;
-import org.jboss.arquillian.persistence.event.CleanUpData;
-import org.jboss.arquillian.persistence.event.CompareData;
-import org.jboss.arquillian.persistence.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.event.PrepareData;
-
-public interface DataHandler
+public class ApplyCleanupStatement implements PersistenceEvent
 {
 
-   void initStatements(ApplyInitStatement applyInitStatementEvent);
+   private final String cleanupStatement;
 
-   void cleanupStatements(ApplyCleanupStatement applyCleanupStatementEvent);
+   public ApplyCleanupStatement(String cleanupStatement)
+   {
+      this.cleanupStatement = cleanupStatement;
+   }
 
-   void prepare(PrepareData prepareDataEvent);
-
-   void compare(CompareData cleanupDataEvent);
-
-   void cleanup(CleanUpData cleanupDataEvent);
-
-   void executeScripts(ExecuteScripts executeScriptsEvent);
+   public String getCleanupStatement()
+   {
+      return cleanupStatement;
+   }
 
 }
