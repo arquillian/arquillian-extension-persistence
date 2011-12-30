@@ -18,6 +18,9 @@
 package org.jboss.arquillian.persistence.deployment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
@@ -27,7 +30,6 @@ import org.jboss.arquillian.persistence.client.PersistenceExtension;
 import org.jboss.arquillian.persistence.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
-import org.jboss.arquillian.persistence.lifecycle.PersistenceTestHandler;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -53,24 +55,37 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
+
       return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
                        .addPackages(true,
                              // exclude client package
                              Filters.exclude(PersistenceExtension.class.getPackage()),
                              "org.jboss.arquillian.persistence")
-                       .addPackages(true,
-                             "org.dbunit",
-                             "org.apache.poi",
-                             "org.apache.commons",
-                             "org.apache.log4j",
-                             "org.slf4j",
-                             "org.yaml",
-                             "org.codehaus.jackson")
+                       .addPackages(true, requiredLibraries())
                        .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
                        .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
    }
 
    // Private helper methods
+
+   private String[] requiredLibraries()
+   {
+      List<String> libraries = new ArrayList<String>(Arrays.asList(
+            "org.dbunit",
+            "org.apache.commons",
+            "org.apache.log4j",
+            "org.slf4j",
+            "org.yaml",
+            "org.codehaus.jackson"
+      ));
+
+      if (!configuration.get().isExcludePoi())
+      {
+         libraries.add("org.apache.poi");
+      }
+
+      return libraries.toArray(new String[libraries.size()]);
+   }
 
    private ByteArrayOutputStream exportConfigurationAsProperties()
    {
