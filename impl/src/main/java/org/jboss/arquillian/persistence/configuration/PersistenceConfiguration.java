@@ -20,7 +20,7 @@ package org.jboss.arquillian.persistence.configuration;
 import java.io.Serializable;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 /**
  *
@@ -35,6 +35,8 @@ public class PersistenceConfiguration implements Serializable
    private String defaultDataSource;
 
    private String defaultDataSetLocation = "datasets/";
+
+   private String defaultSqlScriptLocation = "scripts/";
 
    private String initStatement;
 
@@ -147,6 +149,16 @@ public class PersistenceConfiguration implements Serializable
    public void setUserTransactionJndi(String userTransactionJndi)
    {
       this.userTransactionJndi = userTransactionJndi;
+   }
+
+   public String getDefaultSqlScriptLocation()
+   {
+      return defaultSqlScriptLocation;
+   }
+
+   public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
+   {
+      this.defaultSqlScriptLocation = defaultSqlScriptLocation;
    }
 
 }

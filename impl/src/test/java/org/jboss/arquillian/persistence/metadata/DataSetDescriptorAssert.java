@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.fest.assertions.Assertions;
 import org.fest.assertions.GroupAssert;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert, Collection<DataSetDescriptor>>
 {
@@ -72,7 +72,7 @@ public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert
       final List<String> fileNames = new ArrayList<String>();
       for (DataSetDescriptor dataSetDescriptor : actual)
       {
-         fileNames.add(dataSetDescriptor.getFileLocation());
+         fileNames.add(dataSetDescriptor.getLocation());
       }
       return fileNames;
    }

@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -29,7 +29,6 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.EndTransaction;
 import org.jboss.arquillian.persistence.event.StartTransaction;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
-import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 
 public class TransactionalWrapper
@@ -37,19 +36,38 @@ public class TransactionalWrapper
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-   
+
    @Inject
-   private Instance<MetadataExtractor> metadataExtractor;
+   private Instance<MetadataProvider> metadataProvider;
 
    @Inject
    private Instance<Context> contextInstance;
+
+   public void beforeTest(@Observes StartTransaction startTransaction) throws Exception
+   {
+      obtainTransaction().begin();
+   }
+
+   public void afterTest(@Observes EndTransaction endTransaction) throws Exception
+   {
+      final TransactionMode mode = metadataProvider.get().getTransactionalMode();
+
+      if (TransactionMode.COMMIT.equals(mode))
+      {
+         obtainTransaction().commit();
+      }
+      else
+      {
+         obtainTransaction().rollback();
+      }
+   }
 
    private UserTransaction obtainTransaction()
    {
       try
       {
          final Context context = contextInstance.get();
-         if(context == null)
+         if (context == null)
          {
             throw new ContextNotAvailableException("No Naming Context available");
          }
@@ -60,31 +78,6 @@ public class TransactionalWrapper
          throw new TransactionNotAvailableException("Failed obtaining transaction.", e);
       }
    }
-   
-   public void beforeTest(@Observes StartTransaction startTransaction) throws Exception
-   {
-      MetadataProvider metadataProvider = new MetadataProvider(startTransaction.getTestMethod(), metadataExtractor.get(), configuration.get());
-      if (!metadataProvider.isTransactional())
-      {
-         return;
-      }
-      obtainTransaction().begin();
-   }
-   
-   public void afterTest(@Observes EndTransaction endTransaction) throws Exception
-   {
-      MetadataProvider metadataProvider = new MetadataProvider(endTransaction.getTestMethod(), metadataExtractor.get(), configuration.get());
 
-      TransactionMode mode = metadataProvider.getTransactionalMode();
-      if (TransactionMode.COMMIT.equals(mode))
-      {
-         obtainTransaction().commit();
-      }
-      else
-      {
-         obtainTransaction().rollback();
-      }
-   }
-   
-   
+
 }

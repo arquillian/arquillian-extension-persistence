@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -50,6 +51,21 @@ public class MetadataProviderPersistentFeatureTest
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
             PersistenceTestClass.class.getMethod("shouldPass"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
+
+      // when
+      boolean persistenceFeatureEnabled = metadataProvider.isPersistenceExtensionRequired();
+
+      // then
+      assertThat(persistenceFeatureEnabled).isTrue();
+   }
+
+   @Test
+   public void shouldAcceptClassWithScriptAnnotation() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new PersistenceTestWithScriptAnnotation(),
+            PersistenceTestWithScriptAnnotation.class.getMethod("shouldPass"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createDefaultConfiguration());
 
       // when
@@ -104,6 +120,12 @@ public class MetadataProviderPersistentFeatureTest
    private static class PersistenceTestWithExpectedAnnotation
    {
       @ShouldMatchDataSet
+      public void shouldPass() {}
+   }
+
+   private static class PersistenceTestWithScriptAnnotation
+   {
+      @UsingScript
       public void shouldPass() {}
    }
 

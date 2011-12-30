@@ -30,6 +30,7 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -102,7 +103,24 @@ public class UserPersistenceTest
    @Test
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet("expected-users.yml")
-   public void shouldChangeUserPassword() throws Exception
+   public void shouldChangePassword() throws Exception
+   {
+      // given
+      String expectedPassword = "LexLuthor";
+      UserAccount user = em.find(UserAccount.class, 2L);
+
+      // when
+      user.setPassword("LexLuthor");
+      em.merge(user);
+
+      // then
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
+   }
+
+   @Test
+   @UsingScript("users.sql")
+   @ShouldMatchDataSet("expected-users.yml")
+   public void shouldChangePasswordUsingSqlToSeedData() throws Exception
    {
       // given
       String expectedPassword = "LexLuthor";

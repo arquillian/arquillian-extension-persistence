@@ -22,11 +22,16 @@ import java.io.InputStream;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class DataSetBuilder
 {
 
@@ -59,7 +64,7 @@ public class DataSetBuilder
       }
       catch (Exception e)
       {
-         throw new DBUnitInitializationException("Unable to load data set from given file : " + file, e);
+         throw new DBUnitInitializationException("Unable to load data set from given file: " + file, e);
       }
    }
 

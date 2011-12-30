@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -25,19 +25,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents table described in data set, storing information such as
+ * Represents table described in data set. Stores information such as
  * table's name, list of columns and {@link Row}s.
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
 public class Table
 {
    private final String tableName;
-   
-   private Set<String> columns = new HashSet<String>();
-   
-   private List<Row> rows = new ArrayList<Row>();
+
+   private final Set<String> columns = new HashSet<String>();
+
+   private final List<Row> rows = new ArrayList<Row>();
 
    public Table(String tableName)
    {
@@ -53,20 +53,20 @@ public class Table
    {
       this.columns.addAll(columns);
    }
-   
+
    public String getTableName()
    {
       return tableName;
    }
-   
+
    public Set<String> getColumns()
    {
       return Collections.unmodifiableSet(columns);
    }
-   
+
    public List<Row> getRows()
    {
       return Collections.unmodifiableList(rows);
    }
-   
+
 }

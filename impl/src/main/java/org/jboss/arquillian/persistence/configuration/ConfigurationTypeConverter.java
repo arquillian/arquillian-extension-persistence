@@ -23,7 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 /**
 *

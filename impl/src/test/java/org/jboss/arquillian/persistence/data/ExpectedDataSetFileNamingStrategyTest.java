@@ -19,6 +19,8 @@ package org.jboss.arquillian.persistence.data;
 
 import static org.fest.assertions.Assertions.*;
 
+import org.jboss.arquillian.persistence.data.descriptor.Format;
+import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.junit.Test;
 
 public class ExpectedDataSetFileNamingStrategyTest

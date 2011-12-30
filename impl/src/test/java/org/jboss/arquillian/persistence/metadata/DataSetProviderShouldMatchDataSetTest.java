@@ -26,8 +26,8 @@ import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -51,10 +51,10 @@ public class DataSetProviderShouldMatchDataSetTest
    {
       // given
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestClass());
+      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_EXPECTED_DATA_SET_ON_CLASS_LEVEL,
@@ -68,10 +68,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       String expectedDataFile = XML_EXPECTED_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getExpectedDataFileNames(testEvent.getTestMethod());
+      List<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -83,10 +83,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       String expectedDataFile = XML_EXPECTED_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getExpectedDataFileNames(testEvent.getTestMethod());
+      List<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -98,10 +98,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       Format expectedFormat = Format.EXCEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataAndFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getExpectedDataFormats(testEvent.getTestMethod());
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -113,10 +113,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getExpectedDataFormats(testEvent.getTestMethod());
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -128,10 +128,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       Format expectedFormat = Format.XML;
       TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> dataFormats = dataSetProvider.getExpectedDataFormats(testEvent.getTestMethod());
+      List<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       assertThat(dataFormats).containsOnly(expectedFormat);
@@ -142,10 +142,10 @@ public class DataSetProviderShouldMatchDataSetTest
    {
       // given
       TestEvent testEvent= new TestEvent(new ShouldMatchDataSetAnnotationWithUnsupportedFormat(), ShouldMatchDataSetAnnotationWithUnsupportedFormat.class.getMethod("shouldFailWithNonSupportedFileExtension"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<Format> expectedDataFormats = dataSetProvider.getExpectedDataFormats(testEvent.getTestMethod());
+      List<Format> expectedDataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -157,10 +157,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
       TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getExpectedDataFileNames(testEvent.getTestMethod());
+      List<String> files = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -172,13 +172,13 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       String expectedFileName = "expected-" + ShouldMatchDataSetAnnotatedOnClassLevelOnly.class.getName() + ".xls";
       TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedOnClassLevelOnly(), ShouldMatchDataSetAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getExpectedDataFileNames(testEvent.getTestMethod());
+      Set<DataSetDescriptor> files = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
-      assertThat(files).containsOnly(expectedFileName);
+      assertThat(files).containsOnly(new DataSetDescriptor(expectedFileName, Format.EXCEL));
    }
 
    @Test
@@ -189,10 +189,10 @@ public class DataSetProviderShouldMatchDataSetTest
       DataSetDescriptor xls = new DataSetDescriptor("two.xls", Format.EXCEL);
       DataSetDescriptor yml = new DataSetDescriptor("three.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedClass(), ShouldMatchDataSetAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
@@ -204,10 +204,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedOnClassLevelOnlyNonExistingFile(),
             ShouldMatchDataSetAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -219,10 +219,10 @@ public class DataSetProviderShouldMatchDataSetTest
       // given
       TestEvent testEvent = new TestEvent(new ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -235,10 +235,10 @@ public class DataSetProviderShouldMatchDataSetTest
       DataSetDescriptor expectedFile = new DataSetDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             ShouldMatchDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
-      DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getExpectedDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);
