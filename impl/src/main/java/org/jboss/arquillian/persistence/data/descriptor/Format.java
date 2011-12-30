@@ -15,11 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.data.descriptor;
 
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public enum Format
 {
    XML("xml"),
@@ -39,7 +44,7 @@ public enum Format
 
    public String extension()
    {
-      return "." + fileExtension;
+      return fileExtension;
    }
 
    public static Format inferFromFile(String fileName)

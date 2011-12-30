@@ -17,16 +17,12 @@
  */
 package org.jboss.arquillian.persistence.metadata;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.test.spi.TestClass;
 
 public class MetadataExtractor
@@ -34,58 +30,49 @@ public class MetadataExtractor
 
    private final TestClass testClass;
 
-   private Map<Method,DataSource> dataSourceAnnotations;
+   private final AnnotationInspector<DataSource> dataSourceInspector;
 
-   private Map<Method,UsingDataSet> dataAnnotations;
+   private final AnnotationInspector<UsingDataSet> usingDataSetInspector;
 
-   private Map<Method,ShouldMatchDataSet> expectedAnnotations;
+   private final AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSetInspector;
 
-   private Map<Method,Transactional> transactionalAnnotations;
+   private final AnnotationInspector<UsingScript> usingScriptInspector;
+
+   private final AnnotationInspector<Transactional> transactionalInspector;
 
    public MetadataExtractor(TestClass testClass)
    {
       this.testClass = testClass;
-      prefetchPersistenceAnnotations();
+      this.dataSourceInspector = new AnnotationInspector<DataSource>(testClass, DataSource.class);
+      this.usingDataSetInspector = new AnnotationInspector<UsingDataSet>(testClass, UsingDataSet.class);
+      this.shouldMatchDataSetInspector = new AnnotationInspector<ShouldMatchDataSet>(testClass, ShouldMatchDataSet.class);
+      this.usingScriptInspector = new AnnotationInspector<UsingScript>(testClass, UsingScript.class);
+      this.transactionalInspector = new AnnotationInspector<Transactional>(testClass, Transactional.class);
    }
 
-   public boolean hasDataAnnotationOn(Method testMethod)
+   public AnnotationInspector<DataSource> dataSource()
    {
-      return getDataAnnotationOn(testMethod) != null;
+      return dataSourceInspector;
    }
 
-   public UsingDataSet getDataAnnotationOn(Method testMethod)
+   public AnnotationInspector<UsingDataSet> usingDataSet()
    {
-      return dataAnnotations.get(testMethod);
+      return usingDataSetInspector;
    }
 
-   public boolean hasTransactionalAnnotationOn(Method testMethod)
+   public AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSet()
    {
-      return transactionalAnnotations.get(testMethod) != null;
+      return shouldMatchDataSetInspector;
    }
 
-   public Transactional getTransactionalAnnotationOn(Method testMethod)
+   public AnnotationInspector<UsingScript> usingScript()
    {
-      return transactionalAnnotations.get(testMethod);
+      return usingScriptInspector;
    }
 
-   public boolean hasDataSourceAnnotationOn(Method testMethod)
+   public AnnotationInspector<Transactional> transactional()
    {
-      return dataSourceAnnotations.get(testMethod) != null;
-   }
-
-   public DataSource getDataSourceAnnotationOn(Method testMethod)
-   {
-      return dataSourceAnnotations.get(testMethod);
-   }
-
-   public boolean hasExpectedAnnotationOn(Method testMethod)
-   {
-      return expectedAnnotations.get(testMethod) != null;
-   }
-
-   public ShouldMatchDataSet getExpectedAnnotationOn(Method testMethod)
-   {
-      return expectedAnnotations.get(testMethod);
+      return transactionalInspector;
    }
 
    public boolean hasPersistenceTestAnnotation()
@@ -93,75 +80,9 @@ public class MetadataExtractor
       return testClass.getAnnotation(PersistenceTest.class) != null;
    }
 
-   public Transactional getTransactionalAnnotationOnClassLevel()
-   {
-      return getAnnotationOnClassLevel(Transactional.class);
-   }
-
-   public boolean hasTransactionalAnnotationOnClassLevel()
-   {
-      return getTransactionalAnnotationOnClassLevel() != null;
-   }
-
-   public ShouldMatchDataSet getExpectedAnnotationOnClassLevel()
-   {
-      return getAnnotationOnClassLevel(ShouldMatchDataSet.class);
-   }
-
-   public boolean hasExpectedAnnotationOnClassLevel()
-   {
-      return getExpectedAnnotationOnClassLevel() != null;
-   }
-
-   public UsingDataSet getDataAnnotationOnClassLevel()
-   {
-      return getAnnotationOnClassLevel(UsingDataSet.class);
-   }
-
-   public boolean hasDataAnnotationOnClassLevel()
-   {
-      return getDataAnnotationOnClassLevel() != null;
-   }
-
-   public DataSource getDataSourceAnnotationOnClassLevel()
-   {
-      return getAnnotationOnClassLevel(DataSource.class);
-   }
-
-   public boolean hasDataSourceAnnotationOnClassLevel()
-   {
-      return getDataSourceAnnotationOnClassLevel() != null;
-   }
-
-   // Private
-
-   private void prefetchPersistenceAnnotations()
-   {
-      dataAnnotations = fetch(UsingDataSet.class);
-      expectedAnnotations = fetch(ShouldMatchDataSet.class);
-      dataSourceAnnotations = fetch(DataSource.class);
-      transactionalAnnotations = fetch(Transactional.class);
-   }
-
-   private <T extends Annotation> Map<Method, T> fetch(Class<T> annotation)
-   {
-      final Map<Method, T> map = new HashMap<Method, T>();
-
-      for (Method testMethod : testClass.getMethods(annotation))
-      {
-         map.put(testMethod, testMethod.getAnnotation(annotation));
-      }
-
-      return map;
-   }
-
    public Class<?> getJavaClass()
    {
       return testClass.getJavaClass();
    }
 
-   private <T extends Annotation> T getAnnotationOnClassLevel(Class<T> annotation)
-   {
-      return testClass.getAnnotation(annotation);
-   }
 }

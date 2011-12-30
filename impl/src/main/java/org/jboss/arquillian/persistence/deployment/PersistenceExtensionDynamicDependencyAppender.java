@@ -24,9 +24,11 @@ import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArch
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
+import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.metadata.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -48,55 +50,59 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      addDataSets(applicationArchive, fetchAllDataSets(testClass));
+      addDataResources(applicationArchive, fetchAllDataResources(testClass));
    }
 
    // Private helper methods
 
-   private Set<DataSetDescriptor> fetchAllDataSets(TestClass testClass)
+   private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
    {
-      final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
-      final Set<DataSetDescriptor> allDataSets = new HashSet<DataSetDescriptor>();
+      final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
-      allDataSets.addAll(dataSetProvider.getDataSetDescriptors(testClass));
-      allDataSets.addAll(dataSetProvider.getExpectedDataSetDescriptors(testClass));
+      final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
+      final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), configuration.get());
+      final SqlScriptProvider sqlScriptsProvider = new SqlScriptProvider(new MetadataExtractor(testClass), configuration.get());
+
+      allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
+      allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
+      allDataSets.addAll(sqlScriptsProvider.getDescriptors(testClass));
 
       return allDataSets;
    }
 
-   private void addDataSets(Archive<?> applicationArchive, Set<DataSetDescriptor> dataSetDescriptors)
+   private void addDataResources(Archive<?> applicationArchive, Set<? extends ResourceDescriptor<?>> descriptors)
    {
-      final JavaArchive dataSetsArchive = toJavaArchive(dataSetDescriptors);
+      final JavaArchive dataArchive = toJavaArchive(descriptors);
 
       if (applicationArchive instanceof JavaArchive)
       {
-         addAsResource(applicationArchive, dataSetsArchive);
+         addAsResource(applicationArchive, dataArchive);
       }
       else
       {
-         addAsLibrary(applicationArchive, dataSetsArchive);
+         addAsLibrary(applicationArchive, dataArchive);
       }
 
    }
 
-   private void addAsResource(Archive<?> applicationArchive, JavaArchive dataSetsArchive)
+   private void addAsResource(Archive<?> applicationArchive, JavaArchive dataArchive)
    {
-      applicationArchive.merge(dataSetsArchive);
+      applicationArchive.merge(dataArchive);
    }
 
-   private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataSetsArchive)
+   private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataArchive)
    {
       final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-      libraryContainer.addAsLibrary(dataSetsArchive);
+      libraryContainer.addAsLibrary(dataArchive);
    }
 
-   private JavaArchive toJavaArchive(final Collection<DataSetDescriptor> dataSetDescriptors)
+   private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors)
    {
       final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
 
-      for (DataSetDescriptor dataSetDescriptor : dataSetDescriptors)
+      for (ResourceDescriptor<?> descriptor : descriptors)
       {
-         dataSetsArchive.addAsResource(dataSetDescriptor.getFileLocation());
+         dataSetsArchive.addAsResource(descriptor.getLocation());
       }
       return dataSetsArchive;
    }

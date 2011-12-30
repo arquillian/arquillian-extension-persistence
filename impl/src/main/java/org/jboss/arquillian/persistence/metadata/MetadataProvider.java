@@ -25,6 +25,11 @@ import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class MetadataProvider
 {
 
@@ -47,20 +52,26 @@ public class MetadataProvider
 
    public boolean isPersistenceExtensionRequired()
    {
-      return (hasDataAnnotation() || hasExpectedAnnotation()
+      return (hasDataAnnotation() || hasExpectedAnnotation() || hasScriptAnnotation()
             || hasPersistenceTestAnnotation() || hasTransactionalAnnotation());
    }
 
    public boolean isDataSeedOperationRequested()
    {
-      return metadataExtractor.hasDataAnnotationOnClassLevel()
-            || metadataExtractor.hasDataAnnotationOn(testMethod);
+      return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
+   }
+
+   public boolean isCustomScriptExecutionRequested()
+   {
+      return  metadataExtractor.usingScript().isDefinedOnClassLevel()
+            || metadataExtractor.usingScript().isDefinedOn(testMethod);
    }
 
    public boolean isDataVerificationRequested()
    {
-      return metadataExtractor.hasExpectedAnnotationOnClassLevel()
-            || metadataExtractor.hasExpectedAnnotationOn(testMethod);
+      return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
    }
 
    public boolean isTransactional()
@@ -70,11 +81,7 @@ public class MetadataProvider
 
    public TransactionMode getTransactionalMode()
    {
-      Transactional transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOnClassLevel();
-      if (metadataExtractor.hasTransactionalAnnotationOn(testMethod))
-      {
-         transactionalAnnotation = metadataExtractor.getTransactionalAnnotationOn(testMethod);
-      }
+      Transactional transactionalAnnotation = metadataExtractor.transactional().getUsingPrecedence(testMethod);
 
       TransactionMode mode = configuration.getDefaultTransactionMode();
       if (transactionalAnnotation != null)
@@ -112,14 +119,20 @@ public class MetadataProvider
 
    boolean hasDataAnnotation()
    {
-      return metadataExtractor.hasDataAnnotationOnClassLevel()
-            || metadataExtractor.hasDataAnnotationOn(testMethod);
+      return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
+   }
+
+   boolean hasScriptAnnotation()
+   {
+      return metadataExtractor.usingScript().isDefinedOnClassLevel()
+            || metadataExtractor.usingScript().isDefinedOn(testMethod);
    }
 
    private boolean hasExpectedAnnotation()
    {
-      return metadataExtractor.hasExpectedAnnotationOnClassLevel()
-            || metadataExtractor.hasExpectedAnnotationOn(testMethod);
+      return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
    }
 
    private boolean hasPersistenceTestAnnotation()
@@ -129,25 +142,19 @@ public class MetadataProvider
 
    private boolean hasDataSourceAnnotation()
    {
-      return metadataExtractor.hasDataSourceAnnotationOnClassLevel()
-            || metadataExtractor.hasDataSourceAnnotationOn(testMethod);
+      return metadataExtractor.dataSource().isDefinedOnClassLevel()
+            || metadataExtractor.dataSource().isDefinedOn(testMethod);
    }
 
    boolean hasTransactionalAnnotation()
    {
-      return metadataExtractor.hasTransactionalAnnotationOnClassLevel()
-            || metadataExtractor.hasTransactionalAnnotationOn(testMethod);
+      return metadataExtractor.transactional().isDefinedOnClassLevel()
+            || metadataExtractor.transactional().isDefinedOn(testMethod);
    }
 
    private DataSource getDataSourceAnnotation()
    {
-      DataSource usedAnnotation = metadataExtractor.getDataSourceAnnotationOnClassLevel();
-      if (metadataExtractor.hasDataSourceAnnotationOn(testMethod))
-      {
-         usedAnnotation = metadataExtractor.getDataSourceAnnotationOn(testMethod);
-      }
-
-      return usedAnnotation;
+      return metadataExtractor.dataSource().getUsingPrecedence(testMethod);
    }
 
 }

@@ -30,12 +30,12 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PersistenceEvent;
@@ -75,14 +75,14 @@ public class DBUnitPersistenceTestLifecycleHandler
    public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
    {
       PrepareData prepareDataEvent = context.getEvent();
-      createInitialDataSets(prepareDataEvent.getDataSetDescriptors());
+      createInitialDataSets(prepareDataEvent.getDescriptors());
       context.proceed();
    }
 
    public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
    {
       CompareData compareDataEvent = context.getEvent();
-      createExpectedDataSets(compareDataEvent.getDataSetDescriptors());
+      createExpectedDataSets(compareDataEvent.getDescriptors());
       context.proceed();
    }
 
@@ -130,7 +130,7 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    private IDataSet createInitialDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      final String file = dataSetDescriptor.getFileLocation();
+      final String file = dataSetDescriptor.getLocation();
       final Format format = dataSetDescriptor.getFormat();
       return DataSetBuilder.builderFor(format).build(file);
    }
@@ -148,7 +148,7 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    private IDataSet createExpectedDataSet(DataSetDescriptor dataSetDescriptor)
    {
-      String file = dataSetDescriptor.getFileLocation();
+      String file = dataSetDescriptor.getLocation();
       Format format = dataSetDescriptor.getFormat();
       return DataSetBuilder.builderFor(format).build(file);
    }

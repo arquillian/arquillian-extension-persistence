@@ -23,11 +23,11 @@ import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.PersistenceTestHandler;
 import org.jboss.arquillian.persistence.client.PersistenceExtension;
 import org.jboss.arquillian.persistence.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
+import org.jboss.arquillian.persistence.lifecycle.PersistenceTestHandler;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -57,7 +57,7 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                        .addPackages(true,
                              // exclude client package
                              Filters.exclude(PersistenceExtension.class.getPackage()),
-                             PersistenceTestHandler.class.getPackage())
+                             "org.jboss.arquillian.persistence")
                        .addPackages(true,
                              "org.dbunit",
                              "org.apache.poi",

@@ -16,109 +16,64 @@
  */
 package org.jboss.arquillian.persistence.metadata;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.DataSetFileNamingStrategy;
-import org.jboss.arquillian.persistence.data.ExpectedDataSetFileNamingStrategy;
-import org.jboss.arquillian.persistence.data.Format;
-import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
+import org.jboss.arquillian.persistence.data.naming.DataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
-import org.jboss.arquillian.test.spi.TestClass;
 
 /**
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetProvider
+public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
 {
-
-   private final PersistenceConfiguration configuration;
-
-   private final MetadataExtractor metadataExtractor;
 
    public DataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
    {
-      this.metadataExtractor = metadataExtractor;
-      this.configuration = configuration;
+      super(UsingDataSet.class, configuration, metadataExtractor);
    }
 
-   /**
-    * Returns all data sets defined for this test class
-    * including those defined on the test method level.
-    *
-    * @param testClass
-    * @return
-    */
-   public Set<DataSetDescriptor> getDataSetDescriptors(TestClass testClass)
+   @Override
+   protected DataSetDescriptor createDescriptor(String dataFileName)
    {
-      final Set<DataSetDescriptor> dataSetDescriptors = new HashSet<DataSetDescriptor>();
-      for (Method testMethod : testClass.getMethods(UsingDataSet.class))
+      return new DataSetDescriptor(determineLocation(dataFileName), inferFormat(dataFileName));
+   }
+
+   @Override
+   protected String defaultLocation()
+   {
+      return configuration.getDefaultDataSetLocation();
+   }
+
+   @Override
+   protected String defaultFileName()
+   {
+      Format format = configuration.getDefaultDataSetFormat();
+      String defaultFileName = new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+      return defaultFileName;
+   }
+
+   @Override
+   List<String> getResourceFileNames(Method testMethod)
+   {
+      UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
+      String[] specifiedFileNames = dataAnnotation.value();
+      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
-         dataSetDescriptors.addAll(getDataSetDescriptors(testMethod));
+         return Arrays.asList(getDefaultFileName(testMethod));
       }
-      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(UsingDataSet.class)));
-      return dataSetDescriptors ;
+      return Arrays.asList(specifiedFileNames);
    }
 
-   /**
-    * Returns all expected data sets defined for this test class
-    * including those defined on the test method level.
-    *
-    * @param testClass
-    * @return
-    */
-   public Set<DataSetDescriptor> getExpectedDataSetDescriptors(TestClass testClass)
-   {
-      final Set<DataSetDescriptor> dataSetDescriptors = new HashSet<DataSetDescriptor>();
-      for (Method testMethod : testClass.getMethods(ShouldMatchDataSet.class))
-      {
-         dataSetDescriptors.addAll(getExpectedDataSetDescriptors(testMethod));
-      }
-      dataSetDescriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(ShouldMatchDataSet.class)));
-      return dataSetDescriptors ;
-   }
-
-   public List<DataSetDescriptor> getDataSetDescriptors(Method testMethod)
-   {
-      final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
-      for (String dataFileName : getDataFileNames(testMethod))
-      {
-         DataSetDescriptor dataSetDescriptor = createDataSetDescriptor(dataFileName);
-         dataSetDescriptors.add(dataSetDescriptor);
-      }
-
-      return dataSetDescriptors;
-   }
-
-   public List<DataSetDescriptor> getExpectedDataSetDescriptors(Method testMethod)
-   {
-      final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
-      for (String dataFileName : getExpectedDataFileNames(testMethod))
-      {
-         DataSetDescriptor dataSetDescriptor = createDataSetDescriptor(dataFileName);
-         dataSetDescriptors.add(dataSetDescriptor);
-      }
-
-      return dataSetDescriptors;
-   }
-
-   private DataSetDescriptor createDataSetDescriptor(String dataFileName)
-   {
-      return new DataSetDescriptor(determineDataSetLocation(dataFileName), inferFormat(dataFileName));
-   }
+   // Private methods
 
    private Format inferFormat(String dataFileName)
    {
@@ -130,193 +85,31 @@ public class DataSetProvider
       return format;
    }
 
-
-   /**
-    * Checks if data set file exists in the default location {@link PersistenceConfiguration#getDefaultDataSetLocation()}.
-    * If that's not the case, file is looked up starting from the root.
-    *
-    * @return determined file location
-    *
-    * @throws
-    *
-    */
-   private String determineDataSetLocation(String dataSetLocation)
-   {
-      if (existsInDefaultLocation(dataSetLocation))
-      {
-         return defaultDataSetFolder() + dataSetLocation;
-      }
-      if (!existsInGivenLocation(dataSetLocation))
-      {
-         throw new InvalidDataSetLocation("Unable to locate " + dataSetLocation +
-               ". File does not exist even in default location " + configuration.getDefaultDataSetLocation());
-      }
-      return dataSetLocation;
-   }
-
-   private boolean existsInGivenLocation(String dataSetLocation)
-   {
-      try
-      {
-         final URL url = load(dataSetLocation);
-         if (url == null)
-         {
-            return false;
-         }
-      }
-      catch (URISyntaxException e)
-      {
-         throw new InvalidDataSetLocation("Unable to open data set file", e);
-      }
-
-      return true;
-   }
-
-   private boolean existsInDefaultLocation(String dataSetLocation)
-   {
-      String defaultDataSetLocation = defaultDataSetFolder() + dataSetLocation;
-      return existsInGivenLocation(defaultDataSetLocation);
-   }
-
-   private URL load(String resourceLocation) throws URISyntaxException
-   {
-      return Thread.currentThread().getContextClassLoader().getResource(resourceLocation);
-   }
-
-   private String defaultDataSetFolder()
-   {
-      String defaultDataSetLocation = configuration.getDefaultDataSetLocation();
-      if (!defaultDataSetLocation.endsWith("/"))
-      {
-         defaultDataSetLocation += "/";
-      }
-      return defaultDataSetLocation;
-   }
-
-   private List<DataSetDescriptor> obtainClassLevelDataSet(Annotation classLevelAnnotation)
-   {
-      if (classLevelAnnotation == null)
-      {
-         return Collections.emptyList();
-      }
-
-      final List<DataSetDescriptor> dataSetDescriptors = new ArrayList<DataSetDescriptor>();
-
-      try
-      {
-         String[] values = (String[]) classLevelAnnotation.annotationType()
-                                                          .getMethod("value")
-                                                          .invoke(classLevelAnnotation);
-         List<String> dataSetFileNames = Arrays.asList(values);
-         if (dataSetFileNames.isEmpty() || dataSetFileNames.get(0).isEmpty())
-         {
-            Format format = configuration.getDefaultDataSetFormat();
-            String defaultFileName = new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-            dataSetFileNames.add(defaultFileName);
-         }
-
-         for (String dataFileName : dataSetFileNames)
-         {
-            dataSetDescriptors.add(createDataSetDescriptor(dataFileName));
-         }
-
-      }
-      catch (Exception e)
-      {
-         throw new MetadataProcessingException("Unable to evaluate annotation value", e);
-      }
-
-      return dataSetDescriptors;
-   }
-
    List<Format> getDataFormats(Method testMethod)
    {
       final List<Format> formats = new ArrayList<Format>();
-      for (String dataFileName : getDataFileNames(testMethod))
+      for (String dataFileName : getResourceFileNames(testMethod))
       {
          formats.add(inferFormat(dataFileName));
       }
       return formats;
    }
 
-   List<String> getDataFileNames(Method testMethod)
+   private UsingDataSet getResourceAnnotation(Method testMethod)
    {
-      UsingDataSet dataAnnotation = getDataAnnotation(testMethod);
-      String[] specifiedFileNames = dataAnnotation.value();
-      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
-      {
-         return Arrays.asList(getDefaultNamingForDataSetFile(testMethod));
-      }
-      return Arrays.asList(specifiedFileNames);
+      return metadataExtractor.usingDataSet().getUsingPrecedence(testMethod);
    }
 
-   List<Format> getExpectedDataFormats(Method testMethod)
-   {
-      final List<Format> formats = new ArrayList<Format>();
-      for (String dataFileName : getExpectedDataFileNames(testMethod))
-      {
-         formats.add(inferFormat(dataFileName));
-      }
-      return formats;
-   }
-
-   List<String> getExpectedDataFileNames(Method testMethod)
-   {
-      ShouldMatchDataSet expectedAnnotation = getExpectedAnnotation(testMethod);
-      String[] specifiedFileNames = expectedAnnotation.value();
-      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
-      {
-         return Arrays.asList(getDefaultNamingForExpectedDataSetFile(testMethod));
-      }
-      return Arrays.asList(specifiedFileNames);
-   }
-
-   private String getDefaultNamingForDataSetFile(Method testMethod)
+   private String getDefaultFileName(Method testMethod)
    {
       Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.hasDataAnnotationOn(testMethod))
+      if (metadataExtractor.usingDataSet().isDefinedOn(testMethod))
       {
          return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
 
       return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
-
-
-   private String getDefaultNamingForExpectedDataSetFile(Method testMethod)
-   {
-      Format format = configuration.getDefaultDataSetFormat();
-
-      if (metadataExtractor.hasExpectedAnnotationOn(testMethod))
-      {
-         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
-      }
-
-      return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-   }
-
-   private UsingDataSet getDataAnnotation(Method testMethod)
-   {
-      UsingDataSet usedAnnotation = metadataExtractor.getDataAnnotationOnClassLevel();
-      if (metadataExtractor.hasDataAnnotationOn(testMethod))
-      {
-         usedAnnotation = metadataExtractor.getDataAnnotationOn(testMethod);
-      }
-
-      return usedAnnotation;
-   }
-
-   private ShouldMatchDataSet getExpectedAnnotation(Method testMethod)
-   {
-      ShouldMatchDataSet usedAnnotation = metadataExtractor.getExpectedAnnotationOnClassLevel();
-      if (metadataExtractor.hasExpectedAnnotationOn(testMethod))
-      {
-         usedAnnotation = metadataExtractor.getExpectedAnnotationOn(testMethod);
-      }
-
-      return usedAnnotation;
-   }
-
 
 }

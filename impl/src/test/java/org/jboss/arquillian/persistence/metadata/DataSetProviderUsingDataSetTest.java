@@ -25,8 +25,8 @@ import java.util.Set;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.DataSetDescriptor;
-import org.jboss.arquillian.persistence.data.Format;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -53,7 +53,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestClass());
+      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_DATA_SET_ON_CLASS_LEVEL,
@@ -70,7 +70,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
+      List<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -85,7 +85,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> dataFiles = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
+      List<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -159,7 +159,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
+      List<String> files = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -174,7 +174,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<String> files = dataSetProvider.getDataFileNames(testEvent.getTestMethod());
+      List<String> files = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -191,7 +191,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
@@ -206,7 +206,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -221,7 +221,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -237,7 +237,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDataSetDescriptors(testEvent.getTestMethod());
+      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);
