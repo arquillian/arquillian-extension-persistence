@@ -52,6 +52,8 @@ public class PersistenceConfiguration implements Serializable
 
    private String userTransactionJndi = "java:comp/UserTransaction";
 
+   private boolean excludePoi = false;
+
    // Accessors
 
    public String getDefaultDataSource()
@@ -171,6 +173,16 @@ public class PersistenceConfiguration implements Serializable
    public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
    {
       this.defaultSqlScriptLocation = defaultSqlScriptLocation;
+   }
+
+   public boolean isExcludePoi()
+   {
+      return excludePoi;
+   }
+
+   public void setExcludePoi(boolean excludePoi)
+   {
+      this.excludePoi = excludePoi;
    }
 
 }
