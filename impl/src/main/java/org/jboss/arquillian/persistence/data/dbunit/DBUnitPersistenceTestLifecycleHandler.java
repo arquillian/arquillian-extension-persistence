@@ -36,9 +36,9 @@ import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitConnectionEx
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
-import org.jboss.arquillian.persistence.event.CleanUpData;
+import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.CompareData;
-import org.jboss.arquillian.persistence.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
@@ -63,13 +63,26 @@ public class DBUnitPersistenceTestLifecycleHandler
    // Intercepting data handling events
    // ------------------------------------------------------------------------------------------------
 
-   public void createDatabaseConnection(@Observes(precedence = 1000) EventContext<PersistenceEvent> context)
+   public void createDatabaseConnection(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
    {
       if (databaseConnectionProducer.get() == null)
       {
          createDatabaseConnection();
       }
       context.proceed();
+   }
+
+   public void closeConnection(@Observes(precedence = 1000) EventContext<AfterPersistenceTest> context)
+   {
+      try
+      {
+         context.proceed();
+         databaseConnectionProducer.get().getConnection().close();
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitConnectionException("Unable to close connection", e);
+      }
    }
 
    public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
@@ -84,19 +97,6 @@ public class DBUnitPersistenceTestLifecycleHandler
       CompareData compareDataEvent = context.getEvent();
       createExpectedDataSets(compareDataEvent.getDescriptors());
       context.proceed();
-   }
-
-   public void closeConnection(@Observes(precedence = 1000) EventContext<CleanUpData> context)
-   {
-      try
-      {
-         context.proceed();
-         databaseConnectionProducer.get().getConnection().close();
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitConnectionException("Unable to close connection", e);
-      }
    }
 
    // ------------------------------------------------------------------------------------------------
