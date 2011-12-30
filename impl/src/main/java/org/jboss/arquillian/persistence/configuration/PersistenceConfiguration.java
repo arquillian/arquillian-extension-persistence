@@ -40,6 +40,8 @@ public class PersistenceConfiguration implements Serializable
 
    private String initStatement;
 
+   private String cleanupStatement;
+
    private Format defaultDataSetFormat = Format.XML;
 
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
@@ -85,6 +87,16 @@ public class PersistenceConfiguration implements Serializable
    public void setInitStatement(String initStatement)
    {
       this.initStatement = initStatement;
+   }
+
+   public String getCleanupStatement()
+   {
+      return cleanupStatement;
+   }
+
+   public void setCleanupStatement(String cleanupStatement)
+   {
+      this.cleanupStatement = cleanupStatement;
    }
 
    public boolean isInitStatementDefined()

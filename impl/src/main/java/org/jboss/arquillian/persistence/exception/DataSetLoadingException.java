@@ -15,28 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.exception;
 
-import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
-import org.jboss.arquillian.persistence.event.ApplyInitStatement;
-import org.jboss.arquillian.persistence.event.CleanUpData;
-import org.jboss.arquillian.persistence.event.CompareData;
-import org.jboss.arquillian.persistence.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.event.PrepareData;
-
-public interface DataHandler
+public class DataSetLoadingException extends RuntimeException
 {
 
-   void initStatements(ApplyInitStatement applyInitStatementEvent);
+   private static final long serialVersionUID = 1249879056127836662L;
 
-   void cleanupStatements(ApplyCleanupStatement applyCleanupStatementEvent);
+   public DataSetLoadingException()
+   {}
 
-   void prepare(PrepareData prepareDataEvent);
+   public DataSetLoadingException(String message)
+   {
+      super(message);
+   }
 
-   void compare(CompareData cleanupDataEvent);
+   public DataSetLoadingException(Throwable cause)
+   {
+      super(cause);
+   }
 
-   void cleanup(CleanUpData cleanupDataEvent);
-
-   void executeScripts(ExecuteScripts executeScriptsEvent);
+   public DataSetLoadingException(String message, Throwable cause)
+   {
+      super(message, cause);
+   }
 
 }

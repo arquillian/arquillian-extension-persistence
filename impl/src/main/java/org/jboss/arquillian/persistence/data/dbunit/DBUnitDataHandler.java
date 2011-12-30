@@ -17,10 +17,6 @@
  */
 package org.jboss.arquillian.persistence.data.dbunit;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -37,6 +33,8 @@ import org.jboss.arquillian.persistence.data.DataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.persistence.data.script.ScriptHelper;
+import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanUpData;
 import org.jboss.arquillian.persistence.event.CompareData;
@@ -49,7 +47,7 @@ import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DBUnitDatasetHandler implements DataHandler
+public class DBUnitDataHandler implements DataHandler
 {
 
    @Inject
@@ -70,6 +68,17 @@ public class DBUnitDatasetHandler implements DataHandler
          return;
       }
       executeScript(initScript);
+   }
+
+   @Override
+   public void cleanupStatements(@Observes ApplyCleanupStatement applyCleanupStatementEvent)
+   {
+      final String cleanupScript = applyCleanupStatementEvent.getCleanupStatement();
+      if (cleanupScript == null || cleanupScript.isEmpty())
+      {
+         return;
+      }
+      executeScript(cleanupScript);
    }
 
    @Override
@@ -135,7 +144,7 @@ public class DBUnitDatasetHandler implements DataHandler
    {
       for (SqlScriptDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
       {
-         final String script = loadScript(scriptDescriptor.getLocation());
+         final String script = new ScriptHelper().loadScript(scriptDescriptor.getLocation());
          executeScript(script);
       }
 
@@ -143,44 +152,6 @@ public class DBUnitDatasetHandler implements DataHandler
 
    // Private methods
 
-   private String loadScript(String location)
-   {
-      final StringBuilder builder = new StringBuilder();
-
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
-
-      BufferedReader reader = null;
-      String line = null;
-
-      try
-      {
-         reader = new BufferedReader(new InputStreamReader(inputStream));
-         while ((line  = reader.readLine()) != null)
-         {
-            builder.append(' ').append(line);
-         }
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException(e);
-      }
-      finally
-      {
-         if (reader != null)
-         {
-            try
-            {
-               reader.close();
-            }
-            catch (IOException e)
-            {
-               throw new DBUnitDataSetHandlingException("Unable to close script.", e);
-            }
-         }
-      }
-
-      return builder.toString();
-   }
 
    private void executeScript(String script)
    {

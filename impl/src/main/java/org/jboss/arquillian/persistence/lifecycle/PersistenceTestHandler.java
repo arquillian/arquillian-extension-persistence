@@ -17,6 +17,10 @@
  */
 package org.jboss.arquillian.persistence.lifecycle;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
@@ -25,6 +29,8 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
+import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
+import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
@@ -41,6 +47,12 @@ public class PersistenceTestHandler
 
    @Inject @TestScoped
    private InstanceProducer<MetadataProvider> metadataProvider;
+
+   @Inject @TestScoped
+   private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
+
+   @Inject
+   private Instance<Context> contextInstance;
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
@@ -63,6 +75,7 @@ public class PersistenceTestHandler
 
       if (metadataProvider.get().isPersistenceExtensionRequired())
       {
+         createDataSource();
          beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
       }
 
@@ -73,6 +86,31 @@ public class PersistenceTestHandler
       if (metadataProvider.get().isPersistenceExtensionRequired())
       {
          afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
+      }
+   }
+
+   // Private methods
+
+   private void createDataSource()
+   {
+      String dataSourceName = metadataProvider.get().getDataSourceName();
+      dataSourceProducer.set(loadDataSource(dataSourceName));
+   }
+
+   private DataSource loadDataSource(String dataSourceName)
+   {
+      try
+      {
+         final Context context = contextInstance.get();
+         if (context == null)
+         {
+            throw new ContextNotAvailableException("No Naming Context available");
+         }
+         return (DataSource) context.lookup(dataSourceName);
+      }
+      catch (NamingException e)
+      {
+         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
       }
    }
 
