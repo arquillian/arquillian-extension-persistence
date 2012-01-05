@@ -137,6 +137,20 @@ public class ConfigurationImporterFromXmlTest
       // then
       assertThat(configuration.isDumpData()).isFalse();
    }
+   
+   @Test
+   public void shouldBeAbleToSetTableColumnEscapePattern() throws Exception
+   {
+      // given
+      String expectedEscapePattern = "foo";
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+
+      // when
+      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+
+      // then
+      assertThat(configuration.getEscapePattern()).isEqualTo(expectedEscapePattern);
+   }
 
    public void shouldHaveSystemTempDirDefinedAsDefaultDumpDirectory() throws Exception
    {

@@ -77,7 +77,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
    {
-      if (applicationArchive instanceof JavaArchive)
+      Object tmp = applicationArchive;
+      if (tmp instanceof JavaArchive)
       {
          addAsResource(applicationArchive, dataArchive);
       }
