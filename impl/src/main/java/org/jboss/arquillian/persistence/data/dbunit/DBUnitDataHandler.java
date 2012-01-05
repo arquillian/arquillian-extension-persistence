@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.SortedTable;
@@ -29,6 +30,7 @@ import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.DataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
@@ -56,6 +58,9 @@ public class DBUnitDataHandler implements DataHandler
    @Inject
    private Instance<DataSetRegister> dataSetRegister;
 
+   @Inject
+   private Instance<PersistenceConfiguration> configuration;
+   
    @Inject
    private Instance<AssertionErrorCollector> assertionErrorCollector;
 
@@ -99,7 +104,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         IDataSet currentDataSet = getConnection().createDataSet();
          IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
          String[] tableNames = expectedDataSet.getTableNames();
          for (String tableName : tableNames)
@@ -158,7 +163,7 @@ public class DBUnitDataHandler implements DataHandler
       Statement statement = null;
       try
       {
-         statement = databaseConnection.get().getConnection().createStatement();
+         statement = getConnection().getConnection().createStatement();
          statement.execute(script);
       }
       catch (Exception e)
@@ -183,16 +188,29 @@ public class DBUnitDataHandler implements DataHandler
 
    private void fillDatabase() throws Exception
    {
-      final DatabaseConnection connection = databaseConnection.get();
+      final DatabaseConnection connection = getConnection();
       IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
       new TransactionOperation(DatabaseOperation.CLEAN_INSERT).execute(connection, initialDataSet);
    }
 
    private void cleanDatabase() throws Exception
    {
-      DatabaseConnection connection = databaseConnection.get();
+      DatabaseConnection connection = getConnection();
+      
       IDataSet dataSet = connection.createDataSet();
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
+   }
+   
+   private DatabaseConnection getConnection(){
+       DatabaseConnection connection = databaseConnection.get();
+       
+       if( !configuration.get().getEscapePattern().equals("")  )
+       {
+         DatabaseConfig config = databaseConnection.get().getConfig();
+         config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, configuration.get().getEscapePattern());
+       }
+       
+       return connection;
    }
 
 }

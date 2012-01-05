@@ -52,7 +52,9 @@ public class PersistenceConfiguration implements Serializable
 
    private String userTransactionJndi = "java:comp/UserTransaction";
 
-   private boolean excludePoi = false;
+   private boolean excludePoi = false; 
+   
+   private String escapePattern = "";
 
    // Accessors
 
@@ -185,4 +187,13 @@ public class PersistenceConfiguration implements Serializable
       this.excludePoi = excludePoi;
    }
 
+   public String getEscapePattern() 
+   {
+      return escapePattern;
+   }
+
+   public void setEscapePattern(String escapePattern) 
+   {
+      this.escapePattern = escapePattern;
+   }
 }
