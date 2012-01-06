@@ -144,7 +144,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       for (SqlScriptDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
       {
-         final String script = new ScriptHelper().loadScript(scriptDescriptor.getLocation());
+         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
          executeScript(script);
       }
 
