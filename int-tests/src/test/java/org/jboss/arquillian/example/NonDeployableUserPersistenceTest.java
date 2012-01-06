@@ -229,6 +229,24 @@ public abstract class NonDeployableUserPersistenceTest
       // should be persisted - verified by @ShouldMatchDataSet annotation
    }
 
+   @Test
+   @UsingDataSet("users.xml")
+   // This test will fail if column sensing for FlatXmlDataSet is not enabled
+   // See http://www.dbunit.org/faq.html#differentcolumnnumber
+   public void shouldFindTwoUsersUsingFlatXmlDataSet() throws Exception
+   {
+      // given
+      int expectedUserAmount = 2;
+      String expectedNicknameOfSecondUser = "superman";
+
+      // when
+      List<UserAccount> userAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
+
+      // then
+      assertThat(userAccounts).hasSize(expectedUserAmount);
+      assertThat(userAccounts.get(1).getNickname()).isEqualTo(expectedNicknameOfSecondUser);
+   }
+
    // Private helper methods
 
    private String selectAllInJPQL(Class<?> clazz)
