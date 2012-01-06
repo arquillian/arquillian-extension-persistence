@@ -17,30 +17,17 @@
  */
 package org.jboss.arquillian.example;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.Transactional;
-import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceEarDeploymentTest
+public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 
    @Deployment
@@ -55,184 +42,6 @@ public class UserPersistenceEarDeploymentTest
 
       return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
                        .addAsLibrary(javaArchive);
-   }
-
-   @PersistenceContext
-   EntityManager em;
-
-   @Test
-   @UsingDataSet("datasets/single-user.xls")
-   public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
-   {
-      // given
-      String expectedUsername = "doovde";
-
-      // when
-      UserAccount user = em.find(UserAccount.class, 1L);
-
-      // then
-      assertThat(user.getUsername()).isEqualTo(expectedUsername);
-   }
-
-   @Test
-   @UsingDataSet({"single-user.xml", "address.yml"}) // Convention over configuration - no need to specify 'datasets' folder
-   public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
-   {
-      // given
-      String expectedCity = "Metropolis";
-      UserAccount user = em.find(UserAccount.class, 1L);
-
-      // when
-      Address address = user.getAddresses().iterator().next();
-
-      // then
-      assertThat(user.getAddresses()).hasSize(1);
-      assertThat(address.getCity()).isEqualTo(expectedCity);
-   }
-
-   @Test
-   @UsingDataSet("single-user.xml")
-   public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
-   {
-      // given
-      String expectedUsername = "doovde";
-
-      // when
-      UserAccount user = em.find(UserAccount.class, 1L);
-
-      // then
-      assertThat(user.getUsername()).isEqualTo(expectedUsername);
-   }
-
-   @Test
-   @UsingDataSet("users.yml")
-   @ShouldMatchDataSet("expected-users.yml")
-   public void shouldChangePassword() throws Exception
-   {
-      // given
-      String expectedPassword = "LexLuthor";
-      UserAccount user = em.find(UserAccount.class, 2L);
-
-      // when
-      user.setPassword("LexLuthor");
-      em.merge(user);
-
-      // then
-      assertThat(user.getPassword()).isEqualTo(expectedPassword);
-   }
-
-   @Test
-   @UsingScript({"john-smith.sql", "clark-kent.sql"})
-   @ShouldMatchDataSet("expected-users.yml")
-   public void shouldChangePasswordUsingSqlToSeedData() throws Exception
-   {
-      // given
-      String expectedPassword = "LexLuthor";
-      UserAccount user = em.find(UserAccount.class, 2L);
-
-      // when
-      user.setPassword("LexLuthor");
-      em.merge(user);
-
-      // then
-      assertThat(user.getPassword()).isEqualTo(expectedPassword);
-   }
-
-   @Test
-   @UsingDataSet("user-with-address.yml")
-   public void shouldHaveAddressLinkedToUserAccount() throws Exception
-   {
-      // given
-      String expectedCity = "Metropolis";
-      long userAccountId = 1L;
-
-      // when
-      UserAccount user = em.find(UserAccount.class, userAccountId);
-      Address address = user.getAddresses().iterator().next();
-
-      // then
-      assertThat(user.getAddresses()).hasSize(1);
-      assertThat(address.getCity()).isEqualTo(expectedCity);
-   }
-
-   @Test
-   @UsingDataSet("single-user.xml")
-   @ShouldMatchDataSet({"single-user.xls", "datasets/expected-address.yml"})
-   public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
-   {
-      // given
-      UserAccount user = em.find(UserAccount.class, 1L);
-      Address address = new Address("Testing Street", 7, "JavaPolis", 1234);
-
-      // when
-      user.addAddress(address);
-      em.merge(user);
-
-      // then
-      assertThat(user.getAddresses()).hasSize(1);
-   }
-
-   @Test
-   @Transactional
-   public void shouldPersistUsersWithinTransaction() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
-
-      // then
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).hasSize(2);
-   }
-
-   @Test
-   @Transactional(TransactionMode.ROLLBACK)
-   public void shouldPersistUsersAndRollbackTransactionAfterTestExecution() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
-
-      // then
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).hasSize(2);
-   }
-
-   @Test
-   @ShouldMatchDataSet("expected-users.yml")
-   public void shouldPersistUsersAndVerifyUsingMatchingMechanism() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-
-      // then
-      // should be persisted - verified by @ShouldMatchDataSet annotation
-   }
-
-   // Private helper methods
-
-   private String selectAllInJPQL(Class<?> clazz)
-   {
-      return "SELECT entity FROM " + clazz.getSimpleName() + " entity";
    }
 
 }
