@@ -6,10 +6,14 @@ useraccount:
     password: LexLuthor
 address:
   - id: 1
+    streetname: "Luthor Street"
+    city: Metropolis
+    zipCode: 4321
+  - id: 2
     streetname: "Kryptonite Street"
     houseNumber: 7
     city: Metropolis
-    zipCode: 1234 
+    zipCode: 1234
 useraccount_address:
   - useraccount_id: 1
-    addresses_id: 1  
+    addresses_id: 2
