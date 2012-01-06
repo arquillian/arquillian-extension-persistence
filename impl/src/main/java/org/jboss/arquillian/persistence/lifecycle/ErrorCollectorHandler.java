@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.lifecycle;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
@@ -31,13 +32,18 @@ public class ErrorCollectorHandler
    @Inject @TestScoped
    private InstanceProducer<AssertionErrorCollector> assertionErrorCollectorProducer;
 
-   public void createErrorCollector(@Observes(precedence = 60) BeforePersistenceTest beforePersistenceTest)
+   public void createErrorCollector(@Observes(precedence = 10000) EventContext<BeforePersistenceTest> context)
    {
       assertionErrorCollectorProducer.set(new AssertionErrorCollector());
+      context.proceed();
    }
 
-   public void collectErrors(@Observes(precedence = 10) AfterPersistenceTest afterPersistenceTest)
+   public void collectErrors(@Observes(precedence = 10000) EventContext<AfterPersistenceTest> context)
    {
+      // It's needed to intercept persistence test event using context
+      // since there is also connection closed in DBUnitPersistenceTestLifecycleHandler
+      // which needs to take place before reporting any errors.
+      context.proceed();
       assertionErrorCollectorProducer.get().report();
    }
 

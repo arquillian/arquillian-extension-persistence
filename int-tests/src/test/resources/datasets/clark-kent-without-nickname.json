@@ -1,0 +1,13 @@
+{
+	"useraccount":
+	[
+		{
+			"id": "1",
+			"firstname" : "Clark",
+			"lastname" : "Kent",
+			"username" : "ckent",
+			"password" : "LexLuthor123",
+		    "nickname" : "[NULL]"
+		}
+	]
+}
