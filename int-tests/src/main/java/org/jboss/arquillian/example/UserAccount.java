@@ -10,13 +10,14 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package org.jboss.arquillian.example;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,13 +33,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * 
+ *
  * @author Bartosz Majsak
  *
  */
 @Entity
-public class UserAccount
+public class UserAccount implements Serializable
 {
+
+   private static final long serialVersionUID = -5070859529655572725L;
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +62,11 @@ public class UserAccount
    @Basic
    @NotNull @Size(max = 128)
    private String lastname;
-   
+
+   @Basic
+   @Size(max = 128)
+   private String nickname;
+
    @OneToMany(cascade = {CascadeType.ALL})
    private Set<Address> addresses = new HashSet<Address>();
 
@@ -67,7 +74,7 @@ public class UserAccount
    {
       // To satisfy JPA
    }
-   
+
    public UserAccount(String firstName, String lastName, String username, String password)
    {
       this.firstname = firstName;
@@ -80,9 +87,9 @@ public class UserAccount
    {
       this.addresses.add(address);
    }
-   
+
    // Getters and setters
-   
+
    public Long getId()
    {
       return id;
@@ -142,7 +149,15 @@ public class UserAccount
    {
       this.addresses = addresses;
    }
-   
-   
+
+   public String getNickname()
+   {
+      return nickname;
+   }
+
+   public void setNickname(String nickname)
+   {
+      this.nickname = nickname;
+   }
 
 }

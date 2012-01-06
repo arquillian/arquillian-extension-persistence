@@ -51,6 +51,7 @@ public class DataSetBuilder
          {
             case XML:
                final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
+               flatXmlDataSetBuilder.setColumnSensing(true);
                return flatXmlDataSetBuilder.build(inputStream);
             case EXCEL:
                return new XlsDataSet(inputStream);
