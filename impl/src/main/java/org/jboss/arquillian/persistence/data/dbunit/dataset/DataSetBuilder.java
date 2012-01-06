@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.data.dbunit.dataset;
 import java.io.InputStream;
 
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.json.JsonDataSet;
@@ -45,6 +46,7 @@ public class DataSetBuilder
    public IDataSet build(final String file)
    {
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+      IDataSet dataSet = null;
       try
       {
          switch (format)
@@ -52,13 +54,17 @@ public class DataSetBuilder
             case XML:
                final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
                flatXmlDataSetBuilder.setColumnSensing(true);
-               return flatXmlDataSetBuilder.build(inputStream);
+               dataSet = flatXmlDataSetBuilder.build(inputStream);
+               break;
             case EXCEL:
-               return new XlsDataSet(inputStream);
+               dataSet = new XlsDataSet(inputStream);
+               break;
             case YAML:
-               return new YamlDataSet(inputStream);
+               dataSet = new YamlDataSet(inputStream);
+               break;
             case JSON:
-               return new JsonDataSet(inputStream);
+               dataSet = new JsonDataSet(inputStream);
+               break;
             default:
                throw new DBUnitInitializationException("Unsupported data type " + format);
          }
@@ -67,11 +73,21 @@ public class DataSetBuilder
       {
          throw new DBUnitInitializationException("Unable to load data set from given file: " + file, e);
       }
+
+      return defineReplaceableExpressions(dataSet);
    }
 
    public static DataSetBuilder builderFor(final Format format)
    {
       return new DataSetBuilder(format);
+   }
+
+   private IDataSet defineReplaceableExpressions(IDataSet dataSet)
+   {
+      final ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
+      replacementDataSet.addReplacementObject("[null]", null);
+      replacementDataSet.addReplacementObject("[NULL]", null);
+      return replacementDataSet;
    }
 
 }
