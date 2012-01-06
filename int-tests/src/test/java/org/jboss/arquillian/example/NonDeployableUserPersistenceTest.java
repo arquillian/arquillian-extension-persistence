@@ -240,11 +240,62 @@ public abstract class NonDeployableUserPersistenceTest
       String expectedNicknameOfSecondUser = "superman";
 
       // when
+      @SuppressWarnings("unchecked")
       List<UserAccount> userAccounts = em.createQuery(selectAllInJPQL(UserAccount.class)).getResultList();
 
       // then
       assertThat(userAccounts).hasSize(expectedUserAmount);
       assertThat(userAccounts.get(1).getNickname()).isEqualTo(expectedNicknameOfSecondUser);
+   }
+
+   @Test
+   @UsingScript("clark-kent-with-nickname.sql")
+   @ShouldMatchDataSet("clark-kent-without-nickname.xml")
+   // This test will fail if replaceable set is not used
+   // See http://www.dbunit.org/apidocs/org/dbunit/dataset/ReplacementDataSet.html
+   public void shouldCompareNullValueDefinedInFlatXmlDataSet() throws Exception
+   {
+      // given
+      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+
+      // when
+      clarkKent.setNickname(null);
+      em.merge(clarkKent);
+
+      // then
+      // verified by DataSet comparision
+   }
+
+   @Test
+   @UsingScript("clark-kent-with-nickname.sql")
+   @ShouldMatchDataSet("clark-kent-without-nickname.yml")
+   public void shouldCompareNullValueDefinedInYamlDataSet() throws Exception
+   {
+      // given
+      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+
+      // when
+      clarkKent.setNickname(null);
+      em.merge(clarkKent);
+
+      // then
+      // verified by DataSet comparision
+   }
+
+   @Test
+   @UsingScript("clark-kent-with-nickname.sql")
+   @ShouldMatchDataSet("clark-kent-without-nickname.json")
+   public void shouldCompareNullValueDefinedInJsonDataSet() throws Exception
+   {
+      // given
+      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+
+      // when
+      clarkKent.setNickname(null);
+      em.merge(clarkKent);
+
+      // then
+      // verified by DataSet comparision
    }
 
    // Private helper methods
