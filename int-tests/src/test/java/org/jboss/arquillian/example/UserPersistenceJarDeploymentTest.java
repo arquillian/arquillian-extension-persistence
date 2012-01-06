@@ -22,22 +22,22 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceWarDeploymentTest extends NonDeployableUserPersistenceTest
+public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
+      return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
                        // required for remote containers in order to run tests with FEST-Asserts
                        .addPackages(true, "org.fest")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
    }
 
 }
