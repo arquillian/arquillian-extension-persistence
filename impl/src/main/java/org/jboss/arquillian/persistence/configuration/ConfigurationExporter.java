@@ -46,7 +46,7 @@ public class ConfigurationExporter
       }
       catch (Exception e)
       {
-         throw new ConfigurationExportException("Unable to serialize persistence configuration to property file", e);
+         throw new ConfigurationExportException("Unable to serialize persistence configuration to property file.", e);
       }
       finally
       {
@@ -58,7 +58,7 @@ public class ConfigurationExporter
             }
             catch (IOException e)
             {
-               throw new ConfigurationExportException("Unable to close stream after serialization of persistence configuration to property file", e);
+               throw new ConfigurationExportException("Unable to close stream after serialization of persistence configuration to property file.", e);
             }
          }
       }

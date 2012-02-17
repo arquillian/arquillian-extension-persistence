@@ -24,7 +24,7 @@ import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.jboss.arquillian.persistence.lifecycle.CustomScriptsAroundTestExecutor;
 import org.jboss.arquillian.persistence.lifecycle.DataScriptsHandler;
-import org.jboss.arquillian.persistence.lifecycle.DatasetHandler;
+import org.jboss.arquillian.persistence.lifecycle.DataSetHandler;
 import org.jboss.arquillian.persistence.lifecycle.ErrorCollectorHandler;
 import org.jboss.arquillian.persistence.lifecycle.PersistenceTestHandler;
 import org.jboss.arquillian.persistence.lifecycle.TransactionHandler;
@@ -64,7 +64,7 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    {
       builder.observer(PersistenceTestHandler.class)
              .observer(CustomScriptsAroundTestExecutor.class)
-             .observer(DatasetHandler.class)
+             .observer(DataSetHandler.class)
              .observer(DataScriptsHandler.class)
              .observer(ErrorCollectorHandler.class)
              .observer(TransactionHandler.class);

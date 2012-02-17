@@ -81,7 +81,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitConnectionException("Unable to close connection", e);
+         throw new DBUnitConnectionException("Unable to close connection.", e);
       }
    }
 
@@ -113,7 +113,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitInitializationException("Unable to initialize database connection for dbunit module", e);
+         throw new DBUnitInitializationException("Unable to initialize database connection for dbunit module.", e);
       }
    }
 

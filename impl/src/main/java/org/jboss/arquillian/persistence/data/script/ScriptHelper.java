@@ -48,7 +48,7 @@ public final class ScriptHelper
       }
       catch (Exception e)
       {
-         throw new DataSetLoadingException(e);
+         throw new DataSetLoadingException("Failed loading script " + location, e);
       }
       finally
       {

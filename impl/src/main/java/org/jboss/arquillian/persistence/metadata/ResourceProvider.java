@@ -148,7 +148,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       if (!existsInGivenLocation(location))
       {
          throw new InvalidDataSetLocation("Unable to locate " + location +
-               ". File does not exist even in default location " + defaultLocation());
+               ". File does not exist also in default location " + defaultLocation());
       }
       return location;
    }
@@ -165,7 +165,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       }
       catch (URISyntaxException e)
       {
-         throw new InvalidDataSetLocation("Unable to open resource file", e);
+         throw new InvalidDataSetLocation("Unable to open resource file in " + location, e);
       }
 
       return true;

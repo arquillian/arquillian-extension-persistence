@@ -134,7 +134,7 @@ public class DBUnitDataStateLogger implements DataStateLogger
       }
       catch (Exception e)
       {
-         throw new DBUnitDataSetHandlingException("Unable to fetch database state.", e);
+         throw new DBUnitDataSetHandlingException("Unable to dump database state to folder " + path, e);
       }
    }
 

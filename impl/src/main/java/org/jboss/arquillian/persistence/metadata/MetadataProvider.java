@@ -107,7 +107,7 @@ public class MetadataProvider
 
       if (dataSource.isEmpty())
       {
-         throw new DataSourceNotDefinedException("DataSource not defined");
+         throw new DataSourceNotDefinedException("DataSource not defined! Please declare in arquillian.xml or by using @DataSource annotation.");
       }
 
       return dataSource;

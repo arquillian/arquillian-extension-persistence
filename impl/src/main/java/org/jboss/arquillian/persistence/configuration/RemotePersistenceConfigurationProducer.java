@@ -60,7 +60,7 @@ public class RemotePersistenceConfigurationProducer
       }
       catch (IOException e)
       {
-         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties.", e);
+         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container.", e);
       }
       return properties ;
    }

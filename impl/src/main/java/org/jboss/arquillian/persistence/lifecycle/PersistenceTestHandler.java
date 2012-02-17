@@ -104,7 +104,7 @@ public class PersistenceTestHandler
          final Context context = contextInstance.get();
          if (context == null)
          {
-            throw new ContextNotAvailableException("No Naming Context available");
+            throw new ContextNotAvailableException("No Naming Context available.");
          }
          return (DataSource) context.lookup(dataSourceName);
       }

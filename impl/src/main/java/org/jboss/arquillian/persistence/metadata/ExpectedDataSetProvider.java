@@ -80,7 +80,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetDescriptor>
       Format format = Format.inferFromFile(dataFileName);
       if (Format.UNSUPPORTED.equals(format))
       {
-         throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported.");
+         throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
       }
       return format;
    }

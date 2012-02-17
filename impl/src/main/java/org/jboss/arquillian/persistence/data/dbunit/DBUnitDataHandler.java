@@ -90,7 +90,7 @@ public class DBUnitDataHandler implements DataHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitDataSetHandlingException(e);
+         throw new DBUnitDataSetHandlingException("Failed while seeding database.", e);
       }
    }
 
@@ -122,7 +122,7 @@ public class DBUnitDataHandler implements DataHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitDataSetHandlingException(e);
+         throw new DBUnitDataSetHandlingException("Failed while comparing database state with provided data sets.", e);
       }
    }
 
@@ -135,7 +135,7 @@ public class DBUnitDataHandler implements DataHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitDataSetHandlingException(e);
+         throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
       }
    }
 
@@ -163,7 +163,7 @@ public class DBUnitDataHandler implements DataHandler
       }
       catch (Exception e)
       {
-         throw new DBUnitDataSetHandlingException(e);
+         throw new DBUnitDataSetHandlingException("Unable to execute script: " + script, e);
       }
       finally
       {
@@ -175,7 +175,7 @@ public class DBUnitDataHandler implements DataHandler
             }
             catch (SQLException e)
             {
-               throw new DBUnitDataSetHandlingException("Unable to close statement", e);
+               throw new DBUnitDataSetHandlingException("Unable to close statement after script execution.", e);
             }
          }
       }

@@ -69,7 +69,7 @@ public class TransactionalWrapper
          final Context context = contextInstance.get();
          if (context == null)
          {
-            throw new ContextNotAvailableException("No Naming Context available");
+            throw new ContextNotAvailableException("No Naming Context available.");
          }
          return (UserTransaction) context.lookup(configuration.get().getUserTransactionJndi());
       }

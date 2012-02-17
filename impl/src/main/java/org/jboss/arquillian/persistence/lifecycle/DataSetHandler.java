@@ -32,7 +32,7 @@ import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 
-public class DatasetHandler
+public class DataSetHandler
 {
 
    @Inject
