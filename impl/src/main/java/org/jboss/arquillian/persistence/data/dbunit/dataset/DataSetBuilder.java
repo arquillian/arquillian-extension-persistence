@@ -17,8 +17,11 @@
  */
 package org.jboss.arquillian.persistence.data.dbunit.dataset;
 
+import java.io.IOException;
 import java.io.InputStream;
 
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
@@ -27,6 +30,7 @@ import org.jboss.arquillian.persistence.data.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  *
@@ -52,15 +56,13 @@ public class DataSetBuilder
          switch (format)
          {
             case XML:
-               final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
-               flatXmlDataSetBuilder.setColumnSensing(true);
-               dataSet = flatXmlDataSetBuilder.build(inputStream);
+               dataSet = loadXmlDataSet(inputStream);
                break;
             case EXCEL:
                dataSet = new XlsDataSet(inputStream);
                break;
             case YAML:
-               dataSet = new YamlDataSet(inputStream);
+               dataSet = loadYamlDataSet(file, inputStream);
                break;
             case JSON:
                dataSet = new JsonDataSet(inputStream);
@@ -77,9 +79,41 @@ public class DataSetBuilder
       return defineReplaceableExpressions(dataSet);
    }
 
+   private IDataSet loadYamlDataSet(final String file, final InputStream inputStream) throws IOException,
+         DataSetException
+   {
+      IDataSet dataSet;
+      if (isYamlEmpty(file))
+      {
+         dataSet = new DefaultDataSet();
+      }
+      else
+      {
+         dataSet = new YamlDataSet(inputStream);
+      }
+      return dataSet;
+   }
+
    public static DataSetBuilder builderFor(final Format format)
    {
       return new DataSetBuilder(format);
+   }
+
+   // Private methods
+
+   private IDataSet loadXmlDataSet(final InputStream inputStream) throws DataSetException
+   {
+      IDataSet dataSet;
+      final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
+      flatXmlDataSetBuilder.setColumnSensing(true);
+      dataSet = flatXmlDataSetBuilder.build(inputStream);
+      return dataSet;
+   }
+
+   private boolean isYamlEmpty(final String yamlFile) throws IOException
+   {
+      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
+      return new Yaml().load(inputStream) == null;
    }
 
    private IDataSet defineReplaceableExpressions(IDataSet dataSet)
