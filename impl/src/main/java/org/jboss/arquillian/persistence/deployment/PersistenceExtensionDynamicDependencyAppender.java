@@ -53,7 +53,11 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      addResources(applicationArchive, toJavaArchive(fetchAllDataResources(testClass)));
+      final Set<ResourceDescriptor<?>> allDataResources = fetchAllDataResources(testClass);
+      if (!allDataResources.isEmpty())
+      {
+         addResources(applicationArchive, toJavaArchive(allDataResources));
+      }
       addSqlScriptAsResource(applicationArchive, configuration.get().getCleanupStatement());
       addSqlScriptAsResource(applicationArchive, configuration.get().getInitStatement());
    }
