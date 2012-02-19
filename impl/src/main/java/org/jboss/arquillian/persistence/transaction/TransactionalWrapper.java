@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.transaction;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
+import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.core.api.Instance;
@@ -51,14 +52,22 @@ public class TransactionalWrapper
    public void afterTest(@Observes EndTransaction endTransaction) throws Exception
    {
       final TransactionMode mode = metadataProvider.get().getTransactionalMode();
+      final UserTransaction transaction = obtainTransaction();
 
       if (TransactionMode.COMMIT.equals(mode))
       {
-         obtainTransaction().commit();
+         if (Status.STATUS_MARKED_ROLLBACK == transaction.getStatus())
+         {
+            transaction.rollback();
+         }
+         else
+         {
+            transaction.commit();
+         }
       }
       else
       {
-         obtainTransaction().rollback();
+         transaction.rollback();
       }
    }
 
