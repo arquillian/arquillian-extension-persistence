@@ -97,7 +97,7 @@ public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
 
    private UsingDataSet getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.usingDataSet().getUsingPrecedence(testMethod);
+      return metadataExtractor.usingDataSet().fetchUsingFirst(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)

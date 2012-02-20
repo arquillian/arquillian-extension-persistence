@@ -97,7 +97,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetDescriptor>
 
    private ShouldMatchDataSet getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.shouldMatchDataSet().getUsingPrecedence(testMethod);
+      return metadataExtractor.shouldMatchDataSet().fetchUsingFirst(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)

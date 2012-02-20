@@ -71,7 +71,7 @@ public class SqlScriptProvider extends ResourceProvider<SqlScriptDescriptor>
 
    private UsingScript getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.usingScript().getUsingPrecedence(testMethod);
+      return metadataExtractor.usingScript().fetchUsingFirst(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)

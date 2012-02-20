@@ -33,6 +33,7 @@ import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -44,6 +45,9 @@ public class PersistenceTestHandler
 
    @Inject @ClassScoped
    private InstanceProducer<MetadataExtractor> metadataExtractor;
+
+   @Inject @ClassScoped
+   private InstanceProducer<PersistenceExtensionEnabler> persistenceExtensionEnabler;
 
    @Inject @TestScoped
    private InstanceProducer<MetadataProvider> metadataProvider;
@@ -66,6 +70,7 @@ public class PersistenceTestHandler
    public void beforeSuite(@Observes BeforeClass beforeClass)
    {
       metadataExtractor.set(new MetadataExtractor(beforeClass.getTestClass()));
+      persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractor.get()));
    }
 
    public void beforeTest(@Observes Before beforeTestEvent)
@@ -73,7 +78,7 @@ public class PersistenceTestHandler
       PersistenceConfiguration persistenceConfiguration = configuration.get();
       metadataProvider.set(new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), persistenceConfiguration));
 
-      if (metadataProvider.get().isPersistenceExtensionRequired())
+      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
       {
          createDataSource();
          beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
@@ -83,7 +88,7 @@ public class PersistenceTestHandler
 
    public void afterTest(@Observes After afterTestEvent)
    {
-      if (metadataProvider.get().isPersistenceExtensionRequired())
+      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
       {
          afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
       }

@@ -25,6 +25,11 @@ import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.test.spi.TestClass;
 
+/**
+*
+* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+*
+*/
 public class MetadataExtractor
 {
 

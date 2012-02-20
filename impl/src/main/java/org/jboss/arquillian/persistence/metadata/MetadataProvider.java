@@ -50,12 +50,6 @@ public class MetadataProvider
    // Public API methods
    // ---------------------------------------------------------------------------------------------------
 
-   public boolean isPersistenceExtensionRequired()
-   {
-      return (hasDataAnnotation() || hasExpectedAnnotation() || hasScriptAnnotation()
-            || hasPersistenceTestAnnotation() || hasTransactionalAnnotation());
-   }
-
    public boolean isDataSeedOperationRequested()
    {
       return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
@@ -81,7 +75,7 @@ public class MetadataProvider
 
    public TransactionMode getTransactionalMode()
    {
-      Transactional transactionalAnnotation = metadataExtractor.transactional().getUsingPrecedence(testMethod);
+      Transactional transactionalAnnotation = metadataExtractor.transactional().fetchUsingFirst(testMethod);
 
       TransactionMode mode = configuration.getDefaultTransactionMode();
       if (transactionalAnnotation != null)
@@ -100,9 +94,10 @@ public class MetadataProvider
          dataSource = configuration.getDefaultDataSource();
       }
 
-      if (hasDataSourceAnnotation())
+      final DataSource dataSourceAnnotation = metadataExtractor.dataSource().fetchUsingFirst(testMethod);
+      if (dataSourceAnnotation != null)
       {
-         dataSource = getDataSourceAnnotation().value();
+         dataSource = dataSourceAnnotation.value();
       }
 
       if (dataSource.isEmpty())
@@ -111,50 +106,6 @@ public class MetadataProvider
       }
 
       return dataSource;
-   }
-
-   // ---------------------------------------------------------------------------------------------------
-   // Internal methods
-   // ---------------------------------------------------------------------------------------------------
-
-   boolean hasDataAnnotation()
-   {
-      return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
-            || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
-   }
-
-   boolean hasScriptAnnotation()
-   {
-      return metadataExtractor.usingScript().isDefinedOnClassLevel()
-            || metadataExtractor.usingScript().isDefinedOn(testMethod);
-   }
-
-   private boolean hasExpectedAnnotation()
-   {
-      return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
-            || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
-   }
-
-   private boolean hasPersistenceTestAnnotation()
-   {
-      return metadataExtractor.hasPersistenceTestAnnotation();
-   }
-
-   private boolean hasDataSourceAnnotation()
-   {
-      return metadataExtractor.dataSource().isDefinedOnClassLevel()
-            || metadataExtractor.dataSource().isDefinedOn(testMethod);
-   }
-
-   boolean hasTransactionalAnnotation()
-   {
-      return metadataExtractor.transactional().isDefinedOnClassLevel()
-            || metadataExtractor.transactional().isDefinedOn(testMethod);
-   }
-
-   private DataSource getDataSourceAnnotation()
-   {
-      return metadataExtractor.dataSource().getUsingPrecedence(testMethod);
    }
 
 }

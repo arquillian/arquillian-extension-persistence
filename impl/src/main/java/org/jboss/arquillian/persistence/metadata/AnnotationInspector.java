@@ -50,6 +50,11 @@ class AnnotationInspector<T extends Annotation>
       return getOn(method) != null;
    }
 
+   public boolean isDefinedOnAnyMethod()
+   {
+      return !annotatedMethods.isEmpty();
+   }
+
    public T getOn(Method method)
    {
       return annotatedMethods.get(method);
@@ -73,7 +78,7 @@ class AnnotationInspector<T extends Annotation>
     * @return T annotation or null if not found.
     *
     */
-   public T getUsingPrecedence(Method testMethod)
+   public T fetchUsingFirst(Method testMethod)
    {
       T usedAnnotation = getAnnotationOnClassLevel();
       if (isDefinedOn(testMethod))
