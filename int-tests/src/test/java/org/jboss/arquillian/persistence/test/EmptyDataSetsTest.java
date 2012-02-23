@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
+package org.jboss.arquillian.persistence.test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -28,6 +28,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.test.UserAccount;
+import org.jboss.arquillian.persistence.test.util.Query;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -82,6 +84,13 @@ public class EmptyDataSetsTest
       assertNoUserAccountsStored();
    }
 
+   @Test
+   @UsingDataSet("empty/empty.xls")
+   public void shouldSkipEmptyXlsDataSet() throws Exception
+   {
+      assertNoUserAccountsStored();
+   }
+
    // Private helper methods
 
    private void assertNoUserAccountsStored()
@@ -89,13 +98,6 @@ public class EmptyDataSetsTest
       @SuppressWarnings("unchecked")
       List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
       assertThat(savedUserAccounts).isEmpty();
-   }
-
-   @Test
-   @UsingDataSet("empty/empty.xls")
-   public void shouldSkipEmptyXlsDataSet() throws Exception
-   {
-      assertNoUserAccountsStored();
    }
 
 }

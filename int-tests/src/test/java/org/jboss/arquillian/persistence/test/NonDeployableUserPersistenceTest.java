@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
+package org.jboss.arquillian.persistence.test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -29,6 +29,9 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.UsingScript;
+import org.jboss.arquillian.persistence.test.Address;
+import org.jboss.arquillian.persistence.test.UserAccount;
+import org.jboss.arquillian.persistence.test.util.Query;
 import org.junit.Test;
 
 /**

@@ -25,7 +25,7 @@ import java.util.Set;
 import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
-import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class SqlScriptProviderTest
       SqlScriptProvider scriptProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<SqlScriptDescriptor> scriptDescriptors = scriptProvider.getDescriptors(testEvent.getTestClass());
+      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,
@@ -122,14 +122,14 @@ public class SqlScriptProviderTest
    public void shouldExtractAllDataSetFiles() throws Exception
    {
       // given
-      SqlScriptDescriptor one = new SqlScriptDescriptor("one.sql");
-      SqlScriptDescriptor two = new SqlScriptDescriptor("two.sql");
-      SqlScriptDescriptor three = new SqlScriptDescriptor("three.sql");
+      SqlScriptResourceDescriptor one = new SqlScriptResourceDescriptor("one.sql");
+      SqlScriptResourceDescriptor two = new SqlScriptResourceDescriptor("two.sql");
+      SqlScriptResourceDescriptor three = new SqlScriptResourceDescriptor("three.sql");
       TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedClass(), UsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
       SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<SqlScriptDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -144,7 +144,7 @@ public class SqlScriptProviderTest
       SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<SqlScriptDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -159,7 +159,7 @@ public class SqlScriptProviderTest
       SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<SqlScriptDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -169,13 +169,13 @@ public class SqlScriptProviderTest
    public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
    {
       // given
-      SqlScriptDescriptor expectedFile = new SqlScriptDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
+      SqlScriptResourceDescriptor expectedFile = new SqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
       TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
       SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<SqlScriptDescriptor> dataSetDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> dataSetDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);

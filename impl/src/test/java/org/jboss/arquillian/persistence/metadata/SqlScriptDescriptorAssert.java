@@ -24,22 +24,22 @@ import java.util.List;
 
 import org.fest.assertions.Assertions;
 import org.fest.assertions.GroupAssert;
-import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 
-public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAssert, Collection<SqlScriptDescriptor>>
+public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAssert, Collection<SqlScriptResourceDescriptor>>
 {
 
-   protected SqlScriptDescriptorAssert(Collection<SqlScriptDescriptor> actual)
+   protected SqlScriptDescriptorAssert(Collection<SqlScriptResourceDescriptor> actual)
    {
       super(SqlScriptDescriptorAssert.class, actual);
    }
 
-   public static SqlScriptDescriptorAssert assertThat(SqlScriptDescriptor ... scriptDescriptors)
+   public static SqlScriptDescriptorAssert assertThat(SqlScriptResourceDescriptor ... scriptDescriptors)
    {
       return new SqlScriptDescriptorAssert(Arrays.asList(scriptDescriptors));
    }
 
-   public static SqlScriptDescriptorAssert assertThat(Collection<SqlScriptDescriptor> scriptDescriptors)
+   public static SqlScriptDescriptorAssert assertThat(Collection<SqlScriptResourceDescriptor> scriptDescriptors)
    {
       return new SqlScriptDescriptorAssert(scriptDescriptors);
    }
@@ -54,7 +54,7 @@ public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAs
    private List<String> extractFileNames()
    {
       final List<String> fileNames = new ArrayList<String>();
-      for (SqlScriptDescriptor scriptDescriptor : actual)
+      for (SqlScriptResourceDescriptor scriptDescriptor : actual)
       {
          fileNames.add(scriptDescriptor.getLocation());
       }

@@ -42,8 +42,7 @@ public class DataScriptsHandler
    @Inject
    private Event<ExecuteScripts> executeScriptsEvent;
 
-
-   public void seedDataBaseUsingScripts(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest)
+   public void seedDataBaseUsingScripts(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest)
    {
       if (metadataProvider.get().isCustomScriptExecutionRequested())
       {

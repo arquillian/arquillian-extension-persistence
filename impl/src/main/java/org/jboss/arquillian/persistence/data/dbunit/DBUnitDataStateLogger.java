@@ -35,7 +35,7 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.data.dump.DataDump;
 import org.jboss.arquillian.persistence.data.dump.DataStateLogger;
-import org.jboss.arquillian.persistence.event.CleanUpData;
+import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -101,14 +101,14 @@ public class DBUnitDataStateLogger implements DataStateLogger
    }
 
    @Override
-   public void aroundCleanup(@Observes EventContext<CleanUpData> context)
+   public void aroundCleanup(@Observes EventContext<CleanupData> context)
    {
       if (!configuration.get().isDumpData())
       {
          context.proceed();
          return;
       }
-      CleanUpData event = context.getEvent();
+      CleanupData event = context.getEvent();
       dumpDatabaseState(event, Phase.AFTER_TEST);
       context.proceed();
       dumpDatabaseState(event, Phase.AFTER_CLEAN);

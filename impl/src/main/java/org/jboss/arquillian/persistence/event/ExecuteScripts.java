@@ -19,13 +19,13 @@ package org.jboss.arquillian.persistence.event;
 
 import java.util.List;
 
-import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class ExecuteScripts extends DataEvent<SqlScriptDescriptor>
+public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor>
 {
 
-   public ExecuteScripts(TestEvent testEvent, List<SqlScriptDescriptor> dataSetDescriptors)
+   public ExecuteScripts(TestEvent testEvent, List<SqlScriptResourceDescriptor> dataSetDescriptors)
    {
       super(testEvent, dataSetDescriptors);
    }

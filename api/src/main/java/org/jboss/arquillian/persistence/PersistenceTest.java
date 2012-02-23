@@ -24,17 +24,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * 
+ *
  * Marker annotation which enables Arquillian Persistence Extension.
- * Might be used interchangeably with {@link UsingDataSet} or {@link ShouldMatchDataSet}.
- * 
+ * Might be used interchangeably with {@link UsingDataSet}, {@link ShouldMatchDataSet}
+ * {@link Transactional} or {@link UsingScript}.
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
 @Target(TYPE)
 @Retention(RUNTIME)
 @Inherited
-public @interface PersistenceTest 
+public @interface PersistenceTest
 {
 
 }

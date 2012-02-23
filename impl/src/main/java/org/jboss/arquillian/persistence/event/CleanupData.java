@@ -17,17 +17,14 @@
  */
 package org.jboss.arquillian.persistence.event;
 
-import java.util.List;
-
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class CompareData extends DataEvent<DataSetResourceDescriptor>
+public class CleanupData extends TestEvent implements PersistenceEvent
 {
 
-   public CompareData(TestEvent testEvent, List<DataSetResourceDescriptor> dataSetDescriptors)
+   public CleanupData(TestEvent testEvent)
    {
-      super(testEvent, dataSetDescriptors);
+      super(testEvent.getTestInstance(), testEvent.getTestMethod());
    }
 
 }

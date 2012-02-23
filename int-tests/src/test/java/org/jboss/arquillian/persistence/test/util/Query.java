@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
+package org.jboss.arquillian.persistence.test.util;
+
+import org.jboss.arquillian.persistence.test.UserAccount;
 
 public class Query
 {

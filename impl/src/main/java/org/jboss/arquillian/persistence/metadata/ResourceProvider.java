@@ -28,11 +28,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.test.spi.TestClass;
 
+/**
+ *
+ * Handles metadata extraction from given test class or test method and provides
+ * {@link ResourceDescriptor descriptors} for resources defined in given annotation type
+ * (such as {@link UsingDataSet} or {@link UsingScript}).
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ * @param <T> Concrete implementation of {@link ResourceDescriptor} providing necessary information for given resource type.
+ */
 public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 {
 
@@ -98,10 +110,12 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 
       try
       {
-         String[] values = (String[]) classLevelAnnotation.annotationType()
-                                                          .getMethod("value")
-                                                          .invoke(classLevelAnnotation);
+         final String[] values = (String[]) classLevelAnnotation.annotationType()
+                                                                .getMethod("value")
+                                                                .invoke(classLevelAnnotation);
+
          final List<String> dataFileNames = new ArrayList<String>(Arrays.asList(values));
+
          if (dataFileNames.isEmpty() || dataFileNames.get(0).isEmpty())
          {
             String defaultFileName = defaultFileName();
@@ -134,7 +148,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
    }
 
    /**
-    * Checks if data set file exists in the default location.
+    * Checks if file exists in the default location.
     * If that's not the case, file is looked up starting from the root.
     *
     * @return determined file location
@@ -145,11 +159,13 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       {
          return defaultFolder() + location;
       }
+
       if (!existsInGivenLocation(location))
       {
-         throw new InvalidDataSetLocation("Unable to locate " + location +
-               ". File does not exist also in default location " + defaultLocation());
+         throw new InvalidDataSetLocation("Unable to locate " + location + ". " +
+               "File does not exist also in default location " + defaultLocation());
       }
+
       return location;
    }
 

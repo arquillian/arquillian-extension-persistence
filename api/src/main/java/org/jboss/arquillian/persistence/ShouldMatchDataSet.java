@@ -35,17 +35,18 @@ import java.lang.annotation.Target;
  * <ul>
  *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
  *   <li>
- *       If {@link UsingDataSet} annotation is defined on method level, file name has following format:
+ *       If annotation is defined on method level, file name has following format:
  *       <i>expected-[fully qualified class name]#[test method name].[default format]</i>.
  *   </li>
  *   <li>
- *       If {@link UsingDataSet} annotation is defined on class level, file name has following format:
- *       <i>expected-[fully qualified class name]#.[default format]</i></li>.
+ *       If annotation is defined on class level, file name has following format:
+ *       <i>expected-[fully qualified class name].[default format]</i>.
+ *   </li>
  * </ul>
  * <br /><br />
  * If not specified in <code>arquillian.xml</code>, then expected format is XML.
  *
- * Presence of this annotation in the test class will enable Arquillian Persistence Extension.
+ * Presence of this annotation in the test class enables Arquillian Persistence Extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

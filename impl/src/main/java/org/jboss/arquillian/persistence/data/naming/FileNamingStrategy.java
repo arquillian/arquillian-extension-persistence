@@ -19,7 +19,23 @@ package org.jboss.arquillian.persistence.data.naming;
 
 import java.lang.reflect.Method;
 
-
+/**
+ * Creates file name for test class or test method
+ *
+ * <ul>
+ *   <li>
+ *       If used for method, file name has following format:
+ *       <i>[fully qualified class name]#[test method name].[provided file extension]</i>.
+ *   </li>
+ *   <li>
+ *       If used for class, file name has following format:
+ *       <i>[fully qualified class name].[provided file extension]</i></li>.
+ * </ul>
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ * @param <T>
+ */
 public abstract class FileNamingStrategy<T>
 {
 

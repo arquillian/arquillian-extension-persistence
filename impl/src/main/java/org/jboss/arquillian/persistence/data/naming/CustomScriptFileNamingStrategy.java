@@ -17,6 +17,11 @@
  */
 package org.jboss.arquillian.persistence.data.naming;
 
+/**
+ * Strategy for naming sql scripts
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class CustomScriptFileNamingStrategy extends FileNamingStrategy<String>
 {
 

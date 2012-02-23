@@ -15,18 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
+package org.jboss.arquillian.persistence.test;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.persistence.test.UserAccount;
+import org.jboss.arquillian.persistence.test.util.Query;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ *
+ * This test is using {@link PersistenceTest} annotation which is marker
+ * annotation for triggering persistence extension. All tests within
+ * marked test class are wrapped in transaction.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 @RunWith(Arquillian.class)
-public class UserPersistenceWarDeploymentTest extends NonDeployableUserPersistenceTest
+@PersistenceTest
+public class UserPersistenceTest
 {
 
    @Deployment
@@ -38,6 +59,28 @@ public class UserPersistenceWarDeploymentTest extends NonDeployableUserPersisten
                        .addPackages(true, "org.fest")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+   }
+
+   @PersistenceContext
+   EntityManager em;
+
+   @Test
+   public void shouldPersistUsersWithinTransaction() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+      em.flush();
+      em.clear();
+
+      // then
+      @SuppressWarnings("unchecked")
+      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+      assertThat(savedUserAccounts).hasSize(2);
    }
 
 }

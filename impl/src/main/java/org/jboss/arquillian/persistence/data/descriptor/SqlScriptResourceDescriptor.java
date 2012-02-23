@@ -20,17 +20,17 @@ package org.jboss.arquillian.persistence.data.descriptor;
 
 /**
  *
- * Contains information about the file - it's name and {@link Format format}.
+ * Information about SQL script location.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetDescriptor extends ResourceDescriptor<Format>
+public class SqlScriptResourceDescriptor extends ResourceDescriptor<String>
 {
 
-   public DataSetDescriptor(String location, Format format)
+   public SqlScriptResourceDescriptor(String location)
    {
-      super(location, format);
+      super(location, "sql");
    }
 
    @Override
@@ -41,19 +41,19 @@ public class DataSetDescriptor extends ResourceDescriptor<Format>
          return true;
       }
 
-      if (!(obj instanceof DataSetDescriptor))
+      if (!(obj instanceof SqlScriptResourceDescriptor))
       {
          return false;
       }
 
-      final DataSetDescriptor other = (DataSetDescriptor) obj;
+      final SqlScriptResourceDescriptor other = (SqlScriptResourceDescriptor) obj;
       return location.equals(other.location) && format.equals(other.format);
    }
 
    @Override
    public int hashCode()
    {
-      final int prime = 17;
+      final int prime = 13;
       int result = 1;
       result = prime * result + ((location == null) ? 0 : location.hashCode());
       result = prime * result + ((format == null) ? 0 : format.hashCode());

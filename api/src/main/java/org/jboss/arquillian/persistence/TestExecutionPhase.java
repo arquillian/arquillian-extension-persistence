@@ -15,16 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.event;
+package org.jboss.arquillian.persistence;
 
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-public class CleanUpData extends TestEvent implements PersistenceEvent
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public enum TestExecutionPhase
 {
 
-   public CleanUpData(TestEvent testEvent)
-   {
-      super(testEvent.getTestInstance(), testEvent.getTestMethod());
-   }
+   BEFORE,
+   AFTER,
+   NONE;
 
+   public static TestExecutionPhase getDefault()
+   {
+      return BEFORE;
+   }
 }

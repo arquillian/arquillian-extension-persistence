@@ -15,19 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.event;
+package org.jboss.arquillian.persistence.testextension.event;
 
-import java.util.List;
+import java.lang.annotation.Annotation;
 
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
-public class CompareData extends DataEvent<DataSetResourceDescriptor>
+public class CleanupEventVerifierProvider implements ResourceProvider
 {
+   @Inject
+   Instance<CleanupEventVerifier> verifier;
 
-   public CompareData(TestEvent testEvent, List<DataSetResourceDescriptor> dataSetDescriptors)
+   @Override
+   public boolean canProvide(Class<?> type)
    {
-      super(testEvent, dataSetDescriptors);
+      return CleanupEventVerifier.class.isAssignableFrom(type);
    }
+
+   @Override
+   public Object lookup(ArquillianResource resource, Annotation... qualifiers)
+   {
+      return verifier.get();
+   }
+
 
 }

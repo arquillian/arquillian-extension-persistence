@@ -18,7 +18,7 @@
 package org.jboss.arquillian.persistence.data.dump;
 
 import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.persistence.event.CleanUpData;
+import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 
 public interface DataStateLogger
@@ -26,6 +26,6 @@ public interface DataStateLogger
 
    void aroundDataSeeding(EventContext<PrepareData> context);
 
-   void aroundCleanup(EventContext<CleanUpData> context);
+   void aroundCleanup(EventContext<CleanupData> context);
 
 }

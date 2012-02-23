@@ -15,29 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
+package org.jboss.arquillian.persistence.testextension;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.container.test.spi.client.deployment.CachedAuxilliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.runner.RunWith;
 
-@RunWith(Arquillian.class)
-public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersistenceTest
+public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryArchiveAppender
 {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
+   @Override
+   protected Archive<?> buildArchive()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       // required for remote containers in order to run tests with FEST-Asserts
+      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-tester.jar")
+                       .addPackages(true,
+                             Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
+                                   PersistenceExtensionTester.class),
+                             this.getClass().getPackage())
                        .addPackages(true, "org.fest")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
+                       .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
    }
 
 }

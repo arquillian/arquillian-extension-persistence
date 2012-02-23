@@ -25,7 +25,7 @@ import java.util.Set;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
@@ -53,7 +53,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
+      Set<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_DATA_SET_ON_CLASS_LEVEL,
@@ -184,14 +184,14 @@ public class DataSetProviderUsingDataSetTest
    public void shouldExtractAllDataSetFiles() throws Exception
    {
       // given
-      DataSetDescriptor xml = new DataSetDescriptor("one.xml", Format.XML);
-      DataSetDescriptor xls = new DataSetDescriptor("two.xls", Format.EXCEL);
-      DataSetDescriptor yml = new DataSetDescriptor("three.yml", Format.YAML);
+      DataSetResourceDescriptor xml = new DataSetResourceDescriptor("one.xml", Format.XML);
+      DataSetResourceDescriptor xls = new DataSetResourceDescriptor("two.xls", Format.EXCEL);
+      DataSetResourceDescriptor yml = new DataSetResourceDescriptor("three.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedClass(), UsingDataSetAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      List<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
@@ -206,7 +206,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      List<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -221,7 +221,7 @@ public class DataSetProviderUsingDataSetTest
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      List<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -231,13 +231,13 @@ public class DataSetProviderUsingDataSetTest
    public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
    {
       // given
-      DataSetDescriptor expectedFile = new DataSetDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);
+      DataSetResourceDescriptor expectedFile = new DataSetResourceDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);
       TestEvent testEvent = new TestEvent(new UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
       DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      List<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);

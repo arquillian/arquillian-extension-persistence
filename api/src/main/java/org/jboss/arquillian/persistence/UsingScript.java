@@ -33,13 +33,17 @@ import java.lang.annotation.Target;
  * <ul>
  *   <li>Assumption that files are stored in <code>scripts</code> folder.</li>
  *   <li>
- *       If {@link UsingScript} annotation is defined on method level, file name has following format:
+ *       If annotation is defined on method level, file name has following format:
  *       <i>[fully qualified class name]#[test method name].sql</i>.
+ *   </li>
+ *   <li>
+ *       If annotation is defined on class level, file name has following format:
+ *       <i>[fully qualified class name].sql</i>.
  *   </li>
  * </ul>
  * <br /><br />
  *
- * Presence of this annotation in the test class will enable Arquillian Persistence Extension.
+ * Presence of this annotation in the test class enables Arquillian Persistence Extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

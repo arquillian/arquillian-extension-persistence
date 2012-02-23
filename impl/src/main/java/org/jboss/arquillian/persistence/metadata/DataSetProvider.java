@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.data.naming.DataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
@@ -33,7 +33,7 @@ import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
+public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
 {
 
    public DataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
@@ -42,9 +42,9 @@ public class DataSetProvider extends ResourceProvider<DataSetDescriptor>
    }
 
    @Override
-   protected DataSetDescriptor createDescriptor(String dataFileName)
+   protected DataSetResourceDescriptor createDescriptor(String dataFileName)
    {
-      return new DataSetDescriptor(determineLocation(dataFileName), inferFormat(dataFileName));
+      return new DataSetResourceDescriptor(determineLocation(dataFileName), inferFormat(dataFileName));
    }
 
    @Override

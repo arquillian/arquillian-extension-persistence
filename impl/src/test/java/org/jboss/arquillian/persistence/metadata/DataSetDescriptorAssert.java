@@ -24,23 +24,23 @@ import java.util.List;
 
 import org.fest.assertions.Assertions;
 import org.fest.assertions.GroupAssert;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 
-public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert, Collection<DataSetDescriptor>>
+public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert, Collection<DataSetResourceDescriptor>>
 {
 
-   protected DataSetDescriptorAssert(Collection<DataSetDescriptor> actual)
+   protected DataSetDescriptorAssert(Collection<DataSetResourceDescriptor> actual)
    {
       super(DataSetDescriptorAssert.class, actual);
    }
 
-   public static DataSetDescriptorAssert assertThat(DataSetDescriptor ... dataSetDescriptors)
+   public static DataSetDescriptorAssert assertThat(DataSetResourceDescriptor ... dataSetDescriptors)
    {
       return new DataSetDescriptorAssert(Arrays.asList(dataSetDescriptors));
    }
 
-   public static DataSetDescriptorAssert assertThat(Collection<DataSetDescriptor> dataSetDescriptors)
+   public static DataSetDescriptorAssert assertThat(Collection<DataSetResourceDescriptor> dataSetDescriptors)
    {
       return new DataSetDescriptorAssert(dataSetDescriptors);
    }
@@ -60,7 +60,7 @@ public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert
    private List<Format> extractFormats()
    {
       final List<Format> formats = new ArrayList<Format>();
-      for (DataSetDescriptor dataSetDescriptor : actual)
+      for (DataSetResourceDescriptor dataSetDescriptor : actual)
       {
          formats.add(dataSetDescriptor.getFormat());
       }
@@ -70,7 +70,7 @@ public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert
    private List<String> extractFileNames()
    {
       final List<String> fileNames = new ArrayList<String>();
-      for (DataSetDescriptor dataSetDescriptor : actual)
+      for (DataSetResourceDescriptor dataSetDescriptor : actual)
       {
          fileNames.add(dataSetDescriptor.getLocation());
       }

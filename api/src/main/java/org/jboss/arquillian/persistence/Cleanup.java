@@ -26,34 +26,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Provides information about data sets needs to be used for
- * seeding test database before test method execution.
- * <br />
- * If files are not specified explicitly, following strategy is applied:
- * <ul>
- *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
- *   <li>
- *       If annotation is defined on method level, file name has following format:
- *       <i>[fully qualified class name]#[test method name].[default format]</i>.
- *   </li>
- *   <li>
- *       If annotation is defined on class level, file name has following format:
- *       <i>[fully qualified class name].[default format]</i>.
- *   </li>
- * </ul>
- * <br /><br />
- * If not specified in <code>arquillian.xml</code> expected format is XML.
+ * Determines when database cleanup should be triggered. Default test phase when
+ * cleanup is invoked is {@link TestExecutionPhase#BEFORE}.
  *
- * Presence of this annotation in the test class enables Arquillian Persistence Extension.
+ * If not specified otherwise the whole database is erased.
+ * You can change this behaviour by setting up {@link #mode()} field.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
+ * @see {@link TestExecutionPhase}, {@link CleanupMode}
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface UsingDataSet {
+public @interface Cleanup
+{
 
-   String[] value() default "";
+   TestExecutionPhase phase() default TestExecutionPhase.BEFORE;
 
 }

@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.SqlScriptDescriptor;
+import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.data.naming.CustomScriptFileNamingStrategy;
 
 /**
@@ -30,7 +30,7 @@ import org.jboss.arquillian.persistence.data.naming.CustomScriptFileNamingStrate
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class SqlScriptProvider extends ResourceProvider<SqlScriptDescriptor>
+public class SqlScriptProvider extends ResourceProvider<SqlScriptResourceDescriptor>
 {
 
    public SqlScriptProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
@@ -39,9 +39,9 @@ public class SqlScriptProvider extends ResourceProvider<SqlScriptDescriptor>
    }
 
    @Override
-   protected SqlScriptDescriptor createDescriptor(String dataFileName)
+   protected SqlScriptResourceDescriptor createDescriptor(String dataFileName)
    {
-      return new SqlScriptDescriptor(determineLocation(dataFileName));
+      return new SqlScriptResourceDescriptor(determineLocation(dataFileName));
    }
 
    @Override

@@ -15,19 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.event;
+package org.jboss.arquillian.persistence.testextension;
 
-import java.util.List;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-public class CompareData extends DataEvent<DataSetResourceDescriptor>
+public class PersistenceExtensionTester implements LoadableExtension
 {
 
-   public CompareData(TestEvent testEvent, List<DataSetResourceDescriptor> dataSetDescriptors)
+   @Override
+   public void register(ExtensionBuilder builder)
    {
-      super(testEvent, dataSetDescriptors);
+      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class);
    }
 
 }

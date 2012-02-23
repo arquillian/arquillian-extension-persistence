@@ -15,35 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
-
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+package org.jboss.arquillian.persistence.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.persistence.test.UserAccount;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- *
- * All tests are wrapped in transaction.
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- */
 @RunWith(Arquillian.class)
-@Transactional
-public class TransactionalUserPersistenceTest
+public class UserPersistenceWarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 
    @Deployment
@@ -55,28 +39,6 @@ public class TransactionalUserPersistenceTest
                        .addPackages(true, "org.fest")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
-
-   @PersistenceContext
-   EntityManager em;
-
-   @Test
-   public void shouldPersistUsersWithinTransaction() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
-
-      // then
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).hasSize(2);
    }
 
 }

@@ -15,45 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.example;
-
-import static org.fest.assertions.Assertions.assertThat;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+package org.jboss.arquillian.persistence.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.persistence.test.UserAccount;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class NonPersistenceExtensionTest
+public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.fest")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
+      final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
+                                                .addPackage(UserAccount.class.getPackage())
+                                                // required for remote containers in order to run tests with FEST-Asserts
+                                                .addPackages(true, "org.fest")
+                                                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                                                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+
+      return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
+                       .addAsLibrary(javaArchive);
    }
-
-   @PersistenceContext
-   EntityManager em;
-
-   @Test
-   public void shouldInjectEntityManager() throws Exception
-   {
-      assertThat(em).isNotNull();
-   }
-
 
 }

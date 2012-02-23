@@ -24,7 +24,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.event.CleanUpData;
+import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
@@ -39,7 +39,7 @@ public class DataSetHandler
    private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
-   private Instance<MetadataProvider> metadataProvider;
+   private Instance<MetadataProvider> metadataProviderInstance;
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
@@ -51,11 +51,17 @@ public class DataSetHandler
    private Event<CompareData> compareDataEvent;
 
    @Inject
-   private Event<CleanUpData> cleanUpDataEvent;
+   private Event<CleanupData> cleanUpDataEvent;
 
-   public void seedDatabase(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest)
+   public void seedDatabase(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest)
    {
-      if (metadataProvider.get().isDataSeedOperationRequested())
+      MetadataProvider metadataProvider = metadataProviderInstance.get();
+      if (metadataProvider.shouldCleanupBefore())
+      {
+         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest));
+      }
+
+      if (metadataProvider.isDataSeedOperationRequested())
       {
          DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
          prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
@@ -65,13 +71,19 @@ public class DataSetHandler
 
    public void verifyDatabase(@Observes(precedence = 30) AfterPersistenceTest afterPersistenceTest)
    {
-      if (metadataProvider.get().isDataVerificationRequested())
+
+      MetadataProvider metadataProvider = metadataProviderInstance.get();
+
+      if (metadataProvider.isDataVerificationRequested())
       {
          ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor.get(), configuration.get());
          compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
       }
 
-      cleanUpDataEvent.fire(new CleanUpData(afterPersistenceTest));
+      if (metadataProvider.shouldCleanupAfter())
+      {
+         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest));
+      }
    }
 
 }

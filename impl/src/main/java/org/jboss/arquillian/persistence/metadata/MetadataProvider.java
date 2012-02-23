@@ -19,7 +19,9 @@ package org.jboss.arquillian.persistence.metadata;
 
 import java.lang.reflect.Method;
 
+import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.DataSource;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
@@ -75,14 +77,38 @@ public class MetadataProvider
 
    public TransactionMode getTransactionalMode()
    {
-      Transactional transactionalAnnotation = metadataExtractor.transactional().fetchUsingFirst(testMethod);
+      final Transactional transactionalAnnotation = metadataExtractor.transactional().fetchUsingFirst(testMethod);
 
       TransactionMode mode = configuration.getDefaultTransactionMode();
       if (transactionalAnnotation != null)
       {
          mode = transactionalAnnotation.value();
       }
+
       return mode;
+   }
+
+   public TestExecutionPhase getCleanupTestPhase()
+   {
+      final Cleanup cleanupAnnotation = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
+
+      TestExecutionPhase phase = TestExecutionPhase.getDefault();
+      if (cleanupAnnotation != null)
+      {
+         phase = cleanupAnnotation.phase();
+      }
+
+      return phase;
+   }
+
+   public boolean shouldCleanupBefore()
+   {
+      return TestExecutionPhase.BEFORE.equals(getCleanupTestPhase());
+   }
+
+   public boolean shouldCleanupAfter()
+   {
+      return TestExecutionPhase.AFTER.equals(getCleanupTestPhase());
    }
 
    public String getDataSourceName()
