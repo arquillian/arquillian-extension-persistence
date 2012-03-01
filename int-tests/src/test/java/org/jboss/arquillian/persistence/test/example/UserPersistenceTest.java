@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test;
+package org.jboss.arquillian.persistence.test.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -26,10 +26,9 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.Transactional;
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.test.UserAccount;
-import org.jboss.arquillian.persistence.test.util.Query;
+import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.persistence.test.usecase.UserAccount;
+import org.jboss.arquillian.persistence.util.Query;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -39,14 +38,16 @@ import org.junit.runner.RunWith;
 
 /**
  *
- * All tests are wrapped in transaction.
+ * This test is using {@link PersistenceTest} annotation which is marker
+ * annotation for triggering persistence extension. All tests within
+ * marked test class are wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
 @RunWith(Arquillian.class)
-@Transactional
-public class EmptyDataSetsTest
+@PersistenceTest
+public class UserPersistenceTest
 {
 
    @Deployment
@@ -64,40 +65,22 @@ public class EmptyDataSetsTest
    EntityManager em;
 
    @Test
-   @UsingDataSet("empty/empty.yml")
-   public void shouldSkipEmptyYamlDataSet() throws Exception
+   public void shouldPersistUsersWithinTransaction() throws Exception
    {
-      assertNoUserAccountsStored();
-   }
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-   @Test
-   @UsingDataSet("empty/empty.json")
-   public void shouldSkipEmptyJsonDataSet() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+      em.flush();
+      em.clear();
 
-   @Test
-   @UsingDataSet("empty/empty.xml")
-   public void shouldSkipEmptyXmlDataSet() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
-
-   @Test
-   @UsingDataSet("empty/empty.xls")
-   public void shouldSkipEmptyXlsDataSet() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
-
-   // Private helper methods
-
-   private void assertNoUserAccountsStored()
-   {
+      // then
       @SuppressWarnings("unchecked")
       List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isEmpty();
+      assertThat(savedUserAccounts).hasSize(2);
    }
 
 }

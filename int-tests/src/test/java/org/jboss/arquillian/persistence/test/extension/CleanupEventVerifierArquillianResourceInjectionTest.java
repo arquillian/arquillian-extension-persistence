@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.test.UserAccount;
+import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.arquillian.persistence.testextension.event.CleanupEventVerifier;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;

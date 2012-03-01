@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test;
+package org.jboss.arquillian.persistence.test.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -28,10 +28,10 @@ import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.UsingScript;
-import org.jboss.arquillian.persistence.test.Address;
-import org.jboss.arquillian.persistence.test.UserAccount;
-import org.jboss.arquillian.persistence.test.util.Query;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
+import org.jboss.arquillian.persistence.test.usecase.Address;
+import org.jboss.arquillian.persistence.test.usecase.UserAccount;
+import org.jboss.arquillian.persistence.util.Query;
 import org.junit.Test;
 
 /**
@@ -109,7 +109,7 @@ public abstract class NonDeployableUserPersistenceTest
    }
 
    @Test
-   @UsingScript("users.sql")
+   @ApplyScriptBefore("users.sql")
    @ShouldMatchDataSet("expected-users.yml")
    public void shouldChangePasswordUsingSqlToSeedData() throws Exception
    {
@@ -252,7 +252,7 @@ public abstract class NonDeployableUserPersistenceTest
    }
 
    @Test
-   @UsingScript("clark-kent-with-nickname.sql")
+   @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.xml")
    // This test will fail if replaceable set is not used
    // See http://www.dbunit.org/apidocs/org/dbunit/dataset/ReplacementDataSet.html
@@ -270,7 +270,7 @@ public abstract class NonDeployableUserPersistenceTest
    }
 
    @Test
-   @UsingScript("clark-kent-with-nickname.sql")
+   @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.yml")
    public void shouldCompareNullValueDefinedInYamlDataSet() throws Exception
    {
@@ -286,7 +286,7 @@ public abstract class NonDeployableUserPersistenceTest
    }
 
    @Test
-   @UsingScript("clark-kent-with-nickname.sql")
+   @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.json")
    public void shouldCompareNullValueDefinedInJsonDataSet() throws Exception
    {

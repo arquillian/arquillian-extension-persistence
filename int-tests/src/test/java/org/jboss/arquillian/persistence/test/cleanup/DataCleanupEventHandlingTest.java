@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test;
+package org.jboss.arquillian.persistence.test.cleanup;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +25,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.arquillian.persistence.testextension.event.CleanupEventVerifier;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;

@@ -15,19 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test;
+package org.jboss.arquillian.persistence.test.boundary;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.test.UserAccount;
+import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersistenceTest
+public class NonPersistenceExtensionTest
 {
 
    @Deployment
@@ -39,6 +45,15 @@ public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersisten
                        .addPackages(true, "org.fest")
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("test-persistence.xml", "persistence.xml");
+   }
+
+   @PersistenceContext
+   EntityManager em;
+
+   @Test
+   public void shouldInjectEntityManager() throws Exception
+   {
+      assertThat(em).isNotNull();
    }
 
 }
