@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -32,7 +32,7 @@ public class MetadataProviderTransactionalTest
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
-   public void shouldHaveTransactionalSupportEnabledByDefault() throws Exception
+   public void should_have_transactional_support_enabled_by_default() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
@@ -45,9 +45,9 @@ public class MetadataProviderTransactionalTest
       // then
       assertThat(transactional).isTrue();
    }
-   
+
    @Test
-   public void shouldHaveTransactionalSupportDisabledOnMethodLevel() throws Exception
+   public void should_have_transactional_support_disabled_on_method_level() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
@@ -60,9 +60,9 @@ public class MetadataProviderTransactionalTest
       // then
       assertThat(transactional).isFalse();
    }
-   
+
    @Test
-   public void shouldHaveTransactionalSupportDisabledOnClassLevel() throws Exception
+   public void should_have_transactional_support_disabled_on_class_level() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportDisabledOnClassLevel(),
@@ -75,9 +75,9 @@ public class MetadataProviderTransactionalTest
       // then
       assertThat(transactional).isFalse();
    }
-   
+
    @Test
-   public void shouldObtainTransactionalFromTestMethod() throws Exception
+   public void should_obtain_transactional_from_test_method() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
@@ -92,7 +92,7 @@ public class MetadataProviderTransactionalTest
    }
 
    @Test
-   public void shouldObtainTransactionalModeFromTestMethod() throws Exception
+   public void should_obtain_transactional_mode_from_test_method() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
@@ -107,7 +107,7 @@ public class MetadataProviderTransactionalTest
    }
 
    @Test
-   public void shouldObtainTransactionalFromClassWhenNotDefinedForTest() throws Exception
+   public void should_obtain_transactional_from_class_when_not_defined_for_test() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
@@ -122,7 +122,7 @@ public class MetadataProviderTransactionalTest
    }
 
    @Test
-   public void shouldObtainTransactionalModeFromClassWhenNotDefinedForTest() throws Exception
+   public void should_obtain_transactional_mode_from_class_when_not_defined_for_test() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
@@ -137,7 +137,7 @@ public class MetadataProviderTransactionalTest
    }
 
    @Test
-   public void shouldHaveCommitAsDefaultTransactionalModeWhenNotSpecifiedOnAnyLevel() throws Exception
+   public void should_have_commit_as_default_transactional_mode_when_not_specified_on_any_level() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClassWithDefaultOnMethodLevel(),
@@ -150,7 +150,10 @@ public class MetadataProviderTransactionalTest
       // then
       assertThat(transactionalMode).isEqualTo(TransactionMode.COMMIT);
    }
-   
+
+   // ----------------------------------------------------------------------------------------
+   // Classes used for tests
+
    @Transactional(TransactionMode.ROLLBACK)
    private static class TransactionalAnnotatedClass
    {
@@ -162,30 +165,30 @@ public class MetadataProviderTransactionalTest
       {}
 
    }
-   
+
    private static class TransactionalAnnotatedClassWithDefaultOnMethodLevel
    {
       @Transactional
       public void shouldPassWithTransactionalDefaultModeDefinedOnMethodLevel()
       {}
    }
-   
+
    private static class TransactionalSupportEnabledByDefault
    {
       @Transactional(TransactionMode.DISABLED)
       public void shouldPassWithDisabledTransaction()
       {}
-      
+
       public void shouldPassWithTransactionalSupportEnabledByDefault()
       {}
    }
-   
+
    @Transactional(TransactionMode.DISABLED)
    private static class TransactionalSupportDisabledOnClassLevel
    {
       public void shouldPassWithDisabledTransaction()
       {}
-      
+
    }
 
 }

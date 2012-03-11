@@ -28,7 +28,7 @@ public class JsonDataSetTest
 {
 
    @Test
-   public void shouldLoadTableFromJsonFile() throws Exception
+   public void should_load_table_from_json_file() throws Exception
    {
       // given
       final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
@@ -41,7 +41,7 @@ public class JsonDataSetTest
    }
 
    @Test
-   public void shouldLoadAllColumnsForTableFromJsonFile() throws Exception
+   public void should_load_all_columns_for_table_from_json_file() throws Exception
    {
       // given
       final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
@@ -54,7 +54,7 @@ public class JsonDataSetTest
    }
 
    @Test
-   public void shouldLoadAllRowsForTableFromJsonFile() throws Exception
+   public void should_load_all_rows_for_table_from_json_file() throws Exception
    {
       // given
       final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
@@ -67,7 +67,7 @@ public class JsonDataSetTest
    }
 
    @Test
-   public void shouldLoadAllRowsWithContentForTableFromJsonFile() throws Exception
+   public void should_load_all_rows_with_content_for_table_from_json_file() throws Exception
    {
       // given
       final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
@@ -82,7 +82,7 @@ public class JsonDataSetTest
    }
 
    @Test
-   public void shouldLoadTwoTablesFromJsonFile() throws Exception
+   public void should_load_two_tables_from_json_file() throws Exception
    {
       // given
       final InputStream input = getClass().getClassLoader().getResourceAsStream("tables.json");

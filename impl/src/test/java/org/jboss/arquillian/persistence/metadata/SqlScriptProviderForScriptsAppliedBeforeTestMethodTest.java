@@ -28,7 +28,7 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
-import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
+import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
-   public void shouldFetchAllScriptsDefinedForTestClass() throws Exception
+   public void should_fetch_all_scripts_defined_for_test_class() throws Exception
    {
       // given
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
@@ -60,25 +60,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
 
    }
 
-   private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent)
-   {
-      return SqlScriptProvider
-            .forAnnotation(ApplyScriptBefore.class)
-            .usingConfiguration(defaultConfiguration)
-            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
-            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-            .build(new ValueExtractor<ApplyScriptBefore>()
-            {
-               @Override
-               public String[] extract(ApplyScriptBefore a)
-               {
-                  return a.value();
-               }
-            });
-   }
-
    @Test
-   public void shouldFetchDataFileNameFromTestLevelAnnotation() throws Exception
+   public void should_fetch_data_file_name_from_test_level_annotation() throws Exception
    {
       // given
       String expectedDataFile = SQL_DATA_SET_ON_METHOD_LEVEL;
@@ -93,7 +76,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    }
 
    @Test
-   public void shouldFetchDataFromClassLevelAnnotationWhenNotDefinedForTestMethod() throws Exception
+   public void should_fetch_data_from_class_level_annotation_when_not_defined_for_test_method() throws Exception
    {
       // given
       String expectedDataFile = SQL_DATA_SET_ON_CLASS_LEVEL;
@@ -108,7 +91,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    }
 
    @Test
-   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotation() throws Exception
+   public void should_provide_default_file_name_when_not_specified_in_annotation() throws Exception
    {
       // given
       String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
@@ -123,7 +106,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    }
 
    @Test
-   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotationOnClassLevel() throws Exception
+   public void should_provide_default_file_name_when_not_specified_in_annotation_on_class_level() throws Exception
    {
       // given
       String expectedFileName = "before-" + ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getName() + ".sql";
@@ -138,7 +121,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    }
 
    @Test
-   public void shouldExtractAllDataSetFiles() throws Exception
+   public void should_extract_all_scripts() throws Exception
    {
       // given
       SqlScriptResourceDescriptor one = new SqlScriptResourceDescriptor("one.sql");
@@ -154,8 +137,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       assertThat(scriptDescriptors).containsExactly(one, two, three);
    }
 
-   @Test(expected = InvalidDataSetLocation.class)
-   public void shouldThrowExceptionForNonExistingFileInferedFromClassLevelAnnotation() throws Exception
+   @Test(expected = InvalidResourceLocation.class)
+   public void should_throw_exception_for_non_existing_file_infered_from_class_level_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile(),
@@ -169,8 +152,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       // exception should be thrown
    }
 
-   @Test(expected = InvalidDataSetLocation.class)
-   public void shouldThrowExceptionForNonExistingFileDefinedOnMethodLevelAnnotation() throws Exception
+   @Test(expected = InvalidResourceLocation.class)
+   public void should_throw_exception_for_non_existing_file_defined_on_method_level_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
@@ -185,7 +168,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    }
 
    @Test
-   public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
+   public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception
    {
       // given
       SqlScriptResourceDescriptor expectedFile = new SqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
@@ -206,6 +189,23 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
    {
       TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
       return testEvent;
+   }
+
+   private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent)
+   {
+      return SqlScriptProvider
+            .forAnnotation(ApplyScriptBefore.class)
+            .usingConfiguration(defaultConfiguration)
+            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+            .build(new ValueExtractor<ApplyScriptBefore>()
+            {
+               @Override
+               public String[] extract(ApplyScriptBefore a)
+               {
+                  return a.value();
+               }
+            });
    }
 
    @ApplyScriptBefore(SQL_DATA_SET_ON_CLASS_LEVEL)

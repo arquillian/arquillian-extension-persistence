@@ -30,7 +30,7 @@ public class PersistenceExtensionEnablerTest
 {
 
    @Test
-   public void shouldNotAcceptClassWithoutDataAnnotation() throws Exception
+   public void should_not_accept_class_without_data_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
@@ -45,7 +45,7 @@ public class PersistenceExtensionEnablerTest
    }
 
    @Test
-   public void shouldAcceptClassWithPersistenceTestAnnotation() throws Exception
+   public void should_accept_class_with_persistence_test_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
@@ -60,7 +60,7 @@ public class PersistenceExtensionEnablerTest
    }
 
    @Test
-   public void shouldAcceptClassWithScriptAnnotation() throws Exception
+   public void should_accept_class_with_script_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestWithScriptAnnotation(),
@@ -75,7 +75,7 @@ public class PersistenceExtensionEnablerTest
    }
 
    @Test
-   public void shouldAcceptClassWithExpectedAnnotation() throws Exception
+   public void should_accept_class_with_expected_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
@@ -90,7 +90,7 @@ public class PersistenceExtensionEnablerTest
    }
 
    @Test
-   public void shoulAcceptClassWithoutDataSourceAnnotationButDefinedInProperties() throws Exception
+   public void shoul_accept_class_without_data_source_annotation_but_defined_in_properties() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
@@ -103,6 +103,9 @@ public class PersistenceExtensionEnablerTest
       // then
       assertThat(persistenceFeatureEnabled).isTrue();
    }
+
+   // ----------------------------------------------------------------------------------------
+   // Classes used for tests
 
    @UsingDataSet
    private static class DataSourceExpectedFromDefaultConfiguration

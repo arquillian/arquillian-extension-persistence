@@ -40,12 +40,12 @@ public class ConfigurationInitializationTest extends AbstractTestTestBase {
     }
 
     @Before
-    public void initializeArquillianDescriptor() {
+    public void initialize_arquillian_descriptor() {
         bind(ApplicationScoped.class, ArquillianDescriptor.class, Descriptors.create(ArquillianDescriptor.class));
     }
 
     @Test
-    public void shouldCreateConfigurationBeforeClassIsExecuted() throws Exception {
+    public void should_create_configuration_before_class_is_executed() throws Exception {
         // given
         getManager().getContext(SuiteContext.class).activate();
 

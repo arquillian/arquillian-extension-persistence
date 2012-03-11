@@ -29,7 +29,7 @@ public class ConfigurationImporterFromPropertyFileTest
 {
 
    @Test
-   public void shouldExtractDefaultDataSourceFromExternalConfigurationFile() throws Exception
+   public void should_extract_default_data_source_from_external_configuration_file() throws Exception
    {
       // given
       String expectedDataSource = "Ike";
@@ -43,7 +43,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldExtractInitStatementFromExternalConfigurationFile() throws Exception
+   public void should_extract_init_statement_from_external_configuration_file() throws Exception
    {
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
@@ -57,7 +57,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldExtractDefaultDataSetFormatDefinedInPropertyFile() throws Exception
+   public void should_extract_default_data_set_format_defined_in_property_file() throws Exception
    {
       // given
       Format expectedFormat = Format.EXCEL;
@@ -71,7 +71,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldObtainDefaultTransactionMode() throws Exception
+   public void should_obtain_default_transaction_mode() throws Exception
    {
       // given
       TransactionMode expectedMode = TransactionMode.ROLLBACK;
@@ -85,7 +85,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldBeAbleToTurnOnDatabaseDumps() throws Exception
+   public void should_be_able_to_turn_on_database_dumps() throws Exception
    {
       // given
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
@@ -98,7 +98,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldBeAbleToDefineDumpDirectory() throws Exception
+   public void should_be_able_to_define_dump_directory() throws Exception
    {
       // given
       String dumpDirectory = "/home/ike/dump";
@@ -112,7 +112,7 @@ public class ConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void shouldBeAbleToDefineUserTransactionJndi() throws Exception
+   public void should_be_able_to_define_user_transaction_jndi() throws Exception
    {
       // given
       String expectedUserTransactionJndi = "java:jboss/UserTransaction";

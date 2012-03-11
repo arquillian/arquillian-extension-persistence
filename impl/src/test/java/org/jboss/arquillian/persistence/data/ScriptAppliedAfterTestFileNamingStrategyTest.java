@@ -26,7 +26,7 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest
 {
 
    @Test
-   public void shouldCreateDefaultFileNameForScriptAppliedAfterTestUsingFullClassNameAndMethodName() throws Exception
+   public void should_create_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name() throws Exception
    {
       // given
       PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("after-", "sql");
@@ -39,7 +39,7 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest
    }
 
    @Test
-   public void shouldProduceDefaultFileNameForScriptAppliedAfterTestUsingFullClassNameAndMethodName() throws Exception
+   public void should_produce_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name() throws Exception
    {
       // given
       PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("after-", "sql");

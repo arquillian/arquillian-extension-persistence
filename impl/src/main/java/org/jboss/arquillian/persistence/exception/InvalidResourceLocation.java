@@ -16,26 +16,26 @@
  */
 package org.jboss.arquillian.persistence.exception;
 
-public class InvalidDataSetLocation extends RuntimeException
+public class InvalidResourceLocation extends RuntimeException
 {
 
    private static final long serialVersionUID = 508713667493794528L;
 
-   public InvalidDataSetLocation()
+   public InvalidResourceLocation()
    {
    }
 
-   public InvalidDataSetLocation(String message)
+   public InvalidResourceLocation(String message)
    {
       super(message);
    }
 
-   public InvalidDataSetLocation(Throwable cause)
+   public InvalidResourceLocation(Throwable cause)
    {
       super(cause);
    }
 
-   public InvalidDataSetLocation(String message, Throwable cause)
+   public InvalidResourceLocation(String message, Throwable cause)
    {
       super(message, cause);
    }

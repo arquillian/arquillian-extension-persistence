@@ -32,9 +32,8 @@ public class MetadataProviderCleanupSettingsTest
 
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
-
    @Test
-   public void shouldHaveDefaultCleanupTestPhaseSetToBefore() throws Exception
+   public void should_have_default_cleanup_test_phase_set_to_before() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
@@ -49,7 +48,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldObtainCleanupTestPhaseFromClassLevelAnnotation() throws Exception
+   public void should_obtain_cleanup_test_phase_from_class_level_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new ClassLevelCleanupAfterSettings(),
@@ -64,7 +63,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldObtainTestPhaseFromMethodLevelAnnotationContainingBothPhaseAndMode() throws Exception
+   public void should_obtain_test_phase_from_method_level_annotation_containing_both_phase_and_mode() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
@@ -79,7 +78,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldUseDefaultTestPhaseFromMethodLevelAnnotationContainingMode() throws Exception
+   public void should_use_default_test_phase_from_method_level_annotation_containing_mode() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
@@ -94,7 +93,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldObtainTestPhaseFromMethodLevelAnnotationContainingPhase() throws Exception
+   public void should_obtain_test_phase_from_method_level_annotation_containing_phase() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
@@ -109,7 +108,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldCleanupBeforeIfNoAnnotationDefined() throws Exception
+   public void should_cleanup_before_when_no_annotation_defined() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
@@ -124,7 +123,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldCleanupAfterIfPhaseIsDefined() throws Exception
+   public void should_cleanup_after_when_phase_is_defined() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
@@ -139,7 +138,7 @@ public class MetadataProviderCleanupSettingsTest
    }
 
    @Test
-   public void shouldCleanupUsingScriptIfDefinedOnMethodLevel() throws Exception
+   public void should_cleanup_using_script_when_defined_on_method_level() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
@@ -152,6 +151,9 @@ public class MetadataProviderCleanupSettingsTest
       // then
       assertThat(shouldCleanupUsingScriptAfter).isTrue();
    }
+
+   // ----------------------------------------------------------------------------------------
+   // Classes used for tests
 
    @Cleanup(phase = TestExecutionPhase.AFTER)
    private static class ClassLevelCleanupAfterSettings

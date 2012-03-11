@@ -48,7 +48,7 @@ public class ConfigurationExporterToPropertyFilesTest
    }
 
    @Test
-   public void shouldExportPersistenceConfigurationToPropertyFile() throws Exception
+   public void should_export_persistence_configuration_to_property_file() throws Exception
    {
       // given
       Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
@@ -68,7 +68,7 @@ public class ConfigurationExporterToPropertyFilesTest
    }
 
    @Test
-   public void shouldExportCustomPersistenceConfigurationLoadedFromXmlToPropertyFile() throws Exception
+   public void should_export_custom_persistence_configuration_loaded_from_xml_to_property_file() throws Exception
    {
       // given
       Properties expectedProperties = expectedProperties("properties/custom.arquillian.persistence.properties");

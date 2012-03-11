@@ -29,7 +29,7 @@ import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
-import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
+import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class DataSetProviderUsingDataSetTest
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
-   public void shouldFetchAllDataSetsDefinedForTestClass() throws Exception
+   public void should_fetch_all_data_sets_defined_for_test_class() throws Exception
    {
       // given
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
@@ -64,7 +64,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldFetchDataFileNameFromTestLevelAnnotation() throws Exception
+   public void should_fetch_data_file_name_from_test_level_annotation() throws Exception
    {
       // given
       String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
@@ -79,7 +79,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldFetchDataFromClassLevelAnnotationWhenNotDefinedForTestMethod() throws Exception
+   public void should_fetch_data_from_class_level_annotation_when_not_defined_for_test_method() throws Exception
    {
       // given
       String expectedDataFile = XML_DATA_SET_ON_CLASS_LEVEL;
@@ -94,7 +94,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldFetchDataFormatFromMethodLevelAnnotation() throws Exception
+   public void should_fetch_data_format_from_method_level_annotation() throws Exception
    {
       // given
       Format expectedFormat = Format.EXCEL;
@@ -109,7 +109,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldInferDataFormatFromFileNameWhenNotDefinedOnMethodLevelAnnotation() throws Exception
+   public void should_infer_data_format_from_file_name_when_not_defined_on_method_level_annotation() throws Exception
    {
       // given
       Format expectedFormat = Format.XML;
@@ -124,7 +124,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldInferDataFormatFromFileNameWhenNotDefinedOnClassLevelAnnotation() throws Exception
+   public void should_infer_data_format_from_file_name_when_not_defined_on_class_level_annotation() throws Exception
    {
       // given
       Format expectedFormat = Format.XML;
@@ -139,7 +139,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test(expected = UnsupportedDataFormatException.class)
-   public void shouldThrowExceptionWhenFormatCannotBeInferedFromFileExtension() throws Exception
+   public void should_throw_exception_when_format_cannot_be_infered_from_file_extension() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new UsingDataSetAnnotationWithUnsupportedFormat(), UsingDataSetAnnotationWithUnsupportedFormat.class.getMethod("shouldFailWithNonSupportedFileExtension"));
@@ -153,7 +153,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotation() throws Exception
+   public void should_provide_default_file_name_when_not_specified_in_annotation() throws Exception
    {
       // given
       String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
@@ -168,7 +168,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotationOnClassLevel() throws Exception
+   public void should_provide_default_file_name_when_not_specified_in_annotation_on_class_level() throws Exception
    {
       // given
       String expectedFileName = UsingDataSetAnnotatedOnClassLevelOnly.class.getName() + ".xls";
@@ -183,7 +183,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldExtractAllDataSetFiles() throws Exception
+   public void should_extract_all_data_set_files() throws Exception
    {
       // given
       DataSetResourceDescriptor xml = new DataSetResourceDescriptor("one.xml", Format.XML);
@@ -199,8 +199,8 @@ public class DataSetProviderUsingDataSetTest
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
    }
 
-   @Test(expected = InvalidDataSetLocation.class)
-   public void shouldThrowExceptionForNonExistingFileInferedFromClassLevelAnnotation() throws Exception
+   @Test(expected = InvalidResourceLocation.class)
+   public void should_throw_exception_for_non_existing_file_infered_from_class_level_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile(),
@@ -214,8 +214,8 @@ public class DataSetProviderUsingDataSetTest
       // exception should be thrown
    }
 
-   @Test(expected = InvalidDataSetLocation.class)
-   public void shouldThrowExceptionForNonExistingFileDefinedOnMethodLevelAnnotation() throws Exception
+   @Test(expected = InvalidResourceLocation.class)
+   public void should_throw_exception_for_non_existing_file_defined_on_method_level_annotation() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
@@ -230,7 +230,7 @@ public class DataSetProviderUsingDataSetTest
    }
 
    @Test
-   public void shouldFindFileInDefaultLocationIfNotSpecifiedExplicitly() throws Exception
+   public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception
    {
       // given
       DataSetResourceDescriptor expectedFile = new DataSetResourceDescriptor(defaultConfiguration.getDefaultDataSetLocation() + "/tables-in-datasets-folder.yml", Format.YAML);

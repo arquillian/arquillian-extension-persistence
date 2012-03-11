@@ -33,7 +33,7 @@ import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
+import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
@@ -163,7 +163,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 
       if (!existsInGivenLocation(location))
       {
-         throw new InvalidDataSetLocation("Unable to locate " + location + ". " +
+         throw new InvalidResourceLocation("Unable to locate " + location + ". " +
                "File does not exist also in default location " + defaultLocation());
       }
 
@@ -182,7 +182,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       }
       catch (URISyntaxException e)
       {
-         throw new InvalidDataSetLocation("Unable to open resource file in " + location, e);
+         throw new InvalidResourceLocation("Unable to open resource file in " + location, e);
       }
 
       return true;
