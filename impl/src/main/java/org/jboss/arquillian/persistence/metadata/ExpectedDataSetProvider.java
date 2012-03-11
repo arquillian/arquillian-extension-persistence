@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
@@ -62,7 +63,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
    }
 
    @Override
-   List<String> getResourceFileNames(Method testMethod)
+   Collection<String> getResourceFileNames(Method testMethod)
    {
       ShouldMatchDataSet dataAnnotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();

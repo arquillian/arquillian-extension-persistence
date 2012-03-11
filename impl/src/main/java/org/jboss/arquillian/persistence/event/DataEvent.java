@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.event;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
@@ -28,7 +29,7 @@ public class DataEvent<T extends ResourceDescriptor<?>> extends TestEvent implem
 
    private final List<T> descriptors;
 
-   public DataEvent(TestEvent testEvent, List<T> descriptors)
+   public DataEvent(TestEvent testEvent, Collection<T> descriptors)
    {
       super(testEvent.getTestInstance(), testEvent.getTestMethod());
       this.descriptors = new ArrayList<T>(descriptors);

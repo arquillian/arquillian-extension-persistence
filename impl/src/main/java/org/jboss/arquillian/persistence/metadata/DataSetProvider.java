@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.UsingDataSet;
@@ -62,7 +63,7 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
    }
 
    @Override
-   List<String> getResourceFileNames(Method testMethod)
+   Collection<String> getResourceFileNames(Method testMethod)
    {
       UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();
@@ -85,7 +86,7 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
       return format;
    }
 
-   List<Format> getDataFormats(Method testMethod)
+   Collection<Format> getDataFormats(Method testMethod)
    {
       final List<Format> formats = new ArrayList<Format>();
       for (String dataFileName : getResourceFileNames(testMethod))

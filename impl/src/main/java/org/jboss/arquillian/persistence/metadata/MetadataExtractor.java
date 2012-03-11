@@ -22,13 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
@@ -53,6 +54,7 @@ public class MetadataExtractor
       register(testClass, ApplyScriptAfter.class);
       register(testClass, Transactional.class);
       register(testClass, Cleanup.class);
+      register(testClass, CleanupUsingScript.class);
    }
 
    public <K extends Annotation> void register(final TestClass testClass, final Class<K> annotation)
@@ -99,6 +101,11 @@ public class MetadataExtractor
    public AnnotationInspector<Cleanup> cleanup()
    {
       return using(Cleanup.class);
+   }
+
+   public AnnotationInspector<CleanupUsingScript> cleanupUsingScript()
+   {
+      return using(CleanupUsingScript.class);
    }
 
    public boolean hasPersistenceTestAnnotation()

@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.reflect.Method;
 
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
@@ -107,14 +108,47 @@ public class MetadataProvider
       return phase;
    }
 
+   public TestExecutionPhase getCleanupUsingScriptTestPhase()
+   {
+      final CleanupUsingScript cleanupAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
+
+      TestExecutionPhase phase = TestExecutionPhase.getDefault();
+      if (cleanupAnnotation != null)
+      {
+         phase = cleanupAnnotation.phase();
+      }
+
+      return phase;
+   }
+
+   public boolean shouldCleanup()
+   {
+      return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) == null;
+   }
+
+   public boolean shouldCleanupUsingScript()
+   {
+      return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) != null;
+   }
+
+   public boolean shouldCleanupUsingScriptBefore()
+   {
+      return shouldCleanupUsingScript() && TestExecutionPhase.BEFORE.equals(getCleanupUsingScriptTestPhase());
+   }
+
+   public boolean shouldCleanupUsingScriptAfter()
+   {
+      return shouldCleanupUsingScript() && TestExecutionPhase.AFTER.equals(getCleanupUsingScriptTestPhase());
+   }
+
    public boolean shouldCleanupBefore()
    {
-      return TestExecutionPhase.BEFORE.equals(getCleanupTestPhase());
+      return shouldCleanup() && TestExecutionPhase.BEFORE.equals(getCleanupTestPhase());
    }
 
    public boolean shouldCleanupAfter()
    {
-      return TestExecutionPhase.AFTER.equals(getCleanupTestPhase());
+      return shouldCleanup() && TestExecutionPhase.AFTER.equals(getCleanupTestPhase());
    }
 
    public String getDataSourceName()

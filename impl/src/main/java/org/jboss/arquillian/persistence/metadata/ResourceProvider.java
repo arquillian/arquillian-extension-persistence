@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -79,7 +80,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       return descriptors ;
    }
 
-   public List<T> getDescriptors(Method testMethod)
+   public Collection<T> getDescriptors(Method testMethod)
    {
       final List<T> descriptors = new ArrayList<T>();
       for (String dataFileName : getResourceFileNames(testMethod))
@@ -91,7 +92,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       return descriptors;
    }
 
-   abstract List<String> getResourceFileNames(Method testMethod);
+   abstract Collection<String> getResourceFileNames(Method testMethod);
 
    protected abstract T createDescriptor(String dataFileName);
 

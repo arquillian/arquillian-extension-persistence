@@ -19,6 +19,8 @@ package org.jboss.arquillian.persistence.metadata;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +46,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
-   public void shouldFetchAllDataSetsDefinedForTestClass() throws Exception
+   public void shouldFetchAllScriptsDefinedForTestClass() throws Exception
    {
       // given
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
@@ -68,7 +70,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<String> dataFiles = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
+      List<String> dataFiles =  new ArrayList<String>(scriptsProvider.getResourceFileNames(testEvent.getTestMethod()));
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -83,7 +85,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<String> dataFiles = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
+      List<String> dataFiles =  new ArrayList<String>(scriptsProvider.getResourceFileNames(testEvent.getTestMethod()));
 
       // then
       assertThat(dataFiles).containsOnly(expectedDataFile);
@@ -98,7 +100,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<String> files = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
+      List<String> files =  new ArrayList<String>(scriptsProvider.getResourceFileNames(testEvent.getTestMethod()));
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -113,7 +115,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<String> files = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
+      List<String> files = new ArrayList<String>(scriptsProvider.getResourceFileNames(testEvent.getTestMethod()));
 
       // then
       assertThat(files).containsOnly(expectedFileName);
@@ -130,7 +132,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
 
       // then
       assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -145,7 +147,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -160,7 +162,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -176,7 +178,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> dataSetDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
+      List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);

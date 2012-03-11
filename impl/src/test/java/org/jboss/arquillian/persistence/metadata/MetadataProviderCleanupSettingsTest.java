@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.metadata;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
@@ -137,6 +138,21 @@ public class MetadataProviderCleanupSettingsTest
       assertThat(shouldCleanupAfter).isTrue();
    }
 
+   @Test
+   public void shouldCleanupUsingScriptIfDefinedOnMethodLevel() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
+            CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      boolean shouldCleanupUsingScriptAfter = metadataProvider.shouldCleanupUsingScriptAfter();
+
+      // then
+      assertThat(shouldCleanupUsingScriptAfter).isTrue();
+   }
+
    @Cleanup(phase = TestExecutionPhase.AFTER)
    private static class ClassLevelCleanupAfterSettings
    {
@@ -147,6 +163,14 @@ public class MetadataProviderCleanupSettingsTest
    private static class DefaultCleanupSettings
    {
       public void shouldPass()
+      {}
+   }
+
+   @Cleanup
+   private static class CleanupUsingScriptOnMethodLevelSettings
+   {
+      @CleanupUsingScript(value = "clean.sql", phase = TestExecutionPhase.AFTER)
+      public void shouldPassWhenCleanupUsingScriptDefined()
       {}
    }
 

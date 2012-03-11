@@ -15,19 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.event;
+package org.jboss.arquillian.persistence.testextension.event.annotation;
 
-import java.util.Collection;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor>
-{
-
-   public ExecuteScripts(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors)
-   {
-      super(testEvent, dataSetDescriptors);
-   }
-
-}
+@Target(METHOD)
+@Retention(RUNTIME)
+@Inherited
+public @interface CleanupUsingScriptShouldNotBeTriggered
+{}

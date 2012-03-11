@@ -37,6 +37,7 @@ import org.jboss.arquillian.persistence.data.script.ScriptHelper;
 import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.CleanupData;
+import org.jboss.arquillian.persistence.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.event.PrepareData;
@@ -136,6 +137,16 @@ public class DBUnitDataHandler implements DataHandler
       catch (Exception e)
       {
          throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
+      }
+   }
+
+   @Override
+   public void cleanupUsingScript(@Observes CleanupDataUsingScript cleanupDataUsingScriptEvent)
+   {
+      for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors())
+      {
+         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
+         executeScript(script);
       }
    }
 

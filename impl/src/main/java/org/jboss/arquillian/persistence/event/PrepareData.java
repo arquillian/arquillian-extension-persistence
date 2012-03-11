@@ -17,7 +17,7 @@
  */
 package org.jboss.arquillian.persistence.event;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -25,7 +25,7 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 public class PrepareData extends DataEvent<DataSetResourceDescriptor>
 {
 
-   public PrepareData(TestEvent testEvent, List<DataSetResourceDescriptor> dataSetDescriptors)
+   public PrepareData(TestEvent testEvent, Collection<DataSetResourceDescriptor> dataSetDescriptors)
    {
       super(testEvent, dataSetDescriptors);
    }

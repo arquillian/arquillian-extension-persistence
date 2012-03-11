@@ -151,7 +151,7 @@ public class DBUnitDataStateLogger implements DataStateLogger
    {
       BEFORE_SEED("before-seed"),
       AFTER_SEED("after-seed"),
-      BEFORE_CLEAN("after-test"),
+      BEFORE_CLEAN("before-clean"),
       AFTER_CLEAN("after-clean");
 
       private final String name;

@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
@@ -72,7 +73,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    }
 
    @Override
-   List<String> getResourceFileNames(Method testMethod)
+   Collection<String> getResourceFileNames(Method testMethod)
    {
       T annotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = extractor.extract(annotation);

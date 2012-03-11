@@ -28,10 +28,13 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.CleanupData;
+import org.jboss.arquillian.persistence.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupShouldBeTriggered;
 import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
+import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupUsingScriptShouldBeTriggered;
+import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.persistence.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
 import org.jboss.arquillian.persistence.testextension.event.annotation.ExecuteScriptsShouldNotBeTriggered;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
@@ -54,13 +57,19 @@ public class EventObserver
          .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
 
       eventVerifier()
+         .definedFor(CleanupDataUsingScript.class)
+         .expectedWhen(CleanupUsingScriptShouldBeTriggered.class)
+         .notExpectedWhen(CleanupUsingScriptShouldNotBeTriggered.class)
+         .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
+
+      eventVerifier()
          .definedFor(ExecuteScripts.class)
          .expectedWhen(ExecuteScriptsShouldBeTriggered.class)
          .notExpectedWhen(ExecuteScriptsShouldNotBeTriggered.class)
          .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
    }
 
-   public void cleanup(@Observes PersistenceEvent persistenceEvent)
+   public void observeCalls(@Observes PersistenceEvent persistenceEvent)
    {
       EventHandlingVerifier verifier = eventTriggersInstance.get().get(persistenceEvent.getClass());
       if (verifier != null)

@@ -27,6 +27,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
@@ -84,11 +85,13 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), configuration.get());
       final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = createProviderForScriptsToBeAppliedBeforeTest(testClass);
       final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
+      final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = createProviderForCleanupScripts(testClass);
 
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
       allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
+      allDataSets.addAll(cleanupScriptsProvider.getDescriptors(testClass));
 
       return allDataSets;
    }
@@ -186,6 +189,26 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
                                     return toExtract.value();
                                  }
                               });
+   }
+
+   private SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass)
+   {
+      return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
+            .usingConfiguration(configuration.get())
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
+            .build(new ValueExtractor<CleanupUsingScript>()
+            {
+               @Override
+               public String[] extract(CleanupUsingScript toExtract)
+               {
+                  if (toExtract == null)
+                  {
+                     return new String[0];
+                  }
+                  return toExtract.value();
+               }
+            });
    }
 
 }

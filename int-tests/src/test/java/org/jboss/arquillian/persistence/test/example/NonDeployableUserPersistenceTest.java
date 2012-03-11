@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
@@ -288,10 +289,10 @@ public abstract class NonDeployableUserPersistenceTest
    }
 
    @Test
-   @ApplyScriptBefore({"delete-users.sql", "clark-kent-with-nickname.sql"})
+   @CleanupUsingScript("delete-users.sql")
+   @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.yml")
-   @Cleanup(phase = TestExecutionPhase.NONE)
-   public void should_clean_database_before_test_using_custom_script_and_not_useDB_unit_cleanup() throws Exception
+   public void should_clean_database_before_test_using_custom_script() throws Exception
    {
       // given
       UserAccount clarkKent = em.find(UserAccount.class, 1L);
