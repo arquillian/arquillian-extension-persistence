@@ -20,7 +20,7 @@
   <extension qualifier="persistence">
     <property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
     <property name="initStatement">SET REFERENTIAL_INTEGRITY FALSE</property>
-    <property name="cleanupStatement">scripts/cleanup.sql</property>
+    <property name="cleanupStatement">scripts/turn-on-integrity-checks.sql</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
   </extension>
 

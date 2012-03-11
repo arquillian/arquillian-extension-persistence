@@ -63,7 +63,7 @@ public class TransactionalUserPersistenceTest
    EntityManager em;
 
    @Test
-   public void shouldPersistUsersWithinTransaction() throws Exception
+   public void should_persist_users_within_transaction() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");

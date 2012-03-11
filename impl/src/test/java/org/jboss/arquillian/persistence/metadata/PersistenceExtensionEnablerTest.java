@@ -22,7 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.UsingScript;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -124,7 +124,7 @@ public class PersistenceExtensionEnablerTest
 
    private static class PersistenceTestWithScriptAnnotation
    {
-      @UsingScript
+      @ApplyScriptBefore
       public void shouldPass() {}
    }
 

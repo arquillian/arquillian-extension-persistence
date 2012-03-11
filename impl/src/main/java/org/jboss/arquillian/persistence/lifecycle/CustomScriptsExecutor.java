@@ -28,7 +28,7 @@ import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 
-public class CustomScriptsAroundTestExecutor
+public class CustomScriptsExecutor
 {
 
    @Inject
@@ -40,7 +40,19 @@ public class CustomScriptsAroundTestExecutor
    @Inject
    private Event<ApplyCleanupStatement> applyCleanupStatementEvent;
 
-   public void applyInitStatement(@Observes(precedence = 40) BeforePersistenceTest beforePersistenceTest)
+   public void executeBeforeTest(@Observes(precedence = 50) BeforePersistenceTest beforePersistenceTest)
+   {
+      executeInitStatement();
+   }
+
+   public void executeAfterTest(@Observes(precedence = 10) AfterPersistenceTest afterPersistenceTest)
+   {
+      executeCleanupStatement();
+   }
+
+   // Private methods
+
+   private void executeInitStatement()
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
       String initStatement = persistenceConfiguration.getInitStatement();
@@ -51,7 +63,7 @@ public class CustomScriptsAroundTestExecutor
       applyInitStatementEvent.fire(new ApplyInitStatement(initStatement));
    }
 
-   public void applyCleanupStatement(@Observes(precedence = 20) AfterPersistenceTest afterPersistenceTest)
+   private void executeCleanupStatement()
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
       String cleanupStatement = persistenceConfiguration.getCleanupStatement();
@@ -61,4 +73,5 @@ public class CustomScriptsAroundTestExecutor
       }
       applyCleanupStatementEvent.fire(new ApplyCleanupStatement(cleanupStatement));
    }
+
 }

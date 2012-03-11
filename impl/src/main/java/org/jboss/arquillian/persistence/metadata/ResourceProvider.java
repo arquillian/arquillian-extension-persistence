@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.UsingScript;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
@@ -39,7 +39,7 @@ import org.jboss.arquillian.test.spi.TestClass;
  *
  * Handles metadata extraction from given test class or test method and provides
  * {@link ResourceDescriptor descriptors} for resources defined in given annotation type
- * (such as {@link UsingDataSet} or {@link UsingScript}).
+ * (such as {@link UsingDataSet} or {@link ApplyScriptBefore}).
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

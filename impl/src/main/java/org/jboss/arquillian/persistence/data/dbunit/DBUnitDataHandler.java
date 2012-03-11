@@ -152,7 +152,6 @@ public class DBUnitDataHandler implements DataHandler
 
    // Private methods
 
-
    private void executeScript(String script)
    {
       Statement statement = null;
@@ -190,7 +189,6 @@ public class DBUnitDataHandler implements DataHandler
 
    private void cleanDatabase() throws Exception
    {
-      // TODO rework
       DatabaseConnection connection = databaseConnection.get();
       IDataSet dataSet = connection.createDataSet();
       new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);

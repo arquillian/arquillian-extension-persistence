@@ -41,7 +41,7 @@ public class PersistenceExtensionEnabler
 
    public boolean isPersistenceExtensionRequired()
    {
-      return (hasDataAnnotation() || hasExpectedAnnotation() || hasScriptAnnotation()
+      return (hasDataSetAnnotation() || hasApplyScriptAnnotation()
             || hasPersistenceTestAnnotation() || hasTransactionalAnnotation());
    }
 
@@ -49,22 +49,20 @@ public class PersistenceExtensionEnabler
    // Internal methods
    // ---------------------------------------------------------------------------------------------------
 
-   private boolean hasDataAnnotation()
+   private boolean hasDataSetAnnotation()
    {
       return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
-            || metadataExtractor.usingDataSet().isDefinedOnAnyMethod();
-   }
-
-   private boolean hasScriptAnnotation()
-   {
-      return metadataExtractor.usingScript().isDefinedOnClassLevel()
-            || metadataExtractor.usingScript().isDefinedOnAnyMethod();
-   }
-
-   private boolean hasExpectedAnnotation()
-   {
-      return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.usingDataSet().isDefinedOnAnyMethod()
+            || metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
             || metadataExtractor.shouldMatchDataSet().isDefinedOnAnyMethod();
+   }
+
+   private boolean hasApplyScriptAnnotation()
+   {
+      return metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
+            || metadataExtractor.applyScriptBefore().isDefinedOnAnyMethod()
+            || metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
+            || metadataExtractor.applyScriptAfter().isDefinedOnAnyMethod();
    }
 
    private boolean hasPersistenceTestAnnotation()

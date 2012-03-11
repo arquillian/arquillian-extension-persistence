@@ -24,7 +24,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
@@ -49,7 +51,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @UsingDataSet("datasets/single-user.xls")
-   public void shouldFindUserUsingExcelDatasetAndDataSource() throws Exception
+   public void should_find_user_using_excel_dataset_and_data_source() throws Exception
    {
       // given
       String expectedUsername = "doovde";
@@ -63,7 +65,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @UsingDataSet({"single-user.xml", "address.yml"}) // Convention over configuration - no need to specify 'datasets' folder
-   public void shouldHaveAddressLinkedToUserAccountUsingMultipleFiles() throws Exception
+   public void should_have_address_linked_to_user_account_using_multiple_files() throws Exception
    {
       // given
       String expectedCity = "Metropolis";
@@ -79,7 +81,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @UsingDataSet("single-user.xml")
-   public void shouldFindUserUsingXmlDatasetAndDataSource() throws Exception
+   public void should_find_user_using_xml_dataset_and_data_source() throws Exception
    {
       // given
       String expectedUsername = "doovde";
@@ -94,7 +96,7 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet("expected-users.yml")
-   public void shouldChangePassword() throws Exception
+   public void should_change_password() throws Exception
    {
       // given
       String expectedPassword = "LexLuthor";
@@ -111,7 +113,7 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @ApplyScriptBefore("users.sql")
    @ShouldMatchDataSet("expected-users.yml")
-   public void shouldChangePasswordUsingSqlToSeedData() throws Exception
+   public void should_change_password_using_sql_to_seed_data() throws Exception
    {
       // given
       String expectedPassword = "LexLuthor";
@@ -128,7 +130,7 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @UsingDataSet("users.json")
    @ShouldMatchDataSet("expected-users.json")
-   public void shouldChangeUserPasswordUsingJsonDataSets() throws Exception
+   public void should_change_user_password_using_json_data_sets() throws Exception
    {
       // given
       String expectedPassword = "LexLuthor";
@@ -144,7 +146,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @UsingDataSet("user-with-address.yml")
-   public void shouldHaveAddressLinkedToUserAccount() throws Exception
+   public void should_have_address_linked_to_user_account() throws Exception
    {
       // given
       String expectedCity = "Metropolis";
@@ -162,7 +164,7 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @UsingDataSet("single-user.xml")
    @ShouldMatchDataSet({"single-user.xls", "datasets/expected-address.yml"})
-   public void shouldAddAddressToUserAccountAndVerifyUsingMultipleFiles() throws Exception
+   public void should_add_address_to_user_account_and_verify_using_multiple_files() throws Exception
    {
       // given
       UserAccount user = em.find(UserAccount.class, 1L);
@@ -178,7 +180,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @Transactional
-   public void shouldPersistUsersWithinTransaction() throws Exception
+   public void should_persist_users_within_transaction() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -198,7 +200,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @Transactional(TransactionMode.ROLLBACK)
-   public void shouldPersistUsersAndRollbackTransactionAfterTestExecution() throws Exception
+   public void should_persist_users_and_rollback_transaction_after_test_execution() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -218,7 +220,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @ShouldMatchDataSet("expected-users.yml")
-   public void shouldPersistUsersAndVerifyUsingMatchingMechanism() throws Exception
+   public void should_persist_users_and_verify_using_matching_mechanism() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -236,7 +238,7 @@ public abstract class NonDeployableUserPersistenceTest
    @UsingDataSet("users.xml")
    // This test will fail if column sensing for FlatXmlDataSet is not enabled
    // See http://www.dbunit.org/faq.html#differentcolumnnumber
-   public void shouldFindTwoUsersUsingFlatXmlDataSet() throws Exception
+   public void should_find_two_users_using_flat_xml_data_set() throws Exception
    {
       // given
       int expectedUserAmount = 2;
@@ -256,7 +258,7 @@ public abstract class NonDeployableUserPersistenceTest
    @ShouldMatchDataSet("clark-kent-without-nickname.xml")
    // This test will fail if replaceable set is not used
    // See http://www.dbunit.org/apidocs/org/dbunit/dataset/ReplacementDataSet.html
-   public void shouldCompareNullValueDefinedInFlatXmlDataSet() throws Exception
+   public void should_compare_null_value_defined_in_flat_xml_data_set() throws Exception
    {
       // given
       UserAccount clarkKent = em.find(UserAccount.class, 1L);
@@ -272,7 +274,24 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.yml")
-   public void shouldCompareNullValueDefinedInYamlDataSet() throws Exception
+   public void should_compare_null_value_defined_in_yaml_data_set() throws Exception
+   {
+      // given
+      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+
+      // when
+      clarkKent.setNickname(null);
+      em.merge(clarkKent);
+
+      // then
+      // verified by DataSet comparision
+   }
+
+   @Test
+   @ApplyScriptBefore({"delete-users.sql", "clark-kent-with-nickname.sql"})
+   @ShouldMatchDataSet("clark-kent-without-nickname.yml")
+   @Cleanup(phase = TestExecutionPhase.NONE)
+   public void should_clean_database_before_test_using_custom_script_and_not_useDB_unit_cleanup() throws Exception
    {
       // given
       UserAccount clarkKent = em.find(UserAccount.class, 1L);
@@ -288,7 +307,7 @@ public abstract class NonDeployableUserPersistenceTest
    @Test
    @ApplyScriptBefore("clark-kent-with-nickname.sql")
    @ShouldMatchDataSet("clark-kent-without-nickname.json")
-   public void shouldCompareNullValueDefinedInJsonDataSet() throws Exception
+   public void should_compare_null_value_defined_in_json_data_set() throws Exception
    {
       // given
       UserAccount clarkKent = em.find(UserAccount.class, 1L);

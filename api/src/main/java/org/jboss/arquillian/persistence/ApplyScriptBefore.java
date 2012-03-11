@@ -26,19 +26,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Defines SQL scripts used for
- * seeding test database before test method execution.
+ * Defines SQL scripts applied on test database before test method execution.
  * <br />
  * If files are not specified explicitly, following strategy is applied:
  * <ul>
  *   <li>Assumption that files are stored in <code>scripts</code> folder.</li>
  *   <li>
  *       If annotation is defined on method level, file name has following format:
- *       <i>[fully qualified class name]#[test method name].sql</i>.
+ *       <i>[before]-[fully qualified class name]#[test method name].sql</i>.
  *   </li>
  *   <li>
  *       If annotation is defined on class level, file name has following format:
- *       <i>[fully qualified class name].sql</i>.
+ *       <i>[before]-[fully qualified class name].sql</i>.
  *   </li>
  * </ul>
  * <br /><br />
@@ -51,7 +50,7 @@ import java.lang.annotation.Target;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface UsingScript {
+public @interface ApplyScriptBefore {
 
    String[] value() default "";
 

@@ -25,14 +25,18 @@ import java.util.Set;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.persistence.ApplyScriptAfter;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.script.ScriptHelper;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
 import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.metadata.SqlScriptProvider;
+import org.jboss.arquillian.persistence.metadata.ValueExtractor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -78,11 +82,13 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 
       final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
       final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), configuration.get());
-      final SqlScriptProvider sqlScriptsProvider = new SqlScriptProvider(new MetadataExtractor(testClass), configuration.get());
+      final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = createProviderForScriptsToBeAppliedBeforeTest(testClass);
+      final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
 
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
-      allDataSets.addAll(sqlScriptsProvider.getDescriptors(testClass));
+      allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
+      allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
 
       return allDataSets;
    }
@@ -140,6 +146,46 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       {
          addResources(applicationArchive, createArchiveWithResources(script));
       }
+   }
+
+   private SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass)
+   {
+      return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
+                              .usingConfiguration(configuration.get())
+                              .extractingMetadataUsing(new MetadataExtractor(testClass))
+                              .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
+                              .build(new ValueExtractor<ApplyScriptAfter>()
+                              {
+                                 @Override
+                                 public String[] extract(ApplyScriptAfter toExtract)
+                                 {
+                                    if (toExtract == null)
+                                    {
+                                       return new String[0];
+                                    }
+                                    return toExtract.value();
+                                 }
+                              });
+   }
+
+   private SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass)
+   {
+      return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
+                              .usingConfiguration(configuration.get())
+                              .extractingMetadataUsing(new MetadataExtractor(testClass))
+                              .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+                              .build(new ValueExtractor<ApplyScriptBefore>()
+                              {
+                                 @Override
+                                 public String[] extract(ApplyScriptBefore toExtract)
+                                 {
+                                    if (toExtract == null)
+                                    {
+                                       return new String[0];
+                                    }
+                                    return toExtract.value();
+                                 }
+                              });
    }
 
 }

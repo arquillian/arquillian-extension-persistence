@@ -58,10 +58,16 @@ public class MetadataProvider
             || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
    }
 
-   public boolean isCustomScriptExecutionRequested()
+   public boolean isCustomScriptToBeAppliedBeforeTestRequested()
    {
-      return  metadataExtractor.usingScript().isDefinedOnClassLevel()
-            || metadataExtractor.usingScript().isDefinedOn(testMethod);
+      return  metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
+            || metadataExtractor.applyScriptBefore().isDefinedOn(testMethod);
+   }
+
+   public boolean isCustomScriptToBeAppliedAfterTestRequested()
+   {
+      return  metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
+            || metadataExtractor.applyScriptAfter().isDefinedOn(testMethod);
    }
 
    public boolean isDataVerificationRequested()

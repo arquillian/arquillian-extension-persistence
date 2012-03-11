@@ -51,8 +51,8 @@ public class MetadataProviderCleanupSettingsTest
    public void shouldObtainCleanupTestPhaseFromClassLevelAnnotation() throws Exception
    {
       // given
-      TestEvent testEvent = new TestEvent(new ClassLevelCleanupSettings(),
-            ClassLevelCleanupSettings.class.getMethod("shouldPass"));
+      TestEvent testEvent = new TestEvent(new ClassLevelCleanupAfterSettings(),
+            ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
@@ -67,7 +67,7 @@ public class MetadataProviderCleanupSettingsTest
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassBothDefined"));
+            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
@@ -107,10 +107,38 @@ public class MetadataProviderCleanupSettingsTest
       assertThat(phase).isEqualTo(TestExecutionPhase.NONE);
    }
 
-   // Test classes used in metadata inspection
+   @Test
+   public void shouldCleanupBeforeIfNoAnnotationDefined() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
+            DefaultCleanupSettings.class.getMethod("shouldPass"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      boolean shouldCleanupBefore = metadataProvider.shouldCleanupBefore();
+
+      // then
+      assertThat(shouldCleanupBefore).isTrue();
+   }
+
+   @Test
+   public void shouldCleanupAfterIfPhaseIsDefined() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
+            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      boolean shouldCleanupAfter = metadataProvider.shouldCleanupAfter();
+
+      // then
+      assertThat(shouldCleanupAfter).isTrue();
+   }
 
    @Cleanup(phase = TestExecutionPhase.AFTER)
-   private static class ClassLevelCleanupSettings
+   private static class ClassLevelCleanupAfterSettings
    {
       public void shouldPass()
       {}
@@ -125,7 +153,7 @@ public class MetadataProviderCleanupSettingsTest
    private static class MethodLevelCleanupSettings
    {
       @Cleanup(phase = TestExecutionPhase.AFTER)
-      public void shouldPassBothDefined()
+      public void shouldPassCleanupAndAfterPhaseDefined()
       {}
 
       @Cleanup

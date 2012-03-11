@@ -26,8 +26,8 @@ import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.test.usecase.UserAccount;
-import org.jboss.arquillian.persistence.testextension.event.CleanupEventVerifier;
-import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupShouldBeTriggered;
+import org.jboss.arquillian.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -59,11 +59,9 @@ public class DataCleanupEventHandlingTest
    @PersistenceContext
    EntityManager em;
 
-   @ArquillianResource
-   CleanupEventVerifier cleanupTestEventVerifier;
-
    @Test
-   public void shouldCleanupDataBeforeTestWhenNotSpecified() throws Exception
+   @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
+   public void should_cleanup_data_before_test_when_not_specified() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -76,12 +74,13 @@ public class DataCleanupEventHandlingTest
       em.clear();
 
       // then
-      cleanupTestEventVerifier.dataCleanupShouldBePerformedBeforeTest();
+      // data cleanup should be called before the test
    }
 
    @Test
    @Cleanup(phase = TestExecutionPhase.AFTER)
-   public void shouldCleanupDataAfterTest() throws Exception
+   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+   public void should_cleanup_data_after_test() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -94,12 +93,13 @@ public class DataCleanupEventHandlingTest
       em.clear();
 
       // then
-      cleanupTestEventVerifier.dataCleanupShouldBePerformedAfterTest();
+      // data cleanup should be called after the test
    }
 
    @Test
    @Cleanup(phase = TestExecutionPhase.NONE)
-   public void shouldNotCleanupData() throws Exception
+   @CleanupShouldNotBeTriggered
+   public void should_not_cleanup_data() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -112,7 +112,7 @@ public class DataCleanupEventHandlingTest
       em.clear();
 
       // then
-      cleanupTestEventVerifier.dataCleanupShouldNotBePerformed();
+      // data clean up should not be performed
    }
 
 }

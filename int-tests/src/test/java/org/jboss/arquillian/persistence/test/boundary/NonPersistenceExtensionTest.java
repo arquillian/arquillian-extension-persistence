@@ -51,7 +51,7 @@ public class NonPersistenceExtensionTest
    EntityManager em;
 
    @Test
-   public void shouldInjectEntityManager() throws Exception
+   public void should_inject_entity_manager() throws Exception
    {
       assertThat(em).isNotNull();
    }

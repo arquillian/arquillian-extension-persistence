@@ -47,7 +47,7 @@ class AnnotationInspector<T extends Annotation>
 
    public boolean isDefinedOn(Method method)
    {
-      return getOn(method) != null;
+      return fetchFrom(method) != null;
    }
 
    public boolean isDefinedOnAnyMethod()
@@ -55,7 +55,7 @@ class AnnotationInspector<T extends Annotation>
       return !annotatedMethods.isEmpty();
    }
 
-   public T getOn(Method method)
+   public T fetchFrom(Method method)
    {
       return annotatedMethods.get(method);
    }
@@ -83,7 +83,7 @@ class AnnotationInspector<T extends Annotation>
       T usedAnnotation = getAnnotationOnClassLevel();
       if (isDefinedOn(testMethod))
       {
-         usedAnnotation = getOn(testMethod);
+         usedAnnotation = fetchFrom(testMethod);
       }
 
       return usedAnnotation;

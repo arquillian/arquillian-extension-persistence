@@ -15,27 +15,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.data;
+package org.jboss.arquillian.persistence.data.naming;
 
-import static org.fest.assertions.Assertions.*;
+import java.lang.reflect.Method;
 
-import org.jboss.arquillian.persistence.data.naming.CustomScriptFileNamingStrategy;
-import org.junit.Test;
-
-public class CustomScriptFileNamingStrategyTest
+/**
+ *
+ * Strategy for naming sql scripts used before the test.
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class PrefixedScriptFileNamingStrategy extends FileNamingStrategy<String>
 {
 
-   @Test
-   public void shouldProduceDefaultFileNameOfCForTestUsingFullClassNameAndMethodName() throws Exception
+   private final String prefix;
+
+   public PrefixedScriptFileNamingStrategy(String prefix, String extension)
    {
-      // given
-      CustomScriptFileNamingStrategy defaultFileNamingStrategy = new CustomScriptFileNamingStrategy("sql");
+      super(extension);
+      this.prefix = prefix;
+   }
 
-      // when
-      String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+   @Override
+   public String getFileExtension()
+   {
+      return extension;
+   }
 
-      // then
-      assertThat(fileName).isEqualTo("org.jboss.arquillian.persistence.data.DummyClass#shouldPass.sql");
+   @Override
+   public String createFileName(Class<?> testClass)
+   {
+      return prefix + super.createFileName(testClass);
+   }
+
+   @Override
+   public String createFileName(Class<?> testClass, Method testMethod)
+   {
+      return prefix + super.createFileName(testClass, testMethod);
    }
 
 }

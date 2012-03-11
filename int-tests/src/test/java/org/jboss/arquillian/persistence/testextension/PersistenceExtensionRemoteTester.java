@@ -18,9 +18,7 @@
 package org.jboss.arquillian.persistence.testextension;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.persistence.testextension.event.CleanupEventObserver;
-import org.jboss.arquillian.persistence.testextension.event.CleanupEventVerifierProvider;
-import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
+import org.jboss.arquillian.persistence.testextension.event.EventObserver;
 
 public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
 {
@@ -28,8 +26,7 @@ public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(ResourceProvider.class, CleanupEventVerifierProvider.class);
-      builder.observer(CleanupEventObserver.class);
+      builder.observer(EventObserver.class);
    }
 
 }

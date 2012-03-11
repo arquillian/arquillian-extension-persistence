@@ -24,7 +24,6 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.metadata.DataSetProvider;
@@ -50,16 +49,9 @@ public class DataSetHandler
    @Inject
    private Event<CompareData> compareDataEvent;
 
-   @Inject
-   private Event<CleanupData> cleanUpDataEvent;
-
-   public void seedDatabase(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest)
+   public void prepareDatabase(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest)
    {
       MetadataProvider metadataProvider = metadataProviderInstance.get();
-      if (metadataProvider.shouldCleanupBefore())
-      {
-         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest));
-      }
 
       if (metadataProvider.isDataSeedOperationRequested())
       {
@@ -80,10 +72,6 @@ public class DataSetHandler
          compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
       }
 
-      if (metadataProvider.shouldCleanupAfter())
-      {
-         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest));
-      }
    }
 
 }

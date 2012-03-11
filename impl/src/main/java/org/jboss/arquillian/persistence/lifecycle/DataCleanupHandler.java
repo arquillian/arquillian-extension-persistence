@@ -23,36 +23,37 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.event.EndTransaction;
-import org.jboss.arquillian.persistence.event.StartTransaction;
+import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.metadata.MetadataProvider;
 
-public class TransactionHandler
+public class DataCleanupHandler
 {
 
    @Inject
-   private Instance<MetadataProvider> metadataProvider;
+   private Instance<MetadataProvider> metadataProviderInstance;
 
    @Inject
-   private Event<StartTransaction> startTransactionEvent;
+   private Event<CleanupData> cleanUpDataEvent;
 
-   @Inject
-   private Event<EndTransaction> endTransactionEvent;
-
-   public void startTransactionBeforeTest(@Observes(precedence = 10) BeforePersistenceTest beforePersistenceTest)
+   public void prepareDatabase(@Observes(precedence = 40) BeforePersistenceTest beforePersistenceTest)
    {
-      if (metadataProvider.get().isTransactional())
+      final MetadataProvider metadataProvider = metadataProviderInstance.get();
+
+      if (metadataProvider.shouldCleanupBefore())
       {
-         startTransactionEvent.fire(new StartTransaction(beforePersistenceTest));
+         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest));
       }
    }
 
-   public void endTransactionAfterTest(@Observes(precedence = 50) AfterPersistenceTest afterPersistenceTest)
+   public void verifyDatabase(@Observes(precedence = 20) AfterPersistenceTest afterPersistenceTest)
    {
-      if (metadataProvider.get().isTransactional())
+      final MetadataProvider metadataProvider = metadataProviderInstance.get();
+
+      if (metadataProvider.shouldCleanupAfter())
       {
-         endTransactionEvent.fire(new EndTransaction(afterPersistenceTest));
+         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest));
       }
+
    }
 
 }

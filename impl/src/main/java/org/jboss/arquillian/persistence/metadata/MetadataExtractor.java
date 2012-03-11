@@ -17,13 +17,18 @@
  */
 package org.jboss.arquillian.persistence.metadata;
 
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jboss.arquillian.persistence.ApplyScriptAfter;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
@@ -36,57 +41,64 @@ public class MetadataExtractor
 
    private final TestClass testClass;
 
-   private final AnnotationInspector<DataSource> dataSourceInspector;
-
-   private final AnnotationInspector<UsingDataSet> usingDataSetInspector;
-
-   private final AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSetInspector;
-
-   private final AnnotationInspector<UsingScript> usingScriptInspector;
-
-   private final AnnotationInspector<Transactional> transactionalInspector;
-
-   private final AnnotationInspector<Cleanup> cleanupInspector;
+   private final Map<Class<?>, AnnotationInspector<?>> inspectors = new HashMap<Class<?>, AnnotationInspector<?>>();
 
    public MetadataExtractor(TestClass testClass)
    {
       this.testClass = testClass;
-      this.dataSourceInspector = new AnnotationInspector<DataSource>(testClass, DataSource.class);
-      this.usingDataSetInspector = new AnnotationInspector<UsingDataSet>(testClass, UsingDataSet.class);
-      this.shouldMatchDataSetInspector = new AnnotationInspector<ShouldMatchDataSet>(testClass, ShouldMatchDataSet.class);
-      this.usingScriptInspector = new AnnotationInspector<UsingScript>(testClass, UsingScript.class);
-      this.transactionalInspector = new AnnotationInspector<Transactional>(testClass, Transactional.class);
-      this.cleanupInspector = new AnnotationInspector<Cleanup>(testClass, Cleanup.class);
+      register(testClass, DataSource.class);
+      register(testClass, UsingDataSet.class);
+      register(testClass, ShouldMatchDataSet.class);
+      register(testClass, ApplyScriptBefore.class);
+      register(testClass, ApplyScriptAfter.class);
+      register(testClass, Transactional.class);
+      register(testClass, Cleanup.class);
+   }
+
+   public <K extends Annotation> void register(final TestClass testClass, final Class<K> annotation)
+   {
+      inspectors.put(annotation, new AnnotationInspector<K>(testClass, annotation));
+   }
+
+   @SuppressWarnings("unchecked")
+   public <K extends Annotation> AnnotationInspector<K> using(final Class<K> annotation)
+   {
+      return (AnnotationInspector<K>) inspectors.get(annotation);
    }
 
    public AnnotationInspector<DataSource> dataSource()
    {
-      return dataSourceInspector;
+      return using(DataSource.class);
    }
 
    public AnnotationInspector<UsingDataSet> usingDataSet()
    {
-      return usingDataSetInspector;
+      return using(UsingDataSet.class);
    }
 
    public AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSet()
    {
-      return shouldMatchDataSetInspector;
+      return using(ShouldMatchDataSet.class);
    }
 
-   public AnnotationInspector<UsingScript> usingScript()
+   public AnnotationInspector<ApplyScriptBefore> applyScriptBefore()
    {
-      return usingScriptInspector;
+      return using(ApplyScriptBefore.class);
+   }
+
+   public AnnotationInspector<ApplyScriptAfter> applyScriptAfter()
+   {
+      return using(ApplyScriptAfter.class);
    }
 
    public AnnotationInspector<Transactional> transactional()
    {
-      return transactionalInspector;
+      return using(Transactional.class);
    }
 
    public AnnotationInspector<Cleanup> cleanup()
    {
-      return cleanupInspector;
+      return using(Cleanup.class);
    }
 
    public boolean hasPersistenceTestAnnotation()

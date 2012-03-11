@@ -22,18 +22,19 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.arquillian.persistence.UsingScript;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.InvalidDataSetLocation;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-public class SqlScriptProviderTest
+public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
 {
 
-   private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = UsingScriptAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
+   private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = "before-" + ApplyScriptBeforeAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
 
    private static final String SQL_DATA_SET_ON_CLASS_LEVEL = "scripts/class-level.sql";
 
@@ -47,15 +48,32 @@ public class SqlScriptProviderTest
    {
       // given
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      SqlScriptProvider scriptProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptProvider.getDescriptors(testEvent.getTestClass());
+      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,
             SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
 
+   }
+
+   private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent)
+   {
+      return SqlScriptProvider
+            .forAnnotation(ApplyScriptBefore.class)
+            .usingConfiguration(defaultConfiguration)
+            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+            .build(new ValueExtractor<ApplyScriptBefore>()
+            {
+               @Override
+               public String[] extract(ApplyScriptBefore a)
+               {
+                  return a.value();
+               }
+            });
    }
 
    @Test
@@ -64,7 +82,7 @@ public class SqlScriptProviderTest
       // given
       String expectedDataFile = SQL_DATA_SET_ON_METHOD_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<String> dataFiles = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -79,7 +97,7 @@ public class SqlScriptProviderTest
       // given
       String expectedDataFile = SQL_DATA_SET_ON_CLASS_LEVEL;
       TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<String> dataFiles = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -94,7 +112,7 @@ public class SqlScriptProviderTest
       // given
       String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
       TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<String> files = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -107,9 +125,9 @@ public class SqlScriptProviderTest
    public void shouldProvideDefaultFileNameWhenNotSpecifiedInAnnotationOnClassLevel() throws Exception
    {
       // given
-      String expectedFileName = UsingScriptAnnotatedOnClassLevelOnly.class.getName() + ".sql";
-      TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedOnClassLevelOnly(), UsingScriptAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      String expectedFileName = "before-" + ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getName() + ".sql";
+      TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedOnClassLevelOnly(), ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<String> files = scriptsProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -125,8 +143,8 @@ public class SqlScriptProviderTest
       SqlScriptResourceDescriptor one = new SqlScriptResourceDescriptor("one.sql");
       SqlScriptResourceDescriptor two = new SqlScriptResourceDescriptor("two.sql");
       SqlScriptResourceDescriptor three = new SqlScriptResourceDescriptor("three.sql");
-      TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedClass(), UsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
@@ -141,7 +159,7 @@ public class SqlScriptProviderTest
       // given
       TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile(),
             UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
@@ -156,7 +174,7 @@ public class SqlScriptProviderTest
       // given
       TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
@@ -172,7 +190,7 @@ public class SqlScriptProviderTest
       SqlScriptResourceDescriptor expectedFile = new SqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
       TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
-      SqlScriptProvider scriptsProvider = new SqlScriptProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
       List<SqlScriptResourceDescriptor> dataSetDescriptors = scriptsProvider.getDescriptors(testEvent.getTestMethod());
@@ -185,39 +203,39 @@ public class SqlScriptProviderTest
 
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
    {
-      TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedClass(), UsingScriptAnnotatedClass.class.getMethod(testMethod));
+      TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
       return testEvent;
    }
 
-   @UsingScript(SQL_DATA_SET_ON_CLASS_LEVEL)
-   private static class UsingScriptAnnotatedClass
+   @ApplyScriptBefore(SQL_DATA_SET_ON_CLASS_LEVEL)
+   private static class ApplyScriptBeforeAnnotatedClass
    {
       public void shouldPassWithoutDataDefinedOnMethodLevel() {}
 
-      @UsingScript(SQL_DATA_SET_ON_METHOD_LEVEL)
+      @ApplyScriptBefore(SQL_DATA_SET_ON_METHOD_LEVEL)
       public void shouldPassWithDataButWithoutFormatDefinedOnMethodLevel () {}
 
-      @UsingScript
+      @ApplyScriptBefore
       public void shouldPassWithDataFileNotSpecified() {}
 
-      @UsingScript({"one.sql", "two.sql", "three.sql"})
+      @ApplyScriptBefore({"one.sql", "two.sql", "three.sql"})
       public void shouldPassWithMultipleFilesDefined() {}
 
    }
 
    private static class UsingScriptAnnotationWithUnsupportedFormat
    {
-      @UsingScript("arquillian.ike")
+      @ApplyScriptBefore("arquillian.ike")
       public void shouldFailWithNonSupportedFileExtension() {}
    }
 
-   @UsingScript
-   private static class UsingScriptAnnotatedOnClassLevelOnly
+   @ApplyScriptBefore
+   private static class ApplyScriptBeforeAnnotatedOnClassLevelOnly
    {
       public void shouldPass() {}
    }
 
-   @UsingScript
+   @ApplyScriptBefore
    private static class UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile
    {
       public void shouldFail() {}
@@ -225,10 +243,10 @@ public class SqlScriptProviderTest
 
    private static class UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation
    {
-      @UsingScript("non-existing.sql")
+      @ApplyScriptBefore("non-existing.sql")
       public void shouldFailForNonExistingFile() {}
 
-      @UsingScript("tables-in-scripts-folder.sql")
+      @ApplyScriptBefore("tables-in-scripts-folder.sql")
       public void shouldPassForFileStoredInDefaultLocation() {}
 
    }

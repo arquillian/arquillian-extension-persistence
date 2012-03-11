@@ -109,7 +109,7 @@ public class DBUnitDataStateLogger implements DataStateLogger
          return;
       }
       CleanupData event = context.getEvent();
-      dumpDatabaseState(event, Phase.AFTER_TEST);
+      dumpDatabaseState(event, Phase.BEFORE_CLEAN);
       context.proceed();
       dumpDatabaseState(event, Phase.AFTER_CLEAN);
    }
@@ -151,7 +151,7 @@ public class DBUnitDataStateLogger implements DataStateLogger
    {
       BEFORE_SEED("before-seed"),
       AFTER_SEED("after-seed"),
-      AFTER_TEST("after-test"),
+      BEFORE_CLEAN("after-test"),
       AFTER_CLEAN("after-clean");
 
       private final String name;

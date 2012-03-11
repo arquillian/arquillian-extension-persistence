@@ -65,28 +65,28 @@ public class EmptyDataSetsTest
 
    @Test
    @UsingDataSet("empty/empty.yml")
-   public void shouldSkipEmptyYamlDataSet() throws Exception
+   public void should_skip_empty_yaml_data_set() throws Exception
    {
       assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.json")
-   public void shouldSkipEmptyJsonDataSet() throws Exception
+   public void should_skip_empty_json_data_set() throws Exception
    {
       assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.xml")
-   public void shouldSkipEmptyXmlDataSet() throws Exception
+   public void should_skip_empty_xml_data_set() throws Exception
    {
       assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.xls")
-   public void shouldSkipEmptyXlsDataSet() throws Exception
+   public void should_skip_empty_xls_data_set() throws Exception
    {
       assertNoUserAccountsStored();
    }

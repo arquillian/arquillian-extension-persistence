@@ -16,26 +16,40 @@
  */
 package org.jboss.arquillian.persistence.metadata;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.arquillian.persistence.UsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.data.naming.CustomScriptFileNamingStrategy;
+import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
 
 /**
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class SqlScriptProvider extends ResourceProvider<SqlScriptResourceDescriptor>
+public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<SqlScriptResourceDescriptor>
 {
 
-   public SqlScriptProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   private final PrefixedScriptFileNamingStrategy strategy ;
+
+   private final Class<T> annotation;
+
+   private final ValueExtractor<T> extractor;
+
+   SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, PrefixedScriptFileNamingStrategy scriptFileNamingStrategy, PersistenceConfiguration configuration)
    {
-      super(UsingScript.class, configuration, metadataExtractor);
+      super(annotation, configuration, metadataExtractor);
+      this.strategy = scriptFileNamingStrategy;
+      this.annotation = annotation;
+      this.extractor = extractor;
+   }
+
+   public static <K extends Annotation> SqlScriptProviderBuilder<K> forAnnotation(Class<K> annotation)
+   {
+      return SqlScriptProviderBuilder.<K>create(annotation);
    }
 
    @Override
@@ -53,15 +67,15 @@ public class SqlScriptProvider extends ResourceProvider<SqlScriptResourceDescrip
    @Override
    protected String defaultFileName()
    {
-      String defaultFileName = new CustomScriptFileNamingStrategy("sql").createFileName(metadataExtractor.getJavaClass());
+      String defaultFileName = strategy.createFileName(metadataExtractor.getJavaClass());
       return defaultFileName;
    }
 
    @Override
    List<String> getResourceFileNames(Method testMethod)
    {
-      UsingScript dataAnnotation = getResourceAnnotation(testMethod);
-      String[] specifiedFileNames = dataAnnotation.value();
+      T annotation = getResourceAnnotation(testMethod);
+      String[] specifiedFileNames = extractor.extract(annotation);
       if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
          return Arrays.asList(getDefaultFileName(testMethod));
@@ -69,20 +83,22 @@ public class SqlScriptProvider extends ResourceProvider<SqlScriptResourceDescrip
       return Arrays.asList(specifiedFileNames);
    }
 
-   private UsingScript getResourceAnnotation(Method testMethod)
+   // Fluent builder
+
+   private T getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.usingScript().fetchUsingFirst(testMethod);
+      return metadataExtractor.using(annotation).fetchUsingFirst(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)
    {
 
-      if (metadataExtractor.usingScript().isDefinedOn(testMethod))
+      if (metadataExtractor.using(annotation).isDefinedOn(testMethod))
       {
-         return new CustomScriptFileNamingStrategy("sql").createFileName(metadataExtractor.getJavaClass(), testMethod);
+         return strategy.createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
 
-      return new CustomScriptFileNamingStrategy("sql").createFileName(metadataExtractor.getJavaClass());
+      return strategy.createFileName(metadataExtractor.getJavaClass());
    }
 
 }
