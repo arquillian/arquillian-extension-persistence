@@ -17,12 +17,10 @@
  */
 package org.jboss.arquillian.persistence.util;
 
-import org.jboss.arquillian.persistence.test.usecase.UserAccount;
-
 public class Query
 {
 
-   public static String selectAllInJPQL(final Class<UserAccount> c)
+   public static String selectAllInJPQL(final Class<?> c)
    {
       return "SELECT entity FROM " + c.getSimpleName() + " entity";
    }

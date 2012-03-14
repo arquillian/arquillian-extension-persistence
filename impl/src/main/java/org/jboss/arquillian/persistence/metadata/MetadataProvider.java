@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.metadata;
 import java.lang.reflect.Method;
 
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
@@ -119,6 +120,16 @@ public class MetadataProvider
       }
 
       return phase;
+   }
+
+   public CleanupStrategy getCleanupStragety()
+   {
+      final Cleanup cleanup = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
+      if (cleanup == null)
+      {
+         return CleanupStrategy.getDefault();
+      }
+      return cleanup.strategy();
    }
 
    public boolean shouldCleanup()

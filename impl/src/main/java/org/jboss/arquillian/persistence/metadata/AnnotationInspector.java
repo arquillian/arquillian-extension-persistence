@@ -29,7 +29,7 @@ import org.jboss.arquillian.test.spi.TestClass;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-class AnnotationInspector<T extends Annotation>
+public class AnnotationInspector<T extends Annotation>
 {
 
    private final Map<Method, T> annotatedMethods;

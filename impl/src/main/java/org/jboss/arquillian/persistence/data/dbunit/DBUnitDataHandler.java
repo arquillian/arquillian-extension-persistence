@@ -20,16 +20,17 @@ package org.jboss.arquillian.persistence.data.dbunit;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.SortedTable;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.data.DataHandler;
+import org.jboss.arquillian.persistence.data.dbunit.cleanup.CleanupStrategyExecutor;
+import org.jboss.arquillian.persistence.data.dbunit.cleanup.CleanupStrategyProvider;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
@@ -102,24 +103,7 @@ public class DBUnitDataHandler implements DataHandler
       {
          IDataSet currentDataSet = databaseConnection.get().createDataSet();
          IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
-         String[] tableNames = expectedDataSet.getTableNames();
-         for (String tableName : tableNames)
-         {
-            SortedTable expectedTableState = new SortedTable(expectedDataSet.getTable(tableName));
-            SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName),
-                  expectedTableState.getTableMetaData());
-            String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState,
-                  currentTableState);
-            try
-            {
-               Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
-            }
-            catch (AssertionError error)
-            {
-               assertionErrorCollector.get().collect(error);
-            }
-
-         }
+         new DataSetComparator().compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
       }
       catch (Exception e)
       {
@@ -130,14 +114,7 @@ public class DBUnitDataHandler implements DataHandler
    @Override
    public void cleanup(@Observes CleanupData cleanupDataEvent)
    {
-      try
-      {
-         cleanDatabase();
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
-      }
+      cleanDatabase(cleanupDataEvent.cleanupStrategy);
    }
 
    @Override
@@ -195,14 +172,13 @@ public class DBUnitDataHandler implements DataHandler
    {
       final DatabaseConnection connection = databaseConnection.get();
       IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
-      new TransactionOperation(DatabaseOperation.CLEAN_INSERT).execute(connection, initialDataSet);
+      new TransactionOperation(DatabaseOperation.INSERT).execute(connection, initialDataSet);
    }
 
-   private void cleanDatabase() throws Exception
+   private void cleanDatabase(CleanupStrategy cleanupStrategy)
    {
-      DatabaseConnection connection = databaseConnection.get();
-      IDataSet dataSet = connection.createDataSet();
-      new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
+      final CleanupStrategyExecutor cleanupStrategyExecutor = new CleanupStrategyProvider(databaseConnection.get(), dataSetRegister.get()).create(cleanupStrategy);
+      cleanupStrategyExecutor.cleanupDatabase();
    }
 
 }

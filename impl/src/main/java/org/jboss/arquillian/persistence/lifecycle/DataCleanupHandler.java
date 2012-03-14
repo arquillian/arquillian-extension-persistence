@@ -57,7 +57,7 @@ public class DataCleanupHandler
 
       if (metadataProvider.shouldCleanupBefore())
       {
-         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest));
+         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest, metadataProvider.getCleanupStragety()));
       }
 
       if (metadataProvider.shouldCleanupUsingScriptBefore())
@@ -73,7 +73,7 @@ public class DataCleanupHandler
 
       if (metadataProvider.shouldCleanupAfter())
       {
-         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest));
+         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest, metadataProvider.getCleanupStragety()));
       }
 
       if (metadataProvider.shouldCleanupUsingScriptAfter())

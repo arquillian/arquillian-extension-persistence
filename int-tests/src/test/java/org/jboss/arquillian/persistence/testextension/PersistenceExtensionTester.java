@@ -17,8 +17,10 @@
  */
 package org.jboss.arquillian.persistence.testextension;
 
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.persistence.testextension.deployment.PersistenceTestExtensionDynamicDependencyAppender;
 
 public class PersistenceExtensionTester implements LoadableExtension
 {
@@ -26,7 +28,8 @@ public class PersistenceExtensionTester implements LoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class);
+      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class)
+             .service(ApplicationArchiveProcessor.class, PersistenceTestExtensionDynamicDependencyAppender.class);
    }
 
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.metadata;
+package org.jboss.arquillian.persistence.testextension.data;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,24 +22,31 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
-import org.jboss.arquillian.persistence.data.naming.DataSetFileNamingStrategy;
+import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
+import org.jboss.arquillian.persistence.metadata.AnnotationInspector;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.metadata.ResourceProvider;
+import org.jboss.arquillian.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
+import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
+public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
 {
 
-   public DataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   private final AnnotationInspector<DatabaseShouldContainAfterTest> annotationInspector;
+
+   public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
    {
-      super(UsingDataSet.class, configuration, metadataExtractor);
+      super(DatabaseShouldContainAfterTest.class, configuration, metadataExtractor);
+      this.annotationInspector = new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
    }
 
    @Override
@@ -58,14 +65,14 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
    protected String defaultFileName()
    {
       Format format = configuration.getDefaultDataSetFormat();
-      String defaultFileName = new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+      String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
       return defaultFileName;
    }
 
    @Override
    public Collection<String> getResourceFileNames(Method testMethod)
    {
-      UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
+      DatabaseShouldContainAfterTest dataAnnotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();
       if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
       {
@@ -86,7 +93,7 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
       return format;
    }
 
-   Collection<Format> getDataFormats(Method testMethod)
+   List<Format> getDataFormats(Method testMethod)
    {
       final List<Format> formats = new ArrayList<Format>();
       for (String dataFileName : getResourceFileNames(testMethod))
@@ -96,21 +103,21 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
       return formats;
    }
 
-   private UsingDataSet getResourceAnnotation(Method testMethod)
+   private DatabaseShouldContainAfterTest getResourceAnnotation(Method testMethod)
    {
-      return metadataExtractor.usingDataSet().fetchUsingFirst(testMethod);
+      return annotationInspector.fetchUsingFirst(testMethod);
    }
 
    private String getDefaultFileName(Method testMethod)
    {
       Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.usingDataSet().isDefinedOn(testMethod))
+      if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod))
       {
-         return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
       }
 
-      return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+      return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
 
 }

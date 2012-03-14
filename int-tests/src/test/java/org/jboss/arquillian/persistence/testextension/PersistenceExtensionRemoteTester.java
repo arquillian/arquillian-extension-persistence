@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.testextension;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.persistence.testextension.data.DataContentVerifier;
 import org.jboss.arquillian.persistence.testextension.event.EventObserver;
 
 public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
@@ -26,7 +27,8 @@ public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.observer(EventObserver.class);
+      builder.observer(EventObserver.class)
+             .observer(DataContentVerifier.class);
    }
 
 }

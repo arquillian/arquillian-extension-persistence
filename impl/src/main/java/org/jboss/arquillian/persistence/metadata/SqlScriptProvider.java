@@ -72,7 +72,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    }
 
    @Override
-   Collection<String> getResourceFileNames(Method testMethod)
+   public Collection<String> getResourceFileNames(Method testMethod)
    {
       T annotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = extractor.extract(annotation);

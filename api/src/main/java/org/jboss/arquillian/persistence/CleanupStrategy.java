@@ -15,23 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testextension.event.annotation;
+package org.jboss.arquillian.persistence;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-
-@Target(METHOD)
-@Retention(RUNTIME)
-@Inherited
-public @interface ExecuteScriptsShouldBeTriggered
+/**
+ * Defines strategy to be applied for {@link @Cleanup} operation.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public enum CleanupStrategy
 {
+   /**
+    * Cleans entire database.
+    * Might require turning off database constraints (e.g. referential integrity).
+    */
+   STRICT,
+   /**
+    * Deletes only those entries which were defined in data sets.
+    */
+   USED_ROWS_ONLY,
+   /**
+    * Deletes only those tables which were used in data sets.
+    */
+   USED_TABLES_ONLY;
 
-   TestExecutionPhase value();
+   public static CleanupStrategy getDefault()
+   {
+      return STRICT;
+   }
+
 
 }

@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.metadata;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
@@ -82,7 +83,7 @@ public class MetadataProviderCleanupSettingsTest
    {
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassModeOnly"));
+            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
       MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
@@ -152,6 +153,36 @@ public class MetadataProviderCleanupSettingsTest
       assertThat(shouldCleanupUsingScriptAfter).isTrue();
    }
 
+   @Test
+   public void should_have_strict_cleanup_strategy_as_default() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
+            MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      CleanupStrategy cleanupStragety = metadataProvider.getCleanupStragety();
+
+      // then
+      assertThat(cleanupStragety).isEqualTo(CleanupStrategy.STRICT);
+   }
+
+   @Test
+   public void should_fetch_cleanup_strategy_from_test() throws Exception
+   {
+      // given
+      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
+            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
+      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+
+      // when
+      CleanupStrategy cleanupStragety = metadataProvider.getCleanupStragety();
+
+      // then
+      assertThat(cleanupStragety).isEqualTo(CleanupStrategy.USED_ROWS_ONLY);
+   }
+
    // ----------------------------------------------------------------------------------------
    // Classes used for tests
 
@@ -182,12 +213,15 @@ public class MetadataProviderCleanupSettingsTest
       public void shouldPassCleanupAndAfterPhaseDefined()
       {}
 
-      @Cleanup
-      public void shouldPassModeOnly()
+      @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+      public void shouldPassStrategyOnly()
       {}
 
       @Cleanup(phase = TestExecutionPhase.NONE)
       public void shouldPassPhaseOnly()
+      {}
+
+      public void shouldPassUsingDefaults()
       {}
 
    }

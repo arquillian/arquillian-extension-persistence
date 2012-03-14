@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testextension.event.annotation;
+package org.jboss.arquillian.persistence.testextension.data.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -24,14 +24,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-
 @Target(METHOD)
 @Retention(RUNTIME)
 @Inherited
-public @interface ExecuteScriptsShouldBeTriggered
+public @interface DatabaseShouldContainAfterTest
 {
-
-   TestExecutionPhase value();
-
+   String[] value();
 }

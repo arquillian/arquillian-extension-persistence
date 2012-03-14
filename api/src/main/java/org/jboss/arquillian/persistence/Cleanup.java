@@ -27,14 +27,14 @@ import java.lang.annotation.Target;
 
 /**
  * Determines when database cleanup should be triggered. Default test phase when
- * cleanup is invoked is {@link TestExecutionPhase#BEFORE}.
+ * is {@link TestExecutionPhase#BEFORE}.
  *
  * If not specified otherwise the whole database is erased.
- * You can change this behaviour by setting up {@link #mode()} field.
+ * You can change this behaviour by setting up {@link #strategy()} field.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
- * @see {@link TestExecutionPhase}, {@link CleanupMode}
+ * @see {@link TestExecutionPhase}, {@link CleanupStrategy}
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
@@ -44,4 +44,5 @@ public @interface Cleanup
 
    TestExecutionPhase phase() default TestExecutionPhase.BEFORE;
 
+   CleanupStrategy strategy() default CleanupStrategy.STRICT;
 }

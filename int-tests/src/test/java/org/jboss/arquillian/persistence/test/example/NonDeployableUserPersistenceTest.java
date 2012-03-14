@@ -24,14 +24,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.test.usecase.Address;
 import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.arquillian.persistence.util.Query;

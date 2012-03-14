@@ -63,7 +63,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
    }
 
    @Override
-   Collection<String> getResourceFileNames(Method testMethod)
+   public Collection<String> getResourceFileNames(Method testMethod)
    {
       ShouldMatchDataSet dataAnnotation = getResourceAnnotation(testMethod);
       String[] specifiedFileNames = dataAnnotation.value();

@@ -92,7 +92,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       return descriptors;
    }
 
-   abstract Collection<String> getResourceFileNames(Method testMethod);
+   public abstract Collection<String> getResourceFileNames(Method testMethod);
 
    protected abstract T createDescriptor(String dataFileName);
 
