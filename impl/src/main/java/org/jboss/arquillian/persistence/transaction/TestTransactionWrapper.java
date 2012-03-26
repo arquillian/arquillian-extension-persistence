@@ -30,16 +30,21 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.EndTransaction;
 import org.jboss.arquillian.persistence.event.StartTransaction;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
 
-public class TransactionalWrapper
+/**
+ * 
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class TestTransactionWrapper
 {
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
 
    @Inject
-   private Instance<MetadataProvider> metadataProvider;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
 
    @Inject
    private Instance<Context> contextInstance;
@@ -51,7 +56,7 @@ public class TransactionalWrapper
 
    public void afterTest(@Observes EndTransaction endTransaction) throws Exception
    {
-      final TransactionMode mode = metadataProvider.get().getTransactionalMode();
+      final TransactionMode mode = persistenceExtensionFeatureResolver.get().getTransactionalMode();
       final UserTransaction transaction = obtainTransaction();
 
       if (TransactionMode.COMMIT.equals(mode))

@@ -26,10 +26,10 @@ import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.PrepareData;
-import org.jboss.arquillian.persistence.metadata.DataSetProvider;
-import org.jboss.arquillian.persistence.metadata.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.metadata.provider.DataSetProvider;
+import org.jboss.arquillian.persistence.metadata.provider.ExpectedDataSetProvider;
 
 public class DataSetHandler
 {
@@ -38,7 +38,7 @@ public class DataSetHandler
    private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
-   private Instance<MetadataProvider> metadataProviderInstance;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
@@ -51,9 +51,9 @@ public class DataSetHandler
 
    public void prepareDatabase(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest)
    {
-      MetadataProvider metadataProvider = metadataProviderInstance.get();
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (metadataProvider.isDataSeedOperationRequested())
+      if (persistenceExtensionFeatureResolver.shouldSeedData())
       {
          DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
          prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
@@ -64,9 +64,9 @@ public class DataSetHandler
    public void verifyDatabase(@Observes(precedence = 30) AfterPersistenceTest afterPersistenceTest)
    {
 
-      MetadataProvider metadataProvider = metadataProviderInstance.get();
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (metadataProvider.isDataVerificationRequested())
+      if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest())
       {
          ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor.get(), configuration.get());
          compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));

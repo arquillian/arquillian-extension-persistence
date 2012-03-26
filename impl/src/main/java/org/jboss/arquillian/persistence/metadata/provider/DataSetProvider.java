@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.metadata;
+package org.jboss.arquillian.persistence.metadata.provider;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescripto
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.data.naming.DataSetFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 
 /**
  *

@@ -28,6 +28,11 @@ import org.jboss.arquillian.persistence.event.ApplyCleanupStatement;
 import org.jboss.arquillian.persistence.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class CustomScriptsExecutor
 {
 

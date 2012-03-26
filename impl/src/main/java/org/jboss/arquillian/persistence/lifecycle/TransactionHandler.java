@@ -25,13 +25,13 @@ import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.EndTransaction;
 import org.jboss.arquillian.persistence.event.StartTransaction;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
 
 public class TransactionHandler
 {
 
    @Inject
-   private Instance<MetadataProvider> metadataProvider;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
 
    @Inject
    private Event<StartTransaction> startTransactionEvent;
@@ -41,7 +41,7 @@ public class TransactionHandler
 
    public void startTransactionBeforeTest(@Observes(precedence = 10) BeforePersistenceTest beforePersistenceTest)
    {
-      if (metadataProvider.get().isTransactional())
+      if (persistenceExtensionFeatureResolver.get().shouldEnableTransaction())
       {
          startTransactionEvent.fire(new StartTransaction(beforePersistenceTest));
       }
@@ -49,7 +49,7 @@ public class TransactionHandler
 
    public void endTransactionAfterTest(@Observes(precedence = 50) AfterPersistenceTest afterPersistenceTest)
    {
-      if (metadataProvider.get().isTransactional())
+      if (persistenceExtensionFeatureResolver.get().shouldEnableTransaction())
       {
          endTransactionEvent.fire(new EndTransaction(afterPersistenceTest));
       }

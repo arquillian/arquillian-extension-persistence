@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -16,22 +17,15 @@
   <name>Arquillian Persistence Extension Implementation</name>
   <description>Extension for controlling data sources</description>
 
-  <developers>
-    <developer>
-      <name>Bartosz Majsak</name>
-      <email>bartosz.majsak@gmail.com</email>
-    </developer>
-  </developers>
-
   <properties>
+    <version.snakeyaml>1.9</version.snakeyaml>
     <version.jackson>1.9.2</version.jackson>
     <version.poi>3.2-FINAL</version.poi>
     <version.dbunit>2.4.8</version.dbunit>
     <version.cdi>1.0-SP1</version.cdi>
-    <version.fest.assert>1.4</version.fest.assert>
     <version.jta>1.1</version.jta>
-    <version.snakeyaml>1.9</version.snakeyaml>
     <version.slf4j-jdk14>1.5.6</version.slf4j-jdk14>
+    <version.junit_params>0.4.0</version.junit_params>
   </properties>
 
   <dependencies>
@@ -156,9 +150,15 @@
     </dependency>
 
     <dependency>
+      <groupId>pl.pragmatists</groupId>
+      <artifactId>JUnitParams</artifactId>
+      <version>${version.junit_params}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-assert</artifactId>
-      <version>${version.fest.assert}</version>
       <scope>test</scope>
     </dependency>
 

@@ -58,10 +58,9 @@ public class ConfigurationExporterToPropertyFilesTest
       persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
       persistenceConfiguration.setDefaultDataSetLocation("ds");
 
-      ConfigurationExporter exporter = new ConfigurationExporter(persistenceConfiguration);
-
       // when
-      exporter.toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
+      Configuration.exportUsing(persistenceConfiguration)
+                   .toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
 
       // then
       assertThat(createdProperties()).isEqualTo(expectedProperties);
@@ -73,10 +72,10 @@ public class ConfigurationExporterToPropertyFilesTest
       // given
       Properties expectedProperties = expectedProperties("properties/custom.arquillian.persistence.properties");
       PersistenceConfiguration persistenceConfiguration = TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian.xml");
-      ConfigurationExporter exporter = new ConfigurationExporter(persistenceConfiguration);
 
       // when
-      exporter.toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
+      Configuration.exportUsing(persistenceConfiguration)
+                   .toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
 
       // then
       assertThat(createdProperties()).isEqualTo(expectedProperties);

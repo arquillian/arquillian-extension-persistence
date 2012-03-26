@@ -39,10 +39,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
             DefaultCleanupSettings.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TestExecutionPhase phase = metadataProvider.getCleanupTestPhase();
+      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
       assertThat(phase).isEqualTo(TestExecutionPhase.BEFORE);
@@ -54,10 +54,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new ClassLevelCleanupAfterSettings(),
             ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TestExecutionPhase phase = metadataProvider.getCleanupTestPhase();
+      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
       assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
@@ -69,10 +69,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TestExecutionPhase phase = metadataProvider.getCleanupTestPhase();
+      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
       assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
@@ -84,10 +84,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TestExecutionPhase phase = metadataProvider.getCleanupTestPhase();
+      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
       assertThat(phase).isEqualTo(TestExecutionPhase.getDefault());
@@ -99,10 +99,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassPhaseOnly"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TestExecutionPhase phase = metadataProvider.getCleanupTestPhase();
+      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
       assertThat(phase).isEqualTo(TestExecutionPhase.NONE);
@@ -114,10 +114,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
             DefaultCleanupSettings.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean shouldCleanupBefore = metadataProvider.shouldCleanupBefore();
+      boolean shouldCleanupBefore = persistenceExtensionFeatureResolver.shouldCleanupBefore();
 
       // then
       assertThat(shouldCleanupBefore).isTrue();
@@ -129,10 +129,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean shouldCleanupAfter = metadataProvider.shouldCleanupAfter();
+      boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
 
       // then
       assertThat(shouldCleanupAfter).isTrue();
@@ -144,10 +144,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
             CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean shouldCleanupUsingScriptAfter = metadataProvider.shouldCleanupUsingScriptAfter();
+      boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();
 
       // then
       assertThat(shouldCleanupUsingScriptAfter).isTrue();
@@ -159,10 +159,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      CleanupStrategy cleanupStragety = metadataProvider.getCleanupStragety();
+      CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStragety();
 
       // then
       assertThat(cleanupStragety).isEqualTo(CleanupStrategy.STRICT);
@@ -174,10 +174,10 @@ public class MetadataProviderCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
             MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      CleanupStrategy cleanupStragety = metadataProvider.getCleanupStragety();
+      CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStragety();
 
       // then
       assertThat(cleanupStragety).isEqualTo(CleanupStrategy.USED_ROWS_ONLY);

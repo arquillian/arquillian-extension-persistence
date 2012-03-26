@@ -32,7 +32,7 @@ import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
@@ -40,17 +40,24 @@ import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
-public class PersistenceTestHandler
+/**
+ * Determines if persistence extension should be triggered for the given
+ * test class.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class PersistenceTestTrigger
 {
 
    @Inject @ClassScoped
-   private InstanceProducer<MetadataExtractor> metadataExtractor;
+   private InstanceProducer<MetadataExtractor> metadataExtractorProducer;
 
    @Inject @ClassScoped
    private InstanceProducer<PersistenceExtensionEnabler> persistenceExtensionEnabler;
 
    @Inject @TestScoped
-   private InstanceProducer<MetadataProvider> metadataProvider;
+   private InstanceProducer<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverProvider;
 
    @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
@@ -59,7 +66,7 @@ public class PersistenceTestHandler
    private Instance<Context> contextInstance;
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<PersistenceConfiguration> configurationInstance;
 
    @Inject
    private Event<BeforePersistenceTest> beforePersistenceTestEvent;
@@ -69,14 +76,14 @@ public class PersistenceTestHandler
 
    public void beforeSuite(@Observes BeforeClass beforeClass)
    {
-      metadataExtractor.set(new MetadataExtractor(beforeClass.getTestClass()));
-      persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractor.get()));
+      metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
+      persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
    }
 
    public void beforeTest(@Observes Before beforeTestEvent)
    {
-      PersistenceConfiguration persistenceConfiguration = configuration.get();
-      metadataProvider.set(new MetadataProvider(beforeTestEvent.getTestMethod(), metadataExtractor.get(), persistenceConfiguration));
+      PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
+      persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
 
       if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
       {
@@ -98,7 +105,7 @@ public class PersistenceTestHandler
 
    private void createDataSource()
    {
-      String dataSourceName = metadataProvider.get().getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolverProvider.get().getDataSourceName();
       dataSourceProducer.set(loadDataSource(dataSourceName));
    }
 

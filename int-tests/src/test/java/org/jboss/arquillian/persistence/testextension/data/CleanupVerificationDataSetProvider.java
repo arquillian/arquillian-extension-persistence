@@ -29,7 +29,7 @@ import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStr
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.persistence.metadata.AnnotationInspector;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.ResourceProvider;
+import org.jboss.arquillian.persistence.metadata.provider.ResourceProvider;
 import org.jboss.arquillian.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.test.spi.TestClass;
 

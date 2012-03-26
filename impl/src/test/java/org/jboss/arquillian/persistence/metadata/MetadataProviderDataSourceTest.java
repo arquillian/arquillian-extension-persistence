@@ -43,10 +43,10 @@ public class MetadataProviderDataSourceTest
       // given
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
 
       // when
-      String dataSourceName = metadataProvider.getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
       // then
       // exception should be thrown
@@ -59,10 +59,10 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
       TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
             DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      String dataSourceName = metadataProvider.getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
       // then
       assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
@@ -75,10 +75,10 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
       TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
             DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      String dataSourceName = metadataProvider.getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
       // then
       assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
@@ -91,10 +91,10 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = "Ike";
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      String dataSourceName = metadataProvider.getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
       // then
       assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
@@ -107,10 +107,10 @@ public class MetadataProviderDataSourceTest
       String expectedDataSourceName = "Ike";
       TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
 
       // when
-      String dataSourceName = metadataProvider.getDataSourceName();
+      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
       // then
       // exception should be thrown

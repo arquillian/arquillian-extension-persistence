@@ -15,40 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.client;
+package org.jboss.arquillian.persistence.configuration;
 
-import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.configuration.ConfigurationProducer;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
-/**
- *
- * Triggers configuration creation on the client side.
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- */
-public class PersistenceConfigurationProducer extends ConfigurationProducer<PersistenceConfiguration>
+public abstract class ConfigurationProducer<T extends Configuration>
 {
 
    @Inject @ApplicationScoped
-   InstanceProducer<PersistenceConfiguration> configurationProducer;
+   protected Instance<ArquillianDescriptor> descriptor;
 
-   @Override
-   protected PersistenceConfiguration create()
+   public abstract void observe(BeforeSuite beforeSuiteEvent);
+
+   protected abstract T create();
+
+   public T configureFromArquillianDescriptor()
    {
-      return new PersistenceConfiguration();
+      final T configuration = create();
+      Configuration.importTo(configuration).loadFrom(descriptor.get());
+      return configuration;
    }
 
-   @Override
-   public void observe(@Observes BeforeSuite beforeSuiteEvent)
-   {
-      final PersistenceConfiguration persistenceConfiguration = configureFromArquillianDescriptor();
-      configurationProducer.set(persistenceConfiguration);
-   }
 
 }

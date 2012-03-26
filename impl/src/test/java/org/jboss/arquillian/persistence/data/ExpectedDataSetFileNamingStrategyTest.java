@@ -39,4 +39,17 @@ public class ExpectedDataSetFileNamingStrategyTest
       assertThat(fileName).isEqualTo("expected-org.jboss.arquillian.persistence.data.DummyClass#shouldPass.xml");
    }
 
+   @Test
+   public void should_produce_proper_file_extension_based_on_format() throws Exception
+   {
+      // given
+      ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
+
+      // when
+      String fileExtension = defaultFileNamingStrategy.getFileExtension();
+
+      // then
+      assertThat(fileExtension).isEqualTo("xml");
+   }
+
 }

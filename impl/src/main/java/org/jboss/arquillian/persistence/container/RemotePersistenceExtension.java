@@ -18,18 +18,18 @@
 package org.jboss.arquillian.persistence.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.persistence.configuration.RemotePersistenceConfigurationProducer;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.DBUnitPersistenceTestLifecycleHandler;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.RemoteDBUnitConfigurationProducer;
 import org.jboss.arquillian.persistence.lifecycle.CustomScriptsExecutor;
 import org.jboss.arquillian.persistence.lifecycle.DataCleanupHandler;
 import org.jboss.arquillian.persistence.lifecycle.DataScriptsHandler;
 import org.jboss.arquillian.persistence.lifecycle.DataSetHandler;
 import org.jboss.arquillian.persistence.lifecycle.ErrorCollectorHandler;
-import org.jboss.arquillian.persistence.lifecycle.PersistenceTestHandler;
+import org.jboss.arquillian.persistence.lifecycle.PersistenceTestTrigger;
 import org.jboss.arquillian.persistence.lifecycle.TransactionHandler;
-import org.jboss.arquillian.persistence.transaction.TransactionalWrapper;
+import org.jboss.arquillian.persistence.transaction.TestTransactionWrapper;
 
 /**
  * Defines all the bindings for Arquillian extension run in the
@@ -49,7 +49,7 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
 
       builder.observer(RemotePersistenceConfigurationProducer.class)
              .observer(CommandServiceProducer.class)
-             .observer(TransactionalWrapper.class);
+             .observer(TestTransactionWrapper.class);
 
 
    }
@@ -57,13 +57,14 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    private void registerDBUnitHandlers(ExtensionBuilder builder)
    {
       builder.observer(DBUnitDataHandler.class)
+             .observer(RemoteDBUnitConfigurationProducer.class)
              .observer(DBUnitPersistenceTestLifecycleHandler.class)
              .observer(DBUnitDataStateLogger.class);
    }
 
    private void registerTestLifecycleHandlers(ExtensionBuilder builder)
    {
-      builder.observer(PersistenceTestHandler.class)
+      builder.observer(PersistenceTestTrigger.class)
              .observer(ErrorCollectorHandler.class)     // Order of execution Before / after test
              .observer(CustomScriptsExecutor.class)     // 50 / 10
              .observer(DataCleanupHandler.class)        // 40 / 20

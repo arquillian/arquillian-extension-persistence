@@ -34,9 +34,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String expectedDataSource = "Ike";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -48,9 +49,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
@@ -62,9 +64,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       Format expectedFormat = Format.EXCEL;
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
@@ -76,9 +79,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       Format expectedFormat = Format.XML;
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
@@ -90,9 +94,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       TransactionMode expectedMode = TransactionMode.ROLLBACK;
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -104,9 +109,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       TransactionMode expectedMode = TransactionMode.COMMIT;
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -117,9 +123,10 @@ public class ConfigurationImporterFromXmlTest
    {
       // given
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
@@ -130,9 +137,10 @@ public class ConfigurationImporterFromXmlTest
    {
       // given
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isFalse();
@@ -143,9 +151,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String systemTmpDir = System.getProperty("java.io.tmpdir");
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
@@ -157,9 +166,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String dumpDirectory = "/home/ike/dump";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
@@ -171,9 +181,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String expectedUserTransactionJndi = "java:jboss/UserTransaction";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
@@ -185,9 +196,10 @@ public class ConfigurationImporterFromXmlTest
       // given
       String expectedUserTransactionJndi = "java:comp/UserTransaction";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(descriptor);
+      Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
       assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);

@@ -20,8 +20,12 @@ package org.jboss.arquillian.persistence.deployment;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
@@ -29,7 +33,9 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.client.PersistenceExtension;
 import org.jboss.arquillian.persistence.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.configuration.PropertiesSerializer;
 import org.jboss.arquillian.persistence.container.RemotePersistenceExtension;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -47,23 +53,27 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
-   private static final String ARQ_PROPERTIES = "arquillian.properties";
+   @Inject
+   Instance<PersistenceConfiguration> persistenceConfiguration;
 
    @Inject
-   Instance<PersistenceConfiguration> configuration;
+   Instance<ArquillianDescriptor> arquillianDescriptor;
 
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
 
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
-                       .addPackages(true,
-                             // exclude client package
-                             Filters.exclude(PersistenceExtension.class.getPackage()),
-                             "org.jboss.arquillian.persistence")
-                       .addPackages(true, requiredLibraries())
-                       .addAsResource(new ByteArrayAsset(exportConfigurationAsProperties().toByteArray()), ARQ_PROPERTIES)
-                       .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
+      final JavaArchive persistenceExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence.jar")
+                                                                .addPackages(true,
+                                                                      // exclude client package
+                                                                      Filters.exclude(PersistenceExtension.class.getPackage()),
+                                                                      "org.jboss.arquillian.persistence")
+                                                                .addPackages(true, requiredLibraries())
+                                                                .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
+
+      addPersistenceConfigurationSerializedAsProperties(persistenceExtensionArchive);
+      addDBUnitConfigurationSerializedAsProperties(persistenceExtensionArchive);
+      return persistenceExtensionArchive;
    }
 
    // Private helper methods
@@ -79,7 +89,7 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
             "org.codehaus.jackson"
       ));
 
-      if (!configuration.get().isExcludePoi())
+      if (!persistenceConfiguration.get().isExcludePoi())
       {
          libraries.add("org.apache.poi");
       }
@@ -87,12 +97,42 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
       return libraries.toArray(new String[libraries.size()]);
    }
 
-   private ByteArrayOutputStream exportConfigurationAsProperties()
+
+   private void addPersistenceConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
+   {
+      archiveToExtend.addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), persistenceConfiguration.get().getPrefix() + "properties");
+   }
+
+   private ByteArrayOutputStream exportPersistenceConfigurationAsProperties()
    {
       final ByteArrayOutputStream output = new ByteArrayOutputStream();
-      final ConfigurationExporter exporter = new ConfigurationExporter(configuration.get());
+      final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(persistenceConfiguration.get());
       exporter.toProperties(output);
       return output;
    }
+
+   private void addDBUnitConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
+   {
+      final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
+      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptor.get(), dbUnitConfigurationPrototype.getQualifier());
+      final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+      archiveToExtend.addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
+   }
+
+   // TODO extract to dedicated class
+   private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier)
+   {
+      final Map<String, String> extensionProperties = new HashMap<String, String>();
+      for (ExtensionDef extension : descriptor.getExtensions())
+      {
+         if (extension.getExtensionName().equals(qualifier))
+         {
+            extensionProperties.putAll(extension.getExtensionProperties());
+            break;
+         }
+      }
+      return extensionProperties;
+   }
+
 
 }

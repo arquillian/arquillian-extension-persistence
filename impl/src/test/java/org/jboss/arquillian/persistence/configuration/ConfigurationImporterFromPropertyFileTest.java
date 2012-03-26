@@ -34,9 +34,10 @@ public class ConfigurationImporterFromPropertyFileTest
       // given
       String expectedDataSource = "Ike";
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -47,10 +48,10 @@ public class ConfigurationImporterFromPropertyFileTest
    {
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFromPropertyFile("properties/custom.arquillian.persistence.properties");
 
       // then
       assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
@@ -62,9 +63,10 @@ public class ConfigurationImporterFromPropertyFileTest
       // given
       Format expectedFormat = Format.EXCEL;
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
@@ -77,8 +79,10 @@ public class ConfigurationImporterFromPropertyFileTest
       TransactionMode expectedMode = TransactionMode.ROLLBACK;
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
 
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
+
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -89,9 +93,10 @@ public class ConfigurationImporterFromPropertyFileTest
    {
       // given
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
@@ -103,9 +108,10 @@ public class ConfigurationImporterFromPropertyFileTest
       // given
       String dumpDirectory = "/home/ike/dump";
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
@@ -117,9 +123,10 @@ public class ConfigurationImporterFromPropertyFileTest
       // given
       String expectedUserTransactionJndi = "java:jboss/UserTransaction";
       Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+      PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      PersistenceConfiguration configuration = new ConfigurationImporter().from(properties);
+      Configuration.importTo(configuration).loadFrom(properties);
 
       // then
       assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);

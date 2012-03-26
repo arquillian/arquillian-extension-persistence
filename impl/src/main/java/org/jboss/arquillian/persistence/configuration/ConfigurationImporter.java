@@ -17,7 +17,11 @@
  */
 package org.jboss.arquillian.persistence.configuration;
 
+import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,7 @@ import java.util.Properties;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.persistence.exception.PersistenceExtensionInitializationException;
+import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 /**
  *
@@ -38,27 +43,49 @@ import org.jboss.arquillian.persistence.exception.PersistenceExtensionInitializa
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class ConfigurationImporter
+public class ConfigurationImporter<T extends Configuration>
 {
 
-   private static final String PERSISTENCE_EXTENSION_QUALIFIER = "persistence";
+   private final T configuration;
 
-   private static final String PROPERTY_PREFIX = "arquillian.extension.persistence.";
-
-   public ConfigurationImporter()
+   public ConfigurationImporter(T configuration)
    {
+      this.configuration = configuration;
    }
 
-   public PersistenceConfiguration from(ArquillianDescriptor descriptor)
+   public void loadFromArquillianXml(String arquillianXmlFilename)
    {
-      final Map<String, String> extensionProperties = extractPropertiesFromDescriptor(PERSISTENCE_EXTENSION_QUALIFIER, descriptor);
-      return createPersistenceConfiguration(extensionProperties);
+      final InputStream arqXmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(arquillianXmlFilename);
+      final ArquillianDescriptor arquillianDescriptor = Descriptors.importAs(ArquillianDescriptor.class).from(arqXmlStream);
+      loadFrom(arquillianDescriptor);
    }
 
-   public PersistenceConfiguration from(Properties properties)
+   public void loadFrom(ArquillianDescriptor descriptor)
+   {
+      final Map<String, String> extensionProperties = extractPropertiesFromDescriptor(configuration.getQualifier(), descriptor);
+      createConfiguration(extensionProperties);
+   }
+
+   public void loadFromPropertyFile(String propertyFilename)
+   {
+      final Properties properties = new Properties();
+      try
+      {
+         properties.load(Thread.currentThread().getContextClassLoader()
+                               .getResourceAsStream(propertyFilename));
+      }
+      catch (IOException e)
+      {
+         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container.", e);
+      }
+
+      loadFrom(properties);
+   }
+
+   public void loadFrom(Properties properties)
    {
       Map<String, String> fieldsWithValues = convertKeys(properties);
-      return createPersistenceConfiguration(fieldsWithValues);
+      createConfiguration(fieldsWithValues);
    }
 
    private Map<String, String> convertKeys(Properties properties)
@@ -76,7 +103,7 @@ public class ConfigurationImporter
 
    private String convertFromPropertyKey(String key)
    {
-      key = key.replaceAll(PROPERTY_PREFIX, "");
+      key = key.replaceAll(configuration.getPrefix(), "");
       final StringBuilder sb = new StringBuilder();
       for (int i = 0; i < key.length(); i++)
       {
@@ -90,22 +117,27 @@ public class ConfigurationImporter
       return sb.toString();
    }
 
-   private PersistenceConfiguration createPersistenceConfiguration(final Map<String, String> fieldsWithValues)
+   private void createConfiguration(final Map<String, String> fieldsWithValues)
    {
-      PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
-      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-      List<Field> fields = SecurityActions.getAccessibleFields(PersistenceConfiguration.class);
+      final ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
+      final List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {
          final String fieldName = field.getName();
          if (fieldsWithValues.containsKey(fieldName))
          {
-            String value = fieldsWithValues.get(fieldName);
-            Class<?> fieldType = field.getType();
+            final String value = fieldsWithValues.get(fieldName);
+            final Class<?> fieldType = field.getType();
             try
             {
-               field.set(persistenceConfiguration, typeConverter.convert(value, typeConverter.box(fieldType)));
+               final Class<?> boxedFieldType = typeConverter.box(fieldType);
+               final Object convertedValue = typeConverter.convert(value, boxedFieldType);
+               if (convertedValue != null && boxedFieldType.isAssignableFrom(convertedValue.getClass()))
+               {
+                  final Method setter = new PropertyDescriptor(fieldName, configuration.getClass()).getWriteMethod();
+                  setter.invoke(configuration, convertedValue);
+               }
             }
             catch (Exception e)
             {
@@ -114,7 +146,6 @@ public class ConfigurationImporter
          }
       }
 
-      return persistenceConfiguration;
    }
 
    private Map<String, String> extractPropertiesFromDescriptor(String extenstionName, ArquillianDescriptor descriptor)

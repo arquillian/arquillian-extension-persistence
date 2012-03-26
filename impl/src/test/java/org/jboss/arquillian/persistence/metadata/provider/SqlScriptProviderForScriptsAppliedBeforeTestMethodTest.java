@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.metadata;
+package org.jboss.arquillian.persistence.metadata.provider;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -29,6 +29,9 @@ import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.metadata.ValueExtractor;
+import org.jboss.arquillian.persistence.metadata.provider.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

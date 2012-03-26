@@ -37,10 +37,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
             TransactionalSupportEnabledByDefault.class.getMethod("shouldPassWithTransactionalSupportEnabledByDefault"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean transactional = metadataProvider.isTransactional();
+      boolean transactional = persistenceExtensionFeatureResolver.shouldEnableTransaction();
 
       // then
       assertThat(transactional).isTrue();
@@ -52,10 +52,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportEnabledByDefault(),
             TransactionalSupportEnabledByDefault.class.getMethod("shouldPassWithDisabledTransaction"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean transactional = metadataProvider.isTransactional();
+      boolean transactional = persistenceExtensionFeatureResolver.shouldEnableTransaction();
 
       // then
       assertThat(transactional).isFalse();
@@ -67,10 +67,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalSupportDisabledOnClassLevel(),
             TransactionalSupportDisabledOnClassLevel.class.getMethod("shouldPassWithDisabledTransaction"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean transactional = metadataProvider.isTransactional();
+      boolean transactional = persistenceExtensionFeatureResolver.shouldEnableTransaction();
 
       // then
       assertThat(transactional).isFalse();
@@ -82,10 +82,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
             TransactionalAnnotatedClass.class.getMethod("shouldPassWithTransactionalRollbackDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean transactional = metadataProvider.isTransactional();
+      boolean transactional = persistenceExtensionFeatureResolver.shouldEnableTransaction();
 
       // then
       assertThat(transactional).isTrue();
@@ -97,10 +97,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
             TransactionalAnnotatedClass.class.getMethod("shouldPassWithTransactionalRollbackDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TransactionMode transactionalMode = metadataProvider.getTransactionalMode();
+      TransactionMode transactionalMode = persistenceExtensionFeatureResolver.getTransactionalMode();
 
       // then
       assertThat(transactionalMode).isEqualTo(TransactionMode.ROLLBACK);
@@ -112,10 +112,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
             TransactionalAnnotatedClass.class.getMethod("shouldPassWithoutTransactionalDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean transactional = metadataProvider.isTransactional();
+      boolean transactional = persistenceExtensionFeatureResolver.shouldEnableTransaction();
 
       // then
       assertThat(transactional).isTrue();
@@ -127,10 +127,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClass(),
             TransactionalAnnotatedClass.class.getMethod("shouldPassWithoutTransactionalDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TransactionMode transactionalMode = metadataProvider.getTransactionalMode();
+      TransactionMode transactionalMode = persistenceExtensionFeatureResolver.getTransactionalMode();
 
       // then
       assertThat(transactionalMode).isEqualTo(TransactionMode.ROLLBACK);
@@ -142,10 +142,10 @@ public class MetadataProviderTransactionalTest
       // given
       TestEvent testEvent = new TestEvent(new TransactionalAnnotatedClassWithDefaultOnMethodLevel(),
             TransactionalAnnotatedClassWithDefaultOnMethodLevel.class.getMethod("shouldPassWithTransactionalDefaultModeDefinedOnMethodLevel"));
-      MetadataProvider metadataProvider = new MetadataProvider(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      TransactionMode transactionalMode = metadataProvider.getTransactionalMode();
+      TransactionMode transactionalMode = persistenceExtensionFeatureResolver.getTransactionalMode();
 
       // then
       assertThat(transactionalMode).isEqualTo(TransactionMode.COMMIT);

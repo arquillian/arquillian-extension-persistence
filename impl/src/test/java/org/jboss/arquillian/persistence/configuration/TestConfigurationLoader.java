@@ -62,7 +62,9 @@ public class TestConfigurationLoader
    public static PersistenceConfiguration createPersistenceConfigurationFrom(String fileName)
    {
       ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
-      return new ConfigurationImporter().from(descriptor);
+      PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
+      Configuration.importTo(persistenceConfiguration).loadFrom(descriptor);
+      return persistenceConfiguration;
    }
 
 }

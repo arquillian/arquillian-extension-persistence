@@ -34,7 +34,7 @@ import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class MetadataProvider
+public class PersistenceExtensionFeatureResolver
 {
 
    private final PersistenceConfiguration configuration;
@@ -43,7 +43,7 @@ public class MetadataProvider
 
    private final Method testMethod;
 
-   public MetadataProvider(Method testMethod, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   public PersistenceExtensionFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
    {
       this.metadataExtractor = metadataExtractor;
       this.configuration = configuration;
@@ -54,31 +54,31 @@ public class MetadataProvider
    // Public API methods
    // ---------------------------------------------------------------------------------------------------
 
-   public boolean isDataSeedOperationRequested()
+   public boolean shouldSeedData()
    {
       return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
             || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
    }
 
-   public boolean isCustomScriptToBeAppliedBeforeTestRequested()
+   public boolean shouldCustomScriptBeAppliedBeforeTestRequested()
    {
       return  metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
             || metadataExtractor.applyScriptBefore().isDefinedOn(testMethod);
    }
 
-   public boolean isCustomScriptToBeAppliedAfterTestRequested()
+   public boolean shouldCustomScriptBeAppliedAfterTestRequested()
    {
       return  metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
             || metadataExtractor.applyScriptAfter().isDefinedOn(testMethod);
    }
 
-   public boolean isDataVerificationRequested()
+   public boolean shouldVerifyDataAfterTest()
    {
       return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
             || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
    }
 
-   public boolean isTransactional()
+   public boolean shouldEnableTransaction()
    {
       return !TransactionMode.DISABLED.equals(getTransactionalMode());
    }

@@ -24,4 +24,8 @@
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
   </extension>
 
+  <extension qualifier="persistence-dbunit">
+    <property name="datatypeFactory">org.dbunit.ext.h2.H2DataTypeFactory</property>
+  </extension>
+
 </arquillian>

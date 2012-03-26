@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://jboss.org/schema/arquillian"
+  xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+  <extension qualifier="persistence-dbunit">
+    <property name="batchedStatements">true</property>
+    <property name="caseSensitiveTableNames">true</property>
+    <property name="qualifiedTableNames">true</property>
+    <property name="datatypeWarning">false</property>
+    <property name="skipOracleRecycleBinTables">true</property>
+    <property name="escapePattern">\"</property>
+    <property name="tableType">TABLE, VIEW</property>
+    <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
+    <property name="statementFactory">org.dbunit.database.statement.StatementFactory</property>
+    <property name="resultSetTableFactory">org.dbunit.database.ForwardOnlyResultSetTableFactory</property>
+    <property name="primaryKeyFilter">org.dbunit.dataset.filter.DefaultColumnFilter</property>
+    <property name="identityColumnFilter">org.dbunit.dataset.filter.DefaultColumnFilter</property>
+    <property name="batchSize">200</property>
+    <property name="fetchSize">300</property>
+    <property name="metadataHandler">org.dbunit.ext.netezza.NetezzaMetadataHandler</property>
+  </extension>
+
+</arquillian>

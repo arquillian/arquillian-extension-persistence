@@ -19,23 +19,23 @@ package org.jboss.arquillian.persistence.configuration;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.jboss.arquillian.persistence.exception.ConfigurationExportException;
 
-public class ConfigurationExporter
+public class ConfigurationExporter<T extends Configuration>
 {
 
-   private static final String PROPERTY_PREFIX = "arquillian.extension.persistence.";
+   private final T configuration;
 
-   private final PersistenceConfiguration persistenceConfiguration;
+   private final PropertiesSerializer propertiesSerializer;
 
-   public ConfigurationExporter(PersistenceConfiguration persistenceConfiguration)
+   public ConfigurationExporter(T configuration)
    {
-      this.persistenceConfiguration = persistenceConfiguration;
+      this.configuration = configuration;
+      this.propertiesSerializer = new PropertiesSerializer(configuration.getPrefix());
    }
 
    public void toProperties(final OutputStream output)
@@ -62,40 +62,22 @@ public class ConfigurationExporter
             }
          }
       }
-
-
    }
 
    private void serializeFieldsToProperties(final OutputStream output)
          throws IOException, IllegalArgumentException, IllegalAccessException
    {
-      final Map<String, String> fieldsWithValues = extractFieldsWithValues();
-      for (Entry<String, String> entry : fieldsWithValues.entrySet())
-      {
-         output.write(serializeAsProperty(entry).getBytes());
-      }
+      output.write(propertiesSerializer.serializeToProperties(mapFieldsToProperties()).toByteArray());
    }
 
-   private String serializeAsProperty(Entry<String, String> entry)
-   {
-      String serializedAsProperty;
-      final StringBuilder sb = new StringBuilder();
-      sb.append(entry.getKey())
-        .append("=")
-        .append(entry.getValue())
-        .append('\n');
-      serializedAsProperty = sb.toString();
-      return serializedAsProperty;
-   }
-
-   private Map<String, String> extractFieldsWithValues() throws IllegalArgumentException, IllegalAccessException
+   private Map<String, String> mapFieldsToProperties() throws IllegalArgumentException, IllegalAccessException
    {
       final Map<String,String> extractedValues = new HashMap<String, String>();
-      List<Field> fields = SecurityActions.getAccessibleFields(persistenceConfiguration.getClass());
+      List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {
-         Object object = field.get(persistenceConfiguration);
+         Object object = field.get(configuration);
          String key = convertToPropertyKey(field.getName());
          if (object != null)
          {
@@ -109,7 +91,6 @@ public class ConfigurationExporter
    private String convertToPropertyKey(String key)
    {
       final StringBuilder sb = new StringBuilder();
-      sb.append(PROPERTY_PREFIX);
 
       for (int i = 0; i < key.length(); i++) {
           char c = key.charAt(i);

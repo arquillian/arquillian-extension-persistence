@@ -18,6 +18,8 @@
 package org.jboss.arquillian.persistence.data.dbunit;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
@@ -30,6 +32,8 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfigurationPropertyMapper;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitConnectionException;
@@ -51,7 +55,10 @@ public class DBUnitPersistenceTestLifecycleHandler
 {
 
    @Inject
-   private Instance<DataSource> databaseSourceInstance;
+   private Instance<DataSource> dataSourceInstance;
+
+   @Inject
+   private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
    @Inject @TestScoped
    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
@@ -68,6 +75,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       if (databaseConnectionProducer.get() == null)
       {
          createDatabaseConnection();
+         configure();
       }
       context.proceed();
    }
@@ -105,7 +113,7 @@ public class DBUnitPersistenceTestLifecycleHandler
    {
       try
       {
-         DataSource dataSource = databaseSourceInstance.get();
+         DataSource dataSource = dataSourceInstance.get();
          DatabaseConnection databaseConnection = new DatabaseConnection(dataSource.getConnection());
          databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                new DefaultDataTypeFactory());
@@ -161,6 +169,18 @@ public class DBUnitPersistenceTestLifecycleHandler
          dataSetRegister = new DataSetRegister();
       }
       return dataSetRegister;
+   }
+
+   private void configure()
+   {
+      final DatabaseConnection databaseConnection = databaseConnectionProducer.get();
+      final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
+
+      final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
+      for (Entry<String, Object> property : properties.entrySet())
+      {
+         dbUnitConfig.setProperty(property.getKey(), property.getValue());
+      }
    }
 
 }

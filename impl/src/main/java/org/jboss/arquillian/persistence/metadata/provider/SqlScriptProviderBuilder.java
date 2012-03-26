@@ -14,12 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.metadata;
+package org.jboss.arquillian.persistence.metadata.provider;
 
 import java.lang.annotation.Annotation;
 
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
+import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.metadata.ValueExtractor;
 
 public class SqlScriptProviderBuilder<K extends Annotation>
 {

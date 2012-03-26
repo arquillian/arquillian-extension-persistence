@@ -29,9 +29,9 @@ import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.CleanupData;
 import org.jboss.arquillian.persistence.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
-import org.jboss.arquillian.persistence.metadata.SqlScriptProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.metadata.ValueExtractor;
+import org.jboss.arquillian.persistence.metadata.provider.SqlScriptProvider;
 
 public class DataCleanupHandler
 {
@@ -43,7 +43,7 @@ public class DataCleanupHandler
    private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
-   private Instance<MetadataProvider> metadataProviderInstance;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    @Inject
    private Event<CleanupData> cleanUpDataEvent;
@@ -53,14 +53,14 @@ public class DataCleanupHandler
 
    public void prepareDatabase(@Observes(precedence = 40) BeforePersistenceTest beforePersistenceTest)
    {
-      final MetadataProvider metadataProvider = metadataProviderInstance.get();
+      final PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (metadataProvider.shouldCleanupBefore())
+      if (persistenceExtensionFeatureResolver.shouldCleanupBefore())
       {
-         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest, metadataProvider.getCleanupStragety()));
+         cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest, persistenceExtensionFeatureResolver.getCleanupStragety()));
       }
 
-      if (metadataProvider.shouldCleanupUsingScriptBefore())
+      if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptBefore())
       {
          final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
          cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(beforePersistenceTest, scriptsProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
@@ -69,14 +69,14 @@ public class DataCleanupHandler
 
    public void verifyDatabase(@Observes(precedence = 20) AfterPersistenceTest afterPersistenceTest)
    {
-      final MetadataProvider metadataProvider = metadataProviderInstance.get();
+      final PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (metadataProvider.shouldCleanupAfter())
+      if (persistenceExtensionFeatureResolver.shouldCleanupAfter())
       {
-         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest, metadataProvider.getCleanupStragety()));
+         cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest, persistenceExtensionFeatureResolver.getCleanupStragety()));
       }
 
-      if (metadataProvider.shouldCleanupUsingScriptAfter())
+      if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter())
       {
          final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
          cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(afterPersistenceTest, scriptsProvider.getDescriptors(afterPersistenceTest.getTestMethod())));

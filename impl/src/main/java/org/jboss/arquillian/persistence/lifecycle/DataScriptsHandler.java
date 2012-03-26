@@ -29,9 +29,9 @@ import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.MetadataProvider;
-import org.jboss.arquillian.persistence.metadata.SqlScriptProvider;
+import org.jboss.arquillian.persistence.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.metadata.ValueExtractor;
+import org.jboss.arquillian.persistence.metadata.provider.SqlScriptProvider;
 
 public class DataScriptsHandler
 {
@@ -43,7 +43,7 @@ public class DataScriptsHandler
    private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
-   private Instance<MetadataProvider> metadataProvider;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
 
    @Inject
    private Event<ExecuteScripts> executeScriptsEvent;
@@ -62,7 +62,7 @@ public class DataScriptsHandler
 
    private void executeCustomScriptsBefore(BeforePersistenceTest beforePersistenceTest)
    {
-      if (!metadataProvider.get().isCustomScriptToBeAppliedBeforeTestRequested())
+      if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedBeforeTestRequested())
       {
          return;
       }
@@ -90,7 +90,7 @@ public class DataScriptsHandler
 
    private void executeCustomScriptsAfter(AfterPersistenceTest afterPersistenceTest)
    {
-      if (!metadataProvider.get().isCustomScriptToBeAppliedAfterTestRequested())
+      if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedAfterTestRequested())
       {
          return;
       }

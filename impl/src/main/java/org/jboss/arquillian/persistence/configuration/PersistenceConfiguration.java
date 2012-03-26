@@ -27,7 +27,7 @@ import org.jboss.arquillian.persistence.data.descriptor.Format;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class PersistenceConfiguration implements Serializable
+public class PersistenceConfiguration extends Configuration implements Serializable
 {
 
    private static final long serialVersionUID = -6930645145050348980L;
@@ -53,6 +53,11 @@ public class PersistenceConfiguration implements Serializable
    private String userTransactionJndi = "java:comp/UserTransaction";
 
    private boolean excludePoi = false;
+
+   public PersistenceConfiguration()
+   {
+      super("persistence", "arquillian.extension.persistence.");
+   }
 
    // Accessors
 
