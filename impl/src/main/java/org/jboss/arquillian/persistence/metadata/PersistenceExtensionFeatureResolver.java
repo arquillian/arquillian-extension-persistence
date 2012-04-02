@@ -28,6 +28,7 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.exception.DataSourceNotDefinedException;
+import org.jboss.arquillian.persistence.util.Strings;
 
 /**
  *
@@ -177,7 +178,7 @@ public class PersistenceExtensionFeatureResolver
          dataSource = dataSourceAnnotation.value();
       }
 
-      if (dataSource.isEmpty())
+      if (Strings.isEmpty(dataSource))
       {
          throw new DataSourceNotDefinedException("DataSource not defined! Please declare in arquillian.xml or by using @DataSource annotation.");
       }

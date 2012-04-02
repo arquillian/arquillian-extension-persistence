@@ -36,6 +36,7 @@ import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.MetadataProcessingException;
+import org.jboss.arquillian.persistence.util.Strings;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
@@ -119,7 +120,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 
          final List<String> dataFileNames = new ArrayList<String>(Arrays.asList(values));
 
-         if (dataFileNames.isEmpty() || dataFileNames.get(0).isEmpty())
+         if (dataFileNames.isEmpty() || Strings.isEmpty(dataFileNames.get(0)))
          {
             String defaultFileName = defaultFileName();
             dataFileNames.clear();

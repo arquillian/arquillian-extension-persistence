@@ -24,6 +24,7 @@ import java.net.URL;
 
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
+import org.jboss.arquillian.persistence.util.Strings;
 
 /**
 *
@@ -95,7 +96,7 @@ class ConfigurationTypeConverter
     */
    public <T> T convert(String value, Class<T> to)
    {
-      if (value.isEmpty() && !(String.class.equals(to) || String[].class.equals(to)))
+      if (Strings.isEmpty(value) && !(String.class.equals(to) || String[].class.equals(to)))
       {
          return null;
       }

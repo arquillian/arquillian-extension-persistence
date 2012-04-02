@@ -43,6 +43,7 @@ import org.jboss.arquillian.persistence.event.CompareData;
 import org.jboss.arquillian.persistence.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.event.PrepareData;
 import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.util.Strings;
 
 /**
  *
@@ -65,7 +66,7 @@ public class DBUnitDataHandler implements DataHandler
    public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
    {
       final String initScript = applyInitStatementEvent.getInitStatement();
-      if (initScript == null || initScript.isEmpty())
+      if (initScript == null || Strings.isEmpty(initScript))
       {
          return;
       }
@@ -76,7 +77,7 @@ public class DBUnitDataHandler implements DataHandler
    public void cleanupStatements(@Observes ApplyCleanupStatement applyCleanupStatementEvent)
    {
       final String cleanupScript = applyCleanupStatementEvent.getCleanupStatement();
-      if (cleanupScript == null || cleanupScript.isEmpty())
+      if (cleanupScript == null || Strings.isEmpty(cleanupScript))
       {
          return;
       }

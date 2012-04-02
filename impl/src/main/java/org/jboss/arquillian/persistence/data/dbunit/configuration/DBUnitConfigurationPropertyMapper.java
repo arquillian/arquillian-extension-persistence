@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.jboss.arquillian.persistence.data.dbunit.configuration.annotations.Feature;
 import org.jboss.arquillian.persistence.data.dbunit.configuration.annotations.Property;
+import org.jboss.arquillian.persistence.util.Strings;
 
 
 public class DBUnitConfigurationPropertyMapper
@@ -50,7 +51,7 @@ public class DBUnitConfigurationPropertyMapper
          {
             String featurePrefix = FEATURE_PREFIX;
             final Feature featureAnnotation = feature.getAnnotation(Feature.class);
-            if (!featureAnnotation.value().isEmpty())
+            if (!Strings.isEmpty(featureAnnotation.value()))
             {
                featurePrefix += featureAnnotation.value() + "/";
             }
@@ -78,7 +79,7 @@ public class DBUnitConfigurationPropertyMapper
          {
             String propertyPrefix = PROPERTY_PREFIX;
             final Property propertyAnnotation = property.getAnnotation(Property.class);
-            if (!propertyAnnotation.value().isEmpty())
+            if (!Strings.isEmpty(propertyAnnotation.value()))
             {
                propertyPrefix += propertyAnnotation.value() + "/";
             }
