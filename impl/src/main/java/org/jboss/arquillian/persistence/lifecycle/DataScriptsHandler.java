@@ -85,7 +85,7 @@ public class DataScriptsHandler
                }
             });
 
-      executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
+      executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
    }
 
    private void executeCustomScriptsAfter(AfterPersistenceTest afterPersistenceTest)
@@ -113,6 +113,6 @@ public class DataScriptsHandler
                }
             });
 
-      executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
+      executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
    }
 }

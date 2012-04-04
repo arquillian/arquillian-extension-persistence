@@ -104,7 +104,7 @@ public class DBUnitDataHandler implements DataHandler
       {
          IDataSet currentDataSet = databaseConnection.get().createDataSet();
          IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
-         new DataSetComparator().compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
+         new DataSetComparator(compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
       }
       catch (Exception e)
       {

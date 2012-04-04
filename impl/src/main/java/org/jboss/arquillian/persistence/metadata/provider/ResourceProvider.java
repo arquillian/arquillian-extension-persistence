@@ -77,13 +77,13 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       final Set<T> descriptors = new HashSet<T>();
       for (Method testMethod : testClass.getMethods(resourceAnnotation))
       {
-         descriptors.addAll(getDescriptors(testMethod));
+         descriptors.addAll(getDescriptorsDefinedFor(testMethod));
       }
       descriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(resourceAnnotation)));
       return descriptors ;
    }
 
-   public Collection<T> getDescriptors(Method testMethod)
+   public Collection<T> getDescriptorsDefinedFor(Method testMethod)
    {
       final List<T> descriptors = new ArrayList<T>();
       for (String dataFileName : getResourceFileNames(testMethod))

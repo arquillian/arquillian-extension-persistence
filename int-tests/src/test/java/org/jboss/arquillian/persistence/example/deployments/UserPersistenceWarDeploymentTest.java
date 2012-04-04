@@ -15,35 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test.example.deployments;
+package org.jboss.arquillian.persistence.example.deployments;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.test.example.NonDeployableUserPersistenceTest;
+import org.jboss.arquillian.persistence.example.NonDeployableUserPersistenceTest;
 import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest
+public class UserPersistenceWarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                                .addPackage(UserAccount.class.getPackage())
-                                                // required for remote containers in order to run tests with FEST-Asserts
-                                                .addPackages(true, "org.fest")
-                                                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                                                .addAsManifestResource("test-persistence.xml", "persistence.xml");
-
-      return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
-                       .addAsLibrary(javaArchive);
+      return ShrinkWrap.create(WebArchive.class, "test.war")
+                       .addPackage(UserAccount.class.getPackage())
+                       // required for remote containers in order to run tests with FEST-Asserts
+                       .addPackages(true, "org.fest")
+                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }
 
 }

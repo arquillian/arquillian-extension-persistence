@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.test.example.deployments;
+package org.jboss.arquillian.persistence.example.deployments;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.test.example.NonDeployableUserPersistenceTest;
+import org.jboss.arquillian.persistence.example.NonDeployableUserPersistenceTest;
 import org.jboss.arquillian.persistence.test.usecase.UserAccount;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

@@ -15,26 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * JBoss, Home of Professional Open Source
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.jboss.arquillian.persistence.data.dbunit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,31 +37,44 @@ import org.dbunit.dataset.ITable;
 public class DataSetUtils
 {
 
-   public static IDataSet mergeDataSets(List<IDataSet> dataSets) throws DataSetException
+   public static IDataSet mergeDataSets(final List<IDataSet> dataSets) throws DataSetException
    {
       return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));
    }
 
-   public static String[] columnsNotSpecifiedInExpectedDataSet(ITable expectedTableState, ITable currentTableState) throws DataSetException
+   public static List<String> extractColumnsNotSpecifiedInExpectedDataSet(final ITable expectedTableState, final ITable currentTableState) throws DataSetException
+   {
+      final Set<String> allColumns = new HashSet<String>(extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+      final Set<String> expectedColumnNames = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
+      return extractNonExistingColumns(allColumns, expectedColumnNames);
+   }
+
+   /**
+    * Provides list of columns defined in expectedColumns, but not listed in actualColumns.
+    *
+    * @param expectedColumns
+    * @param actualColumns
+    * @return
+    */
+   public static List<String> extractNonExistingColumns(final Collection<String> expectedColumns,
+         final Collection<String> actualColumns)
    {
       final List<String> columnsNotSpecifiedInExpectedDataSet = new ArrayList<String>();
-      final Set<Column> allColumns = new HashSet<Column>(Arrays.asList(currentTableState.getTableMetaData().getColumns()));
-      final Set<String> expectedColumnNames = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
 
-      for (Column column : allColumns)
+      for (String column : expectedColumns)
       {
-         if (!expectedColumnNames.contains(column.getColumnName().toLowerCase()))
+         if (!actualColumns.contains(column.toLowerCase()))
          {
-            columnsNotSpecifiedInExpectedDataSet.add(column.getColumnName().toLowerCase());
+            columnsNotSpecifiedInExpectedDataSet.add(column.toLowerCase());
          }
       }
 
-      return columnsNotSpecifiedInExpectedDataSet.toArray(new String[columnsNotSpecifiedInExpectedDataSet.size()]);
+      return columnsNotSpecifiedInExpectedDataSet;
    }
 
-   private static List<String> extractColumnNames(Column[] columns)
+   public static Collection<String> extractColumnNames(final Column[] columns)
    {
-      final List<String> names = new ArrayList<String>();
+      final List<String> names = new ArrayList<String>(columns.length);
       for (Column column : columns)
       {
          names.add(column.getColumnName().toLowerCase());

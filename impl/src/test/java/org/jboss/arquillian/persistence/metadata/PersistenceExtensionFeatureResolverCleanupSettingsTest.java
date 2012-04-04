@@ -28,7 +28,7 @@ import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-public class MetadataProviderCleanupSettingsTest
+public class PersistenceExtensionFeatureResolverCleanupSettingsTest
 {
 
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();

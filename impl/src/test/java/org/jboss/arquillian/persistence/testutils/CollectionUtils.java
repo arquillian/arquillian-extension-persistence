@@ -15,27 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.event;
+package org.jboss.arquillian.persistence.testutils;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-public class CompareData extends DataEvent<DataSetResourceDescriptor>
+public final class CollectionUtils
 {
 
-   private final String[] columnsToExclude;
-
-   public CompareData(TestEvent testEvent, Collection<DataSetResourceDescriptor> dataSetDescriptors, String ... columnsToExclude)
+   public static <T> List<T> list(T ... elements)
    {
-      super(testEvent, dataSetDescriptors);
-      this.columnsToExclude = columnsToExclude;
-   }
+      final List<T> wrappedList = new ArrayList<T>(elements.length);
+      for (T element : elements)
+      {
+         wrappedList.add(element);
+      }
 
-   public String[] getColumnsToExclude()
-   {
-      return columnsToExclude;
+      return wrappedList;
    }
 
 }

@@ -28,7 +28,7 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
 @SuppressWarnings("unused")
-public class MetadataProviderDataSourceTest
+public class PersistenceExtensionFeatureResolverDataSourceTest
 {
 
    private static final String DATA_SOURCE_ON_CLASS_LEVEL = "dataSourceOnClassLevel";

@@ -134,7 +134,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors =  new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
+      List<SqlScriptResourceDescriptor> scriptDescriptors =  new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -149,7 +149,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
+      List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       // exception should be thrown
@@ -164,7 +164,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
+      List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       // exception should be thrown
@@ -180,7 +180,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptors(testEvent.getTestMethod()));
+      List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);

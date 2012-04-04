@@ -63,7 +63,7 @@ public class DataCleanupHandler
       if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptBefore())
       {
          final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
-         cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(beforePersistenceTest, scriptsProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
+         cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
       }
    }
 
@@ -79,7 +79,7 @@ public class DataCleanupHandler
       if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter())
       {
          final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
-         cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(afterPersistenceTest, scriptsProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
+         cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
       }
    }
 

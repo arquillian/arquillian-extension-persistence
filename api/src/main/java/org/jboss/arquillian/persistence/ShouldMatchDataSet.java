@@ -56,7 +56,16 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ShouldMatchDataSet
 {
-
+   /**
+    * List of data set files used for comparision
+    * @return
+    */
    String[] value() default "";
+
+   /**
+    * List of columns to be excluded.
+    * @return
+    */
+   String[] excludeColumns() default "";
 
 }

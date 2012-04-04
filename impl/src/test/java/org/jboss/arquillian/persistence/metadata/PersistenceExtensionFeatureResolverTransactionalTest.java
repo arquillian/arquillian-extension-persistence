@@ -26,7 +26,7 @@ import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-public class MetadataProviderTransactionalTest
+public class PersistenceExtensionFeatureResolverTransactionalTest
 {
 
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();

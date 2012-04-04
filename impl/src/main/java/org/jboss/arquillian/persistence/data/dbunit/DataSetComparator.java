@@ -17,6 +17,15 @@
  */
 package org.jboss.arquillian.persistence.data.dbunit;
 
+import static org.jboss.arquillian.persistence.data.dbunit.DataSetUtils.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.DataSetException;
@@ -27,6 +36,17 @@ import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
 public class DataSetComparator
 {
 
+   private static final Logger log = Logger.getLogger(DataSetComparator.class.getName());
+
+   final List<String> generalColumnsToExclude = new ArrayList<String>();
+
+   final Map<String, List<String>> columnsPerTableToExclude = new HashMap<String, List<String>>();
+
+   public DataSetComparator(String ... columnsToExclude)
+   {
+      mapColumsToExclude(columnsToExclude);
+   }
+
    public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector) throws DatabaseUnitException
    {
       final String[] tableNames = expectedDataSet.getTableNames();
@@ -35,11 +55,11 @@ public class DataSetComparator
          final SortedTable expectedTableState = new SortedTable(expectedDataSet.getTable(tableName));
          final SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName),
                expectedTableState.getTableMetaData());
-         final String[] columnsToIgnore = DataSetUtils.columnsNotSpecifiedInExpectedDataSet(expectedTableState,
-               currentTableState);
+         final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedTableState, currentTableState);
          try
          {
-            Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState, columnsToIgnore);
+            Assertion.assertEqualsIgnoreCols(expectedTableState, currentTableState,
+                  columnsToIgnore.toArray(new String[columnsToIgnore.size()]));
          }
          catch (AssertionError error)
          {
@@ -66,6 +86,64 @@ public class DataSetComparator
       {
          errorCollector.collect(new AssertionError(tableName + "expected to be empty, but was <" + rowCount + ">."));
       }
+   }
+
+   // -- Private methods
+
+   private List<String> extractColumnsToBeIgnored(final SortedTable expectedTableState,
+         final SortedTable currentTableState) throws DataSetException
+   {
+      final List<String> columnsToIgnore = extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState,
+            currentTableState);
+      final String tableName = expectedTableState.getTableMetaData().getTableName();
+      final List<String> tableColumns = columnsPerTableToExclude.get(tableName);
+      if (tableColumns != null)
+      {
+         columnsToIgnore.addAll(tableColumns);
+      }
+      columnsToIgnore.addAll(generalColumnsToExclude);
+      final List<String> nonExistingColumns = extractNonExistingColumns(columnsToIgnore, extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+      if (!nonExistingColumns.isEmpty())
+      {
+         log.warning("Columns which are specified to be filtered out [" +
+               Arrays.toString(nonExistingColumns.toArray())+ "] are not existing in the table");
+      }
+      return columnsToIgnore;
+   }
+
+   private void mapColumsToExclude(String[] columnsToExclude)
+   {
+      for (String columnToExclude : columnsToExclude)
+      {
+         if (!columnToExclude.contains("."))
+         {
+            generalColumnsToExclude.add(columnToExclude);
+         }
+         else
+         {
+            splitTableAndColumn(columnToExclude);
+         }
+      }
+   }
+
+
+   private void splitTableAndColumn(String columnToExclude)
+   {
+      final String[] splittedTableAndColumn = columnToExclude.split("\\.");
+      if (splittedTableAndColumn.length != 2)
+      {
+         throw new IllegalArgumentException("Cannot associated table with column for [" + columnToExclude
+               + "]. Expected format: 'tableName.columnName'");
+      }
+      final String tableName = splittedTableAndColumn[0];
+      List<String> tableColumns = columnsPerTableToExclude.get(tableName);
+      if (tableColumns == null)
+      {
+         tableColumns = new ArrayList<String>();
+         columnsPerTableToExclude.put(tableName, tableColumns);
+      }
+
+      tableColumns.add(splittedTableAndColumn[1]);
    }
 
 }

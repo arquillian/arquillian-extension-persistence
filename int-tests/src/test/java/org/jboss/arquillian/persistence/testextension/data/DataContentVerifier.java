@@ -97,7 +97,7 @@ public class DataContentVerifier
    {
       TestClass testClass = afterPersistenceTest.getTestClass();
       CleanupVerificationDataSetProvider cleanupVerificationDataSetProvider = new CleanupVerificationDataSetProvider(testClass, metadataExtractor.get(), configuration.get());
-      Collection<DataSetResourceDescriptor> descriptors = cleanupVerificationDataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod());
+      Collection<DataSetResourceDescriptor> descriptors = cleanupVerificationDataSetProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod());
       List<IDataSet> dataSets = new ArrayList<IDataSet>(descriptors.size());
       for (DataSetResourceDescriptor dataSetDescriptor : descriptors)
       {

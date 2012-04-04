@@ -32,9 +32,9 @@ import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescripto
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
-import org.jboss.arquillian.persistence.metadata.DataSetDescriptorAssert;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.metadata.provider.ExpectedDataSetProvider;
+import org.jboss.arquillian.persistence.testutils.DataSetDescriptorAssert;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -197,7 +197,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetResourceDescriptor> dataSetDescriptors = new ArrayList<DataSetResourceDescriptor>(dataSetProvider.getDescriptors(testEvent.getTestMethod()));
+      List<DataSetResourceDescriptor> dataSetDescriptors = new ArrayList<DataSetResourceDescriptor>(dataSetProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       assertThat(dataSetDescriptors).containsExactly(xml, xls, yml);
@@ -212,7 +212,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Collection<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      Collection<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -227,7 +227,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Collection<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestMethod());
+      Collection<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
       // then
       // exception should be thrown
@@ -243,7 +243,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      List<DataSetResourceDescriptor> dataSetDescriptors =  new ArrayList<DataSetResourceDescriptor>(dataSetProvider.getDescriptors(testEvent.getTestMethod()));
+      List<DataSetResourceDescriptor> dataSetDescriptors =  new ArrayList<DataSetResourceDescriptor>(dataSetProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
       // then
       assertThat(dataSetDescriptors).containsOnly(expectedFile);

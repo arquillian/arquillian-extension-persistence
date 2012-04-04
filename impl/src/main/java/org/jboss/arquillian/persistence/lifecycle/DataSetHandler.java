@@ -17,10 +17,13 @@
  */
 package org.jboss.arquillian.persistence.lifecycle;
 
+import java.lang.reflect.Method;
+
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
@@ -35,13 +38,13 @@ public class DataSetHandler
 {
 
    @Inject
-   private Instance<MetadataExtractor> metadataExtractor;
+   private Instance<MetadataExtractor> metadataExtractorInstance;
 
    @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<PersistenceConfiguration> configurationInstance;
 
    @Inject
    private Event<PrepareData> prepareDataEvent;
@@ -55,8 +58,8 @@ public class DataSetHandler
 
       if (persistenceExtensionFeatureResolver.shouldSeedData())
       {
-         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractor.get(), configuration.get());
-         prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptors(beforePersistenceTest.getTestMethod())));
+         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), configurationInstance.get());
+         prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
       }
 
    }
@@ -68,8 +71,13 @@ public class DataSetHandler
 
       if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest())
       {
-         ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor.get(), configuration.get());
-         compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptors(afterPersistenceTest.getTestMethod())));
+         final MetadataExtractor metadataExtractor = metadataExtractorInstance.get();
+         final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor, configurationInstance.get());
+         final Method testMethod = afterPersistenceTest.getTestMethod();
+         final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
+                                                                      .fetchFrom(testMethod);
+
+         compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.excludeColumns()));
       }
 
    }
