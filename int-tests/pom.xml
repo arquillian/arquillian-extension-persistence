@@ -20,7 +20,6 @@
   <properties>
     <version.cdi>1.0-SP1</version.cdi>
     <version.validation.api>1.0.0.GA</version.validation.api>
-    <version.hsqldb>1.8.0.10</version.hsqldb>
   </properties>
 
   <dependencies>
@@ -70,10 +69,8 @@
     </dependency>
 
     <dependency>
-      <!-- 2.x version doesn't work - unable to create tables -->
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>${version.hsqldb}</version>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
       <scope>test</scope>
     </dependency>
 

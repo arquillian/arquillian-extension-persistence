@@ -52,7 +52,8 @@ public class DataSetUtilsTest
                   //   expected    ,   actual             , non existing in actual
                   $(list("id", "name"), list("name", "password"), list("id")),
                   $(list("id", "username", "password"), list("id", "username", "password"), Collections.emptyList()),
-                  $(Collections.emptyList(), list("id", "name"), Collections.emptyList())
+                  $(Collections.emptyList(), list("id", "name"), Collections.emptyList()),
+                  $(Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
             );
    }
 

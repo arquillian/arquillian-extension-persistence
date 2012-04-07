@@ -22,7 +22,6 @@ import java.sql.Statement;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -31,6 +30,8 @@ import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.data.DataHandler;
 import org.jboss.arquillian.persistence.data.dbunit.cleanup.CleanupStrategyExecutor;
 import org.jboss.arquillian.persistence.data.dbunit.cleanup.CleanupStrategyProvider;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DataSeedStrategy;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.data.descriptor.SqlScriptResourceDescriptor;
@@ -61,6 +62,9 @@ public class DBUnitDataHandler implements DataHandler
 
    @Inject
    private Instance<AssertionErrorCollector> assertionErrorCollector;
+
+   @Inject
+   private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
    @Override
    public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
@@ -139,7 +143,7 @@ public class DBUnitDataHandler implements DataHandler
 
    }
 
-   // Private methods
+   // -- Private methods
 
    private void executeScript(String script)
    {
@@ -171,9 +175,13 @@ public class DBUnitDataHandler implements DataHandler
 
    private void fillDatabase() throws Exception
    {
+      final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
+      final DataSeedStrategy dataSeedStrategy = dbUnitConfiguration.getDataSeedStrategy();
+      final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
       final DatabaseConnection connection = databaseConnection.get();
-      IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
-      new TransactionOperation(DatabaseOperation.INSERT).execute(connection, initialDataSet);
+      final IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
+
+      new TransactionOperation(dataSeedStrategy.get(useIdentityInsert)).execute(connection, initialDataSet);
    }
 
    private void cleanDatabase(CleanupStrategy cleanupStrategy)

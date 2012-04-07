@@ -167,6 +167,18 @@ public class DBUnitConfiguration extends Configuration
    @Property
    private IMetadataHandler metadataHandler = new DefaultMetadataHandler();
 
+   /**
+    * Defines strategy of inserting data to the data store.
+    * @see DataSeedStrategy
+    */
+   private DataSeedStrategy dataSeedStrategy = DataSeedStrategy.INSERT;
+
+   /**
+    * Disables MS SQL Server automatic identifier generation for the execution of inserts.
+    * For usage with Microsoft driver you should append your jdbc connection with "SelectMethod=cursor".
+    */
+   private boolean useIdentityInsert;
+
    public DBUnitConfiguration()
    {
       super("persistence-dbunit", "arquillian.extension.persistence.dbunit.");
@@ -321,4 +333,25 @@ public class DBUnitConfiguration extends Configuration
    {
       this.metadataHandler = metadataHandler;
    }
+
+   public DataSeedStrategy getDataSeedStrategy()
+   {
+      return dataSeedStrategy;
+   }
+
+   public void setDataSeedStrategy(DataSeedStrategy strategy)
+   {
+      this.dataSeedStrategy = strategy;
+   }
+
+   public boolean isUseIdentityInsert()
+   {
+      return useIdentityInsert;
+   }
+
+   public void setUseIdentityInsert(boolean useIdentityInsert)
+   {
+      this.useIdentityInsert = useIdentityInsert;
+   }
+
 }

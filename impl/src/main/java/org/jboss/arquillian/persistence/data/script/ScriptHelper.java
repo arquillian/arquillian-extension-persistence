@@ -27,8 +27,6 @@ import org.jboss.arquillian.persistence.exception.DataSetLoadingException;
 public final class ScriptHelper
 {
 
-
-
    public static String loadScript(String location)
    {
       final StringBuilder builder = new StringBuilder();
@@ -43,7 +41,8 @@ public final class ScriptHelper
          reader = new BufferedReader(new InputStreamReader(inputStream));
          while ((line  = reader.readLine()) != null)
          {
-            builder.append(' ').append(line);
+            builder.append(line)
+                   .append("\r\n");
          }
       }
       catch (Exception e)
