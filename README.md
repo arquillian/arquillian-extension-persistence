@@ -1,23 +1,32 @@
-Arquillian Persistence Extension
-================================
+## Arquillian Persistence Extension
 
 ### What is this?
 
-Arquillian Persistence Extension was created to help you writing tests where persistence layer is involved.
+**Arquillian Persistence Extension** was created to help you writing tests where persistence layer is involved.
 Inspired by great framework called [Unitils](http://unitils.org/), it brings bunch of annotations to help you
 deal with the underlying data storage.
 
-Arquillian Persistence Extension comes with following features:
+It comes with following features:
 
-- Wrapping each test in the seperated transaction (with **commit**(default) or **rollback** at the end).
-- Seeding database using [DBUnit](http://dbunit.org) with **XML**, **XLS** and **YAML** supported as data sets format.
-- Comparing database state at the end of the test using given data sets.
+* Wrapping each test in the seperated transaction (with **commit**(default) or **rollback** at the end).
+* Seeding database using:
+    * [DBUnit](http://dbunit.org) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
+    * Custom SQL scripts.
+* Comparing database state at the end of the test using given data sets (with column exclusion).
 
-Currently tested on **Glassfish 3.1 Embedded** and **JBoss AS 7.0.2 Final** (managed).
+##### Containers used for testing
+- Glassfish 3.1 Embedded
+- JBoss AS 7.0.2 Final (managed) 
+- JBoss AS 7.1.0.Final (managed)
+
+##### Verified with follolwing databases
+- HSQL
+- MS SQL 2008 Express (with Microsoft JDBC Driver)
 
 Enough talking, let's see it in action!
 
 ### Code example
+---
 
     @RunWith(Arquillian.class)
     public class UserPersistenceTest
@@ -39,7 +48,7 @@ Enough talking, let's see it in action!
       @Test
       @UsingDataSet("datasets/users.yml")
       @ShouldMatchDataSet("datasets/expected-users.yml")
-      public void shouldChangeUserPassword() throws Exception
+      public void should_change_user_password() throws Exception
       {
           // given
           String expectedPassword = "LexLuthor";
@@ -57,5 +66,6 @@ Enough talking, let's see it in action!
 There are just two things which are different from the standard Arquillian test - `@UsingDataSet` and `@ShouldMatchDataSet` annotations. Former
 seeds the database using file in YAML format, and latter verifies database state using given file.
 
-This example is taken from **integration tests** written for this project, so feel free to have a closer look. But it's that easy! And there's more to come!
+This example is taken from **integration tests** written for this project, so feel free to have a closer look. 
 
+But it's that easy! And there's more to come!
