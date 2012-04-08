@@ -101,7 +101,10 @@ public class DataSetComparator
       {
          columnsToIgnore.addAll(tableColumns);
       }
-      columnsToIgnore.addAll(generalColumnsToExclude);
+      if (!generalColumnsToExclude.isEmpty())
+      {
+         columnsToIgnore.addAll(generalColumnsToExclude);
+      }
       final List<String> nonExistingColumns = extractNonExistingColumns(columnsToIgnore, extractColumnNames(currentTableState.getTableMetaData().getColumns()));
       if (!nonExistingColumns.isEmpty())
       {
@@ -115,6 +118,10 @@ public class DataSetComparator
    {
       for (String columnToExclude : columnsToExclude)
       {
+         if (columnToExclude.length() == 0)
+         {
+            continue;
+         }
          if (!columnToExclude.contains("."))
          {
             generalColumnsToExclude.add(columnToExclude);
