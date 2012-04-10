@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.client;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfigurationClientSideProducer;
 import org.jboss.arquillian.persistence.deployment.PersistenceExtensionArchiveAppender;
 import org.jboss.arquillian.persistence.deployment.PersistenceExtensionDynamicDependencyAppender;
 
@@ -35,7 +36,8 @@ public class PersistenceExtension implements LoadableExtension {
    {
       builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
              .service(ApplicationArchiveProcessor.class, PersistenceExtensionDynamicDependencyAppender.class)
-             .observer(PersistenceConfigurationProducer.class)
+             .observer(PersistenceConfigurationClientSideProducer.class)
+             .observer(DBUnitConfigurationClientSideProducer.class)
              .observer(DatabaseStateDumper.class);
    }
 

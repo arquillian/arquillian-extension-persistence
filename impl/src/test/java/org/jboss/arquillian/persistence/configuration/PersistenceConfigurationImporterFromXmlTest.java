@@ -21,11 +21,9 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.junit.Test;
 
-public class ConfigurationImporterFromXmlTest
+public class PersistenceConfigurationImporterFromXmlTest
 {
 
    @Test
@@ -56,36 +54,6 @@ public class ConfigurationImporterFromXmlTest
 
       // then
       assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
-   }
-
-   @Test
-   public void should_extract_default_data_set_format_defined_in_property_file() throws Exception
-   {
-      // given
-      Format expectedFormat = Format.EXCEL;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
-   }
-
-   @Test
-   public void should_use_xml_as_default_data_set_format_when_not_defined_in_configuration() throws Exception
-   {
-      // given
-      Format expectedFormat = Format.XML;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
    }
 
    @Test

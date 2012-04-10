@@ -24,7 +24,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.event.CompareData;
@@ -44,7 +44,7 @@ public class DataSetHandler
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    @Inject
-   private Instance<PersistenceConfiguration> configurationInstance;
+   private Instance<DBUnitConfiguration> configurationInstance;
 
    @Inject
    private Event<PrepareData> prepareDataEvent;

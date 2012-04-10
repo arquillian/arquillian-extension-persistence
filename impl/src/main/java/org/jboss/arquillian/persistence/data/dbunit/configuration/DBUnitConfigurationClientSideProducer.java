@@ -15,34 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.container;
+package org.jboss.arquillian.persistence.data.dbunit.configuration;
 
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.configuration.Configuration;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.configuration.ConfigurationProducer;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 /**
  *
- * Triggers persistence configuration creation on the container side.
+ * Triggers DBUnit configuration creation on the client side.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class RemotePersistenceConfigurationProducer
+public class DBUnitConfigurationClientSideProducer extends ConfigurationProducer<DBUnitConfiguration>
 {
 
    @Inject @ApplicationScoped
-   InstanceProducer<PersistenceConfiguration> configurationProducer;
+   InstanceProducer<DBUnitConfiguration> configurationProducer;
 
-   public void configure(@Observes BeforeSuite beforeSuiteEvent)
+   @Override
+   protected DBUnitConfiguration create()
    {
-      final PersistenceConfiguration configuration = new PersistenceConfiguration();
-      Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
-      configurationProducer.set(configuration);
+      return new DBUnitConfiguration();
+   }
+
+   @Override
+   public void observe(@Observes BeforeSuite beforeSuiteEvent)
+   {
+      final DBUnitConfiguration persistenceConfiguration = configureFromArquillianDescriptor();
+      configurationProducer.set(persistenceConfiguration);
    }
 
 }

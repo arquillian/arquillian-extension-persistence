@@ -26,13 +26,12 @@ import java.util.Set;
 
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.configuration.TestConfigurationLoader;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.testutils.DataSetDescriptorAssert;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
@@ -48,7 +47,7 @@ public class DataSetProviderUsingDataSetTest
 
    private static final String EXCEL_DATA_SET_ON_METHOD_LEVEL = "datasets/xls/method-level.xls";
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
+   private DBUnitConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultDBUnitConfiguration();
 
    @Test
    public void should_fetch_all_data_sets_defined_for_test_class() throws Exception

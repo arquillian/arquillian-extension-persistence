@@ -20,7 +20,6 @@ package org.jboss.arquillian.persistence.configuration;
 import java.io.Serializable;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 /**
  *
@@ -34,15 +33,11 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private String defaultDataSource;
 
-   private String defaultDataSetLocation = "datasets/";
-
    private String defaultSqlScriptLocation = "scripts/";
 
    private String initStatement;
 
    private String cleanupStatement;
-
-   private Format defaultDataSetFormat = Format.XML;
 
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
 
@@ -51,8 +46,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
 
    private String userTransactionJndi = "java:comp/UserTransaction";
-
-   private boolean excludePoi = false;
 
    public PersistenceConfiguration()
    {
@@ -64,16 +57,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public String getDefaultDataSource()
    {
       return defaultDataSource;
-   }
-
-   public String getDefaultDataSetLocation()
-   {
-      return defaultDataSetLocation;
-   }
-
-   public void setDefaultDataSetLocation(String defaultDataSetLocation)
-   {
-      this.defaultDataSetLocation = defaultDataSetLocation;
    }
 
    public void setDefaultDataSource(String defaultDataSource)
@@ -114,16 +97,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    private boolean isDefined(String toVerify)
    {
       return toVerify != null && !"".equals(toVerify.trim());
-   }
-
-   public Format getDefaultDataSetFormat()
-   {
-      return defaultDataSetFormat;
-   }
-
-   public void setDefaultDataSetFormat(Format defaultDataSetFormat)
-   {
-      this.defaultDataSetFormat = defaultDataSetFormat;
    }
 
    public TransactionMode getDefaultTransactionMode()
@@ -178,16 +151,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
    {
       this.defaultSqlScriptLocation = defaultSqlScriptLocation;
-   }
-
-   public boolean isExcludePoi()
-   {
-      return excludePoi;
-   }
-
-   public void setExcludePoi(boolean excludePoi)
-   {
-      this.excludePoi = excludePoi;
    }
 
 }

@@ -29,9 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
@@ -52,16 +51,13 @@ import org.jboss.arquillian.test.spi.TestClass;
 public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 {
 
-   protected final PersistenceConfiguration configuration;
-
    protected final MetadataExtractor metadataExtractor;
 
    protected final Class<? extends Annotation> resourceAnnotation;
 
-   public ResourceProvider(Class<? extends Annotation> resourceAnnotation, PersistenceConfiguration configuration, MetadataExtractor metadataExtractor)
+   public ResourceProvider(Class<? extends Annotation> resourceAnnotation, MetadataExtractor metadataExtractor)
    {
       this.resourceAnnotation = resourceAnnotation;
-      this.configuration = configuration;
       this.metadataExtractor = metadataExtractor;
    }
 

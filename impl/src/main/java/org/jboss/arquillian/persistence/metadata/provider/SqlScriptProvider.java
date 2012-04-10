@@ -35,6 +35,8 @@ import org.jboss.arquillian.persistence.metadata.ValueExtractor;
 public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<SqlScriptResourceDescriptor>
 {
 
+   private final PersistenceConfiguration configuration;
+
    private final PrefixedScriptFileNamingStrategy strategy ;
 
    private final Class<T> annotation;
@@ -43,7 +45,8 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
    SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, PrefixedScriptFileNamingStrategy scriptFileNamingStrategy, PersistenceConfiguration configuration)
    {
-      super(annotation, configuration, metadataExtractor);
+      super(annotation, metadataExtractor);
+      this.configuration = configuration;
       this.strategy = scriptFileNamingStrategy;
       this.annotation = annotation;
       this.extractor = extractor;

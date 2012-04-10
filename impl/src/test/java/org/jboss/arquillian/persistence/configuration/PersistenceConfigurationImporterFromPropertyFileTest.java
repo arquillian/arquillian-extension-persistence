@@ -22,10 +22,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.Properties;
 
 import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.junit.Test;
 
-public class ConfigurationImporterFromPropertyFileTest
+public class PersistenceConfigurationImporterFromPropertyFileTest
 {
 
    @Test
@@ -55,21 +54,6 @@ public class ConfigurationImporterFromPropertyFileTest
 
       // then
       assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
-   }
-
-   @Test
-   public void should_extract_default_data_set_format_defined_in_property_file() throws Exception
-   {
-      // given
-      Format expectedFormat = Format.EXCEL;
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(properties);
-
-      // then
-      assertThat(configuration.getDefaultDataSetFormat()).isEqualTo(expectedFormat);
    }
 
    @Test

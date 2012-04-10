@@ -10,7 +10,7 @@
     <property name="qualifiedTableNames">true</property>
     <property name="datatypeWarning">false</property>
     <property name="skipOracleRecycleBinTables">true</property>
-    <property name="escapePattern">\"</property>
+    <property name="escapePattern">?</property>
     <property name="tableType">TABLE, VIEW</property>
     <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
     <property name="statementFactory">org.dbunit.database.statement.StatementFactory</property>
@@ -20,6 +20,9 @@
     <property name="batchSize">200</property>
     <property name="fetchSize">300</property>
     <property name="metadataHandler">org.dbunit.ext.netezza.NetezzaMetadataHandler</property>
+    <property name="useIdentityInsert">true</property>
+    <property name="defaultDataSetFormat">EXCEL</property>
+    <property name="defaultDataSetLocation">ds</property>
   </extension>
 
 </arquillian>

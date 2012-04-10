@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
@@ -43,9 +44,12 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
 
    private final AnnotationInspector<DatabaseShouldContainAfterTest> annotationInspector;
 
-   public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   private final DBUnitConfiguration configuration;
+
+   public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, DBUnitConfiguration configuration)
    {
-      super(DatabaseShouldContainAfterTest.class, configuration, metadataExtractor);
+      super(DatabaseShouldContainAfterTest.class, metadataExtractor);
+      this.configuration = configuration;
       this.annotationInspector = new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
    }
 

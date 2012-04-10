@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
 import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
@@ -38,9 +38,12 @@ import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
 public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
 {
 
-   public ExpectedDataSetProvider(MetadataExtractor metadataExtractor, PersistenceConfiguration configuration)
+   private final DBUnitConfiguration configuration;
+
+   public ExpectedDataSetProvider(MetadataExtractor metadataExtractor, DBUnitConfiguration configuration)
    {
-      super(ShouldMatchDataSet.class, configuration, metadataExtractor);
+      super(ShouldMatchDataSet.class, metadataExtractor);
+      this.configuration = configuration;
    }
 
    @Override

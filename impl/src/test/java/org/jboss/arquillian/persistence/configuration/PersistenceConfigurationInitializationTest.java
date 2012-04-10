@@ -24,7 +24,7 @@ import java.util.List;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.spi.context.ApplicationContext;
-import org.jboss.arquillian.persistence.client.PersistenceConfigurationProducer;
+import org.jboss.arquillian.persistence.client.PersistenceConfigurationClientSideProducer;
 import org.jboss.arquillian.test.spi.context.SuiteContext;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 import org.jboss.arquillian.test.test.AbstractTestTestBase;
@@ -32,11 +32,11 @@ import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConfigurationInitializationTest extends AbstractTestTestBase {
+public class PersistenceConfigurationInitializationTest extends AbstractTestTestBase {
 
     @Override
     protected void addExtensions(List<Class<?>> extensions) {
-        extensions.add(PersistenceConfigurationProducer.class);
+        extensions.add(PersistenceConfigurationClientSideProducer.class);
     }
 
     @Before

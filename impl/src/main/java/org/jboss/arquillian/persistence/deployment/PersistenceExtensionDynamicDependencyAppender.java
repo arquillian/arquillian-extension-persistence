@@ -29,6 +29,7 @@ import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.data.script.ScriptHelper;
@@ -54,7 +55,10 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
 {
 
    @Inject
-   Instance<PersistenceConfiguration> configuration;
+   Instance<PersistenceConfiguration> configurationInstance;
+
+   @Inject
+   Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
    @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
@@ -71,8 +75,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       {
          addResources(applicationArchive, toJavaArchive(allDataResources));
       }
-      addSqlScriptAsResource(applicationArchive, configuration.get().getCleanupStatement());
-      addSqlScriptAsResource(applicationArchive, configuration.get().getInitStatement());
+      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getCleanupStatement());
+      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getInitStatement());
    }
 
    // Private helper methods
@@ -81,8 +85,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    {
       final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
-      final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), configuration.get());
-      final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), configuration.get());
+      final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
+      final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
       final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = createProviderForScriptsToBeAppliedBeforeTest(testClass);
       final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
       final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = createProviderForCleanupScripts(testClass);
@@ -154,7 +158,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    private SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass)
    {
       return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
-                              .usingConfiguration(configuration.get())
+                              .usingConfiguration(configurationInstance.get())
                               .extractingMetadataUsing(new MetadataExtractor(testClass))
                               .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
                               .build(new ValueExtractor<ApplyScriptAfter>()
@@ -174,7 +178,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    private SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass)
    {
       return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
-                              .usingConfiguration(configuration.get())
+                              .usingConfiguration(configurationInstance.get())
                               .extractingMetadataUsing(new MetadataExtractor(testClass))
                               .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
                               .build(new ValueExtractor<ApplyScriptBefore>()
@@ -194,7 +198,7 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
    private SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass)
    {
       return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
-            .usingConfiguration(configuration.get())
+            .usingConfiguration(configurationInstance.get())
             .extractingMetadataUsing(new MetadataExtractor(testClass))
             .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
             .build(new ValueExtractor<CleanupUsingScript>()

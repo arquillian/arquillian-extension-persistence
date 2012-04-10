@@ -54,10 +54,13 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
    @Inject
-   Instance<PersistenceConfiguration> persistenceConfiguration;
+   Instance<PersistenceConfiguration> persistenceConfigurationInstance;
 
    @Inject
-   Instance<ArquillianDescriptor> arquillianDescriptor;
+   Instance<ArquillianDescriptor> arquillianDescriptorInstance;
+
+   @Inject
+   Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
    @Override
    public Archive<?> createAuxiliaryArchive()
@@ -89,7 +92,7 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
             "org.codehaus.jackson"
       ));
 
-      if (!persistenceConfiguration.get().isExcludePoi())
+      if (!dbunitConfigurationInstance.get().isExcludePoi())
       {
          libraries.add("org.apache.poi");
       }
@@ -100,13 +103,13 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
 
    private void addPersistenceConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
    {
-      archiveToExtend.addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), persistenceConfiguration.get().getPrefix() + "properties");
+      archiveToExtend.addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), persistenceConfigurationInstance.get().getPrefix() + "properties");
    }
 
    private ByteArrayOutputStream exportPersistenceConfigurationAsProperties()
    {
       final ByteArrayOutputStream output = new ByteArrayOutputStream();
-      final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(persistenceConfiguration.get());
+      final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(persistenceConfigurationInstance.get());
       exporter.toProperties(output);
       return output;
    }
@@ -114,7 +117,7 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
    private void addDBUnitConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
    {
       final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
-      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptor.get(), dbUnitConfigurationPrototype.getQualifier());
+      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
       final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
       archiveToExtend.addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
    }

@@ -31,9 +31,9 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldBeEmptyAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.ShouldBeEmptyAfterTest;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.data.dbunit.DataSetComparator;
 import org.jboss.arquillian.persistence.data.dbunit.DataSetUtils;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.data.descriptor.Format;
@@ -49,7 +49,7 @@ public class DataContentVerifier
    private Instance<DatabaseConnection> databaseConnection;
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<DBUnitConfiguration> dbunitConfiguration;
 
    @Inject
    private Instance<MetadataExtractor> metadataExtractor;
@@ -96,7 +96,7 @@ public class DataContentVerifier
    private IDataSet createExpectedDataSet(AfterPersistenceTest afterPersistenceTest) throws DataSetException
    {
       TestClass testClass = afterPersistenceTest.getTestClass();
-      CleanupVerificationDataSetProvider cleanupVerificationDataSetProvider = new CleanupVerificationDataSetProvider(testClass, metadataExtractor.get(), configuration.get());
+      CleanupVerificationDataSetProvider cleanupVerificationDataSetProvider = new CleanupVerificationDataSetProvider(testClass, metadataExtractor.get(), dbunitConfiguration.get());
       Collection<DataSetResourceDescriptor> descriptors = cleanupVerificationDataSetProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod());
       List<IDataSet> dataSets = new ArrayList<IDataSet>(descriptors.size());
       for (DataSetResourceDescriptor dataSetDescriptor : descriptors)

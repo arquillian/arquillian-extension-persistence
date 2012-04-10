@@ -23,12 +23,14 @@ import java.util.Properties;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 public class TestConfigurationLoader
 {
 
    private static final String DEFAULT_CONFIG_FILENAME = "arquillian.xml";
+   private static final String DBUNIT_CONFIG_FILENAME = "arquillian-dbunit.xml";
 
    public static InputStream loadArquillianConfiguration(String fileName)
    {
@@ -52,10 +54,20 @@ public class TestConfigurationLoader
       return createPersistenceConfigurationFrom(DEFAULT_CONFIG_FILENAME);
    }
 
+   public static DBUnitConfiguration createDefaultDBUnitConfiguration()
+   {
+      return createDBUnitConfigurationFrom(DBUNIT_CONFIG_FILENAME);
+   }
+
    public static Properties createPropertiesFromCustomConfigurationFile() throws IOException
    {
-      Properties properties = new Properties();
-      properties.load(loadArquillianConfiguration("properties/custom.arquillian.persistence.properties"));
+      return createPropertiesFrom("properties/custom.arquillian.persistence.properties");
+   }
+
+   public static Properties createPropertiesFrom(String fileName) throws IOException
+   {
+      final Properties properties = new Properties();
+      properties.load(loadArquillianConfiguration(fileName));
       return properties;
    }
 
@@ -67,4 +79,11 @@ public class TestConfigurationLoader
       return persistenceConfiguration;
    }
 
+   public static DBUnitConfiguration createDBUnitConfigurationFrom(String fileName)
+   {
+      ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
+      DBUnitConfiguration dbunitConfiguration = new DBUnitConfiguration();
+      Configuration.importTo(dbunitConfiguration).loadFrom(descriptor);
+      return dbunitConfiguration;
+   }
 }

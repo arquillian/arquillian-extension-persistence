@@ -29,6 +29,7 @@ import org.dbunit.dataset.filter.IColumnFilter;
 import org.jboss.arquillian.persistence.configuration.Configuration;
 import org.jboss.arquillian.persistence.data.dbunit.configuration.annotations.Feature;
 import org.jboss.arquillian.persistence.data.dbunit.configuration.annotations.Property;
+import org.jboss.arquillian.persistence.data.descriptor.Format;
 
 /**
  *
@@ -48,14 +49,14 @@ public class DBUnitConfiguration extends Configuration
    private static final long serialVersionUID = 4228916112870401398L;
 
    /**
-    * Enable or disable usage of JDBC batched statement by DbUnit.
+    * Enable or disable usage of JDBC batched statement by DBUnit.
     */
    @Feature
    private boolean batchedStatements = false;
 
    /**
     * Enable or disable case sensitive table names.
-    * If enabled, Dbunit handles all table names in a case sensitive way.
+    * If enabled, DBUnit handles all table names in a case sensitive way.
     *
     * Default value: false.
     */
@@ -63,7 +64,7 @@ public class DBUnitConfiguration extends Configuration
    private boolean caseSensitiveTableNames = false;
 
    /**
-    * Enable or disable multiple schemas support. If enabled, Dbunit access
+    * Enable or disable multiple schemas support. If enabled, DBUnit access
     * tables with names fully qualified by schema using this format: SCHEMA.TABLE.
     *
     * Default value: false.
@@ -73,7 +74,7 @@ public class DBUnitConfiguration extends Configuration
 
    /**
     * Enable or disable the warning message displayed when
-    * DbUnit encounter an unsupported data type.
+    * DBUnit encounter an unsupported data type.
     *
     * Default value: true.
     */
@@ -82,7 +83,7 @@ public class DBUnitConfiguration extends Configuration
 
    /**
     * Enable or disable the processing of oracle recycle bin tables (tables starting with BIN$).
-    * Oracle 10g recyle bin tables may break DbUnit's assumption of tables name uniqueness within
+    * Oracle 10g recycle bin tables may break DBUnit's assumption of tables name uniqueness within
     * a schema since these table are case sensitive. Enable this feature for Oracle 10g databases
     * until the bug in the oracle driver is fixed, which incorrectly reports this system tables
     * to DbUnit.
@@ -106,7 +107,7 @@ public class DBUnitConfiguration extends Configuration
    private String escapePattern;
 
    /**
-    * Used to configure the list of table types recognized by DbUnit.
+    * Used to configure the list of table types recognized by DBUnit.
     * @see java.sql.DatabaseMetaData#getTables for possible values.
     */
    @Property
@@ -144,7 +145,7 @@ public class DBUnitConfiguration extends Configuration
    private IColumnFilter identityColumnFilter;
 
    /**
-    * Integer object giving the size of batch updates.
+    * The size of batch updates.
     *
     * Default value: 100.
     */
@@ -152,7 +153,7 @@ public class DBUnitConfiguration extends Configuration
    private int batchSize = 100;
 
    /**
-    * Integer object giving the statement fetch size for loading data into a result set table.
+    * The statement fetch size for loading data into a result set table.
     *
     * Default value: 100.
     */
@@ -175,9 +176,28 @@ public class DBUnitConfiguration extends Configuration
 
    /**
     * Disables MS SQL Server automatic identifier generation for the execution of inserts.
-    * For usage with Microsoft driver you should append your jdbc connection with "SelectMethod=cursor".
+    * For usage with Microsoft driver you should append your JDBC connection with "SelectMethod=cursor".
     */
-   private boolean useIdentityInsert;
+   private boolean useIdentityInsert = false;
+
+   /**
+    * Folder where all datasets are located.
+    *
+    * Default : "datsets/"
+    */
+   private String defaultDataSetLocation = "datasets/";
+
+   /**
+    * Default format of data sets when file name is inferred from test method name,
+    * when file is not specified in {@link UsingDataSet} or {@link ShouldMatchDataSet}.
+    */
+   private Format defaultDataSetFormat = Format.XML;
+
+   /**
+    * Excludes Apache POI from packaging process, which results in slimier deployment.
+    * If you are not using Excel datasets you can safely turn it off.
+    */
+   private boolean excludePoi = false;
 
    public DBUnitConfiguration()
    {
@@ -352,6 +372,36 @@ public class DBUnitConfiguration extends Configuration
    public void setUseIdentityInsert(boolean useIdentityInsert)
    {
       this.useIdentityInsert = useIdentityInsert;
+   }
+
+   public String getDefaultDataSetLocation()
+   {
+      return defaultDataSetLocation;
+   }
+
+   public void setDefaultDataSetLocation(String defaultDataSetLocation)
+   {
+      this.defaultDataSetLocation = defaultDataSetLocation;
+   }
+
+   public Format getDefaultDataSetFormat()
+   {
+      return defaultDataSetFormat;
+   }
+
+   public void setDefaultDataSetFormat(Format defaultDataSetFormat)
+   {
+      this.defaultDataSetFormat = defaultDataSetFormat;
+   }
+
+   public boolean isExcludePoi()
+   {
+      return excludePoi;
+   }
+
+   public void setExcludePoi(boolean excludePoi)
+   {
+      this.excludePoi = excludePoi;
    }
 
 }

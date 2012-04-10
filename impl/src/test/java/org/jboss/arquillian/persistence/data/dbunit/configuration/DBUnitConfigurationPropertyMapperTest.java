@@ -87,7 +87,7 @@ public class DBUnitConfigurationPropertyMapperTest
                $("http://www.dbunit.org/features/qualifiedTableNames", true),
                $("http://www.dbunit.org/features/datatypeWarning", false),
                $("http://www.dbunit.org/features/skipOracleRecycleBinTables", true),
-               $("http://www.dbunit.org/properties/escapePattern", "\\\""),
+               $("http://www.dbunit.org/properties/escapePattern", "?"),
                $("http://www.dbunit.org/properties/batchSize", 200),
                $("http://www.dbunit.org/properties/fetchSize", 300)
             );

@@ -31,7 +31,7 @@ import org.jboss.arquillian.persistence.TransactionMode;
 import org.junit.After;
 import org.junit.Test;
 
-public class ConfigurationExporterToPropertyFilesTest
+public class PersistenceConfigurationExporterToPropertyFilesTest
 {
 
    private static final String ARQ_PROPERTY_FILE = "ike.properties";
@@ -56,7 +56,6 @@ public class ConfigurationExporterToPropertyFilesTest
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
       persistenceConfiguration.setDefaultDataSource("DefaultDS");
       persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
-      persistenceConfiguration.setDefaultDataSetLocation("ds");
 
       // when
       Configuration.exportUsing(persistenceConfiguration)
