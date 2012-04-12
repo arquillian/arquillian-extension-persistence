@@ -147,44 +147,60 @@ class ConfigurationTypeConverter
             throw new IllegalArgumentException("Unable to convert value " + value + " to URL", e);
          }
       }
-      else if (Format.class.equals(to))
+      else
       {
-         return to.cast(Format.valueOf(value.trim().toUpperCase()));
+         String trimmedValue = extractEnumName(value);
+         if (Format.class.equals(to))
+         {
+            return to.cast(Format.valueOf(trimmedValue.toUpperCase()));
+         }
+         else if (TransactionMode.class.equals(to))
+         {
+            return to.cast(TransactionMode.valueOf(trimmedValue.toUpperCase()));
+         }
+         else if (String[].class.equals(to))
+         {
+            final String[] convertedArray = value.split(",");
+            if (convertedArray.length == 0)
+            {
+               return to.cast(new String[0]);
+            }
+
+            trimElements(convertedArray);
+
+            if (convertedArray.length == 1 && hasOnlyBlanks(convertedArray))
+            {
+               return to.cast(new String[0]);
+            }
+
+            return to.cast(convertedArray);
+         }
+         else // Try to create instance via reflection
+         {
+            try
+            {
+               Object instance = Class.forName(value).newInstance();
+               return to.cast(instance);
+            }
+            catch (Exception e)
+            {
+               throw new IllegalArgumentException("Unable to convert value [" + value + "] to a class [" + to.getName() + "].", e);
+            }
+         }
       }
-      else if (TransactionMode.class.equals(to))
+
+   }
+
+   private String extractEnumName(final String value)
+   {
+      String trimmedValue = value.trim();
+      final int lastDot = trimmedValue.lastIndexOf('.');
+      final boolean potentiallyFullyQualifiedEnumName = lastDot > 0 && trimmedValue.length() > 1;
+      if (potentiallyFullyQualifiedEnumName)
       {
-         return to.cast(TransactionMode.valueOf(value.trim().toUpperCase()));
+         trimmedValue = trimmedValue.substring(lastDot + 1);
       }
-      else if (String[].class.equals(to))
-      {
-         final String[] convertedArray = value.split(",");
-         if (convertedArray.length == 0)
-         {
-            return to.cast(new String[0]);
-         }
-
-         trimElements(convertedArray);
-
-         if (convertedArray.length == 1 && hasOnlyBlanks(convertedArray))
-         {
-            return to.cast(new String[0]);
-         }
-
-         return to.cast(convertedArray);
-      }
-      else // Try to create instance via reflection
-      {
-         try
-         {
-            Object instance = Class.forName(value).newInstance();
-            return to.cast(instance);
-         }
-         catch (Exception e)
-         {
-            throw new IllegalArgumentException("Unable to convert value [" + value + "] to a class [" + to.getName() + "].", e);
-         }
-      }
-
+      return trimmedValue;
    }
 
    private void trimElements(String[] convertedArray)

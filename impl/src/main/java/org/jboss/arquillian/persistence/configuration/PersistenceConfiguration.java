@@ -59,6 +59,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return defaultDataSource;
    }
 
+   /**
+    * @param defaultDataSource Name of the default data source used to interact with the database
+    * (seeding, comparing etc). Required if not specified by using {@link DataSource} annotation.
+    */
    public void setDefaultDataSource(String defaultDataSource)
    {
       this.defaultDataSource = defaultDataSource;
@@ -74,6 +78,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return initStatement;
    }
 
+   /**
+    * @param initStatement Ad-hoc script or file location to be used before every test.
+    * Might be handy for turning off integrity checks.
+    */
    public void setInitStatement(String initStatement)
    {
       this.initStatement = initStatement;
@@ -84,6 +92,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return cleanupStatement;
    }
 
+   /**
+    * @param cleanupStatement Ad-hoc script or file location to be used after every test.
+    * Could be used to revert operations applied by {@link #initStatement}
+    */
    public void setCleanupStatement(String cleanupStatement)
    {
       this.cleanupStatement = cleanupStatement;
@@ -104,6 +116,11 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return defaultTransactionMode;
    }
 
+   /**
+    * @param defaultTransactionMode Transaction mode for running the tests if not specified explicitly by using {@link Transactional}.
+    * Possible values: {@link TransactionMode#COMMIT}, {@link TransactionMode#ROLLBACK} or {@link TransactionMode#DISABLED}.
+    * Default - {@link TransactionMode#COMMIT}
+    */
    public void setDefaultTransactionMode(TransactionMode defaultTransactionMode)
    {
       this.defaultTransactionMode = defaultTransactionMode;
@@ -114,6 +131,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return dumpData;
    }
 
+   /**
+    * @param dumpData Enables database state dumping in following phases BEFORE_SEED, AFTER_SEED, BEFORE_CLEAN, AFTER_CLEAN.
+    * Might be handy for debugging. Default value is <code>false</code>.
+    */
    public void setDumpData(boolean dumpData)
    {
       this.dumpData = dumpData;
@@ -124,6 +145,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return dumpDirectory;
    }
 
+   /**
+    * @param dumpDirectory Folder where all database dumps will be stored.
+    * Default value is OS-specific temporary directory defined in property <code>java.io.tmpdir</code>.
+    */
    public void setDumpDirectory(String dumpDirectory)
    {
       if (dumpDirectory.endsWith("/"))
@@ -138,6 +163,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return userTransactionJndi;
    }
 
+   /**
+    * @param userTransactionJndi {@link UserTransaction} JNDI used to wrap tests in transaction.
+    * Default value is <code>java:comp/UserTransaction</code>
+    */
    public void setUserTransactionJndi(String userTransactionJndi)
    {
       this.userTransactionJndi = userTransactionJndi;
@@ -148,6 +177,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return defaultSqlScriptLocation;
    }
 
+   /**
+    * @param defaultSqlScriptLocation Folder where all custom SQL scripts are located.
+    * Default value is <code>scripts</code>
+    */
    public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
    {
       this.defaultSqlScriptLocation = defaultSqlScriptLocation;

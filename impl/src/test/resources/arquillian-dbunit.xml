@@ -21,7 +21,7 @@
     <property name="fetchSize">300</property>
     <property name="metadataHandler">org.dbunit.ext.netezza.NetezzaMetadataHandler</property>
     <property name="useIdentityInsert">true</property>
-    <property name="defaultDataSetFormat">EXCEL</property>
+    <property name="defaultDataSetFormat">Format.EXCEL</property>
     <property name="defaultDataSetLocation">ds</property>
   </extension>
 
