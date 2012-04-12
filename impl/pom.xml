@@ -126,6 +126,11 @@
     <dependency>
       <groupId>org.jboss.shrinkwrap</groupId>
       <artifactId>shrinkwrap-impl-base</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+        <artifactId>shrinkwrap-descriptors-api-base</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
