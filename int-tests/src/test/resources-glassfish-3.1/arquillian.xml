@@ -19,6 +19,12 @@
     <property name="defaultDataSource">arq/hsql</property>
     <property name="initStatement">set referential_integrity FALSE</property>
     <property name="dumpData">true</property>
+    <property name="dumpDirectory">/home/bartek/tmp/current</property>
+    <property name="excludeTablesFromCleanup">SEQUENCE</property>
+  </extension>
+
+  <extension qualifier="persistence-dbunit">
+    <property name="excludeTablesFromCleanup">SEQUENCE</property>
   </extension>
 
 </arquillian>

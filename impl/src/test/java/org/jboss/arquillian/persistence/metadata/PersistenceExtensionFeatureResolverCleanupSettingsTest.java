@@ -34,7 +34,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
-   public void should_have_default_cleanup_test_phase_set_to_before() throws Exception
+   public void should_have_default_cleanup_test_phase_set_to_after() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
@@ -45,7 +45,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
       TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.BEFORE);
+      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
    }
 
    @Test
@@ -90,7 +90,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
       TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
 
       // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.getDefault());
+      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
    }
 
    @Test
@@ -109,7 +109,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
    }
 
    @Test
-   public void should_cleanup_before_when_no_annotation_defined() throws Exception
+   public void should_cleanup_after_when_no_annotation_defined() throws Exception
    {
       // given
       TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
@@ -117,10 +117,10 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
       PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      boolean shouldCleanupBefore = persistenceExtensionFeatureResolver.shouldCleanupBefore();
+      boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
 
       // then
-      assertThat(shouldCleanupBefore).isTrue();
+      assertThat(shouldCleanupAfter).isTrue();
    }
 
    @Test

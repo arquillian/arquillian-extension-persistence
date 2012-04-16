@@ -26,8 +26,10 @@ import java.util.Set;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.filter.ExcludeTableFilter;
 
 /**
  *
@@ -80,6 +82,11 @@ public class DataSetUtils
          names.add(column.getColumnName().toLowerCase());
       }
       return names;
+   }
+
+   public static IDataSet excludeTables(IDataSet dataSet, String ... tablesToExclude)
+   {
+      return new FilteredDataSet(new ExcludeTableFilter(tablesToExclude), dataSet);
    }
 
 }

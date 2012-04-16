@@ -24,13 +24,8 @@ package org.jboss.arquillian.persistence;
  */
 public enum TestExecutionPhase
 {
-
    BEFORE,
    AFTER,
-   NONE;
-
-   public static TestExecutionPhase getDefault()
-   {
-      return BEFORE;
-   }
+   NONE,
+   DEFAULT;
 }

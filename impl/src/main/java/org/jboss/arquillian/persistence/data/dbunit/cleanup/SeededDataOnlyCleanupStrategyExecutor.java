@@ -39,11 +39,12 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
    }
 
    @Override
-   public void cleanupDatabase()
+   public void cleanupDatabase(String ... tablesToExclude)
    {
       try
       {
-         final IDataSet dataSet = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
+         final IDataSet mergeDataSets = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
+         final IDataSet dataSet = DataSetUtils.excludeTables(mergeDataSets, tablesToExclude);
          new TransactionOperation(DatabaseOperation.DELETE).execute(connection, dataSet);
       }
       catch (Exception e)

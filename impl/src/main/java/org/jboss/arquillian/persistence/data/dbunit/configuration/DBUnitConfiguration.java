@@ -105,6 +105,8 @@ public class DBUnitConfiguration extends Configuration
 
    private boolean excludePoi = false;
 
+   private String[] excludeTablesFromCleanup = new String[0];
+
    public DBUnitConfiguration()
    {
       super("persistence-dbunit", "arquillian.extension.persistence.dbunit.");
@@ -405,5 +407,22 @@ public class DBUnitConfiguration extends Configuration
    {
       this.excludePoi = excludePoi;
    }
+
+   public String[] getExcludeTablesFromCleanup()
+   {
+      return excludeTablesFromCleanup;
+   }
+
+   /**
+    * @param excludeTablesFromCleanup List of tables to be excluded from cleanup procedure.
+    * Especially handy for sequence tables which are most likely to be cleared
+    * when using STRICT cleanup strategy.
+    */
+   public void setExcludeTablesFromCleanup(String[] excludeTablesFromCleanup)
+   {
+      this.excludeTablesFromCleanup = excludeTablesFromCleanup;
+   }
+
+
 
 }

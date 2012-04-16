@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.configuration;
 
 import java.io.Serializable;
 
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
 
 /**
@@ -46,6 +47,10 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
 
    private String userTransactionJndi = "java:comp/UserTransaction";
+
+   private TestExecutionPhase defaultCleanupPhase = TestExecutionPhase.AFTER;
+
+   private TestExecutionPhase defaultCleanupUsingScriptPhase = TestExecutionPhase.AFTER;
 
    public PersistenceConfiguration()
    {
@@ -184,6 +189,34 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
    {
       this.defaultSqlScriptLocation = defaultSqlScriptLocation;
+   }
+
+   public TestExecutionPhase getDefaultCleanupPhase()
+   {
+      return defaultCleanupPhase;
+   }
+
+   /**
+    * @param defaultCleanupPhase Defines default cleanup phase.
+    * If not specified it's assumed to be AFTER test method.
+    */
+   public void setDefaultCleanupPhase(TestExecutionPhase defaultCleanupPhase)
+   {
+      this.defaultCleanupPhase = defaultCleanupPhase;
+   }
+
+   public TestExecutionPhase getDefaultCleanupUsingScriptPhase()
+   {
+      return defaultCleanupUsingScriptPhase;
+   }
+
+   /**
+    * @param defaultCleanupPhase Defines default cleanup phase for custom SQL scripts.
+    * If not specified it's assumed to be AFTER test method.
+    */
+   public void setDefaultCleanupUsingScriptPhase(TestExecutionPhase defaultCleanupUsingScriptPhase)
+   {
+      this.defaultCleanupUsingScriptPhase = defaultCleanupUsingScriptPhase;
    }
 
 }

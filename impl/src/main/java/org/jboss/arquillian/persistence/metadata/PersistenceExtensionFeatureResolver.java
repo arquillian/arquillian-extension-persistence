@@ -101,8 +101,8 @@ public class PersistenceExtensionFeatureResolver
    {
       final Cleanup cleanupAnnotation = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
 
-      TestExecutionPhase phase = TestExecutionPhase.getDefault();
-      if (cleanupAnnotation != null)
+      TestExecutionPhase phase = configuration.getDefaultCleanupPhase();
+      if (cleanupAnnotation != null && !TestExecutionPhase.DEFAULT.equals(cleanupAnnotation.phase()))
       {
          phase = cleanupAnnotation.phase();
       }
@@ -114,8 +114,8 @@ public class PersistenceExtensionFeatureResolver
    {
       final CleanupUsingScript cleanupAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
 
-      TestExecutionPhase phase = TestExecutionPhase.getDefault();
-      if (cleanupAnnotation != null)
+      TestExecutionPhase phase = configuration.getDefaultCleanupUsingScriptPhase();
+      if (cleanupAnnotation != null && !TestExecutionPhase.DEFAULT.equals(cleanupAnnotation.phase()))
       {
          phase = cleanupAnnotation.phase();
       }

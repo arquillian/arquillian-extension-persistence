@@ -63,8 +63,8 @@ public class DataCleanupUsingScriptEventHandlingTest
    @Test
    @CleanupUsingScript("delete-users.sql")
    @CleanupShouldNotBeTriggered
-   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_cleanup_data_using_custom_sql_script_before_test_when_not_specified() throws Exception
+   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.AFTER)
+   public void should_cleanup_data_using_custom_sql_script_after_test_when_not_specified() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -81,10 +81,10 @@ public class DataCleanupUsingScriptEventHandlingTest
    }
 
    @Test
-   @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.AFTER)
+   @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
    @ShouldMatchDataSet("empty.xml")
    @CleanupShouldNotBeTriggered
-   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.AFTER)
+   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
    public void should_cleanup_data_using_custom_sql_script_after_test() throws Exception
    {
       // given

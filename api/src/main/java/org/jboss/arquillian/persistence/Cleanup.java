@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 
 /**
  * Determines when database cleanup should be triggered. Default test phase when
- * is {@link TestExecutionPhase#BEFORE}.
+ * is {@link TestExecutionPhase#AFTER}. You can set it also globally in <code>arquillian.xml</code>.
  *
  * If not specified otherwise the whole database is erased.
  * You can change this behaviour by setting up {@link #strategy()} field.
@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
 public @interface Cleanup
 {
 
-   TestExecutionPhase phase() default TestExecutionPhase.BEFORE;
+   TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
    CleanupStrategy strategy() default CleanupStrategy.STRICT;
 }

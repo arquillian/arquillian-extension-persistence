@@ -25,7 +25,6 @@ import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.shrinkwrap.api.Archive;
@@ -52,7 +51,6 @@ public class ApplyingCustomScriptsTest
    EntityManager em;
 
    @Test
-   @Cleanup(phase = TestExecutionPhase.NONE)
    @ApplyScriptAfter("users.sql")
    @ShouldMatchDataSet("two-users.yml")
    @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.AFTER)

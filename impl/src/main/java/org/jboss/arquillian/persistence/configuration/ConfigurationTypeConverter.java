@@ -150,13 +150,11 @@ class ConfigurationTypeConverter
       else
       {
          String trimmedValue = extractEnumName(value);
-         if (Format.class.equals(to))
+         if (to.isEnum())
          {
-            return to.cast(Format.valueOf(trimmedValue.toUpperCase()));
-         }
-         else if (TransactionMode.class.equals(to))
-         {
-            return to.cast(TransactionMode.valueOf(trimmedValue.toUpperCase()));
+            @SuppressWarnings({"unchecked","rawtypes"})
+            final T enumInstance = (T) Enum.valueOf((Class<Enum>) to, trimmedValue.toUpperCase());
+            return enumInstance;
          }
          else if (String[].class.equals(to))
          {

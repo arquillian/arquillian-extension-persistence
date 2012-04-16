@@ -28,6 +28,7 @@
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.mssql.MsSqlDataTypeFactory</property>
     <property name="useIdentityInsert">true</property>
+    <property name="excludeTablesFromCleanup">hibernate_sequence</property>
   </extension>
 
 </arquillian>

@@ -64,22 +64,24 @@ public class DataContentVerifier
       {
          Method testMethod = afterPersistenceTest.getTestMethod();
          DatabaseShouldBeEmptyAfterTest shouldBeEmptyAfterTest = testMethod.getAnnotation(DatabaseShouldBeEmptyAfterTest.class);
+         final IDataSet actualContent = databaseConnection.get().createDataSet();
          if (shouldBeEmptyAfterTest != null)
          {
-            dataSetComparator.shouldBeEmpty(databaseConnection.get().createDataSet(), assertionErrorCollector.get());
+            final IDataSet filteredActualContent = DataSetUtils.excludeTables(actualContent, dbunitConfiguration.get().getExcludeTablesFromCleanup());
+            dataSetComparator.shouldBeEmpty(filteredActualContent, assertionErrorCollector.get());
          }
 
          DatabaseShouldContainAfterTest databaseShouldContain = testMethod.getAnnotation(DatabaseShouldContainAfterTest.class);
          if (databaseShouldContain != null)
          {
             final IDataSet expectedDataSet = createExpectedDataSet(afterPersistenceTest);
-            dataSetComparator.compare(databaseConnection.get().createDataSet(), expectedDataSet, assertionErrorCollector.get());
+            dataSetComparator.compare(actualContent, expectedDataSet, assertionErrorCollector.get());
          }
 
          ShouldBeEmptyAfterTest shouldBeEmpty = testMethod.getAnnotation(ShouldBeEmptyAfterTest.class);
          if (shouldBeEmpty != null)
          {
-            final IDataSet expectedDataSet = databaseConnection.get().createDataSet();
+            final IDataSet expectedDataSet = actualContent;
             for (String tableName : shouldBeEmpty.value())
             {
                dataSetComparator.shouldBeEmpty(tableName, expectedDataSet, assertionErrorCollector.get());

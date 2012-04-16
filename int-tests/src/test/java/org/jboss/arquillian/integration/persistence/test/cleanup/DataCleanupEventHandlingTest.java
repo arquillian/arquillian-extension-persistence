@@ -61,9 +61,9 @@ public class DataCleanupEventHandlingTest
    EntityManager em;
 
    @Test
-   @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
+   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
    @CleanupUsingScriptShouldNotBeTriggered
-   public void should_cleanup_data_before_test_when_not_specified() throws Exception
+   public void should_cleanup_data_after_test_when_not_specified() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -80,10 +80,10 @@ public class DataCleanupEventHandlingTest
    }
 
    @Test
-   @Cleanup(phase = TestExecutionPhase.AFTER)
-   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+   @Cleanup(phase = TestExecutionPhase.BEFORE)
+   @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
    @CleanupUsingScriptShouldNotBeTriggered
-   public void should_cleanup_data_after_test() throws Exception
+   public void should_cleanup_data_before_test() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");

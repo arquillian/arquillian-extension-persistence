@@ -187,7 +187,7 @@ public class DBUnitDataHandler implements DataHandler
    private void cleanDatabase(CleanupStrategy cleanupStrategy)
    {
       final CleanupStrategyExecutor cleanupStrategyExecutor = new CleanupStrategyProvider(databaseConnection.get(), dataSetRegister.get()).create(cleanupStrategy);
-      cleanupStrategyExecutor.cleanupDatabase();
+      cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
    }
 
 }

@@ -202,6 +202,34 @@ public class ConfigurationTypeConverterTest
    }
 
    @Test
+   public void should_convert_format_to_corresponding_enum_with_enum_name_as_prefix() throws Exception
+   {
+      // given
+      Format expectedFormat = Format.JSON;
+      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
+
+      // when
+      Format convertedFormat = typeConverter.convert("Format.JSON", Format.class);
+
+      // then
+      assertThat(convertedFormat).isEqualTo(expectedFormat);
+   }
+
+   @Test
+   public void should_convert_format_to_corresponding_enum_with_fully_qualified_enum_name_as_prefix() throws Exception
+   {
+      // given
+      Format expectedFormat = Format.JSON;
+      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
+
+      // when
+      Format convertedFormat = typeConverter.convert("org.jboss.arquillian.persistence.data.descriptor.Format.JSON", Format.class);
+
+      // then
+      assertThat(convertedFormat).isEqualTo(expectedFormat);
+   }
+
+   @Test
    public void should_convert_format_to_corresponding_enum_ignoring_case_and_whitespaces() throws Exception
    {
       // given

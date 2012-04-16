@@ -21,6 +21,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
+import org.jboss.arquillian.persistence.data.dbunit.DataSetUtils;
 import org.jboss.arquillian.persistence.data.dbunit.exception.DBUnitDataSetHandlingException;
 
 public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
@@ -34,11 +35,11 @@ public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
    }
 
    @Override
-   public void cleanupDatabase()
+   public void cleanupDatabase(String ... tablesToExclude)
    {
       try
       {
-         final IDataSet dataSet = connection.createDataSet();
+         final IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
          new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
       }
       catch (Exception e)
