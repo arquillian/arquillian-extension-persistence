@@ -103,7 +103,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
@@ -120,7 +120,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
@@ -137,7 +137,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
@@ -171,7 +171,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       user.addAddress(address);
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getAddresses()).hasSize(1);
@@ -264,7 +264,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       clarkKent.setNickname(null);
-      em.merge(clarkKent);
+      clarkKent = em.merge(clarkKent);
 
       // then
       // verified by DataSet comparision
@@ -280,7 +280,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       clarkKent.setNickname(null);
-      em.merge(clarkKent);
+      clarkKent = em.merge(clarkKent);
 
       // then
       // verified by DataSet comparision
@@ -297,7 +297,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       clarkKent.setNickname(null);
-      em.merge(clarkKent);
+      clarkKent = em.merge(clarkKent);
 
       // then
       // verified by DataSet comparision
@@ -313,7 +313,7 @@ public abstract class NonDeployableUserPersistenceTest
 
       // when
       clarkKent.setNickname(null);
-      em.merge(clarkKent);
+      clarkKent = em.merge(clarkKent);
 
       // then
       // verified by DataSet comparision

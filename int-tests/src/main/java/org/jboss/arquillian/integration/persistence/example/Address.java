@@ -20,7 +20,9 @@ package org.jboss.arquillian.integration.persistence.example;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -29,8 +31,11 @@ public class Address
 {
 
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Version
+   private Long version;
 
    @Basic
    @NotNull @Size(min = 4)
@@ -47,7 +52,7 @@ public class Address
    @NotNull
    private Integer zipCode;
 
-   Address()
+   protected Address()
    {
       // To satisfy JPA
    }
@@ -112,7 +117,13 @@ public class Address
       this.zipCode = zipCode;
    }
 
+   public void setVersion(Long version)
+   {
+      this.version = version;
+   }
 
-
-
+   public Long getVersion()
+   {
+      return version;
+   }
 }

@@ -1,0 +1,210 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.jboss.arquillian.persistence.dbunit;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.operation.TransactionOperation;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.jboss.arquillian.persistence.DataSeedStrategy;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.data.DataHandler;
+import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
+import org.jboss.arquillian.persistence.core.event.ApplyCleanupStatement;
+import org.jboss.arquillian.persistence.core.event.ApplyInitStatement;
+import org.jboss.arquillian.persistence.core.event.CleanupData;
+import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
+import org.jboss.arquillian.persistence.core.event.CompareData;
+import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
+import org.jboss.arquillian.persistence.core.event.PrepareData;
+import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.core.util.Strings;
+import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyExecutor;
+import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrategyProvider;
+import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class DBUnitDataHandler implements DataHandler
+{
+
+   @Inject
+   private Instance<DatabaseConnection> databaseConnection;
+
+   @Inject
+   private Instance<DataSetRegister> dataSetRegister;
+
+   @Inject
+   private Instance<AssertionErrorCollector> assertionErrorCollector;
+
+   @Inject
+   private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
+
+   @Inject
+   private Instance<PersistenceConfiguration> configuration;
+
+   @Inject
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
+
+   @Override
+   public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
+   {
+      final String initScript = applyInitStatementEvent.getInitStatement();
+      if (initScript == null || Strings.isEmpty(initScript))
+      {
+         return;
+      }
+      executeScript(initScript);
+   }
+
+   @Override
+   public void cleanupStatements(@Observes ApplyCleanupStatement applyCleanupStatementEvent)
+   {
+      final String cleanupScript = applyCleanupStatementEvent.getCleanupStatement();
+      if (cleanupScript == null || Strings.isEmpty(cleanupScript))
+      {
+         return;
+      }
+      executeScript(cleanupScript);
+   }
+
+   @Override
+   public void prepare(@Observes PrepareData prepareDataEvent)
+   {
+      try
+      {
+         fillDatabase();
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitDataSetHandlingException("Failed while seeding database.", e);
+      }
+   }
+
+   @Override
+   public void compare(@Observes CompareData compareDataEvent)
+   {
+      try
+      {
+         IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
+         new DataSetComparator(compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitDataSetHandlingException("Failed while comparing database state with provided data sets.", e);
+      }
+   }
+
+   @Override
+   public void cleanup(@Observes CleanupData cleanupDataEvent)
+   {
+      cleanDatabase(cleanupDataEvent.cleanupStrategy);
+   }
+
+   @Override
+   public void cleanupUsingScript(@Observes CleanupDataUsingScript cleanupDataUsingScriptEvent)
+   {
+      for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors())
+      {
+         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
+         executeScript(script);
+      }
+   }
+
+   @Override
+   public void executeScripts(@Observes ExecuteScripts executeScriptsEvent)
+   {
+      for (SqlScriptResourceDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
+      {
+         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
+         executeScript(script);
+      }
+
+   }
+
+   // -- Private methods
+
+   private void executeScript(String script)
+   {
+      Statement statement = null;
+      try
+      {
+         statement = databaseConnection.get().getConnection().createStatement();
+         statement.execute(script);
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitDataSetHandlingException("Unable to execute script: " + script, e);
+      }
+      finally
+      {
+         if (statement != null)
+         {
+            try
+            {
+               statement.close();
+            }
+            catch (SQLException e)
+            {
+               throw new DBUnitDataSetHandlingException("Unable to close statement after script execution.", e);
+            }
+         }
+      }
+   }
+
+   private void fillDatabase() throws Exception
+   {
+      final IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
+      final DatabaseOperation selectedSeedingStrategy = getSelectedSeedingStrategy();
+      new TransactionOperation(selectedSeedingStrategy).execute(databaseConnection.get(), initialDataSet);
+   }
+
+   private DatabaseOperation getSelectedSeedingStrategy()
+   {
+      final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
+      final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
+      // TODO
+//      final DataSeedStrategy dataSeedStrategy = configuration.get().getDataSeedStrategy();
+      final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
+      final DatabaseOperation selectedSeedingStrategy = dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
+      return selectedSeedingStrategy;
+   }
+
+   private void cleanDatabase(CleanupStrategy cleanupStrategy)
+   {
+      final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(databaseConnection.get(), dataSetRegister.get()));
+      cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
+   }
+
+}

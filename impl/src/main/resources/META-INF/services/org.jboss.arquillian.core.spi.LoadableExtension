@@ -1,1 +1,1 @@
-org.jboss.arquillian.persistence.client.PersistenceExtension
+org.jboss.arquillian.persistence.core.client.PersistenceExtension

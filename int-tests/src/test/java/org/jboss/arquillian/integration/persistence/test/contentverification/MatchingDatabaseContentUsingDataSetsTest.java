@@ -63,7 +63,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
@@ -81,7 +81,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
@@ -98,7 +98,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
       // when
       user.setPassword("LexLuthor");
-      em.merge(user);
+      user = em.merge(user);
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);

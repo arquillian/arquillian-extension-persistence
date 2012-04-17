@@ -25,11 +25,11 @@ import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArch
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.integration.persistence.testextension.data.CleanupVerificationDataSetProvider;
-import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.PersistenceExtensionEnabler;
+import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

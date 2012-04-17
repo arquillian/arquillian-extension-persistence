@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.event.PersistenceEvent;
+import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
 
 public class EventHandlingVerifier
 {

@@ -27,6 +27,7 @@ infinitest.filters
 
 # Logs
 *.log
+*.log~
 
 # Libreoffice leftovers (XLS)
 .~lock*

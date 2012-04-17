@@ -31,15 +31,15 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldBeEmptyAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.ShouldBeEmptyAfterTest;
-import org.jboss.arquillian.persistence.data.dbunit.DataSetComparator;
-import org.jboss.arquillian.persistence.data.dbunit.DataSetUtils;
-import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.data.dbunit.dataset.DataSetBuilder;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.data.descriptor.Format;
-import org.jboss.arquillian.persistence.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.dbunit.DataSetComparator;
+import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.test.spi.TestClass;
 
 public class DataContentVerifier

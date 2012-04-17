@@ -44,5 +44,5 @@ public @interface Cleanup
 
    TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
-   CleanupStrategy strategy() default CleanupStrategy.STRICT;
+   CleanupStrategy strategy() default CleanupStrategy.DEFAULT;
 }

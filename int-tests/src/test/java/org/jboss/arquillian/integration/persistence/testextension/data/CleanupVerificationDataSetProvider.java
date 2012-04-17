@@ -23,15 +23,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
-import org.jboss.arquillian.persistence.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.data.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.data.descriptor.Format;
-import org.jboss.arquillian.persistence.data.naming.ExpectedDataSetFileNamingStrategy;
-import org.jboss.arquillian.persistence.exception.UnsupportedDataFormatException;
-import org.jboss.arquillian.persistence.metadata.AnnotationInspector;
-import org.jboss.arquillian.persistence.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.metadata.provider.ResourceProvider;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
+import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatException;
+import org.jboss.arquillian.persistence.core.metadata.AnnotationInspector;
+import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**

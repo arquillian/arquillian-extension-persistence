@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence;
 
 
+
 /**
  * Defines strategy to be applied for {@link @Cleanup} operation.
  *
@@ -30,20 +31,58 @@ public enum CleanupStrategy
     * Cleans entire database.
     * Might require turning off database constraints (e.g. referential integrity).
     */
-   STRICT,
+   STRICT {
+      @Override
+      public <T> T provide(StrategyProvider<T> provider)
+      {
+         return provider.strictStrategy();
+      }
+   },
+
    /**
     * Deletes only those entries which were defined in data sets.
     */
-   USED_ROWS_ONLY,
+   USED_ROWS_ONLY {
+      @Override
+      public <T> T provide(StrategyProvider<T> provider)
+      {
+         return provider.usedRowsOnlyStrategy();
+      }
+   },
+
    /**
     * Deletes only those tables which were used in data sets.
     */
-   USED_TABLES_ONLY;
+   USED_TABLES_ONLY {
+      @Override
+      public <T> T provide(StrategyProvider<T> provider)
+      {
+         return provider.usedTablesOnlyStrategy();
+      }
+   },
 
-   public static CleanupStrategy getDefault()
+   /**
+    * This is guarding enum instance used to indicate
+    * that use has not defined cleanup strategy explicitly.
+    * Therefore one defined globally in <code>arquillian.xml</code>
+    * should be used.
+    */
+   DEFAULT {
+      @Override
+      public <T> T provide(StrategyProvider<T> provider)
+      {
+         return provider.defaultStrategy();
+      }
+   };
+
+   public abstract <T> T provide(StrategyProvider<T> provider);
+
+   public interface StrategyProvider<T>
    {
-      return STRICT;
+      T strictStrategy();
+      T usedTablesOnlyStrategy();
+      T usedRowsOnlyStrategy();
+      T defaultStrategy();
    }
-
 
 }

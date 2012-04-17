@@ -67,10 +67,10 @@ public class UserAccount implements Serializable
    @Size(max = 128)
    private String nickname;
 
-   @OneToMany(cascade = {CascadeType.ALL})
+   @OneToMany(cascade = CascadeType.ALL)
    private Set<Address> addresses = new HashSet<Address>();
 
-   UserAccount()
+   protected UserAccount()
    {
       // To satisfy JPA
    }
