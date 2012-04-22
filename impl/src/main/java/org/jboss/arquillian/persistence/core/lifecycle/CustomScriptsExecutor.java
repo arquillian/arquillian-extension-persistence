@@ -17,16 +17,23 @@
  */
 package org.jboss.arquillian.persistence.core.lifecycle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.descriptor.InlineSqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.ApplyCleanupStatement;
-import org.jboss.arquillian.persistence.core.event.ApplyInitStatement;
+import org.jboss.arquillian.persistence.core.event.ApplyScriptsAfterTest;
+import org.jboss.arquillian.persistence.core.event.ApplyScriptsBeforeTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.jboss.arquillian.persistence.core.util.Strings;
 
 /**
  *
@@ -40,43 +47,52 @@ public class CustomScriptsExecutor
    private Instance<PersistenceConfiguration> configuration;
 
    @Inject
-   private Event<ApplyInitStatement> applyInitStatementEvent;
+   private Event<ApplyScriptsBeforeTest> applyScriptsBeforeTestEvent;
 
    @Inject
-   private Event<ApplyCleanupStatement> applyCleanupStatementEvent;
+   private Event<ApplyScriptsAfterTest> applyScriptsAfterTestEvent;
 
    public void executeBeforeTest(@Observes(precedence = 50) BeforePersistenceTest beforePersistenceTest)
    {
-      executeInitStatement();
+      executeScriptsBeforeTest(beforePersistenceTest);
    }
 
    public void executeAfterTest(@Observes(precedence = 10) AfterPersistenceTest afterPersistenceTest)
    {
-      executeCleanupStatement();
+      executeScriptsAfterTest(afterPersistenceTest);
    }
 
    // Private methods
 
-   private void executeInitStatement()
+   private void executeScriptsBeforeTest(BeforePersistenceTest beforePersistenceTest)
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String initStatement = persistenceConfiguration.getInitStatement();
-      if (ScriptHelper.isSqlScriptFile(initStatement))
-      {
-         initStatement = ScriptHelper.loadScript(initStatement);
-      }
-      applyInitStatementEvent.fire(new ApplyInitStatement(initStatement));
+      String scriptsToExecuteBeforeTest = persistenceConfiguration.getScriptsToExecuteBeforeTest();
+      final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteBeforeTest);
+      applyScriptsBeforeTestEvent.fire(new ApplyScriptsBeforeTest(beforePersistenceTest, scripts));
    }
 
-   private void executeCleanupStatement()
+   private void executeScriptsAfterTest(AfterPersistenceTest afterPersistenceTest)
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String cleanupStatement = persistenceConfiguration.getCleanupStatement();
-      if (ScriptHelper.isSqlScriptFile(cleanupStatement))
+      String scriptsToExecuteAfterTest = persistenceConfiguration.getScriptsToExecuteAfterTest();
+      final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteAfterTest);
+      applyScriptsAfterTestEvent.fire(new ApplyScriptsAfterTest(afterPersistenceTest, scripts));
+
+   }
+
+   private List<SqlScriptResourceDescriptor> processScripts(String script)
+   {
+      final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
+      if (ScriptHelper.isSqlScriptFile(script))
       {
-         cleanupStatement = ScriptHelper.loadScript(cleanupStatement);
+         processedScripts.add(new FileSqlScriptResourceDescriptor(script));
       }
-      applyCleanupStatementEvent.fire(new ApplyCleanupStatement(cleanupStatement));
+      else if (!Strings.isEmpty(script))
+      {
+         processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
+      }
+      return processedScripts;
    }
 
 }

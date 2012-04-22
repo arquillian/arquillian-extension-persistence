@@ -17,30 +17,17 @@
  */
 package org.jboss.arquillian.persistence.core.data;
 
-import org.jboss.arquillian.persistence.core.event.ApplyCleanupStatement;
-import org.jboss.arquillian.persistence.core.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.core.event.CompareData;
-import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.core.event.PrepareData;
 
 public interface DataHandler
 {
 
-   void initStatements(ApplyInitStatement applyInitStatementEvent);
-
-   void cleanupStatements(ApplyCleanupStatement applyCleanupStatementEvent);
-
    void prepare(PrepareData prepareDataEvent);
 
    void compare(CompareData compareDataEvent);
 
-   void cleanupUsingScript(CleanupDataUsingScript cleanupDataUsingScriptEvent);
-
    void cleanup(CleanupData cleanupDataEvent);
-
-   void executeScripts(ExecuteScripts executeScriptsEvent);
-
 
 }

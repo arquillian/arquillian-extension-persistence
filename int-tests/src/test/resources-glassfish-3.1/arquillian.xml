@@ -17,7 +17,7 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">arq/hsql</property>
-    <property name="initStatement">SET REFERENTIAL_INTEGRITY FALSE;</property>
+    <property name="scriptsToExecuteBeforeTest">SET REFERENTIAL_INTEGRITY FALSE;</property>
     <property name="dumpData">true</property>
     <property name="dumpDirectory">/home/bartek/tmp/current</property>
     <property name="excludeTablesFromCleanup">SEQUENCE</property>

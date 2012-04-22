@@ -15,35 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.descriptor;
+package org.jboss.arquillian.persistence.core.data.descriptor;
 
-import org.dbunit.dataset.IDataSet;
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 
 
 /**
  *
- * Contains information about the file - it's location and {@link Format format} inferred from it's name.
+ * Inline SQL script descriptor.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
+public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
 {
 
-   private final Format format;
+   private final String content;
 
-   public DataSetResourceDescriptor(String location, Format format)
+   public InlineSqlScriptResourceDescriptor(String content)
    {
-      super(location);
-      this.format = format;
+      super("-inline-file-");
+      this.content = content;
    }
 
    @Override
-   public IDataSet getContent()
+   public String getContent()
    {
-      return DataSetBuilder.builderFor(format).build(location);
+      return content;
    }
 
    @Override
@@ -54,34 +51,28 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
          return true;
       }
 
-      if (!(obj instanceof DataSetResourceDescriptor))
+      if (!(obj instanceof InlineSqlScriptResourceDescriptor))
       {
          return false;
       }
 
-      final DataSetResourceDescriptor other = (DataSetResourceDescriptor) obj;
-      return location.equals(other.location) && format.equals(other.format);
+      final InlineSqlScriptResourceDescriptor other = (InlineSqlScriptResourceDescriptor) obj;
+      return content.equals(other.content);
    }
 
    @Override
    public int hashCode()
    {
-      final int prime = 17;
+      final int prime = 13;
       int result = 1;
-      result = prime * result + ((location == null) ? 0 : location.hashCode());
-      result = prime * result + ((format == null) ? 0 : format.hashCode());
+      result = prime * result + ((content == null) ? 0 : content.hashCode());
       return result;
    }
 
    @Override
    public String toString()
    {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + ", " + format + "]";
-   }
-
-   public Format getFormat()
-   {
-      return format;
+      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + content + "]";
    }
 
 }

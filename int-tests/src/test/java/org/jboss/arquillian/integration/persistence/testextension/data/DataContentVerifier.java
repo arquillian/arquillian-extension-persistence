@@ -38,8 +38,6 @@ import org.jboss.arquillian.persistence.dbunit.DataSetComparator;
 import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.test.spi.TestClass;
 
 public class DataContentVerifier
@@ -103,9 +101,7 @@ public class DataContentVerifier
       List<IDataSet> dataSets = new ArrayList<IDataSet>(descriptors.size());
       for (DataSetResourceDescriptor dataSetDescriptor : descriptors)
       {
-         final String file = dataSetDescriptor.getLocation();
-         final Format format = dataSetDescriptor.getFormat();
-         dataSets.add(DataSetBuilder.builderFor(format).build(file));
+         dataSets.add(dataSetDescriptor.getContent());
       }
       IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSets);
       return expectedDataSet;

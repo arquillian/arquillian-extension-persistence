@@ -27,9 +27,9 @@ import java.util.Set;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
+import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
-import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
@@ -128,9 +128,9 @@ public class SqlScriptProviderForCleanupScriptsTest
    public void should_extract_all_scirpts() throws Exception
    {
       // given
-      SqlScriptResourceDescriptor one = new SqlScriptResourceDescriptor("one.sql");
-      SqlScriptResourceDescriptor two = new SqlScriptResourceDescriptor("two.sql");
-      SqlScriptResourceDescriptor three = new SqlScriptResourceDescriptor("three.sql");
+      FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql");
+      FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql");
+      FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql");
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(), CleanupUsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
@@ -175,7 +175,7 @@ public class SqlScriptProviderForCleanupScriptsTest
    public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception
    {
       // given
-      SqlScriptResourceDescriptor expectedFile = new SqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
+      FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);

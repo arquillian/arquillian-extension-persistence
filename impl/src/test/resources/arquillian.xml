@@ -6,8 +6,8 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">Ike</property>
-    <property name="initStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
-    <property name="cleanupStatement">SELECT * FROM ARQUILLIAN_TESTS</property>
+    <property name="scriptsToExecuteBeforeTest">SELECT * FROM ARQUILLIAN_TESTS</property>
+    <property name="scriptsToExecuteAfterTest">SELECT * FROM ARQUILLIAN_TESTS</property>
     <property name="defaultTransactionMode">ROLLBACK</property>
     <property name="defaultSqlScriptLocation">scripts</property>
     <property name="dumpData">true</property>

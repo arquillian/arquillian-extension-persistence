@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
@@ -39,8 +38,6 @@ import org.jboss.arquillian.persistence.core.event.PrepareData;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationPropertyMapper;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
@@ -130,17 +127,9 @@ public class DBUnitPersistenceTestLifecycleHandler
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         IDataSet initialDataSet = createInitialDataSet(dataSetDescriptor);
-         dataSetRegister.addInitial(initialDataSet);
+         dataSetRegister.addInitial(dataSetDescriptor.getContent());
       }
       dataSetRegisterProducer.set(dataSetRegister);
-   }
-
-   private IDataSet createInitialDataSet(DataSetResourceDescriptor dataSetDescriptor)
-   {
-      final String file = dataSetDescriptor.getLocation();
-      final Format format = dataSetDescriptor.getFormat();
-      return DataSetBuilder.builderFor(format).build(file);
    }
 
    private void createExpectedDataSets(List<DataSetResourceDescriptor> dataSetDescriptors)
@@ -148,17 +137,9 @@ public class DBUnitPersistenceTestLifecycleHandler
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         IDataSet expectedDataSet = createExpectedDataSet(dataSetDescriptor);
-         dataSetRegister.addExpected(expectedDataSet);
+         dataSetRegister.addExpected(dataSetDescriptor.getContent());
       }
       dataSetRegisterProducer.set(dataSetRegister);
-   }
-
-   private IDataSet createExpectedDataSet(DataSetResourceDescriptor dataSetDescriptor)
-   {
-      String file = dataSetDescriptor.getLocation();
-      Format format = dataSetDescriptor.getFormat();
-      return DataSetBuilder.builderFor(format).build(file);
    }
 
    private DataSetRegister getOrCreateDataSetRegister()

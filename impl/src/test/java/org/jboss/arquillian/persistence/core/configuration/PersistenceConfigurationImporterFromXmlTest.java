@@ -55,7 +55,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       Configuration.importTo(configuration).loadFrom(descriptor);
 
       // then
-      assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
+      assertThat(configuration.getScriptsToExecuteBeforeTest()).isEqualTo(expectedInitStatement);
    }
 
    @Test

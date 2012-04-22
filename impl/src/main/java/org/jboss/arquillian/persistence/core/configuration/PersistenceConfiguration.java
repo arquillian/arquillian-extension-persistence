@@ -38,9 +38,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private String defaultSqlScriptLocation = "scripts/";
 
-   private String initStatement;
+   private String scriptsToExecuteBeforeTest;
 
-   private String cleanupStatement;
+   private String scriptsToExecuteAfterTest;
 
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
 
@@ -65,6 +65,13 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       super("persistence", "arquillian.extension.persistence.");
    }
 
+   // Private methods
+
+   private boolean isDefined(String toVerify)
+   {
+      return toVerify != null && !"".equals(toVerify.trim());
+   }
+
    // Accessors
 
    public String getDefaultDataSource()
@@ -86,42 +93,32 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return isDefined(defaultDataSource);
    }
 
-   public String getInitStatement()
+   public String getScriptsToExecuteBeforeTest()
    {
-      return initStatement;
+      return scriptsToExecuteBeforeTest;
    }
 
    /**
-    * @param initStatement Ad-hoc script or file location to be used before every test.
+    * @param scriptsToExecuteBeforeTest Ad-hoc scripts or file location to be used before every test.
     * Might be handy for turning off integrity checks.
     */
-   public void setInitStatement(String initStatement)
+   public void setScriptsToExecuteBeforeTest(String scriptsToExecuteBeforeTest)
    {
-      this.initStatement = initStatement;
+      this.scriptsToExecuteBeforeTest = scriptsToExecuteBeforeTest;
    }
 
-   public String getCleanupStatement()
+   public String getScriptsToExecuteAfterTest()
    {
-      return cleanupStatement;
+      return scriptsToExecuteAfterTest;
    }
 
    /**
-    * @param cleanupStatement Ad-hoc script or file location to be used after every test.
-    * Could be used to revert operations applied by {@link #initStatement}
+    * @param scriptsToExecuteAfterTest Ad-hoc scripts or file location to be used after every test.
+    * Could be used to revert operations applied by {@link #scriptsToExecuteBeforeTest}
     */
-   public void setCleanupStatement(String cleanupStatement)
+   public void setScriptsToExecuteAfterTest(String scriptsToExecuteAfterTest)
    {
-      this.cleanupStatement = cleanupStatement;
-   }
-
-   public boolean isInitStatementDefined()
-   {
-      return isDefined(initStatement);
-   }
-
-   private boolean isDefined(String toVerify)
-   {
-      return toVerify != null && !"".equals(toVerify.trim());
+      this.scriptsToExecuteAfterTest = scriptsToExecuteAfterTest;
    }
 
    public TransactionMode getDefaultTransactionMode()

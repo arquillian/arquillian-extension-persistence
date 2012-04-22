@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
@@ -58,9 +59,9 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    }
 
    @Override
-   protected SqlScriptResourceDescriptor createDescriptor(String dataFileName)
+   protected FileSqlScriptResourceDescriptor createDescriptor(String dataFileName)
    {
-      return new SqlScriptResourceDescriptor(determineLocation(dataFileName));
+      return new FileSqlScriptResourceDescriptor(determineLocation(dataFileName));
    }
 
    @Override

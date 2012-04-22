@@ -75,8 +75,9 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       {
          addResources(applicationArchive, toJavaArchive(allDataResources));
       }
-      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getCleanupStatement());
-      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getInitStatement());
+
+      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteAfterTest());
+      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteBeforeTest());
    }
 
    // Private helper methods

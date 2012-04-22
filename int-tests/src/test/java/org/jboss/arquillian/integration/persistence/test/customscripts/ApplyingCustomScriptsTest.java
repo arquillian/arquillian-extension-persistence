@@ -61,7 +61,7 @@ public class ApplyingCustomScriptsTest
    @Test
    @ApplyScriptAfter("clark-kent.sql")
    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.AFTER)
+   @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.AFTER)
    public void should_add_users_after_test_to_already_created_entries_using_custom_script() throws Exception
    {
       // given

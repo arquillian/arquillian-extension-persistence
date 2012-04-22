@@ -29,12 +29,8 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.DataHandler;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
-import org.jboss.arquillian.persistence.core.event.ApplyCleanupStatement;
-import org.jboss.arquillian.persistence.core.event.ApplyInitStatement;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.core.event.CompareData;
@@ -42,7 +38,6 @@ import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.core.event.PrepareData;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.jboss.arquillian.persistence.core.util.Strings;
 import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyExecutor;
 import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
@@ -71,32 +66,7 @@ public class DBUnitDataHandler implements DataHandler
    private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
-
-   @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
-
-   @Override
-   public void initStatements(@Observes ApplyInitStatement applyInitStatementEvent)
-   {
-      final String initScript = applyInitStatementEvent.getInitStatement();
-      if (initScript == null || Strings.isEmpty(initScript))
-      {
-         return;
-      }
-      executeScript(initScript);
-   }
-
-   @Override
-   public void cleanupStatements(@Observes ApplyCleanupStatement applyCleanupStatementEvent)
-   {
-      final String cleanupScript = applyCleanupStatementEvent.getCleanupStatement();
-      if (cleanupScript == null || Strings.isEmpty(cleanupScript))
-      {
-         return;
-      }
-      executeScript(cleanupScript);
-   }
 
    @Override
    public void prepare(@Observes PrepareData prepareDataEvent)
@@ -116,8 +86,8 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         IDataSet currentDataSet = databaseConnection.get().createDataSet();
-         IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
+         final IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
          new DataSetComparator(compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
       }
       catch (Exception e)
@@ -132,22 +102,20 @@ public class DBUnitDataHandler implements DataHandler
       cleanDatabase(cleanupDataEvent.cleanupStrategy);
    }
 
-   @Override
    public void cleanupUsingScript(@Observes CleanupDataUsingScript cleanupDataUsingScriptEvent)
    {
       for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors())
       {
-         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
+         final String script = scriptDescriptor.getContent();
          executeScript(script);
       }
    }
 
-   @Override
    public void executeScripts(@Observes ExecuteScripts executeScriptsEvent)
    {
       for (SqlScriptResourceDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
       {
-         final String script = ScriptHelper.loadScript(scriptDescriptor.getLocation());
+         final String script = scriptDescriptor.getContent();
          executeScript(script);
       }
 

@@ -17,53 +17,17 @@
  */
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
-
 /**
- *
- * Information about SQL script location.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class SqlScriptResourceDescriptor extends ResourceDescriptor<String>
+public abstract class SqlScriptResourceDescriptor extends ResourceDescriptor<String>
 {
 
    public SqlScriptResourceDescriptor(String location)
    {
-      super(location, "sql");
-   }
-
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
-
-      if (!(obj instanceof SqlScriptResourceDescriptor))
-      {
-         return false;
-      }
-
-      final SqlScriptResourceDescriptor other = (SqlScriptResourceDescriptor) obj;
-      return location.equals(other.location) && format.equals(other.format);
-   }
-
-   @Override
-   public int hashCode()
-   {
-      final int prime = 13;
-      int result = 1;
-      result = prime * result + ((location == null) ? 0 : location.hashCode());
-      result = prime * result + ((format == null) ? 0 : format.hashCode());
-      return result;
-   }
-
-   @Override
-   public String toString()
-   {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + ", " + format + "]";
+      super(location);
    }
 
 }

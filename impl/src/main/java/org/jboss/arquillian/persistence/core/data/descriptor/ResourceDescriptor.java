@@ -23,29 +23,23 @@ package org.jboss.arquillian.persistence.core.data.descriptor;
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
- * @param <T> parametrized resource format class.
+ * @param <T> parametrized resource type class.
  */
 public abstract class ResourceDescriptor<T>
 {
 
    protected final String location;
 
-   protected final T format;
-
-   public ResourceDescriptor(String location, T format)
+   public ResourceDescriptor(String location)
    {
       this.location = location;
-      this.format = format;
    }
+
+   public abstract T getContent();
 
    public String getLocation()
    {
       return location;
-   }
-
-   public T getFormat()
-   {
-      return format;
    }
 
 }

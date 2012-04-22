@@ -45,7 +45,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void should_extract_init_statement_from_external_configuration_file() throws Exception
+   public void should_extract_scripts_to_execute_before_test_from_external_configuration_file() throws Exception
    {
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
@@ -55,7 +55,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       Configuration.importTo(configuration).loadFromPropertyFile("properties/custom.arquillian.persistence.properties");
 
       // then
-      assertThat(configuration.getInitStatement()).isEqualTo(expectedInitStatement);
+      assertThat(configuration.getScriptsToExecuteBeforeTest()).isEqualTo(expectedInitStatement);
    }
 
    @Test
