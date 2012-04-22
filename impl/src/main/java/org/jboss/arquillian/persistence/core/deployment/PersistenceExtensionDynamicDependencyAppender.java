@@ -76,8 +76,8 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
          addResources(applicationArchive, toJavaArchive(allDataResources));
       }
 
-      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteAfterTest());
-      addSqlScriptAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteBeforeTest());
+      addSqlScriptsAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteAfterTest());
+      addSqlScriptsAsResource(applicationArchive, configurationInstance.get().getScriptsToExecuteBeforeTest());
    }
 
    // Private helper methods
@@ -148,11 +148,19 @@ public class PersistenceExtensionDynamicDependencyAppender implements Applicatio
       return dataSetsArchive;
    }
 
-   private void addSqlScriptAsResource(Archive<?> applicationArchive, String script)
+   private void addSqlScriptsAsResource(Archive<?> applicationArchive, String[] scripts)
    {
-      if (ScriptHelper.isSqlScriptFile(script))
+      if (scripts == null)
       {
-         addResources(applicationArchive, createArchiveWithResources(script));
+         return;
+      }
+
+      for (String script : scripts)
+      {
+         if (ScriptHelper.isSqlScriptFile(script))
+         {
+            addResources(applicationArchive, createArchiveWithResources(script));
+         }
       }
    }
 

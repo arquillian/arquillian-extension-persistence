@@ -21,7 +21,7 @@
   <extension qualifier="persistence">
     <property name="defaultDataSource">java:app/datasources/mssql_ds</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
-    <property name="scriptsToExecuteBeforeTest">scripts/mssql-identity-insert-on.sql</property>
+    <property name="scriptsToExecuteBeforeTest">scripts/mssql-identity-insert-off.sql, scripts/mssql-identity-insert-on.sql</property>
     <property name="scriptsToExecuteAfterTest">scripts/mssql-identity-insert-off.sql</property>
     <property name="alwaysExcludeFromDataSetsComparision">id</property>
   </extension>

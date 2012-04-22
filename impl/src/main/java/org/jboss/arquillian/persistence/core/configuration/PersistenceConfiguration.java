@@ -38,9 +38,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private String defaultSqlScriptLocation = "scripts/";
 
-   private String scriptsToExecuteBeforeTest;
+   private String[] scriptsToExecuteBeforeTest;
 
-   private String scriptsToExecuteAfterTest;
+   private String[] scriptsToExecuteAfterTest;
 
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
 
@@ -93,7 +93,7 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       return isDefined(defaultDataSource);
    }
 
-   public String getScriptsToExecuteBeforeTest()
+   public String[] getScriptsToExecuteBeforeTest()
    {
       return scriptsToExecuteBeforeTest;
    }
@@ -102,12 +102,12 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     * @param scriptsToExecuteBeforeTest Ad-hoc scripts or file location to be used before every test.
     * Might be handy for turning off integrity checks.
     */
-   public void setScriptsToExecuteBeforeTest(String scriptsToExecuteBeforeTest)
+   public void setScriptsToExecuteBeforeTest(String[] scriptsToExecuteBeforeTest)
    {
       this.scriptsToExecuteBeforeTest = scriptsToExecuteBeforeTest;
    }
 
-   public String getScriptsToExecuteAfterTest()
+   public String[] getScriptsToExecuteAfterTest()
    {
       return scriptsToExecuteAfterTest;
    }
@@ -116,7 +116,7 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     * @param scriptsToExecuteAfterTest Ad-hoc scripts or file location to be used after every test.
     * Could be used to revert operations applied by {@link #scriptsToExecuteBeforeTest}
     */
-   public void setScriptsToExecuteAfterTest(String scriptsToExecuteAfterTest)
+   public void setScriptsToExecuteAfterTest(String[] scriptsToExecuteAfterTest)
    {
       this.scriptsToExecuteAfterTest = scriptsToExecuteAfterTest;
    }

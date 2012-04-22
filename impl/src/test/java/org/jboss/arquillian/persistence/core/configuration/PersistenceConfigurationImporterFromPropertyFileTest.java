@@ -55,7 +55,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       Configuration.importTo(configuration).loadFromPropertyFile("properties/custom.arquillian.persistence.properties");
 
       // then
-      assertThat(configuration.getScriptsToExecuteBeforeTest()).isEqualTo(expectedInitStatement);
+      assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
    }
 
    @Test

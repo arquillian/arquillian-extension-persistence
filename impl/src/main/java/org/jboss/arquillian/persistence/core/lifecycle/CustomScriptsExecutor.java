@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.lifecycle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.arquillian.core.api.Event;
@@ -67,7 +68,7 @@ public class CustomScriptsExecutor
    private void executeScriptsBeforeTest(BeforePersistenceTest beforePersistenceTest)
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String scriptsToExecuteBeforeTest = persistenceConfiguration.getScriptsToExecuteBeforeTest();
+      String[] scriptsToExecuteBeforeTest = persistenceConfiguration.getScriptsToExecuteBeforeTest();
       final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteBeforeTest);
       applyScriptsBeforeTestEvent.fire(new ApplyScriptsBeforeTest(beforePersistenceTest, scripts));
    }
@@ -75,22 +76,29 @@ public class CustomScriptsExecutor
    private void executeScriptsAfterTest(AfterPersistenceTest afterPersistenceTest)
    {
       final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String scriptsToExecuteAfterTest = persistenceConfiguration.getScriptsToExecuteAfterTest();
+      String[] scriptsToExecuteAfterTest = persistenceConfiguration.getScriptsToExecuteAfterTest();
       final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteAfterTest);
       applyScriptsAfterTestEvent.fire(new ApplyScriptsAfterTest(afterPersistenceTest, scripts));
-
    }
 
-   private List<SqlScriptResourceDescriptor> processScripts(String script)
+   private List<SqlScriptResourceDescriptor> processScripts(String[] scripts)
    {
-      final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
-      if (ScriptHelper.isSqlScriptFile(script))
+      if (scripts == null)
       {
-         processedScripts.add(new FileSqlScriptResourceDescriptor(script));
+         return Collections.emptyList();
       }
-      else if (!Strings.isEmpty(script))
+
+      final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
+      for (String script : scripts)
       {
-         processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
+         if (ScriptHelper.isSqlScriptFile(script))
+         {
+            processedScripts.add(new FileSqlScriptResourceDescriptor(script));
+         }
+         else if (!Strings.isEmpty(script))
+         {
+            processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
+         }
       }
       return processedScripts;
    }
