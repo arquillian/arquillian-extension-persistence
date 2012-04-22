@@ -64,6 +64,7 @@ public @interface ShouldMatchDataSet
 
    /**
     * List of columns to be excluded.
+    * Alternatively can be defined for all tests in <code>arquillian.xml</code>.
     * @return
     */
    String[] excludeColumns() default "";

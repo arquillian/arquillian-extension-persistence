@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.core.configuration;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,11 +82,24 @@ public class ConfigurationExporter<T extends Configuration>
          String key = convertToPropertyKey(field.getName());
          if (object != null)
          {
-            extractedValues.put(key, object.toString());
+            extractedValues.put(key, convertToPropertyValue(object));
          }
       }
 
       return extractedValues;
+   }
+
+   private String convertToPropertyValue(Object object)
+   {
+      String convertedValue = object.toString();
+      if (String[].class.isInstance(object))
+      {
+         convertedValue = Arrays.toString((String[])object);
+         convertedValue = convertedValue.replace("[", "")
+                                        .replace("]", "")
+                                        .replace(", ", ",");
+      }
+      return convertedValue;
    }
 
    private String convertToPropertyKey(String key)

@@ -22,6 +22,7 @@
     <property name="initStatement">SET REFERENTIAL_INTEGRITY FALSE;</property>
     <property name="cleanupStatement">scripts/turn-on-integrity-checks.sql</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
+    <property name="alwaysExcludeFromDataSetsComparision">id</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

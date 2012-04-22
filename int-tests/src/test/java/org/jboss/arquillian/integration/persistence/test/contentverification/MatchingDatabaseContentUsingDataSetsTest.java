@@ -104,4 +104,21 @@ public class MatchingDatabaseContentUsingDataSetsTest
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
 
+   @Test
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet(value = "users.yml", excludeColumns = { "useraccount.password" })
+   // id excluded in arquillian.xml
+   public void should_verify_database_content_using_custom_data_set_with_implicit_multiple_columns_exclusion() throws Exception
+   {
+      // given
+      String expectedPassword = "LexLuthor";
+      UserAccount user = em.find(UserAccount.class, 2L);
+
+      // when
+      user.setPassword("LexLuthor");
+
+      // then
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
+   }
+
 }

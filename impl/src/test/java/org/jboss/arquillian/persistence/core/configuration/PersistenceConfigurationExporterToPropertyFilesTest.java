@@ -58,7 +58,7 @@ public class PersistenceConfigurationExporterToPropertyFilesTest
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
       persistenceConfiguration.setDefaultDataSource("DefaultDS");
       persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
-
+      persistenceConfiguration.setAlwaysExcludeFromDataSetsComparision(new String[] { "id", "version" });
       // when
       Configuration.exportUsing(persistenceConfiguration)
                    .toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));

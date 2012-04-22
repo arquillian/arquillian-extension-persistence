@@ -23,6 +23,7 @@
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
     <property name="initStatement">scripts/mssql-identity-insert-on.sql</property>
     <property name="cleanupStatement">scripts/mssql-identity-insert-off.sql</property>
+    <property name="alwaysExcludeFromDataSetsComparision">id</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

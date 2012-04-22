@@ -5,7 +5,8 @@
 
   <persistence-unit name="arquillian-hsql">
     <jta-data-source>arq/hsql</jta-data-source>
-    <!-- Otherwise DBUnit might not work - complaining about constraints. -->
+    <!-- Otherwise DBUnit might not work when using REFRESH or UPDATE seeding strategy.
+         Bean validation is complaining about constraints in such case. -->
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />

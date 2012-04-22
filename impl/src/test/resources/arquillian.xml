@@ -14,6 +14,7 @@
     <property name="dumpDirectory">/home/ike/dump</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>
     <property name="defaultDataSeedStrategy">INSERT</property>
+    <property name="alwaysExcludeFromDataSetsComparision">id, version</property>
   </extension>
 
 </arquillian>
