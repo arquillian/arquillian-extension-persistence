@@ -1,0 +1,5 @@
+* Implemented possibility to define data seeding strategy per each test by using @SeedDataUsing annotation.
+* Initial package split for dbunit / core modules.
+* Fixed data set comparision by using only those columns which are specified by @ShouldMatchDataSet (taking into account explicitly excluded too).
+* Introduced "visitor" for enums to decouple strategy implementation from the enum type - currently used for cleaning and seeding strategies for DBUnit.
+* Moved data seeding and cleanup strategy from DBUnit config to general Persistence config.
