@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -54,6 +55,7 @@
     <!-- Versioning -->
     <version.arquillian_core>1.0.1.Final</version.arquillian_core>
     <version.fest.assert>1.4</version.fest.assert>
+    <version.testng>6.5.2</version.testng>
     <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
     <version.glassfish>3.1.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
@@ -61,7 +63,7 @@
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-
+    <version.surefire.plugin>2.12</version.surefire.plugin>
   </properties>
 
   <dependencyManagement>
@@ -98,6 +100,13 @@
         <version>${version.fest.assert}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>${version.testng}</version>
+        <scope>test</scope>
+      </dependency>
+
     </dependencies>
 
   </dependencyManagement>
@@ -106,6 +115,7 @@
     <module>api</module>
     <module>impl</module>
     <module>int-tests</module>
+    <module>int-tests-testng</module>
   </modules>
 
   <build>
@@ -160,10 +170,10 @@
         </dependency>
         <dependency>
           <groupId>org.hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-					<version>2.2.8</version>
-					<type>jar</type>
-					<scope>test</scope>
+          <artifactId>hsqldb</artifactId>
+          <version>2.2.8</version>
+          <type>jar</type>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -203,6 +213,12 @@
           <version>${version.jbossas_spec}</version>
           <type>pom</type>
           <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
       </dependencies>
       <build>
@@ -316,19 +332,15 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <excludes>
-                <!--
-                     This test is causing problems with @DataSourceDefinition.
-                     For some reason it's not picked up before test.jar deployment,
-                     so persistence.xml is referring to non existing datasource.
-                -->
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
                 <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
-                <!--
-                     This test is using custom SQL which I don't want to pollute
-                     with "SET INSERT_IDENTITY", because they should be portable.
-                     Hence it's not essential for this profile to verify if
-                     this behaviour is correct this test can be also skipped.
-                     It's tested on JBoss AS 7.0.2 with embedded database.
-                -->
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
                 <exclude>**/DataCleanupStrategiesTest.java</exclude>
               </excludes>
             </configuration>

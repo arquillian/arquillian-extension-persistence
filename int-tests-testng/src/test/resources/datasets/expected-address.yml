@@ -1,0 +1,5 @@
+address:
+  - streetname: "Testing Street"
+    houseNumber: 7
+    city: JavaPolis
+    zipCode: 1234

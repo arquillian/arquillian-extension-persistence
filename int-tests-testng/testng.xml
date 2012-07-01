@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="none">
+  <test name="Test" preserve-order="true">
+    <classes>
+      <class name="org.jboss.arquillian.integration.persistence.test.cleanup.DataCleanupUsingScriptEventHandlingTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.example.NonDeployableUserPersistenceTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.cleanup.DataCleanupEventHandlingTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.customscripts.ApplyingCustomScriptsTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.cleanup.DataCleanupStrategiesTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.boundary.NonPersistenceExtensionTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.boundary.EmptyDataSetsTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.seeding.SeedingStrategyTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.seeding.SeedingDatabaseByApplyingCustomScriptTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.example.UserPersistenceTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.contentverification.MatchingDatabaseContentUsingDataSetsTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.boundary.UsedRowsOnlyCleanupStrategyTest"/>
+      <class name="org.jboss.arquillian.integration.persistence.test.TransactionalUserPersistenceTest"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
