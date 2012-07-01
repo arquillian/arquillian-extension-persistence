@@ -33,6 +33,7 @@ import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatur
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
+import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 
 public class DataSetHandler
 {
@@ -41,10 +42,10 @@ public class DataSetHandler
    private Instance<MetadataExtractor> metadataExtractorInstance;
 
    @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
+   private Instance<DBUnitConfiguration> configurationInstance;
 
    @Inject
-   private Instance<DBUnitConfiguration> configurationInstance;
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    @Inject
    private Event<PrepareData> prepareDataEvent;

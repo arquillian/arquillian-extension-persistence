@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,9 +37,13 @@ import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.CompareData;
 import org.jboss.arquillian.persistence.core.event.PrepareData;
+import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationPropertyMapper;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
+import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
@@ -55,6 +61,9 @@ public class DBUnitPersistenceTestLifecycleHandler
    private Instance<DataSource> dataSourceInstance;
 
    @Inject
+   private Instance<MetadataExtractor> metadataExtractorInstance;
+
+   @Inject
    private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
    @Inject @TestScoped
@@ -62,6 +71,9 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    @Inject @TestScoped
    private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
+
+   @Inject
+   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
    // ------------------------------------------------------------------------------------------------
    // Intercepting data handling events
@@ -74,6 +86,21 @@ public class DBUnitPersistenceTestLifecycleHandler
          createDatabaseConnection();
          configure();
       }
+
+      final Method testMethod = context.getEvent().getTestMethod();
+
+      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
+      if (persistenceExtensionFeatureResolver.shouldSeedData())
+      {
+         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+         createInitialDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
+      }
+
+      if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest()) {
+         final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+         createExpectedDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
+      }
+
       context.proceed();
    }
 
@@ -88,20 +115,6 @@ public class DBUnitPersistenceTestLifecycleHandler
       {
          throw new DBUnitConnectionException("Unable to close connection.", e);
       }
-   }
-
-   public void initializeDataSeeding(@Observes(precedence = 1000) EventContext<PrepareData> context)
-   {
-      PrepareData prepareDataEvent = context.getEvent();
-      createInitialDataSets(prepareDataEvent.getDescriptors());
-      context.proceed();
-   }
-
-   public void initializeDataVerification(@Observes(precedence = 1000) EventContext<CompareData> context)
-   {
-      CompareData compareDataEvent = context.getEvent();
-      createExpectedDataSets(compareDataEvent.getDescriptors());
-      context.proceed();
    }
 
    // ------------------------------------------------------------------------------------------------
@@ -122,7 +135,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
    }
 
-   private void createInitialDataSets(List<DataSetResourceDescriptor> dataSetDescriptors)
+   private void createInitialDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors)
    {
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
@@ -132,7 +145,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       dataSetRegisterProducer.set(dataSetRegister);
    }
 
-   private void createExpectedDataSets(List<DataSetResourceDescriptor> dataSetDescriptors)
+   private void createExpectedDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors)
    {
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)

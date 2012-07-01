@@ -80,7 +80,7 @@ public abstract class NonDeployableUserPersistenceTest
 
    @Test
    @UsingDataSet("single-user.xml")
-   public void should_find_user_using_xml_dataset_and_data_source() throws Exception
+   public void should_find_user_using_xml_dataset() throws Exception
    {
       // given
       String expectedUsername = "doovde";
@@ -90,6 +90,21 @@ public abstract class NonDeployableUserPersistenceTest
 
       // then
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
+   }
+
+   @Test
+   @UsingDataSet("single-user.yml")
+   public void should_find_user_using_yaml_dataset() throws Exception
+   {
+      // given
+      String expectedUsername = "doovde";
+
+      // when
+      UserAccount user = em.find(UserAccount.class, 1L);
+
+      // then
+      assertThat(user.getUsername()).isEqualTo(expectedUsername);
+      assertThat(user.getNickname()).isNull();
    }
 
    @Test
@@ -260,7 +275,7 @@ public abstract class NonDeployableUserPersistenceTest
    public void should_compare_null_value_defined_in_flat_xml_data_set() throws Exception
    {
       // given
-      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+      UserAccount clarkKent = em.find(UserAccount.class, 2L);
 
       // when
       clarkKent.setNickname(null);
@@ -276,7 +291,7 @@ public abstract class NonDeployableUserPersistenceTest
    public void should_compare_null_value_defined_in_yaml_data_set() throws Exception
    {
       // given
-      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+      UserAccount clarkKent = em.find(UserAccount.class, 2L);
 
       // when
       clarkKent.setNickname(null);
@@ -293,7 +308,7 @@ public abstract class NonDeployableUserPersistenceTest
    public void should_clean_database_before_test_using_custom_script() throws Exception
    {
       // given
-      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+      UserAccount clarkKent = em.find(UserAccount.class, 2L);
 
       // when
       clarkKent.setNickname(null);
@@ -309,7 +324,7 @@ public abstract class NonDeployableUserPersistenceTest
    public void should_compare_null_value_defined_in_json_data_set() throws Exception
    {
       // given
-      UserAccount clarkKent = em.find(UserAccount.class, 1L);
+      UserAccount clarkKent = em.find(UserAccount.class, 2L);
 
       // when
       clarkKent.setNickname(null);

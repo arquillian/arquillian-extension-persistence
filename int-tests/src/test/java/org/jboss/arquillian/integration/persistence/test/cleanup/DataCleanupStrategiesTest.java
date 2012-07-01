@@ -105,7 +105,6 @@ public class DataCleanupStrategiesTest
       em.persist(new UserAccount("Bartosz", "Majsak", "fonejacker", "doovdePUK"));
    }
 
-
    @Test
    @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
    @UsingDataSet("users.yml")
