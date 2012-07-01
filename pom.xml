@@ -52,12 +52,12 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.0.Final</version.arquillian_core>
+    <version.arquillian_core>1.0.1.Final</version.arquillian_core>
     <version.fest.assert>1.4</version.fest.assert>
     <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
-    <version.glassfish>3.1.1</version.glassfish>
+    <version.glassfish>3.1.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
-    <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
+    <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
@@ -153,17 +153,17 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.glassfish.extras</groupId>
+          <groupId>org.glassfish.main.extras</groupId>
           <artifactId>glassfish-embedded-all</artifactId>
           <version>${version.glassfish}</version>
-          <scope>provided</scope>
+          <scope>compile</scope>
         </dependency>
         <dependency>
-          <!-- 2.x version doesn't work - unable to create tables -->
-          <groupId>hsqldb</groupId>
-          <artifactId>hsqldb</artifactId>
-          <version>1.8.0.10</version>
-          <scope>test</scope>
+          <groupId>org.hsqldb</groupId>
+					<artifactId>hsqldb</artifactId>
+					<version>2.2.8</version>
+					<type>jar</type>
+					<scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -257,7 +257,7 @@
         <dependency>
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>7.1.0.Final</version>
+          <version>7.1.1.Final</version>
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -266,6 +266,12 @@
           <version>${version.jbossas_spec}</version>
           <type>pom</type>
           <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
           2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
@@ -295,7 +301,7 @@
                     <artifactItem>
                       <groupId>org.jboss.as</groupId>
                       <artifactId>jboss-as-dist</artifactId>
-                      <version>7.1.0.Final</version>
+                      <version>7.1.1.Final</version>
                       <type>zip</type>
                       <overWrite>false</overWrite>
                       <outputDirectory>${project.build.directory}</outputDirectory>
@@ -333,7 +339,7 @@
             <directory>src/test/resources</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-jboss-7.1.0-mssql</directory>
+            <directory>src/test/resources-jboss-7.1.1-mssql</directory>
           </testResource>
         </testResources>
       </build>

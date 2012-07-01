@@ -13,7 +13,7 @@
 
   <container qualifier="jboss-7.1" default="true">
     <configuration>
-      <property name="jbossHome">target/jboss-as-7.1.0.Final</property>
+      <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
       <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>
     </configuration>
   </container>
