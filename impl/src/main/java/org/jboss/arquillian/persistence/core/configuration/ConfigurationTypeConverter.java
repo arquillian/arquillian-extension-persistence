@@ -22,9 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.core.util.Strings;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 
 /**
 *
@@ -172,6 +170,18 @@ class ConfigurationTypeConverter
             }
 
             return to.cast(convertedArray);
+         }
+         else if (Class.class.equals(to) )
+         {
+            try
+            {
+               Object clazz = Class.forName(value);
+               return to.cast(clazz);
+            }
+            catch (Exception e)
+            {
+               throw new IllegalArgumentException("Unable to find class [" + value + "].", e);
+            }
          }
          else // Try to create instance via reflection
          {

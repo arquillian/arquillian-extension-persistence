@@ -30,6 +30,7 @@ import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
+import org.jboss.arquillian.persistence.jpacacheeviction.JpaCacheEvictionHandler;
 
 /**
  * Defines all the bindings for Arquillian extension run in the
@@ -49,9 +50,8 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
 
       builder.observer(PersistenceConfigurationRemoteProducer.class)
              .observer(CommandServiceProducer.class)
-             .observer(TestTransactionWrapper.class);
-
-
+             .observer(TestTransactionWrapper.class)
+             .observer(JpaCacheEvictionHandler.class);
    }
 
    private void registerDBUnitHandlers(ExtensionBuilder builder)
