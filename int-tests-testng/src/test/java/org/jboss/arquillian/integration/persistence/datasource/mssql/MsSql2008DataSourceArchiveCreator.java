@@ -15,28 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.integration.persistence.datasource.deployment;
+package org.jboss.arquillian.integration.persistence.datasource.mssql;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
-public class MsSqlDriver implements AuxiliaryArchiveAppender
+public class MsSql2008DataSourceArchiveCreator implements AuxiliaryArchiveAppender
 {
 
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      final MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class)
-                                                                  .loadMetadataFromPom("pom.xml")
-                                                                  .goOffline();
-      // Version needs to be specified explicitly because the artifact is defined for the profile
-      final MavenDependencyResolver sqlServerArtifact = resolver.artifact("com.microsoft.sqlserver:sqljdbc4:4.0");
-
-      return ShrinkWrap.createFromZipFile(JavaArchive.class, sqlServerArtifact.resolveAsFiles()[0]);
+      return ShrinkWrap.create(JavaArchive.class, "arquillian-mssql-datasource.jar")
+                       .addClass(MsSql2008DataSource.class);
    }
 
 }

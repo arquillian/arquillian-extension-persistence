@@ -13,15 +13,18 @@ It comes with following features:
     * [DBUnit](http://dbunit.org) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
     * Custom SQL scripts.
 * Comparing database state at the end of the test using given data sets (with column exclusion).
+* Eviction JPA second level cache between test method invocation, see `@JpaCacheEviction`.
 
 ##### Containers used for testing
-- Glassfish 3.1 Embedded
+- Glassfish 3.1.2 Embedded
 - JBoss AS 7.0.2 Final (managed) 
-- JBoss AS 7.1.0.Final (managed)
+- JBoss AS 7.1.1.Final (managed)
 
 ##### Verified with follolwing databases
 - HSQL
 - MS SQL 2008 Express (with Microsoft JDBC Driver)
+- MySQL 5.5.24
+- PostgreSQL 9.1.4
 
 Enough talking, let's see it in action!
 

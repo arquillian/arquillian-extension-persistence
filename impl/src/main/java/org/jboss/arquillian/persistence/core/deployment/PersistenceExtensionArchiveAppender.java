@@ -31,11 +31,13 @@ import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiv
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.client.PersistenceExtension;
+import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
 import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -76,6 +78,8 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
 
       addPersistenceConfigurationSerializedAsProperties(persistenceExtensionArchive);
       addDBUnitConfigurationSerializedAsProperties(persistenceExtensionArchive);
+      addJpaCacheEvictionConfigurationSerizedAsProperties(persistenceExtensionArchive);
+      
       return persistenceExtensionArchive;
    }
 
@@ -137,5 +141,15 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
       return extensionProperties;
    }
 
+   private void addJpaCacheEvictionConfigurationSerizedAsProperties(JavaArchive archiveToExtend)
+   {
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      JpaCacheEvictionConfiguration config = new JpaCacheEvictionConfiguration();
+
+      Configuration.importTo(config).loadFrom(arquillianDescriptorInstance.get());
+      Configuration.exportUsing(config).toProperties(output);
+
+      archiveToExtend.addAsResource(new ByteArrayAsset(output.toByteArray()), config.getPrefix() + "properties");
+   }
 
 }

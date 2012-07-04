@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Scanner;
 
 import org.jboss.arquillian.persistence.core.data.script.ScriptExecutor;
 import org.junit.Before;
@@ -61,8 +62,6 @@ public class ScriptExecutorTest
    @Test
    public void should_execute_two_statements_when_script_contains_two_insert_statements() throws Exception
    {
-      initializeScriptExecutor();
-
       // when
       scriptExecutor.execute(loadFileAsString("scripts/two-inserts.sql"));
 
@@ -73,8 +72,6 @@ public class ScriptExecutorTest
    @Test
    public void should_execute_two_statements_when_script_contains_two_insert_statements_and_comment() throws Exception
    {
-      initializeScriptExecutor();
-
       // when
       scriptExecutor.execute(loadFileAsString("scripts/two-inserts-with-comment.sql"));
 
@@ -119,7 +116,7 @@ public class ScriptExecutorTest
    private String loadFileAsString(final String scriptFile)
    {
       final InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(scriptFile);
-      return new java.util.Scanner(resourceAsStream).useDelimiter("\\A").next();
+      return new Scanner(resourceAsStream).useDelimiter("\\A").next();
    }
 
 }

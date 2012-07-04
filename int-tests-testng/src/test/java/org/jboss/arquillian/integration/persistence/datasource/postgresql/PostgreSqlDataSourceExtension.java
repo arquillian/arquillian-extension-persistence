@@ -15,19 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.integration.persistence.datasource.deployment;
+package org.jboss.arquillian.integration.persistence.datasource.postgresql;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
-public class MsSql2008DataSourceExtension implements LoadableExtension
+public class PostgreSqlDataSourceExtension implements LoadableExtension
 {
 
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(AuxiliaryArchiveAppender.class, MsSql2008DataSourceArchiveCreator.class);
-      builder.service(AuxiliaryArchiveAppender.class, MsSqlDriver.class);
+      builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDataSourceArchiveCreator.class);
+      builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDriverArchiveAppender.class);
    }
 
 }

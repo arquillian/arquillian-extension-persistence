@@ -334,6 +334,98 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
+                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-jboss-7.1.1-mssql</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
+      <id>jbossas-7.0-managed-mysql</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <version>7.0.2.Final</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.spec</groupId>
+          <artifactId>jboss-javaee-6.0</artifactId>
+          <version>${version.jbossas_spec}</version>
+          <type>pom</type>
+          <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.21</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jboss.as</groupId>
+                      <artifactId>jboss-as-dist</artifactId>
+                      <version>7.0.2.Final</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
             <executions>
@@ -345,7 +437,7 @@
                 </goals>
                 <configuration>
                   <sources>
-                    <source>src/test/java-as7-mssql</source>
+                    <source>src/test/java-jpa-cache-eviction</source>
                   </sources>
                 </configuration>
               </execution>
@@ -375,11 +467,104 @@
             <directory>src/test/resources</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-jboss-7.1.1-mssql</directory>
+            <directory>src/test/resources-jboss-7.0.2-mysql</directory>
           </testResource>
         </testResources>
       </build>
     </profile>
-
+    <profile>
+      <id>jbossas-7.1-managed-postgresql</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <version>7.1.1.Final</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.spec</groupId>
+          <artifactId>jboss-javaee-6.0</artifactId>
+          <version>${version.jbossas_spec}</version>
+          <type>pom</type>
+          <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.1-901.jdbc4</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.3</version>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jboss.as</groupId>
+                      <artifactId>jboss-as-dist</artifactId>
+                      <version>7.1.1.Final</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
+                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-jboss-7.1.1-postgresql</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
   </profiles>
 </project>

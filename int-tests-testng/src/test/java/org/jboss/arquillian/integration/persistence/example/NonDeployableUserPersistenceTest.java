@@ -29,8 +29,10 @@ import org.jboss.arquillian.integration.persistence.example.Address;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
+import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
@@ -195,6 +197,7 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
 
    @Test
    @Transactional
+   @Cleanup(phase = TestExecutionPhase.BEFORE)
    public void should_persist_users_within_transaction() throws Exception
    {
       // given

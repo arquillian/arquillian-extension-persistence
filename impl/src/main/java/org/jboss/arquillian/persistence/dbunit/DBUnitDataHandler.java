@@ -18,7 +18,6 @@
 package org.jboss.arquillian.persistence.dbunit;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -31,6 +30,7 @@ import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.core.data.DataHandler;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.script.ScriptExecutor;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.core.event.CompareData;
@@ -43,6 +43,7 @@ import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
 /**
@@ -88,7 +89,8 @@ public class DBUnitDataHandler implements DataHandler
       {
          final IDataSet currentDataSet = databaseConnection.get().createDataSet();
          final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
-         new DataSetComparator(compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
+         new DataSetComparator(compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet,
+               assertionErrorCollector.get());
       }
       catch (Exception e)
       {
@@ -125,29 +127,13 @@ public class DBUnitDataHandler implements DataHandler
 
    private void executeScript(String script)
    {
-      Statement statement = null;
       try
       {
-         statement = databaseConnection.get().getConnection().createStatement();
-         statement.execute(script);
+         new ScriptExecutor(databaseConnection.get().getConnection()).execute(script);
       }
-      catch (Exception e)
+      catch (SQLException e)
       {
-         throw new DBUnitDataSetHandlingException("Unable to execute script: " + script, e);
-      }
-      finally
-      {
-         if (statement != null)
-         {
-            try
-            {
-               statement.close();
-            }
-            catch (SQLException e)
-            {
-               throw new DBUnitDataSetHandlingException("Unable to close statement after script execution.", e);
-            }
-         }
+         throw new DBUnitConnectionException("Unable to obtain JDBC connection", e);
       }
    }
 
@@ -163,13 +149,15 @@ public class DBUnitDataHandler implements DataHandler
       final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
       final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
       final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
-      final DatabaseOperation selectedSeedingStrategy = dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
+      final DatabaseOperation selectedSeedingStrategy = dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(
+            useIdentityInsert));
       return selectedSeedingStrategy;
    }
 
    private void cleanDatabase(CleanupStrategy cleanupStrategy)
    {
-      final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(databaseConnection.get(), dataSetRegister.get()));
+      final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
+            databaseConnection.get(), dataSetRegister.get()));
       cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
    }
 

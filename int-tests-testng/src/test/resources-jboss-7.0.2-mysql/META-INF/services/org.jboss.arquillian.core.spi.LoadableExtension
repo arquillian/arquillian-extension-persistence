@@ -1,0 +1,2 @@
+org.jboss.arquillian.integration.persistence.testextension.PersistenceExtensionTester
+org.jboss.arquillian.integration.persistence.datasource.mysql.MySqlDataSourceExtension

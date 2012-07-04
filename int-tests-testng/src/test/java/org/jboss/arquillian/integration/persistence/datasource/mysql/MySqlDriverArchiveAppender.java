@@ -15,21 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.integration.persistence.datasource.deployment;
+package org.jboss.arquillian.integration.persistence.datasource.mysql;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.arquillian.integration.persistence.datasource.JdbcDriverArchiveAppender;
 
-public class MsSql2008DataSourceArchiveCreator implements AuxiliaryArchiveAppender
+public class MySqlDriverArchiveAppender extends JdbcDriverArchiveAppender
 {
 
    @Override
-   public Archive<?> createAuxiliaryArchive()
+   public String getDriverCoordinates()
    {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-mssql-datasource.jar")
-                       .addClass(MsSql2008DataSource.class);
+      // Version needs to be specified explicitly because the artifact is defined for the profile
+      return "mysql:mysql-connector-java:5.1.21";
    }
 
 }

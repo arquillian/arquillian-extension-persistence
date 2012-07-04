@@ -15,20 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.integration.persistence.datasource.deployment;
+package org.jboss.arquillian.integration.persistence.datasource.postgresql;
 
-import javax.annotation.sql.DataSourceDefinition;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import org.jboss.arquillian.integration.persistence.datasource.JdbcDriverArchiveAppender;
 
-@DataSourceDefinition(name = "java:app/datasources/mssql_ds",
-   className = "com.microsoft.sqlserver.jdbc.SQLServerDataSource",
-   url = "jdbc:sqlserver://localhost:11433;databaseName=test;instanceName=MSSQL2008_EXP",
-   user = "sa",
-   password = "letmein")
-@Singleton
-@Startup
-public class MsSql2008DataSource
+public class PostgreSqlDriverArchiveAppender extends JdbcDriverArchiveAppender
 {
+
+   @Override
+   public String getDriverCoordinates()
+   {
+      // Version needs to be specified explicitly because the artifact is defined for the profile
+      return "postgresql:postgresql:9.1-901.jdbc4";
+   }
 
 }
