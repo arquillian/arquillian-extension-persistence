@@ -91,7 +91,15 @@ public class ConfigurationExporter<T extends Configuration>
 
    private String convertToPropertyValue(Object object)
    {
-      String convertedValue = object.toString();
+      String convertedValue;
+      if (object instanceof Class)
+      {
+         convertedValue = ((Class<?>)object).getName();
+      }
+      else 
+      {
+         convertedValue = object.toString();
+      }
       if (String[].class.isInstance(object))
       {
          convertedValue = Arrays.toString((String[])object);
