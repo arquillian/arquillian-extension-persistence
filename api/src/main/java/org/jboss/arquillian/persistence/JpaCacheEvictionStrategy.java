@@ -17,14 +17,23 @@
  */
 package org.jboss.arquillian.persistence;
 
+import javax.persistence.Cache;
 import javax.persistence.EntityManagerFactory;
 
 /**
+ * Strategy how to evict JPA second level cache.
+ * 
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+ * @see Cache
+ * @see JpaCacheEviction
  */
 public interface JpaCacheEvictionStrategy
 {
 
+   /**
+    * Evict JPA second level cache.
+    * @param emf
+    */
    void evictCache(EntityManagerFactory emf);
 
 }

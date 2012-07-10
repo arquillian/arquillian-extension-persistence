@@ -20,14 +20,21 @@ package org.jboss.arquillian.persistence.jpacacheeviction;
 import javax.persistence.Cache;
 import javax.persistence.EntityManagerFactory;
 
+import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
 
 /**
+ * Default implementation of {@link JpaCacheEvictionStrategy}, which evict all entities.
+ * 
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+ * @see JpaCacheEviction
  */
 public class JpaCacheEvictionStrategyImpl implements JpaCacheEvictionStrategy
 {
 
+   /**
+    * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
+    */
    @Override
    public final void evictCache(EntityManagerFactory emf)
    {

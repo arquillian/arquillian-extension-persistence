@@ -25,10 +25,42 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.persistence.Cache;
 import javax.persistence.EntityManagerFactory;
 
 /**
+ * Indicates that test want evict JPA second level cache between test method
+ * invocation.
+ * <p>
+ * Necessary attribute which must be set in annotation or in configuration is
+ * JNDI name of entity manager factory, other attributes have default values.
+ * Default phase is before test method invocation and is used strategy which
+ * evict all entities from cache. Default values can be changed in arquillian
+ * descriptor.
+ * <p>
+ * Example configuration:
+ * <pre>
+ * <code>
+ * &lt;extension qualifier="persistence-jpacacheeviction"&gt;
+ *     &lt;property name="defaultPhase"&gt;AFTER&lt;/property&gt;
+ *     &lt;property name="defaultEntityManagerFactory"&gt;java:comp/env/MyPersistenceUnit&lt;/property&gt;
+ *     &lt;property name="defaultStrategy"&gt;com.mycompany.MyCustomJpaCacheEvictionStrategy&lt;/property&gt;
+ * &lt;/extension&gt;
+ * </code>
+ * </pre>
+ * <p>
+ * Example test:
+ * <pre>
+ * <code>
+ * &#064;RunWith(Arquillian.class)
+ * &#064;JpaCacheEviction(entityManagerFactory = "java:comp/env/MyPersistenceUnit")
+ * public class MyIntegrationTest {
+ * ...
+ * </code>
+ * </pre> 
+ * 
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+ * @see Cache
  */
 @Inherited
 @Documented
@@ -37,14 +69,30 @@ import javax.persistence.EntityManagerFactory;
 public @interface JpaCacheEviction
 {
 
+   /**
+    * Defines when will be cache evicted.
+    */
    TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
+   /**
+    * Defines JNDI name of entity manager factory.
+    */
    String entityManagerFactory() default "";
 
+   /**
+    * Defines strategy how to evict cache. 
+    */
    Class<? extends JpaCacheEvictionStrategy> strategy() default VoidJpaCacheEvictionStrategy.class;
 
+   /**
+    * Internal strategy class for representing default value.
+    * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+    */
    class VoidJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy
    {
+      /**
+       * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
+       */
       @Override
       public void evictCache(EntityManagerFactory emf)
       {

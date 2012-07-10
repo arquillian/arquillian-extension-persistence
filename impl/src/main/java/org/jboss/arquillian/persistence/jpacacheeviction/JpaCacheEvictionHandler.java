@@ -35,7 +35,10 @@ import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.TestLifecycleEvent;
 
 /**
+ * JPA cache eviction handler, which is registred in @{link RemotePersistenceExtension}.
+ * 
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+ * @see JpaCacheEviction
  */
 public class JpaCacheEvictionHandler {
 	
