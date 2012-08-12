@@ -53,9 +53,10 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.1.Final</version.arquillian_core>
+    <version.arquillian_core>1.0.2.Final</version.arquillian_core>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>6.5.2</version.testng>
+    <version.mockito>1.9.0</version.mockito>
     <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
     <version.glassfish>3.1.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
@@ -106,7 +107,12 @@
         <version>${version.testng}</version>
         <scope>test</scope>
       </dependency>
-
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${version.mockito}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
 
   </dependencyManagement>
@@ -191,7 +197,7 @@
       </build>
     </profile>
     <profile>
-      <id>jbossas-7-managed</id>
+      <id>jbossas-7.0-managed</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -328,6 +334,24 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-test-source</id>
+                <phase>generate-test-sources</phase>
+                <goals>
+                  <goal>add-test-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>src/test/java-as7-mssql</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
@@ -356,5 +380,6 @@
         </testResources>
       </build>
     </profile>
+
   </profiles>
 </project>
