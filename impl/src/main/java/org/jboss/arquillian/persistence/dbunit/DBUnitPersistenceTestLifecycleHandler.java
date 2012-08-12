@@ -19,7 +19,6 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -35,8 +34,6 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.CompareData;
-import org.jboss.arquillian.persistence.core.event.PrepareData;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
@@ -124,7 +121,16 @@ public class DBUnitPersistenceTestLifecycleHandler
       try
       {
          DataSource dataSource = dataSourceInstance.get();
-         DatabaseConnection databaseConnection = new DatabaseConnection(dataSource.getConnection());
+         final String schema = dbUnitConfigurationInstance.get().getSchema();
+         DatabaseConnection databaseConnection = null;
+         if (schema != null && schema.length() > 0)
+         {
+            databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);
+         }
+         else
+         {
+            databaseConnection = new DatabaseConnection(dataSource.getConnection());
+         }
          databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
                new DefaultDataTypeFactory());
          databaseConnectionProducer.set(databaseConnection);

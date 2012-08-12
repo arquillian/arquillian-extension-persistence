@@ -23,6 +23,7 @@
     <property name="useIdentityInsert">true</property>
     <property name="defaultDataSetFormat">Format.EXCEL</property>
     <property name="defaultDataSetLocation">ds</property>
+    <property name="schema">ape</property>
   </extension>
 
 </arquillian>

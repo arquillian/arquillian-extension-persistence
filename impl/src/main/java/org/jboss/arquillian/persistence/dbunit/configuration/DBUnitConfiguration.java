@@ -26,7 +26,6 @@ import org.dbunit.database.statement.PreparedStatementFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
-import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
@@ -105,6 +104,8 @@ public class DBUnitConfiguration extends Configuration
    private boolean excludePoi = false;
 
    private String[] excludeTablesFromCleanup = new String[0];
+
+   private String schema;
 
    public DBUnitConfiguration()
    {
@@ -404,6 +405,19 @@ public class DBUnitConfiguration extends Configuration
    public void setExcludeTablesFromCleanup(String[] excludeTablesFromCleanup)
    {
       this.excludeTablesFromCleanup = excludeTablesFromCleanup;
+   }
+
+   public String getSchema()
+   {
+      return schema;
+   }
+
+   /**
+    * @param schema Schema to be used while creating database connection
+    */
+   public void setSchema(String schema)
+   {
+      this.schema = schema;
    }
 
    // TODO exclude columns (useful for ID and VERSION)
