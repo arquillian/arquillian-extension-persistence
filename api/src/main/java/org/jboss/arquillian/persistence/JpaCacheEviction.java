@@ -34,17 +34,19 @@ import javax.persistence.EntityManager;
  * invocation.
  * <p>
  * Necessary attribute which must be set in annotation or in configuration is
- * JNDI name of entity manager factory, other attributes have default values.
+ * JNDI name(s) of entity manager(s), other attributes have default values.
  * Default phase is before test method invocation and is used strategy which
- * evict all entities from cache. Default values can be changed in arquillian
+ * evict all entities from cache. Default values can be changed in Arquillian
  * descriptor.
+ * <p>
+ * Eviction can be defined on test class or test method level, where latter takes precedence if both are present.
  * <p>
  * Example configuration:
  * <pre>
  * <code>
  * &lt;extension qualifier="persistence-jpacacheeviction"&gt;
  *     &lt;property name="defaultPhase"&gt;AFTER&lt;/property&gt;
- *     &lt;property name="defaultEntityManagerFactory"&gt;java:comp/env/MyPersistenceUnit&lt;/property&gt;
+ *     &lt;property name="defaultEntityManager"&gt;java:comp/env/MyPersistenceUnit&lt;/property&gt;
  *     &lt;property name="defaultStrategy"&gt;com.mycompany.MyCustomJpaCacheEvictionStrategy&lt;/property&gt;
  * &lt;/extension&gt;
  * </code>
@@ -54,7 +56,7 @@ import javax.persistence.EntityManager;
  * <pre>
  * <code>
  * &#064;RunWith(Arquillian.class)
- * &#064;JpaCacheEviction(entityManagerFactory = "java:comp/env/MyPersistenceUnit")
+ * &#064;JpaCacheEviction(entityManager = "java:comp/env/MyPersistenceUnit")
  * public class MyIntegrationTest {
  * ...
  * </code>
