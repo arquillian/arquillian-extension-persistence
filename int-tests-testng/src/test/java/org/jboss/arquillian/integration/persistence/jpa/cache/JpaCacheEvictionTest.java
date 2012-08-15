@@ -24,21 +24,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
+import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
-@RunWith(Arquillian.class)
 @JpaCacheEviction(entityManager = "jpacacheeviction")
-public class JpaCacheEvictionTest
+public class JpaCacheEvictionTest extends Arquillian
 {
 
    @Deployment
@@ -57,7 +54,6 @@ public class JpaCacheEvictionTest
    private EntityManagerFactory emf;
 
    @Test
-   @InSequence(value = 1)
    public void should_put_game_to_second_level_cache() throws Exception
    {
       // given
@@ -72,8 +68,7 @@ public class JpaCacheEvictionTest
       assertThat(isGameEntityCached()).as("Expected: Second level cache contains entity").isTrue();
    }
 
-   @Test
-   @InSequence(value = 2)
+   @Test(dependsOnMethods = "should_put_game_to_second_level_cache")
    public void should_evict_cache_before_test_method()
    {
       assertThat(isGameEntityCached()).as("Expected: Second level cache cache was evicted").isFalse();

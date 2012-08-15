@@ -22,7 +22,7 @@ import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 
 /**
  *
@@ -37,7 +37,7 @@ public class DBUnitConfigurationRemoteProducer
    @Inject @ApplicationScoped
    InstanceProducer<DBUnitConfiguration> configurationProducer;
 
-   public void configure(@Observes BeforeSuite beforeSuiteEvent)
+   public void configure(@Observes InitializeConfiguration event)
    {
       final DBUnitConfiguration configuration = new DBUnitConfiguration();
       Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");

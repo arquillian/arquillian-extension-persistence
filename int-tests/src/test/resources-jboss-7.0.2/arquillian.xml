@@ -18,7 +18,6 @@
   </container>
 
   <extension qualifier="persistence">
-    <property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
     <property name="scriptsToExecuteBeforeTest">SET REFERENTIAL_INTEGRITY FALSE;</property>
     <property name="scriptsToExecuteAfterTest">scripts/turn-on-integrity-checks.sql</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>

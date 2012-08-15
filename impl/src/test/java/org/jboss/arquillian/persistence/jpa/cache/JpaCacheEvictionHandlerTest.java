@@ -28,6 +28,9 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +39,7 @@ import org.junit.Test;
  */
 public class JpaCacheEvictionHandlerTest
 {
-
+/*
    private static boolean tmpCacheEvicted;
    private static String tmpLookupName;
    private JpaCacheEvictionHandler jpaCacheEvictionHandler;
@@ -104,14 +107,14 @@ public class JpaCacheEvictionHandlerTest
       assertThat(tmpCacheEvicted).isTrue();
    }
 
-   private org.jboss.arquillian.test.spi.event.suite.Before createBeforeEvent(Object testInstance) throws Exception
+   private BeforePersistenceTest createBeforeEvent(Object testInstance) throws Exception
    {
-      return new org.jboss.arquillian.test.spi.event.suite.Before(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{}));
+      return new BeforePersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
    }
 
-   private org.jboss.arquillian.test.spi.event.suite.After createAfterEvent(Object testInstance) throws Exception
+   private AfterPersistenceTest createAfterEvent(Object testInstance) throws Exception
    {
-      return new org.jboss.arquillian.test.spi.event.suite.After(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{}));
+      return new AfterPersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
    }
 
 
@@ -170,5 +173,5 @@ public class JpaCacheEvictionHandlerTest
    public static class StubTestCaseWithModifiedAnnotation extends StubTestCaseNoAnnotation {}
 
    public static class StubTestCaseWithInheritedAnnotation extends StubTestCaseWithAnnotation {}
-
+*/
 }

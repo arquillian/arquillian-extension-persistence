@@ -18,7 +18,6 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,7 +55,7 @@ public class ConfigurationImporter<T extends Configuration>
    public void loadFromArquillianXml(String arquillianXmlFilename)
    {
       final InputStream arqXmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(arquillianXmlFilename);
-      final ArquillianDescriptor arquillianDescriptor = Descriptors.importAs(ArquillianDescriptor.class).from(arqXmlStream);
+      final ArquillianDescriptor arquillianDescriptor = Descriptors.importAs(ArquillianDescriptor.class).fromStream(arqXmlStream);
       loadFrom(arquillianDescriptor);
    }
 
@@ -74,9 +73,9 @@ public class ConfigurationImporter<T extends Configuration>
          properties.load(Thread.currentThread().getContextClassLoader()
                                .getResourceAsStream(propertyFilename));
       }
-      catch (IOException e)
+      catch (Exception e)
       {
-         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container.", e);
+         throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container. Missing file " + propertyFilename, e);
       }
 
       loadFrom(properties);

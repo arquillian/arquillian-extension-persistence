@@ -27,18 +27,19 @@ import javax.persistence.EntityManager;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.api.event.ManagerStarted;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.JpaCacheEviction.DefaultJpaCacheEvictionStrategy;
 import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
+import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
-import org.jboss.arquillian.test.spi.event.suite.TestLifecycleEvent;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
- * JPA cache eviction handler, which is registered in @{link RemotePersistenceExtension}.
+ * JPA cache eviction handler, which is registered in {@link RemotePersistenceExtension}.
  *
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  * @see JpaCacheEviction
@@ -63,9 +64,10 @@ public class JpaCacheEvictionHandler
       this.jpaCacheEvictionConfiguration = jpaCacheEvictionConfiguration;
    }
 
-   public final void onManagerStarted(@Observes ManagerStarted event)
+   public final void initalizeCacheConfiguration(@Observes InitializeConfiguration event)
    {
-      initConfiguration();
+      jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
+      Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
    }
 
    public final void onBeforeTestMethod(@Observes Before event)
@@ -78,19 +80,18 @@ public class JpaCacheEvictionHandler
       executeCacheEviction(event, TestExecutionPhase.AFTER);
    }
 
-   private void executeCacheEviction(TestLifecycleEvent event, TestExecutionPhase currentPhase)
+   private void executeCacheEviction(TestEvent event, TestExecutionPhase currentPhase)
    {
       JpaCacheEviction jpaCacheEviction = obtainAnnotation(event);
       if (jpaCacheEviction != null)
       {
-         TestExecutionPhase phase = obtainPhase(jpaCacheEviction);
+         final TestExecutionPhase phase = obtainPhase(jpaCacheEviction);
          if (phase.equals(currentPhase))
          {
             final Collection<EntityManager> ems = obtainEntityManagers(jpaCacheEviction);
             final JpaCacheEvictionStrategy strategy = obtainStrategy(jpaCacheEviction);
             for (EntityManager em : ems)
             {
-               System.out.println("Evicting cache for " + em);
                strategy.evictCache(em);
             }
          }
@@ -108,7 +109,7 @@ public class JpaCacheEvictionHandler
       return entityManagers;
    }
 
-   private JpaCacheEviction obtainAnnotation(TestLifecycleEvent event)
+   private JpaCacheEviction obtainAnnotation(TestEvent event)
    {
       final JpaCacheEviction classLevel = event.getTestClass().getAnnotation(JpaCacheEviction.class);
       final JpaCacheEviction methodLevel = event.getTestMethod().getAnnotation(JpaCacheEviction.class);
@@ -173,12 +174,6 @@ public class JpaCacheEvictionHandler
    public EntityManager lookup(String emJndiName) throws NamingException
    {
       return (EntityManager) ctx.get().lookup(emJndiName);
-   }
-
-   private void initConfiguration()
-   {
-      jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
-      Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
    }
 
 }

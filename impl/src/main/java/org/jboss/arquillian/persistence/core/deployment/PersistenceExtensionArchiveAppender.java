@@ -17,31 +17,21 @@
  */
 package org.jboss.arquillian.persistence.core.deployment;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.client.PersistenceExtension;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.ConfigurationExporter;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
 import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
@@ -55,9 +45,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
 {
-   @Inject
-   Instance<PersistenceConfiguration> persistenceConfigurationInstance;
-
    @Inject
    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
@@ -76,10 +63,6 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                                                                 .addPackages(true, requiredLibraries())
                                                                 .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
 
-      addPersistenceConfigurationSerializedAsProperties(persistenceExtensionArchive);
-      addDBUnitConfigurationSerializedAsProperties(persistenceExtensionArchive);
-      addJpaCacheEvictionConfigurationSerizedAsProperties(persistenceExtensionArchive);
-      
       return persistenceExtensionArchive;
    }
 
@@ -104,52 +87,5 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
       return libraries.toArray(new String[libraries.size()]);
    }
 
-
-   private void addPersistenceConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
-   {
-      archiveToExtend.addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), persistenceConfigurationInstance.get().getPrefix() + "properties");
-   }
-
-   private ByteArrayOutputStream exportPersistenceConfigurationAsProperties()
-   {
-      final ByteArrayOutputStream output = new ByteArrayOutputStream();
-      final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(persistenceConfigurationInstance.get());
-      exporter.toProperties(output);
-      return output;
-   }
-
-   private void addDBUnitConfigurationSerializedAsProperties(final JavaArchive archiveToExtend)
-   {
-      final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
-      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
-      final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
-      archiveToExtend.addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
-   }
-
-   // TODO extract to dedicated class
-   private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier)
-   {
-      final Map<String, String> extensionProperties = new HashMap<String, String>();
-      for (ExtensionDef extension : descriptor.getExtensions())
-      {
-         if (extension.getExtensionName().equals(qualifier))
-         {
-            extensionProperties.putAll(extension.getExtensionProperties());
-            break;
-         }
-      }
-      return extensionProperties;
-   }
-
-   private void addJpaCacheEvictionConfigurationSerizedAsProperties(JavaArchive archiveToExtend)
-   {
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      JpaCacheEvictionConfiguration config = new JpaCacheEvictionConfiguration();
-
-      Configuration.importTo(config).loadFrom(arquillianDescriptorInstance.get());
-      Configuration.exportUsing(config).toProperties(output);
-
-      archiveToExtend.addAsResource(new ByteArrayAsset(output.toByteArray()), config.getPrefix() + "properties");
-   }
 
 }

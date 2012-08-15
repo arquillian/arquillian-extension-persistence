@@ -23,14 +23,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Scanner;
 
-import org.jboss.arquillian.persistence.core.data.script.ScriptExecutor;
+import org.jboss.arquillian.persistence.core.testutils.FileLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +49,6 @@ public class ScriptExecutorTest
    @Mock
    Connection connection;
 
-
    @Before
    public void initializeScriptExecutor() throws SQLException
    {
@@ -63,7 +60,7 @@ public class ScriptExecutorTest
    public void should_execute_two_statements_when_script_contains_two_insert_statements() throws Exception
    {
       // when
-      scriptExecutor.execute(loadFileAsString("scripts/two-inserts.sql"));
+      scriptExecutor.execute(FileLoader.loadAsString("scripts/two-inserts.sql"));
 
       // then
       verify(connection, times(2)).createStatement();
@@ -73,7 +70,7 @@ public class ScriptExecutorTest
    public void should_execute_two_statements_when_script_contains_two_insert_statements_and_comment() throws Exception
    {
       // when
-      scriptExecutor.execute(loadFileAsString("scripts/two-inserts-with-comment.sql"));
+      scriptExecutor.execute(FileLoader.loadAsString("scripts/two-inserts-with-comment.sql"));
 
       // then
       verify(connection, times(2)).createStatement();
@@ -83,7 +80,7 @@ public class ScriptExecutorTest
    public void should_not_execute_any_statements_when_script_contains_only_comments() throws Exception
    {
       // when
-      scriptExecutor.execute(loadFileAsString("scripts/just-comments.sql"));
+      scriptExecutor.execute(FileLoader.loadAsString("scripts/just-comments.sql"));
 
       // then
       verify(connection, times(0)).createStatement();
@@ -93,7 +90,7 @@ public class ScriptExecutorTest
    public void should_execute_three_statements_from_inline_script() throws Exception
    {
       // when
-      scriptExecutor.execute(loadFileAsString("scripts/three-inserts-in-one-line.sql"));
+      scriptExecutor.execute(FileLoader.loadAsString("scripts/three-inserts-in-one-line.sql"));
 
       // then
       verify(connection, times(3)).createStatement();
@@ -103,20 +100,12 @@ public class ScriptExecutorTest
    public void should_split_into_three_statements_from_inline_script() throws Exception
    {
       // when
-      List<String> statements = scriptExecutor.splitScriptIntoStatements(loadFileAsString("scripts/three-inserts-in-one-line.sql"));
+      List<String> statements = scriptExecutor.splitScriptIntoStatements(FileLoader.loadAsString("scripts/three-inserts-in-one-line.sql"));
 
       // then
       assertThat(statements).containsSequence("INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
             "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')",
             "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (3, 'Cole', 'MacGrath', 'infamous', 'kessler')");
-   }
-
-   // -- Private utility method
-
-   private String loadFileAsString(final String scriptFile)
-   {
-      final InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(scriptFile);
-      return new Scanner(resourceAsStream).useDelimiter("\\A").next();
    }
 
 }

@@ -26,7 +26,7 @@ import org.jboss.arquillian.persistence.core.configuration.Configuration;
  * JPA cache eviction configuration which can be customized in
  * <code>arquillian.xml</code> descriptor in the element with qualifier
  * <code>persistence-jpacacheeviction</code>.
- * 
+ *
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  * @see JpaCacheEviction
  */
@@ -41,63 +41,45 @@ public class JpaCacheEvictionConfiguration extends Configuration
 
    private Class<? extends JpaCacheEvictionStrategy> defaultStrategy = FullCacheEvictionStrategy.class;
 
-   /**
-    * Constructor.
-    */
    public JpaCacheEvictionConfiguration()
    {
       super("persistence-jpacacheeviction",
             "arquillian.extension.persistence.jpacacheeviction.");
    }
 
-   /**
-    * Return default cache eviction phase.
-    * @return
-    */
    public TestExecutionPhase getDefaultPhase()
    {
       return defaultPhase;
    }
 
    /**
-    * Set default cache eviction phase.
-    * @param defaultPhase
+    * @param defaultPhase Default cache eviction phase.
     */
    public void setDefaultPhase(TestExecutionPhase defaultPhase)
    {
       this.defaultPhase = defaultPhase;
    }
 
-   /**
-    * Return default JNDI name of entity manager factory.
-    * @return
-    */
    public String getDefaultEntityManager()
    {
       return defaultEntityManager;
    }
 
    /**
-    * Set default JNDI name of entity manager factory.
-    * @param defaultEntityManager
+    * @param defaultEntityManager Default JNDI name of entity manager.
     */
    public void setDefaultEntityManager(String defaultEntityManager)
    {
       this.defaultEntityManager = defaultEntityManager;
    }
 
-   /**
-    * Return default strategy how to evict cache.
-    * @return
-    */
    public Class<? extends JpaCacheEvictionStrategy> getDefaultStrategy()
    {
       return defaultStrategy;
    }
 
    /**
-    * Set default strategy how to evict cache.
-    * @param defaultStrategy
+    * @param defaultStrategy Strategy how to evict cache.
     */
    public void setDefaultStrategy(Class<? extends JpaCacheEvictionStrategy> defaultStrategy)
    {

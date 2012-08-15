@@ -11,7 +11,7 @@
   -->
   <defaultProtocol type="Servlet 3.0" />
 
-  <container qualifier="jboss-7.1" default="true">
+  <container qualifier="jboss-7.0" default="true">
     <configuration>
       <property name="jbossHome">target/jboss-as-7.0.2.Final</property>
       <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>

@@ -71,6 +71,10 @@ public class EventObserver
 
    public void observeCalls(@Observes PersistenceEvent persistenceEvent)
    {
+      if (eventTriggersInstance.get() == null)
+      {
+         return;
+      }
       EventHandlingVerifier verifier = eventTriggersInstance.get().get(persistenceEvent.getClass());
       if (verifier != null)
       {

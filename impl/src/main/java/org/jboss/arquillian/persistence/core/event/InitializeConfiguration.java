@@ -15,29 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.configuration;
+package org.jboss.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
-
-public abstract class ConfigurationProducer<T extends Configuration>
+public class InitializeConfiguration implements PersistenceEvent
 {
-
-   @Inject @ApplicationScoped
-   protected Instance<ArquillianDescriptor> descriptor;
-
-   public abstract void observe(BeforeSuite beforeSuiteEvent);
-
-   protected abstract T create();
-
-   public T configureFromArquillianDescriptor()
-   {
-      final T configuration = create();
-      Configuration.importTo(configuration).loadFrom(descriptor.get());
-      return configuration;
-   }
 
 }

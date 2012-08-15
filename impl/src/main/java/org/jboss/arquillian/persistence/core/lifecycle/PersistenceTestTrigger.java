@@ -29,6 +29,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.core.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
@@ -74,10 +75,17 @@ public class PersistenceTestTrigger
    @Inject
    private Event<AfterPersistenceTest> afterPersistenceTestEvent;
 
-   public void beforeSuite(@Observes BeforeClass beforeClass)
+   @Inject
+   private Event<InitializeConfiguration> initializeConfigurationEvent;
+
+   public void beforeClass(@Observes BeforeClass beforeClass)
    {
       metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
       persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
+      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
+      {
+         initializeConfigurationEvent.fire(new InitializeConfiguration());
+      }
    }
 
    public void beforeTest(@Observes Before beforeTestEvent)

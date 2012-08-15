@@ -23,7 +23,7 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 
 /**
  *
@@ -38,7 +38,7 @@ public class PersistenceConfigurationRemoteProducer
    @Inject @ApplicationScoped
    InstanceProducer<PersistenceConfiguration> configurationProducer;
 
-   public void configure(@Observes BeforeSuite beforeSuiteEvent)
+   public void configure(@Observes InitializeConfiguration event)
    {
       final PersistenceConfiguration configuration = new PersistenceConfiguration();
       Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
