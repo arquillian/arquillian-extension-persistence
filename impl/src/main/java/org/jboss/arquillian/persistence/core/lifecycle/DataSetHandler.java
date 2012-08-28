@@ -33,7 +33,6 @@ import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatur
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 
 public class DataSetHandler
 {
@@ -60,7 +59,7 @@ public class DataSetHandler
       if (persistenceExtensionFeatureResolver.shouldSeedData())
       {
          DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), configurationInstance.get());
-         prepareDataEvent.fire(new PrepareData(beforePersistenceTest, dataSetProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
+         prepareDataEvent.fire(new PrepareData(dataSetProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
       }
 
    }
@@ -78,7 +77,7 @@ public class DataSetHandler
          final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
                                                                       .fetchFrom(testMethod);
 
-         compareDataEvent.fire(new CompareData(afterPersistenceTest, dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.excludeColumns()));
+         compareDataEvent.fire(new CompareData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.excludeColumns()));
       }
 
    }

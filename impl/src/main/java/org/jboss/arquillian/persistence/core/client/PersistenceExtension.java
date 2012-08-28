@@ -40,6 +40,7 @@ public class PersistenceExtension implements LoadableExtension {
              .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
              .observer(PersistenceConfigurationClientSideProducer.class)
              .observer(DBUnitConfigurationClientSideProducer.class)
+             .observer(SchemaCreationCoordinator.class)
              .observer(DatabaseStateDumper.class);
    }
 

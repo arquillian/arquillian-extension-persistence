@@ -44,6 +44,7 @@ import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProv
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
+import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 /**
@@ -63,7 +64,7 @@ public class DBUnitPersistenceTestLifecycleHandler
    @Inject
    private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
-   @Inject @TestScoped
+   @Inject @ClassScoped
    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
 
    @Inject @TestScoped
@@ -76,14 +77,18 @@ public class DBUnitPersistenceTestLifecycleHandler
    // Intercepting data handling events
    // ------------------------------------------------------------------------------------------------
 
-   public void createDatabaseConnection(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
+   public void createDatabaseConnection(@Observes(precedence = 1001) EventContext<BeforePersistenceTest> context)
    {
       if (databaseConnectionProducer.get() == null)
       {
          createDatabaseConnection();
          configure();
       }
+      context.proceed();
+   }
 
+   public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
+   {
       final Method testMethod = context.getEvent().getTestMethod();
 
       PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();

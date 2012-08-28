@@ -62,7 +62,6 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                                                                       "org.jboss.arquillian.persistence")
                                                                 .addPackages(true, requiredLibraries())
                                                                 .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
-
       return persistenceExtensionArchive;
    }
 

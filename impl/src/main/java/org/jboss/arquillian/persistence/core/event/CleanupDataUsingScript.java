@@ -20,14 +20,13 @@ package org.jboss.arquillian.persistence.core.event;
 import java.util.Collection;
 
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 public class CleanupDataUsingScript extends DataEvent<SqlScriptResourceDescriptor>
 {
 
-   public CleanupDataUsingScript(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> descriptors)
+   public CleanupDataUsingScript(Collection<SqlScriptResourceDescriptor> descriptors)
    {
-      super(testEvent, descriptors);
+      super(descriptors);
    }
 
 }

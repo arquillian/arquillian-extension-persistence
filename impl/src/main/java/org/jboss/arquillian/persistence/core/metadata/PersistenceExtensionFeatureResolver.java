@@ -57,6 +57,11 @@ public class PersistenceExtensionFeatureResolver
    // Public API methods
    // ---------------------------------------------------------------------------------------------------
 
+   public boolean shouldCreateSchema()
+   {
+      return metadataExtractor.createSchema().isDefinedOnClassLevel();
+   }
+
    public boolean shouldSeedData()
    {
       return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
@@ -65,13 +70,13 @@ public class PersistenceExtensionFeatureResolver
 
    public boolean shouldCustomScriptBeAppliedBeforeTestRequested()
    {
-      return  metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
+      return metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
             || metadataExtractor.applyScriptBefore().isDefinedOn(testMethod);
    }
 
    public boolean shouldCustomScriptBeAppliedAfterTestRequested()
    {
-      return  metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
+      return metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
             || metadataExtractor.applyScriptAfter().isDefinedOn(testMethod);
    }
 

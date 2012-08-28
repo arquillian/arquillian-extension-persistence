@@ -20,14 +20,13 @@ package org.jboss.arquillian.persistence.core.event;
 import java.util.Collection;
 
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 public class PrepareData extends DataEvent<DataSetResourceDescriptor>
 {
 
-   public PrepareData(TestEvent testEvent, Collection<DataSetResourceDescriptor> dataSetDescriptors)
+   public PrepareData(Collection<DataSetResourceDescriptor> dataSetDescriptors)
    {
-      super(testEvent, dataSetDescriptors);
+      super(dataSetDescriptors);
    }
 
 }

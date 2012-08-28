@@ -20,8 +20,6 @@ package org.jboss.arquillian.integration.persistence.jpa.cache;
 import static org.fest.assertions.Assertions.assertThat;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
@@ -49,9 +47,6 @@ public class JpaCacheEvictionTest extends Arquillian
 
    @Inject
    private GameBean gameBean;
-
-   @PersistenceUnit(unitName = "jpacacheeviction")
-   private EntityManagerFactory emf;
 
    @Test
    public void should_put_game_to_second_level_cache() throws Exception

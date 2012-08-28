@@ -24,7 +24,7 @@ import java.util.Collection;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
+import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 
@@ -38,13 +38,13 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
    private final PersistenceConfiguration configuration;
 
-   private final PrefixedScriptFileNamingStrategy strategy ;
+   private final FileNamingStrategy<String> strategy ;
 
    private final Class<T> annotation;
 
    private final ValueExtractor<T> extractor;
 
-   SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, PrefixedScriptFileNamingStrategy scriptFileNamingStrategy, PersistenceConfiguration configuration)
+   SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, FileNamingStrategy<String> scriptFileNamingStrategy, PersistenceConfiguration configuration)
    {
       super(annotation, metadataExtractor);
       this.configuration = configuration;
@@ -73,8 +73,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    @Override
    protected String defaultFileName()
    {
-      String defaultFileName = strategy.createFileName(metadataExtractor.getJavaClass());
-      return defaultFileName;
+      return strategy.createFileName(metadataExtractor.getJavaClass());
    }
 
    @Override
@@ -88,8 +87,6 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
       }
       return Arrays.asList(specifiedFileNames);
    }
-
-   // Fluent builder
 
    private T getResourceAnnotation(Method testMethod)
    {

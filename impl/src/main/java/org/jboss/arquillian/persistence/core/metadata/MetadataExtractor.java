@@ -24,6 +24,7 @@ import java.util.Map;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
+import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.PersistenceTest;
@@ -115,6 +116,12 @@ public class MetadataExtractor
    {
       return using(JpaCacheEviction.class);
    }
+
+   public AnnotationInspector<CreateSchema> createSchema()
+   {
+      return using(CreateSchema.class);
+   }
+
 
    public boolean hasPersistenceTestAnnotation()
    {

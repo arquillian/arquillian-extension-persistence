@@ -28,6 +28,7 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.core.event.BeforePersistenceClass;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableException;
@@ -78,6 +79,9 @@ public class PersistenceTestTrigger
    @Inject
    private Event<InitializeConfiguration> initializeConfigurationEvent;
 
+   @Inject
+   private Event<BeforePersistenceClass> beforePersistenceClassEvent;
+
    public void beforeClass(@Observes BeforeClass beforeClass)
    {
       metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
@@ -85,6 +89,7 @@ public class PersistenceTestTrigger
       if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
       {
          initializeConfigurationEvent.fire(new InitializeConfiguration());
+         beforePersistenceClassEvent.fire(new BeforePersistenceClass(beforeClass.getTestClass()));
       }
    }
 

@@ -34,11 +34,12 @@ import org.jboss.arquillian.persistence.core.command.DumpDataCommand;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.dump.DataDump;
 import org.jboss.arquillian.persistence.core.data.dump.DataStateLogger;
+import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
+import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.core.event.PrepareData;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
  * Dumps database state during test method invocation, covering
@@ -85,6 +86,18 @@ public class DBUnitDataStateLogger implements DataStateLogger
    @Inject
    private Instance<CommandService> commandService;
 
+   private TestClass testClass;
+
+   private Method testMethod;
+
+   @Override
+   public void beforePersistenceTest(@Observes EventContext<BeforePersistenceTest> context)
+   {
+      this.testClass = context.getEvent().getTestClass();
+      this.testMethod = context.getEvent().getTestMethod();
+      context.proceed();
+   }
+
    @Override
    public void aroundDataSeeding(@Observes EventContext<PrepareData> context)
    {
@@ -116,16 +129,14 @@ public class DBUnitDataStateLogger implements DataStateLogger
 
    // Private
 
-   private String createFileName(TestEvent testEvent, String phaseSuffix)
+   private String createFileName(String phaseSuffix)
    {
-      TestClass testClass = testEvent.getTestClass();
-      Method testMethod = testEvent.getTestMethod();
-      return String.format(FILENAME_PATTERN, System.currentTimeMillis(), testClass.getName(), testMethod.getName(), phaseSuffix);
+      return String.format(FILENAME_PATTERN, System.currentTimeMillis(), this.testClass.getName(), this.testMethod.getName(), phaseSuffix);
    }
 
-   private void dumpDatabaseState(TestEvent event, Phase phase)
+   private void dumpDatabaseState(PersistenceEvent event, Phase phase)
    {
-      final String path = configuration.get().getDumpDirectory() + "/" + createFileName(event, phase.getName());
+      final String path = configuration.get().getDumpDirectory() + "/" + createFileName(phase.getName());
       try
       {
          final IDataSet dbContent = databaseConnection.get().createDataSet();

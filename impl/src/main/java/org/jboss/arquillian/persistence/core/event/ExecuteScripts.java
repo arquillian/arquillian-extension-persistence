@@ -27,7 +27,7 @@ public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor>
 
    public ExecuteScripts(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors)
    {
-      super(testEvent, dataSetDescriptors);
+      super(dataSetDescriptors);
    }
 
 }

@@ -19,7 +19,7 @@ package org.jboss.arquillian.persistence.core.data.provider;
 import java.lang.annotation.Annotation;
 
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
+import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 
@@ -51,7 +51,7 @@ public class SqlScriptProviderBuilder<K extends Annotation>
          this.builder = builder;
       }
 
-      public SqlScriptProviderBuilder.Builder<K> namingFollows(PrefixedScriptFileNamingStrategy strategy)
+      public SqlScriptProviderBuilder.Builder<K> namingFollows(FileNamingStrategy<String> strategy)
       {
          builder.scriptFileNamingStrategy = strategy;
          return new SqlScriptProviderBuilder.Builder<K>(builder);
@@ -76,7 +76,7 @@ public class SqlScriptProviderBuilder<K extends Annotation>
 
    private Class<K> annotation;
 
-   private PrefixedScriptFileNamingStrategy scriptFileNamingStrategy;
+   private FileNamingStrategy<String> scriptFileNamingStrategy;
 
    private MetadataExtractor metadataExtractor;
 

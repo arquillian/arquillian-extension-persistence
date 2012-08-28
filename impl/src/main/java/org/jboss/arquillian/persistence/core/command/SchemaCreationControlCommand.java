@@ -17,30 +17,39 @@
  */
 package org.jboss.arquillian.persistence.core.command;
 
+
 import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
+
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class DumpDataCommand extends AbstractCommand<Boolean>
+ * Command used to communicate between local test executor and remote
+ * container to obtain information if schema has been already created
+ * before the first test execution.
+ *
+ * Such a construct exists due to the lack of BeforeClass hooks
+ * while executing tests in the container.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class SchemaCreationControlCommand extends AbstractCommand<Boolean>
 {
 
-   private static final long serialVersionUID = -2902231315942649833L;
+   private static final long serialVersionUID = 804375658347055929L;
 
-   private final DataDump dumpData;
+   private final String key;
 
-   public DumpDataCommand(DataDump dumpData)
+   public SchemaCreationControlCommand(String key)
    {
       super();
-      this.dumpData = dumpData;
+      this.key = key;
    }
 
-   public DataDump getDumpData()
+   public String getKey()
    {
-      return dumpData;
+      return key;
    }
+
+
 
 }

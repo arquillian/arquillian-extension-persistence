@@ -24,6 +24,7 @@ import org.jboss.arquillian.persistence.core.lifecycle.DataScriptsHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.DataSetHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.ErrorCollectorHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.PersistenceTestTrigger;
+import org.jboss.arquillian.persistence.core.lifecycle.SchemaCreationScriptsExecutor;
 import org.jboss.arquillian.persistence.core.lifecycle.TransactionHandler;
 import org.jboss.arquillian.persistence.core.transaction.TestTransactionWrapper;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
@@ -65,12 +66,13 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    private void registerTestLifecycleHandlers(ExtensionBuilder builder)
    {
       builder.observer(PersistenceTestTrigger.class)
-             .observer(ErrorCollectorHandler.class)     // Order of execution Before / after test
-             .observer(CustomScriptsExecutor.class)     // 50 / 10
-             .observer(DataCleanupHandler.class)        // 40 / 20
-             .observer(DataScriptsHandler.class)        // 30 / 40
-             .observer(DataSetHandler.class)            // 20 / 30
-             .observer(TransactionHandler.class);       // 10 / 50
+             .observer(ErrorCollectorHandler.class)         // Order of execution Before / after test
+             .observer(SchemaCreationScriptsExecutor.class) // Wraps around BeforePersistenceTest
+             .observer(CustomScriptsExecutor.class)         // 50 / 10
+             .observer(DataCleanupHandler.class)            // 40 / 20
+             .observer(DataScriptsHandler.class)            // 30 / 40
+             .observer(DataSetHandler.class)                // 20 / 30
+             .observer(TransactionHandler.class);           // 10 / 50
    }
 
 }

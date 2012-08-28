@@ -15,32 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.command;
+package org.jboss.arquillian.persistence;
 
-import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class DumpDataCommand extends AbstractCommand<Boolean>
-{
+ * Defines SQL scripts applied on test database before test class execution to create
+ * database schema. It first look for the files stored in <code>scripts</code>
+ * folder from classpath.
+ *
+ * Presence of this annotation in the test class enables Arquillian Persistence Extension.
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+@Target(TYPE)
+@Retention(RUNTIME)
+@Inherited
+public @interface CreateSchema {
 
-   private static final long serialVersionUID = -2902231315942649833L;
-
-   private final DataDump dumpData;
-
-   public DumpDataCommand(DataDump dumpData)
-   {
-      super();
-      this.dumpData = dumpData;
-   }
-
-   public DataDump getDumpData()
-   {
-      return dumpData;
-   }
+   String[] value() default "";
 
 }

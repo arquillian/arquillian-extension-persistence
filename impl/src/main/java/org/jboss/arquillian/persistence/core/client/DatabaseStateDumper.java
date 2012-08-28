@@ -38,7 +38,6 @@ import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
  */
 public class DatabaseStateDumper
 {
-
    public void dump(@Observes DumpDataCommand dumpDataCommand)
    {
       final DataDump dataDump = dumpDataCommand.getDumpData();
@@ -55,7 +54,7 @@ public class DatabaseStateDumper
       }
       finally
       {
-         dumpDataCommand.setResult("Received");
+         dumpDataCommand.setResult(true);
          if (writer != null)
          {
             try

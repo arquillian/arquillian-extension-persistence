@@ -29,8 +29,10 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
+import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
@@ -116,12 +118,14 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = createProviderForScriptsToBeAppliedBeforeTest(testClass);
       final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
       final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = createProviderForCleanupScripts(testClass);
+      final SqlScriptProvider<CreateSchema> createSchemaScripts = createProviderForCreateSchemaScripts(testClass);
 
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
       allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
       allDataSets.addAll(cleanupScriptsProvider.getDescriptors(testClass));
+      allDataSets.addAll(createSchemaScripts.getDescriptors(testClass));
 
       return allDataSets;
    }
@@ -188,6 +192,31 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
             {
                @Override
                public String[] extract(CleanupUsingScript toExtract)
+               {
+                  if (toExtract == null)
+                  {
+                     return new String[0];
+                  }
+                  return toExtract.value();
+               }
+            });
+   }
+
+   private SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass)
+   {
+      return SqlScriptProvider.forAnnotation(CreateSchema.class)
+            .usingConfiguration(configurationInstance.get())
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new FileNamingStrategy<String>("sql"){
+               @Override
+               public String getFileExtension()
+               {
+                  return extension;
+               }})
+            .build(new ValueExtractor<CreateSchema>()
+            {
+               @Override
+               public String[] extract(CreateSchema toExtract)
                {
                   if (toExtract == null)
                   {

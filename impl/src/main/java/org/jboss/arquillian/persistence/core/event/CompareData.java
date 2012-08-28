@@ -20,16 +20,15 @@ package org.jboss.arquillian.persistence.core.event;
 import java.util.Collection;
 
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 public class CompareData extends DataEvent<DataSetResourceDescriptor>
 {
 
    private final String[] columnsToExclude;
 
-   public CompareData(TestEvent testEvent, Collection<DataSetResourceDescriptor> dataSetDescriptors, String ... columnsToExclude)
+   public CompareData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String ... columnsToExclude)
    {
-      super(testEvent, dataSetDescriptors);
+      super(dataSetDescriptors);
       this.columnsToExclude = columnsToExclude;
    }
 

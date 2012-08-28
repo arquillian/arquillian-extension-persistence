@@ -43,7 +43,6 @@ import org.jboss.arquillian.persistence.core.util.Strings;
  */
 public class CustomScriptsExecutor
 {
-
    @Inject
    private Instance<PersistenceConfiguration> configuration;
 

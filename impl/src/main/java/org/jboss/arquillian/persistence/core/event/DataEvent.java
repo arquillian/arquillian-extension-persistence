@@ -22,16 +22,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class DataEvent<T extends ResourceDescriptor<?>> extends TestEvent implements PersistenceEvent
+public class DataEvent<T extends ResourceDescriptor<?>> implements PersistenceEvent
 {
 
    private final List<T> descriptors;
 
-   public DataEvent(TestEvent testEvent, Collection<T> descriptors)
+   public DataEvent(Collection<T> descriptors)
    {
-      super(testEvent.getTestInstance(), testEvent.getTestMethod());
       this.descriptors = new ArrayList<T>(descriptors);
    }
 

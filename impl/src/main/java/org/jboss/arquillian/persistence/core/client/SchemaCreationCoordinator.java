@@ -15,32 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.command;
+package org.jboss.arquillian.persistence.core.client;
 
-import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.core.command.SchemaCreationControlCommand;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class DumpDataCommand extends AbstractCommand<Boolean>
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public class SchemaCreationCoordinator
 {
+   private final static  Map<String, Boolean> createdSchemas = new ConcurrentHashMap<String, Boolean>();
 
-   private static final long serialVersionUID = -2902231315942649833L;
-
-   private final DataDump dumpData;
-
-   public DumpDataCommand(DataDump dumpData)
+   public void controlSchemaCreation(@Observes SchemaCreationControlCommand command)
    {
-      super();
-      this.dumpData = dumpData;
-   }
-
-   public DataDump getDumpData()
-   {
-      return dumpData;
+      final String key = command.getKey();
+      if (!createdSchemas.containsKey(key))
+      {
+         command.setResult(Boolean.FALSE);
+         createdSchemas.put(key, Boolean.TRUE);
+      }
+      else
+      {
+         command.setResult(createdSchemas.get(key));
+      }
    }
 
 }
