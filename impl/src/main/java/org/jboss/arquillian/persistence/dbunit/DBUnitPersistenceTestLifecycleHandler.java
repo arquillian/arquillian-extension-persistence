@@ -111,11 +111,17 @@ public class DBUnitPersistenceTestLifecycleHandler
       try
       {
          context.proceed();
-         databaseConnectionProducer.get().getConnection().close();
       }
-      catch (Exception e)
+      finally
       {
-         throw new DBUnitConnectionException("Unable to close connection.", e);
+         try
+         {
+            databaseConnectionProducer.get().getConnection().close();
+         }
+         catch (Exception e)
+         {
+            throw new DBUnitConnectionException("Unable to close connection.", e);
+         }
       }
    }
 
