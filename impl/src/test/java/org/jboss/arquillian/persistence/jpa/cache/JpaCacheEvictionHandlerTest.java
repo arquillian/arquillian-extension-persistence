@@ -39,7 +39,6 @@ import org.junit.Test;
  */
 public class JpaCacheEvictionHandlerTest
 {
-/*
    private static boolean tmpCacheEvicted;
    private static String tmpLookupName;
    private JpaCacheEvictionHandler jpaCacheEvictionHandler;
@@ -173,5 +172,4 @@ public class JpaCacheEvictionHandlerTest
    public static class StubTestCaseWithModifiedAnnotation extends StubTestCaseNoAnnotation {}
 
    public static class StubTestCaseWithInheritedAnnotation extends StubTestCaseWithAnnotation {}
-*/
 }

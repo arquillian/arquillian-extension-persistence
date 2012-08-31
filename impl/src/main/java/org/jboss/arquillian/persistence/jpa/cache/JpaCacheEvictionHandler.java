@@ -33,9 +33,9 @@ import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
+import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
-import org.jboss.arquillian.test.spi.event.suite.After;
-import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
@@ -70,12 +70,12 @@ public class JpaCacheEvictionHandler
       Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
    }
 
-   public final void onBeforeTestMethod(@Observes Before event)
+   public final void onBeforeTestMethod(@Observes(precedence = 5) BeforePersistenceTest event)
    {
       executeCacheEviction(event, TestExecutionPhase.BEFORE);
    }
 
-   public final void onAfterTestMethod(@Observes After event)
+   public final void onAfterTestMethod(@Observes(precedence = 45) AfterPersistenceTest event)
    {
       executeCacheEviction(event, TestExecutionPhase.AFTER);
    }
