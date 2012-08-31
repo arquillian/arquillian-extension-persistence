@@ -26,6 +26,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
@@ -57,14 +58,14 @@ public class UsedRowsOnlyCleanupStrategyTest
    @PersistenceContext
    EntityManager em;
 
-   @Test
+   @Test @InSequence(1)
    @ApplyScriptBefore({ "clark-kent-with-nickname.sql", "john-smith.sql" })
    @Cleanup(phase = TestExecutionPhase.NONE)
    public void insert_data_for_test()
    {
    }
 
-   @Test
+   @Test @InSequence(2)
    @UsingDataSet("users.yml") // both users are without nicknames
    @Cleanup(phase = TestExecutionPhase.BEFORE, strategy = CleanupStrategy.USED_ROWS_ONLY)
    public void should_cleanup_database_content_matching_users_from_dataset()

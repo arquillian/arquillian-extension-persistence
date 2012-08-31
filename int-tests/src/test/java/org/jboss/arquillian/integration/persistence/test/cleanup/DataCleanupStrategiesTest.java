@@ -32,6 +32,7 @@ import org.jboss.arquillian.integration.persistence.testextension.data.annotatio
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.ShouldBeEmptyAfterTest;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
@@ -64,7 +65,7 @@ public class DataCleanupStrategiesTest
    @PersistenceContext
    EntityManager em;
 
-   @Test
+   @Test @InSequence(1)
    @UsingDataSet("users.yml")
    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.STRICT)
    @DatabaseShouldBeEmptyAfterTest
@@ -74,7 +75,7 @@ public class DataCleanupStrategiesTest
       em.persist(address);
    }
 
-   @Test
+   @Test @InSequence(2)
    @UsingDataSet("users.yml")
    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
    @DatabaseShouldContainAfterTest("expected-address.yml")
@@ -83,7 +84,7 @@ public class DataCleanupStrategiesTest
       em.persist(new Address("Testing Street", 7, "JavaPolis", 1234));
    }
 
-   @Test
+   @Test @InSequence(3)
    @ApplyScriptBefore({"delete-all.sql", "one-address.sql"})
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet({"users.yml", "lex-luthor.yml", "expected-address.yml"})
@@ -94,7 +95,7 @@ public class DataCleanupStrategiesTest
       em.persist(new UserAccount("Lex", "Luthor", "LexCorp", "Injustice Gang"));
    }
 
-   @Test
+   @Test @InSequence(4)
    @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
    @UsingDataSet("users.yml")
    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
@@ -105,7 +106,7 @@ public class DataCleanupStrategiesTest
       em.persist(new UserAccount("Bartosz", "Majsak", "fonejacker", "doovdePUK"));
    }
 
-   @Test
+   @Test @InSequence(5)
    @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
    @UsingDataSet("users.yml")
    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
