@@ -37,7 +37,8 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 @Inherited
-public @interface CreateSchema {
+public @interface CreateSchema
+{
 
    String[] value() default "";
 

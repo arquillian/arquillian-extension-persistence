@@ -28,8 +28,8 @@ import org.jboss.arquillian.integration.persistence.testextension.event.annotati
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-@Transactional
+@PersistenceTest
 public class DataCleanupEventHandlingTest
 {
 

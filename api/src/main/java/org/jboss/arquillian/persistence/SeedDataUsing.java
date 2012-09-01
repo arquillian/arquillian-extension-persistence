@@ -27,8 +27,10 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * Defines strategy used for seeding database.
  *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * @see DataSeedStrategy
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)

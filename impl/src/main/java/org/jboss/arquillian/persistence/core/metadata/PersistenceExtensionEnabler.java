@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.metadata;
 
 import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
 *
@@ -39,11 +40,12 @@ public class PersistenceExtensionEnabler
       this.metadataExtractor = metadataExtractor;
    }
 
-   public boolean isPersistenceExtensionRequired()
+   public boolean shouldPersistenceExtensionBeActivated()
    {
       return (hasDataSetAnnotation() || hasApplyScriptAnnotation()
-            || hasPersistenceTestAnnotation() || hasTransactionalAnnotation()
-            || hasJpaCacheEvictionAnnotation() || hasCreateSchemaAnnotation());
+            || hasPersistenceTestAnnotation() || hasJpaCacheEvictionAnnotation()
+            || hasCreateSchemaAnnotation() || hasCleanupAnnotation()
+            || hasCleanupUsingScriptAnnotation());
    }
 
    // ---------------------------------------------------------------------------------------------------
@@ -71,12 +73,6 @@ public class PersistenceExtensionEnabler
       return metadataExtractor.hasPersistenceTestAnnotation();
    }
 
-   private boolean hasTransactionalAnnotation()
-   {
-      return metadataExtractor.transactional().isDefinedOnClassLevel()
-            || metadataExtractor.transactional().isDefinedOnAnyMethod();
-   }
-
    private boolean hasJpaCacheEvictionAnnotation()
    {
       return metadataExtractor.jpaCacheEviction().isDefinedOnClassLevel()
@@ -86,6 +82,18 @@ public class PersistenceExtensionEnabler
    private boolean hasCreateSchemaAnnotation()
    {
       return metadataExtractor.createSchema().isDefinedOnClassLevel();
+   }
+
+   private boolean hasCleanupAnnotation()
+   {
+      return metadataExtractor.cleanup().isDefinedOnClassLevel()
+            || metadataExtractor.cleanup().isDefinedOnAnyMethod();
+   }
+
+   private boolean hasCleanupUsingScriptAnnotation()
+   {
+      return metadataExtractor.cleanupUsingScript().isDefinedOnClassLevel()
+            || metadataExtractor.cleanupUsingScript().isDefinedOnAnyMethod();
    }
 
 }

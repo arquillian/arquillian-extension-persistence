@@ -25,6 +25,7 @@
     <version.jta>1.1</version.jta>
     <version.slf4j-jdk14>1.5.6</version.slf4j-jdk14>
     <version.junit_params>0.4.0</version.junit_params>
+    <version.arquillian_transaction>1.0.0.Final-SNAPSHOT</version.arquillian_transaction>
   </properties>
 
   <dependencies>
@@ -33,6 +34,18 @@
       <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-persistence-api</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-transaction-spi</artifactId>
+      <version>${version.arquillian_transaction}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-transaction-jta</artifactId>
+      <version>${version.arquillian_transaction}</version>
     </dependency>
 
     <dependency>

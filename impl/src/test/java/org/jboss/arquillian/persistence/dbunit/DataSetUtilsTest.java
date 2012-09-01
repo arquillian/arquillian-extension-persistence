@@ -3,7 +3,7 @@
  * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the @authors tag. All rights reserved.
  * See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * full Arrays.asListing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,14 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.jboss.arquillian.persistence.core.testutils.CollectionUtils.list;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,9 +50,9 @@ public class DataSetUtilsTest
    {
       return $(
                   //   expected    ,   actual             , non existing in actual
-                  $(list("id", "name"), list("name", "password"), list("id")),
-                  $(list("id", "username", "password"), list("id", "username", "password"), Collections.emptyList()),
-                  $(Collections.emptyList(), list("id", "name"), Collections.emptyList()),
+                  $(Arrays.asList("id", "name"), Arrays.asList("name", "password"), Arrays.asList("id")),
+                  $(Arrays.asList("id", "username", "password"), Arrays.asList("id", "username", "password"), Collections.emptyList()),
+                  $(Collections.emptyList(), Arrays.asList("id", "name"), Collections.emptyList()),
                   $(Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
             );
    }

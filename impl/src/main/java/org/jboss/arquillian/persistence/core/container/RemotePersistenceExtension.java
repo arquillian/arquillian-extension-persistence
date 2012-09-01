@@ -25,13 +25,13 @@ import org.jboss.arquillian.persistence.core.lifecycle.DataSetHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.ErrorCollectorHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.PersistenceTestTrigger;
 import org.jboss.arquillian.persistence.core.lifecycle.SchemaCreationScriptsExecutor;
-import org.jboss.arquillian.persistence.core.lifecycle.TransactionHandler;
-import org.jboss.arquillian.persistence.core.transaction.TestTransactionWrapper;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
 import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionHandler;
+import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 /**
  * Defines all the bindings for Arquillian extension run in the
@@ -51,8 +51,9 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
 
       builder.observer(PersistenceConfigurationRemoteProducer.class)
              .observer(CommandServiceProducer.class)
-             .observer(TestTransactionWrapper.class)
              .observer(JpaCacheEvictionHandler.class);
+
+      builder.service(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
    }
 
    private void registerDBUnitHandlers(ExtensionBuilder builder)
@@ -71,8 +72,7 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
              .observer(CustomScriptsExecutor.class)         // 50 / 10
              .observer(DataCleanupHandler.class)            // 40 / 20
              .observer(DataScriptsHandler.class)            // 30 / 40
-             .observer(DataSetHandler.class)                // 20 / 30
-             .observer(TransactionHandler.class);           // 10 / 50
+             .observer(DataSetHandler.class);               // 20 / 30
    }
 
 }

@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.jboss.arquillian.persistence.core.testutils.FileLoader;
+import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

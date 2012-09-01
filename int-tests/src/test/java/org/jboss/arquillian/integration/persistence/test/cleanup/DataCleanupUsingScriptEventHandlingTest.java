@@ -31,7 +31,7 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -45,7 +45,6 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-@Transactional
 public class DataCleanupUsingScriptEventHandlingTest
 {
 

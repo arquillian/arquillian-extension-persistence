@@ -10,7 +10,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -40,20 +40,20 @@ public class TableAssert extends GenericAssert<TableAssert, ITable>
 
    public TableAssert hasColumns(String... expectedColumnNames)
    {
-      List<String> columnNames = extractColumnNames();
+      final List<String> columnNames = extractColumnNames();
       Assertions.assertThat(columnNames).contains(expectedColumnNames);
       return this;
    }
 
    public TableAssert hasRow(String... keyValuePairs)
    {
-      
+
       @SuppressWarnings("unchecked")
-      Row expectedRow = new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
-      
+      final Row expectedRow = new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
+
       List<Row> rows = extractRows();
       Assertions.assertThat(rows).contains(expectedRow);
-      
+
       return this;
    }
 
@@ -70,7 +70,7 @@ public class TableAssert extends GenericAssert<TableAssert, ITable>
 
    private List<String> extractColumnNames()
    {
-      List<String> columnNames = new ArrayList<String>();
+      final List<String> columnNames = new ArrayList<String>();
       Column[] columns;
       try
       {
@@ -99,7 +99,7 @@ public class TableAssert extends GenericAssert<TableAssert, ITable>
             extractedRows.add(new Row(cells));
          }
       }
-      catch (DataSetException e) 
+      catch (DataSetException e)
       {
          throw new RuntimeException(e);
       }
@@ -120,10 +120,9 @@ public class TableAssert extends GenericAssert<TableAssert, ITable>
       return cells;
    }
 
-   
    private String flatten(String... keyValuePairs)
    {
-      StringBuilder flattenedString = new StringBuilder();
+      final StringBuilder flattenedString = new StringBuilder();
       for (String keyValue : keyValuePairs)
       {
          flattenedString.append(keyValue).append("\n");

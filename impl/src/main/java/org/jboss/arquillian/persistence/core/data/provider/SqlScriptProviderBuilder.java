@@ -23,6 +23,11 @@ import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class SqlScriptProviderBuilder<K extends Annotation>
 {
 
@@ -84,7 +89,7 @@ public class SqlScriptProviderBuilder<K extends Annotation>
 
    static <K extends Annotation> SqlScriptProviderBuilder<K> create(Class<K> annotation)
    {
-      SqlScriptProviderBuilder<K> sqlScriptProviderBuilder = new SqlScriptProviderBuilder<K>();
+      final SqlScriptProviderBuilder<K> sqlScriptProviderBuilder = new SqlScriptProviderBuilder<K>();
       sqlScriptProviderBuilder.annotation = annotation;
       return sqlScriptProviderBuilder;
    }

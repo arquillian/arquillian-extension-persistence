@@ -17,7 +17,6 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
-import org.testng.annotations.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -27,20 +26,21 @@ import org.jboss.arquillian.integration.persistence.testextension.event.annotati
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.testng.annotations.Test;
 
 /**
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-@Transactional
+@PersistenceTest
 public class DataCleanupEventHandlingTest extends Arquillian
 {
 
@@ -58,7 +58,7 @@ public class DataCleanupEventHandlingTest extends Arquillian
    @PersistenceContext
    EntityManager em;
 
-   @Test
+   @Test(priority = 1)
    @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
    @CleanupUsingScriptShouldNotBeTriggered
    public void should_cleanup_data_after_test_when_not_specified() throws Exception
@@ -77,7 +77,7 @@ public class DataCleanupEventHandlingTest extends Arquillian
       // data cleanup should be called before the test
    }
 
-   @Test
+   @Test(priority = 2)
    @Cleanup(phase = TestExecutionPhase.BEFORE)
    @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
    @CleanupUsingScriptShouldNotBeTriggered
@@ -97,7 +97,7 @@ public class DataCleanupEventHandlingTest extends Arquillian
       // data cleanup should be called after the test
    }
 
-   @Test
+   @Test(priority = 3)
    @Cleanup(phase = TestExecutionPhase.NONE)
    @CleanupShouldNotBeTriggered
    public void should_not_cleanup_data() throws Exception

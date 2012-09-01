@@ -26,6 +26,8 @@ import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionData
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationClientSideProducer;
 
 /**
+ * Wires persistence extension services which are used to prepare
+ * packages used in container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

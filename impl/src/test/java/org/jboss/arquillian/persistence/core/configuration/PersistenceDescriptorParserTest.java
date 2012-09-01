@@ -22,7 +22,7 @@ import static org.fest.assertions.Assertions.*;
 import java.io.InputStream;
 
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
-import org.jboss.arquillian.persistence.core.testutils.FileLoader;
+import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Test;
 
 public class PersistenceDescriptorParserTest

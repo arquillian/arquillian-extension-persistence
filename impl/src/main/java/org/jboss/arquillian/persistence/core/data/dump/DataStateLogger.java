@@ -22,6 +22,11 @@ import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.PrepareData;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public interface DataStateLogger
 {
 

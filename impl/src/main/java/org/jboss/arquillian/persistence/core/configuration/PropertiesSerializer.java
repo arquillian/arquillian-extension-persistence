@@ -24,6 +24,11 @@ import java.util.Map.Entry;
 
 import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class PropertiesSerializer
 {
 

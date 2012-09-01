@@ -76,7 +76,7 @@ public class TestConfigurationLoader
    {
       ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
-      Configuration.importTo(persistenceConfiguration).loadFrom(descriptor);
+      Configuration.importTo(persistenceConfiguration).createFrom(descriptor);
       return persistenceConfiguration;
    }
 
@@ -84,7 +84,7 @@ public class TestConfigurationLoader
    {
       ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
       DBUnitConfiguration dbunitConfiguration = new DBUnitConfiguration();
-      Configuration.importTo(dbunitConfiguration).loadFrom(descriptor);
+      Configuration.importTo(dbunitConfiguration).createFrom(descriptor);
       return dbunitConfiguration;
    }
 }

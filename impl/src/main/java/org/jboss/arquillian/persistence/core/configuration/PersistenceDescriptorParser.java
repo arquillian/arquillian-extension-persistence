@@ -18,12 +18,10 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.core.exception.PersistenceDescriptorParsingException;
@@ -31,8 +29,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
 public class PersistenceDescriptorParser
 {
 
@@ -44,34 +46,19 @@ public class PersistenceDescriptorParser
 
    public String obtainDataSourceName(final String descriptor)
    {
-      try
+      Document document = parseXmlDescriptor(descriptor);
+      final NodeList persistenceUnits = document.getElementsByTagName("persistence-unit");
+      if (persistenceUnits.getLength() > 1)
       {
-         final Document document = factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
-         final NodeList persistenceUnits = document.getElementsByTagName("persistence-unit");
-         if (persistenceUnits.getLength() > 1)
-         {
-            throw new MultiplePersistenceUnitsException("Multiple persistence units defined. Please specify default data source either in 'arquillian.xml' or by using @DataSource annotation");
-         }
-         final Node persistenceUnit = persistenceUnits.item(0);
-         Node dataSource = getJtaDataSource(persistenceUnit);
-         if (dataSource == null)
-         {
-            dataSource = getNonJtaDataSource(persistenceUnit);
-         }
-         return dataSource.getTextContent();
+         throw new MultiplePersistenceUnitsException("Multiple persistence units defined. Please specify default data source either in 'arquillian.xml' or by using @DataSource annotation");
       }
-      catch (SAXException e)
+      final Node persistenceUnit = persistenceUnits.item(0);
+      Node dataSource = getJtaDataSource(persistenceUnit);
+      if (dataSource == null)
       {
-         throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
+         dataSource = getNonJtaDataSource(persistenceUnit);
       }
-      catch (IOException e)
-      {
-         throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
-      }
-      catch (ParserConfigurationException e)
-      {
-         throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
-      }
+      return dataSource.getTextContent();
    }
 
    public String obtainDataSourceName(final InputStream inputStream)
@@ -79,6 +66,20 @@ public class PersistenceDescriptorParser
       return obtainDataSourceName(new Scanner(inputStream).useDelimiter("\\A").next());
    }
 
+   private Document parseXmlDescriptor(final String descriptor)
+   {
+      Document document = null;
+      try
+      {
+         document = factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
+      }
+      catch (Exception e)
+      {
+         throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
+      }
+      return document;
+   }
+   
    private Node getNonJtaDataSource(Node persistenceUnit)
    {
       return ((Element) persistenceUnit).getElementsByTagName(NON_JTA_DATA_SOURCE_TAG).item(0);

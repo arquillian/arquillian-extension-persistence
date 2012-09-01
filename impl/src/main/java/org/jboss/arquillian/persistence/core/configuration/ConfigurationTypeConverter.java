@@ -90,7 +90,8 @@ class ConfigurationTypeConverter
     * @param to Type of desired value
     *
     * @param <T> Type of returned value
-    * @return Value converted to a appropriate type
+    *
+    * @return Value converted to the appropriate type
     */
    public <T> T convert(String value, Class<T> to)
    {
@@ -229,12 +230,17 @@ class ConfigurationTypeConverter
       boolean hasOnlyBlanks = true;
       for (String element : convertedArray)
       {
-         if (element.trim().length() != 0)
+         if (isBlank(element))
          {
             return false;
          }
       }
       return hasOnlyBlanks;
+   }
+
+   private boolean isBlank(String element)
+   {
+      return element.trim().length() != 0;
    }
 
 }

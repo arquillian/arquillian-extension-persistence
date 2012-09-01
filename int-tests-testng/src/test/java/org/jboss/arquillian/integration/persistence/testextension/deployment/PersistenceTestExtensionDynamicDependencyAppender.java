@@ -45,7 +45,7 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
       final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.isPersistenceExtensionRequired())
+      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
       {
          return;
       }

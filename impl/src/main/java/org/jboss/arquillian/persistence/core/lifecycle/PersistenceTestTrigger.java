@@ -86,19 +86,19 @@ public class PersistenceTestTrigger
    {
       metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
       persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
-      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
+      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {
          initializeConfigurationEvent.fire(new InitializeConfiguration());
          beforePersistenceClassEvent.fire(new BeforePersistenceClass(beforeClass.getTestClass()));
       }
    }
 
-   public void beforeTest(@Observes Before beforeTestEvent)
+   public void beforeTest(@Observes(precedence = 25) Before beforeTestEvent)
    {
       PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
       persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
 
-      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
+      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {
          createDataSource();
          beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
@@ -106,9 +106,9 @@ public class PersistenceTestTrigger
 
    }
 
-   public void afterTest(@Observes After afterTestEvent)
+   public void afterTest(@Observes(precedence = 25) After afterTestEvent)
    {
-      if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
+      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {
          afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
       }

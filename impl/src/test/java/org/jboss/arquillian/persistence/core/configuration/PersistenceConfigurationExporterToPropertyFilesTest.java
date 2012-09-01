@@ -27,9 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.After;
 import org.junit.Test;
 

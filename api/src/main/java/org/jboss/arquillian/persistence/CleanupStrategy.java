@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence;
 
-
-
 /**
  * Defines strategy to be applied for {@link @Cleanup} operation.
  *

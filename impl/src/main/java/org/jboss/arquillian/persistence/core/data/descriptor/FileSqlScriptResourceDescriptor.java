@@ -17,8 +17,7 @@
  */
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
-import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
-
+import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
 
 /**
  *
@@ -38,7 +37,7 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
    @Override
    public String getContent()
    {
-      return ScriptHelper.loadScript(getLocation());
+      return ScriptLoader.loadScript(getLocation());
    }
 
    @Override

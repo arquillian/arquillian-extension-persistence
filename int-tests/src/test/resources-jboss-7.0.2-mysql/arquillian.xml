@@ -18,9 +18,8 @@
     </configuration>
   </container>
 
-  <extension qualifier="persistence">
-    <property name="defaultDataSource">java:app/datasources/mysql_ds</property>
-    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
+  <extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

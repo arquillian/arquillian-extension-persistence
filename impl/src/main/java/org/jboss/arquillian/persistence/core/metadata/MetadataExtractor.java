@@ -30,7 +30,6 @@ import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.SeedDataUsing;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -97,11 +96,6 @@ public class MetadataExtractor
       return using(ApplyScriptAfter.class);
    }
 
-   public AnnotationInspector<Transactional> transactional()
-   {
-      return using(Transactional.class);
-   }
-
    public AnnotationInspector<Cleanup> cleanup()
    {
       return using(Cleanup.class);
@@ -121,7 +115,6 @@ public class MetadataExtractor
    {
       return using(CreateSchema.class);
    }
-
 
    public boolean hasPersistenceTestAnnotation()
    {

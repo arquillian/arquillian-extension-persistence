@@ -12,10 +12,10 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
-public class PersistenceDescriptorArchiveExtractorTest
+public class PersistenceDescriptorExtractorTest
 {
 
-   PersistenceDescriptorArchiveExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorArchiveExtractor();
+   PersistenceDescriptorExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorExtractor();
 
    PersistenceDescriptorParser persistenceDescriptorParser = new PersistenceDescriptorParser();
 
@@ -24,7 +24,7 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                        .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                        .addClass(PersistenceDescriptorExtractorTest.class)
                                         .addAsManifestResource("persistence-jta.xml", "persistence.xml");
       // when
       InputStream inputStream = persistenceDescriptorArchiveExtractor.getAsStream(jar);
@@ -55,8 +55,8 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                       .addClass(PersistenceDescriptorArchiveExtractorTest.class)
-                                       .addAsManifestResource("persistence-jta.xml", "persistence.xml");
+                                        .addClass(PersistenceDescriptorExtractorTest.class)
+                                        .addAsManifestResource("persistence-jta.xml", "persistence.xml");
       final EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
                                               .addAsLibrary(jar);
       // when
@@ -72,10 +72,11 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "test1.jar")
-                                         .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                         .addClass(PersistenceDescriptorExtractorTest.class)
                                          .addAsManifestResource("persistence-jta.xml", "persistence.xml");
+
       final JavaArchive jar2 = ShrinkWrap.create(JavaArchive.class, "test2.jar")
-                                         .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                         .addClass(PersistenceDescriptorExtractorTest.class)
                                          .addAsManifestResource("persistence-non-jta.xml", "persistence.xml");
       final EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
                                               .addAsLibraries(jar1, jar2);
@@ -91,10 +92,10 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar1 = ShrinkWrap.create(JavaArchive.class, "test1.jar")
-                                         .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                         .addClass(PersistenceDescriptorExtractorTest.class)
                                          .addAsManifestResource("persistence-jta.xml", "persistence.xml");
       final JavaArchive jar2 = ShrinkWrap.create(JavaArchive.class, "test2.jar")
-                                         .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                         .addClass(PersistenceDescriptorExtractorTest.class)
                                          .addAsManifestResource("persistence-non-jta.xml", "persistence.xml");
       final EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
                                               .addAsLibraries(Testable.archiveToTest(jar1), jar2);
@@ -111,7 +112,8 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                        .addClass(PersistenceDescriptorArchiveExtractorTest.class);
+                                        .addClass(PersistenceDescriptorExtractorTest.class);
+
       // when
       InputStream inputStream = persistenceDescriptorArchiveExtractor.getAsStream(jar);
 
@@ -124,7 +126,7 @@ public class PersistenceDescriptorArchiveExtractorTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                        .addClass(PersistenceDescriptorArchiveExtractorTest.class)
+                                        .addClass(PersistenceDescriptorExtractorTest.class)
                                         .addAsManifestResource("persistence-jta.xml", "persistence.xml")
                                         .addAsManifestResource("persistence-jta.xml", "resource/persistence.xml");
       // when

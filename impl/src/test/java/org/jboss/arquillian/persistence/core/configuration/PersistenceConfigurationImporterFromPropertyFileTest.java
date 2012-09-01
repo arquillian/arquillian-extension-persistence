@@ -21,9 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Properties;
 
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 
 public class PersistenceConfigurationImporterFromPropertyFileTest
@@ -38,7 +36,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).loadFrom(properties);
+      Configuration.importTo(configuration).createFrom(properties);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -68,7 +66,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).loadFrom(properties);
+      Configuration.importTo(configuration).createFrom(properties);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -82,7 +80,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).loadFrom(properties);
+      Configuration.importTo(configuration).createFrom(properties);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
@@ -97,7 +95,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).loadFrom(properties);
+      Configuration.importTo(configuration).createFrom(properties);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
@@ -112,25 +110,10 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).loadFrom(properties);
+      Configuration.importTo(configuration).createFrom(properties);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
-
-   @Test
-   public void should_be_able_to_define_user_transaction_jndi() throws Exception
-   {
-      // given
-      String expectedUserTransactionJndi = "java:jboss/UserTransaction";
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(properties);
-
-      // then
-      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
    }
 
 }

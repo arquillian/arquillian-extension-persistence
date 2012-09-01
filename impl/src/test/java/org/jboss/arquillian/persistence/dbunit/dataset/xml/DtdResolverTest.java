@@ -63,5 +63,4 @@ public class DtdResolverTest
       assertThat(dtdFile).isNull();
    }
 
-
 }

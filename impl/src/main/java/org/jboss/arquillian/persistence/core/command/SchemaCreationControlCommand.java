@@ -17,9 +17,8 @@
  */
 package org.jboss.arquillian.persistence.core.command;
 
-
 import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-
+import org.jboss.arquillian.persistence.core.client.SchemaCreationCoordinator;
 
 /**
  * Command used to communicate between local test executor and remote
@@ -30,6 +29,9 @@ import org.jboss.arquillian.container.test.impl.client.deployment.command.Abstra
  * while executing tests in the container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ * @see SchemaCreationScriptsExecutor
+ * @see SchemaCreationCoordinator
  *
  */
 public class SchemaCreationControlCommand extends AbstractCommand<Boolean>
@@ -49,7 +51,5 @@ public class SchemaCreationControlCommand extends AbstractCommand<Boolean>
    {
       return key;
    }
-
-
 
 }

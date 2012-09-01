@@ -36,7 +36,7 @@ public abstract class ConfigurationProducer<T extends Configuration>
    public T configureFromArquillianDescriptor()
    {
       final T configuration = create();
-      Configuration.importTo(configuration).loadFrom(descriptor.get());
+      Configuration.importTo(configuration).createFrom(descriptor.get());
       return configuration;
    }
 

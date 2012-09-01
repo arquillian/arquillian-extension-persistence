@@ -24,7 +24,12 @@ import java.io.InputStreamReader;
 
 import org.jboss.arquillian.persistence.core.exception.DataSetLoadingException;
 
-public final class ScriptHelper
+/**
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public final class ScriptLoader
 {
 
    public static String loadScript(String location)

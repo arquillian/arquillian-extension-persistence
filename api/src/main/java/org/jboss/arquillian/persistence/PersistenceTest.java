@@ -27,7 +27,8 @@ import java.lang.annotation.Target;
  *
  * Marker annotation which enables Arquillian Persistence Extension.
  * Might be used interchangeably with {@link UsingDataSet}, {@link ShouldMatchDataSet}
- * {@link Transactional} or {@link ApplyScriptBefore}.
+ * or {@link ApplyScriptBefore}. This annotation will enable transactions support
+ * if the transaction extension is found.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *

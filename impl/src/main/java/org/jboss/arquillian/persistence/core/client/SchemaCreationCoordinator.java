@@ -24,8 +24,13 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.command.SchemaCreationControlCommand;
 
 /**
+ *
+ * Observer responsible for determining if schema has been already
+ * created for the given test class. It helps to mimic before class event.
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
+ * @see SchemaCreationScriptsExecutor
  */
 public class SchemaCreationCoordinator
 {

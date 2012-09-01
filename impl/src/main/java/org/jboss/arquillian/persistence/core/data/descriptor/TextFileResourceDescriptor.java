@@ -20,7 +20,6 @@ package org.jboss.arquillian.persistence.core.data.descriptor;
 import java.io.InputStream;
 import java.util.Scanner;
 
-
 /**
  *
  * Plain text file descriptor.
@@ -63,7 +62,7 @@ public class TextFileResourceDescriptor extends SqlScriptResourceDescriptor
    @Override
    public int hashCode()
    {
-      final int prime = 19;
+      final int prime = 29;
       int result = 1;
       result = prime * result + ((location == null) ? 0 : location.hashCode());
       return result;

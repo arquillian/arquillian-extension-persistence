@@ -71,7 +71,7 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
    {
 
       final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.isPersistenceExtensionRequired())
+      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
       {
          return;
       }

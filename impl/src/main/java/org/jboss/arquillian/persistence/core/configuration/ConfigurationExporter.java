@@ -74,12 +74,12 @@ public class ConfigurationExporter<T extends Configuration>
    private Map<String, String> mapFieldsToProperties() throws IllegalArgumentException, IllegalAccessException
    {
       final Map<String,String> extractedValues = new HashMap<String, String>();
-      List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
+      final List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {
          Object object = field.get(configuration);
-         String key = convertToPropertyKey(field.getName());
+         String key = decamelize(field.getName());
          if (object != null)
          {
             extractedValues.put(key, convertToPropertyValue(object));
@@ -96,7 +96,7 @@ public class ConfigurationExporter<T extends Configuration>
       {
          convertedValue = ((Class<?>)object).getName();
       }
-      else 
+      else
       {
          convertedValue = object.toString();
       }
@@ -110,7 +110,7 @@ public class ConfigurationExporter<T extends Configuration>
       return convertedValue;
    }
 
-   private String convertToPropertyKey(String key)
+   private String decamelize(String key)
    {
       final StringBuilder sb = new StringBuilder();
 

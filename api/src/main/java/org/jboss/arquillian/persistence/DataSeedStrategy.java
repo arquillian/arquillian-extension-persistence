@@ -18,11 +18,12 @@
 package org.jboss.arquillian.persistence;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public enum DataSeedStrategy {
+ *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
+ */
+public enum DataSeedStrategy
+{
 
    /**
     * Performs insert of the data defined in provided data sets.

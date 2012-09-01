@@ -29,10 +29,10 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationExporter;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorArchiveExtractor;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorExtractor;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorParser;
 import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
-import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
+import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
@@ -69,7 +69,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
    {
 
       final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.isPersistenceExtensionRequired())
+      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
       {
          return;
       }
@@ -90,7 +90,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
          return; // if defined globally the only way to alter it is on test level using @DataSource annotation
       }
 
-      final PersistenceDescriptorArchiveExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorArchiveExtractor();
+      final PersistenceDescriptorExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorExtractor();
       final InputStream persistenceXmlAsStream = persistenceDescriptorArchiveExtractor.getAsStream(applicationArchive);
       if (persistenceXmlAsStream != null)
       {
@@ -161,7 +161,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
 
       for (String script : scripts)
       {
-         if (ScriptHelper.isSqlScriptFile(script))
+         if (ScriptLoader.isSqlScriptFile(script))
          {
             sqlScriptsArchive.merge(createArchiveWithResources(script));
          }

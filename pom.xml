@@ -22,6 +22,13 @@
   <url>http://www.jboss.org</url>
   <description>Arquillian Persistence Extension Aggregator</description>
 
+  <modules>
+    <module>api</module>
+    <module>impl</module>
+    <module>int-tests</module>
+    <module>int-tests-testng</module>
+  </modules>
+
   <developers>
     <developer>
       <name>Bartosz Majsak</name>
@@ -52,9 +59,10 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.2.Final</version.arquillian_core>
+    <version.arquillian_core>1.0.3.Final</version.arquillian_core>
+    <version.arquillian_transaction>1.0.0.Final-SNAPSHOT</version.arquillian_transaction>
     <version.fest.assert>1.4</version.fest.assert>
-    <version.testng>6.5.2</version.testng>
+    <version.testng>5.14.6</version.testng>
     <version.mockito>1.9.0</version.mockito>
     <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
     <version.glassfish>3.1.2</version.glassfish>
@@ -63,7 +71,7 @@
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-    <version.surefire.plugin>2.12</version.surefire.plugin>
+    <version.surefire.plugin>2.12.4</version.surefire.plugin>
   </properties>
 
   <dependencyManagement>
@@ -95,6 +103,13 @@
         <version>${version.arquillian_core}</version>
       </dependency>
       <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-transaction-bom</artifactId>
+        <version>${version.arquillian_transaction}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
         <groupId>org.easytesting</groupId>
         <artifactId>fest-assert</artifactId>
         <version>${version.fest.assert}</version>
@@ -115,13 +130,6 @@
     </dependencies>
 
   </dependencyManagement>
-
-  <modules>
-    <module>api</module>
-    <module>impl</module>
-    <module>int-tests</module>
-    <module>int-tests-testng</module>
-  </modules>
 
   <build>
     <plugins>

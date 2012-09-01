@@ -19,7 +19,8 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
-import static org.jboss.arquillian.persistence.core.testutils.CollectionUtils.list;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class DataSetComparatorTest
       DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "table1.id", "table2.name", "table1.test" });
 
       // then
-      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table1", list("id", "test")), entry("table2", list("name")))
+      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
                                                              .hasSize(2);
    }
 
@@ -57,7 +58,7 @@ public class DataSetComparatorTest
       // then
       assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
                                                     .hasSize(2);
-      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table", list("test")))
+      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table", Arrays.asList("test")))
                                                              .hasSize(1);
    }
 }

@@ -46,9 +46,8 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-@CreateSchema(
-{"schema/create.sql", "schema/additional-audit-useraccount.sql", "scripts/clark-kent.sql",
-      "scripts/clark-kent-audit.sql"})
+@CreateSchema( {"schema/create.sql", "schema/additional-audit-useraccount.sql",
+                "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class StrictCleanupWithEmptyDataSetsTest
 {

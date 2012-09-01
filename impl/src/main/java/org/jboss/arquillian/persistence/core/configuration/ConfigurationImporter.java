@@ -57,10 +57,10 @@ public class ConfigurationImporter<T extends Configuration>
    {
       final InputStream arqXmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(arquillianXmlFilename);
       final ArquillianDescriptor arquillianDescriptor = Descriptors.importAs(ArquillianDescriptor.class).fromStream(arqXmlStream);
-      loadFrom(arquillianDescriptor);
+      createFrom(arquillianDescriptor);
    }
 
-   public void loadFrom(ArquillianDescriptor descriptor)
+   public void createFrom(ArquillianDescriptor descriptor)
    {
       final Map<String, String> extensionProperties = extractPropertiesFromDescriptor(configuration.getQualifier(), descriptor);
       createConfiguration(extensionProperties);
@@ -74,6 +74,7 @@ public class ConfigurationImporter<T extends Configuration>
       {
          propertiesStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFilename);
          properties.load(propertiesStream);
+         createFrom(properties);
       }
       catch (Exception e)
       {
@@ -93,11 +94,9 @@ public class ConfigurationImporter<T extends Configuration>
             }
          }
       }
-
-      loadFrom(properties);
    }
 
-   public void loadFrom(Properties properties)
+   public void createFrom(Properties properties)
    {
       Map<String, String> fieldsWithValues = convertKeys(properties);
       createConfiguration(fieldsWithValues);

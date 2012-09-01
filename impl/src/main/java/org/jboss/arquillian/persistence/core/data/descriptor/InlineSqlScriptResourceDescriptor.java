@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
-
-
 /**
  *
  * Inline SQL script descriptor.
@@ -63,7 +61,7 @@ public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescript
    @Override
    public int hashCode()
    {
-      final int prime = 13;
+      final int prime = 19;
       int result = 1;
       result = prime * result + ((content == null) ? 0 : content.hashCode());
       return result;

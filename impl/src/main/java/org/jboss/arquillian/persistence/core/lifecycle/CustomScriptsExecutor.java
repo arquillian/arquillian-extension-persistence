@@ -29,7 +29,7 @@ import org.jboss.arquillian.persistence.core.configuration.PersistenceConfigurat
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.InlineSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.script.ScriptHelper;
+import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ApplyScriptsAfterTest;
 import org.jboss.arquillian.persistence.core.event.ApplyScriptsBeforeTest;
@@ -90,7 +90,7 @@ public class CustomScriptsExecutor
       final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
       for (String script : scripts)
       {
-         if (ScriptHelper.isSqlScriptFile(script))
+         if (ScriptLoader.isSqlScriptFile(script))
          {
             processedScripts.add(new FileSqlScriptResourceDescriptor(script));
          }

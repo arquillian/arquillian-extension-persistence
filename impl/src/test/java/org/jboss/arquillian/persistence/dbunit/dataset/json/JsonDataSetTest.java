@@ -22,16 +22,26 @@ import java.io.InputStream;
 import org.jboss.arquillian.persistence.dbunit.DataSetAssert;
 import org.jboss.arquillian.persistence.dbunit.TableAssert;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
+import org.jboss.arquillian.persistence.testutils.FileLoader;
+import org.junit.After;
 import org.junit.Test;
 
 public class JsonDataSetTest
 {
 
+   private InputStream input;
+
+   @After
+   public void closeStream()
+   {
+      FileLoader.close(input);
+   }
+
    @Test
    public void should_load_table_from_json_file() throws Exception
    {
       // given
-      final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
+      input = FileLoader.load("one-table.json");
 
       // when
       JsonDataSet jsonDataSet = new JsonDataSet(input);
@@ -44,7 +54,7 @@ public class JsonDataSetTest
    public void should_load_all_columns_for_table_from_json_file() throws Exception
    {
       // given
-      final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
+      input = FileLoader.load("one-table.json");
 
       // when
       JsonDataSet jsonDataSet = new JsonDataSet(input);
@@ -57,7 +67,7 @@ public class JsonDataSetTest
    public void should_load_all_rows_for_table_from_json_file() throws Exception
    {
       // given
-      final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
+      input = FileLoader.load("one-table.json");
 
       // when
       JsonDataSet jsonDataSet = new JsonDataSet(input);
@@ -70,7 +80,7 @@ public class JsonDataSetTest
    public void should_load_all_rows_with_content_for_table_from_json_file() throws Exception
    {
       // given
-      final InputStream input = getClass().getClassLoader().getResourceAsStream("one-table.json");
+      input = FileLoader.load("one-table.json");
 
       // when
       JsonDataSet jsonDataSet = new JsonDataSet(input);
@@ -85,7 +95,7 @@ public class JsonDataSetTest
    public void should_load_two_tables_from_json_file() throws Exception
    {
       // given
-      final InputStream input = getClass().getClassLoader().getResourceAsStream("tables.json");
+      input = FileLoader.load("tables.json");
 
       // when
       JsonDataSet jsonDataSet = new JsonDataSet(input);

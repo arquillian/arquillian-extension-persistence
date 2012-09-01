@@ -50,7 +50,8 @@ import java.lang.annotation.Target;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface ApplyScriptBefore {
+public @interface ApplyScriptBefore
+{
 
    String[] value() default "";
 

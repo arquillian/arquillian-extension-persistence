@@ -24,19 +24,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.testng.annotations.Test;
-import org.jboss.arquillian.integration.persistence.example.Address;
-import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.testng.Arquillian;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
+import org.testng.annotations.Test;
 
 /**
  * Defines tests to perform with Persistence Extension but leaves deployment declaration as
@@ -197,7 +193,6 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
 
    @Test
    @Transactional
-   @Cleanup(phase = TestExecutionPhase.BEFORE)
    public void should_persist_users_within_transaction() throws Exception
    {
       // given
@@ -286,7 +281,7 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -302,7 +297,7 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -319,7 +314,7 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -335,7 +330,19 @@ public abstract class NonDeployableUserPersistenceTest extends Arquillian
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
+   }
+
+   @Test
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet("empty/empty.json")
+   public void should_remove_all_users() throws Exception
+   {
+      // when
+      em.createQuery("delete from UserAccount u").executeUpdate();
+
+      // then
+      // verified by DataSet comparison
    }
 
 }

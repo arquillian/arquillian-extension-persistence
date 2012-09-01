@@ -27,9 +27,9 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.fest.util.Arrays;
-import org.jboss.arquillian.persistence.TransactionMode;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationTypeConverter;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
