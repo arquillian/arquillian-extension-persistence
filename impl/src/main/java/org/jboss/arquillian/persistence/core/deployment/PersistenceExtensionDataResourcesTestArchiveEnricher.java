@@ -32,6 +32,7 @@ import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.descriptor.TextFileResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
@@ -39,8 +40,11 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
+import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -119,15 +123,35 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
       final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = createProviderForCleanupScripts(testClass);
       final SqlScriptProvider<CreateSchema> createSchemaScripts = createProviderForCreateSchemaScripts(testClass);
-
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
+      allDataSets.addAll(extractDtds(dataSetProvider.getDescriptors(testClass)));
+      allDataSets.addAll(extractDtds(expectedDataSetProvider.getDescriptors(testClass)));
       allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
       allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
       allDataSets.addAll(cleanupScriptsProvider.getDescriptors(testClass));
       allDataSets.addAll(createSchemaScripts.getDescriptors(testClass));
 
       return allDataSets;
+   }
+
+   private Collection<TextFileResourceDescriptor> extractDtds(Set<DataSetResourceDescriptor> descriptors)
+   {
+      final Collection<TextFileResourceDescriptor> dtds = new ArrayList<TextFileResourceDescriptor>();
+      final DtdResolver dtdResolver = new DtdResolver();
+      for (DataSetResourceDescriptor dataSet : descriptors)
+      {
+         if (Format.XML.equals(dataSet.getFormat()))
+         {
+            final String dtd = dtdResolver.resolveDtdLocationFullPath(dataSet.getLocation());
+            if (dtd != null)
+            {
+               dtds.add(new TextFileResourceDescriptor(dtd));
+            }
+
+         }
+      }
+      return dtds;
    }
 
    private JavaArchive createArchiveWithResources(String ... resourcePaths)

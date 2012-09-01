@@ -28,6 +28,7 @@ import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
+import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
 import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.yaml.snakeyaml.Yaml;
@@ -49,23 +50,22 @@ public class DataSetBuilder
 
    public IDataSet build(final String file)
    {
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
       IDataSet dataSet = null;
       try
       {
          switch (format)
          {
             case XML:
-               dataSet = loadXmlDataSet(inputStream);
+               dataSet = loadXmlDataSet(file);
                break;
             case EXCEL:
-               dataSet = new XlsDataSet(inputStream);
+               dataSet = loadExcelDataSet(file);
                break;
             case YAML:
-               dataSet = loadYamlDataSet(file, inputStream);
+               dataSet = loadYamlDataSet(file);
                break;
             case JSON:
-               dataSet = new JsonDataSet(inputStream);
+               dataSet = loadJsonDataSet(file);
                break;
             default:
                throw new DBUnitInitializationException("Unsupported data type " + format);
@@ -79,7 +79,54 @@ public class DataSetBuilder
       return defineReplaceableExpressions(dataSet);
    }
 
-   private IDataSet loadYamlDataSet(final String file, final InputStream inputStream) throws IOException,
+   public static DataSetBuilder builderFor(final Format format)
+   {
+      return new DataSetBuilder(format);
+   }
+
+   // Private methods
+
+   private IDataSet loadXmlDataSet(final String xmlFile) throws DataSetException
+   {
+      final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
+      flatXmlDataSetBuilder.setColumnSensing(true);
+      addDtdIfDefined(flatXmlDataSetBuilder, xmlFile);
+      return flatXmlDataSetBuilder.build(Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFile));
+   }
+
+   private void addDtdIfDefined(final FlatXmlDataSetBuilder flatXmlDataSetBuilder, final String xmlFile)
+   {
+      String dtd = new DtdResolver().resolveDtdLocationFullPath(xmlFile);
+      if (dtd != null)
+      {
+         try
+         {
+            flatXmlDataSetBuilder.setMetaDataSetFromDtd(Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
+         }
+         catch (DataSetException e)
+         {
+            throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
+         }
+         catch (IOException e)
+         {
+            throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
+         }
+      }
+   }
+
+   private XlsDataSet loadExcelDataSet(final String file) throws IOException, DataSetException
+   {
+      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+      return new XlsDataSet(inputStream);
+   }
+
+   private JsonDataSet loadJsonDataSet(final String file) throws IOException, DataSetException
+   {
+      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+      return new JsonDataSet(inputStream);
+   }
+
+   private IDataSet loadYamlDataSet(final String file) throws IOException,
          DataSetException
    {
       IDataSet dataSet;
@@ -89,26 +136,12 @@ public class DataSetBuilder
       }
       else
       {
+         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
          dataSet = new YamlDataSet(inputStream);
       }
       return dataSet;
    }
 
-   public static DataSetBuilder builderFor(final Format format)
-   {
-      return new DataSetBuilder(format);
-   }
-
-   // Private methods
-
-   private IDataSet loadXmlDataSet(final InputStream inputStream) throws DataSetException
-   {
-      IDataSet dataSet;
-      final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
-      flatXmlDataSetBuilder.setColumnSensing(true);
-      dataSet = flatXmlDataSetBuilder.build(inputStream);
-      return dataSet;
-   }
 
    private boolean isYamlEmpty(final String yamlFile) throws IOException
    {

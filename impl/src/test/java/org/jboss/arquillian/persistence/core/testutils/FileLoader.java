@@ -27,6 +27,11 @@ public final class FileLoader
    public static String loadAsString(final String filename)
    {
       final InputStream inputStream = load(filename);
+      return loadAsString(inputStream);
+   }
+
+   public static String loadAsString(final InputStream inputStream)
+   {
       final String fileAsString = new Scanner(inputStream).useDelimiter("\\A").next();
       close(inputStream);
       return fileAsString;
