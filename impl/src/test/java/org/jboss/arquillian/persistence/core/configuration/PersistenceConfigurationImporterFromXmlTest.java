@@ -20,9 +20,6 @@ package org.jboss.arquillian.persistence.core.configuration;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.junit.Test;
 
 public class PersistenceConfigurationImporterFromXmlTest
@@ -56,36 +53,6 @@ public class PersistenceConfigurationImporterFromXmlTest
 
       // then
       assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
-   }
-
-   @Test
-   public void should_obtain_default_transaction_mode() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
-   }
-
-   @Test
-   public void should_have_commit_as_default_transaction_mode_if_not_defined_in_configuration_file() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.COMMIT;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
    }
 
    @Test
@@ -143,35 +110,5 @@ public class PersistenceConfigurationImporterFromXmlTest
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
-
-   @Test
-   public void should_be_able_to_define_user_transaction_jndi() throws Exception
-   {
-      // given
-      String expectedUserTransactionJndi = "java:jboss/UserTransaction";
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
-   }
-
-   @Test
-   public void should_have_default_user_transaction_jndi() throws Exception
-   {
-      // given
-      String expectedUserTransactionJndi = "java:comp/UserTransaction";
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(descriptor);
-
-      // then
-      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
    }
 }

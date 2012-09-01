@@ -26,8 +26,6 @@ import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.arquillian.persistence.SeedDataUsing;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.core.util.Strings;
@@ -84,24 +82,6 @@ public class PersistenceExtensionFeatureResolver
    {
       return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
             || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
-   }
-
-   public boolean shouldEnableTransaction()
-   {
-      return !TransactionMode.DISABLED.equals(getTransactionalMode());
-   }
-
-   public TransactionMode getTransactionalMode()
-   {
-      final Transactional transactionalAnnotation = metadataExtractor.transactional().fetchUsingFirst(testMethod);
-
-      TransactionMode mode = configuration.getDefaultTransactionMode();
-      if (transactionalAnnotation != null)
-      {
-         mode = transactionalAnnotation.value();
-      }
-
-      return mode;
    }
 
    public TestExecutionPhase getCleanupTestPhase()

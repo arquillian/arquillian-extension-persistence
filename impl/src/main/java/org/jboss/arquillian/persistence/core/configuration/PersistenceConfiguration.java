@@ -22,7 +22,6 @@ import java.io.Serializable;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.TransactionMode;
 
 /**
  *
@@ -42,15 +41,11 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private String[] scriptsToExecuteAfterTest;
 
-   private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
-
    private DataSeedStrategy defaultDataSeedStrategy = DataSeedStrategy.INSERT;
 
    private boolean dumpData = false;
 
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
-
-   private String userTransactionJndi = "java:comp/UserTransaction";
 
    private TestExecutionPhase defaultCleanupPhase = TestExecutionPhase.AFTER;
 
@@ -121,21 +116,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       this.scriptsToExecuteAfterTest = scriptsToExecuteAfterTest;
    }
 
-   public TransactionMode getDefaultTransactionMode()
-   {
-      return defaultTransactionMode;
-   }
-
-   /**
-    * @param defaultTransactionMode Transaction mode for running the tests if not specified explicitly by using {@link Transactional}.
-    * Possible values: {@link TransactionMode#COMMIT}, {@link TransactionMode#ROLLBACK} or {@link TransactionMode#DISABLED}.
-    * Default - {@link TransactionMode#COMMIT}
-    */
-   public void setDefaultTransactionMode(TransactionMode defaultTransactionMode)
-   {
-      this.defaultTransactionMode = defaultTransactionMode;
-   }
-
    public boolean isDumpData()
    {
       return dumpData;
@@ -166,20 +146,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
          dumpDirectory = dumpDirectory.substring(0, dumpDirectory.length() - 2);
       }
       this.dumpDirectory = dumpDirectory;
-   }
-
-   public String getUserTransactionJndi()
-   {
-      return userTransactionJndi;
-   }
-
-   /**
-    * @param userTransactionJndi {@link UserTransaction} JNDI used to wrap tests in transaction.
-    * Default value is <code>java:comp/UserTransaction</code>
-    */
-   public void setUserTransactionJndi(String userTransactionJndi)
-   {
-      this.userTransactionJndi = userTransactionJndi;
    }
 
    public String getDefaultSqlScriptLocation()
@@ -216,7 +182,7 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    }
 
    /**
-    * @param defaultCleanupPhase Defines default cleanup phase for custom SQL scripts.
+    * @param defaultCleanupUsingScriptPhase Defines default cleanup phase for custom SQL scripts.
     * If not specified it's assumed to be AFTER test method.
     */
    public void setDefaultCleanupUsingScriptPhase(TestExecutionPhase defaultCleanupUsingScriptPhase)

@@ -53,6 +53,7 @@
   <properties>
     <!-- Versioning -->
     <version.arquillian_core>1.0.2.Final</version.arquillian_core>
+    <version.arquillian.transaction>1.0.0.Alpha1</version.arquillian.transaction>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>6.5.2</version.testng>
     <version.mockito>1.9.0</version.mockito>
@@ -93,6 +94,13 @@
         <artifactId>arquillian-test-impl-base</artifactId>
         <classifier>tests</classifier>
         <version>${version.arquillian_core}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-transaction-bom</artifactId>
+        <version>${version.arquillian.transaction}</version>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
       <dependency>
         <groupId>org.easytesting</groupId>

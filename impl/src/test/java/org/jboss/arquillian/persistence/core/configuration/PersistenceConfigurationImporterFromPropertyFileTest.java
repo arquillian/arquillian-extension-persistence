@@ -21,9 +21,6 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Properties;
 
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.junit.Test;
 
 public class PersistenceConfigurationImporterFromPropertyFileTest
@@ -59,22 +56,6 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
    }
 
    @Test
-   public void should_obtain_default_transaction_mode() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(properties);
-
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
-   }
-
-   @Test
    public void should_be_able_to_turn_on_database_dumps() throws Exception
    {
       // given
@@ -101,21 +82,6 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
-
-   @Test
-   public void should_be_able_to_define_user_transaction_jndi() throws Exception
-   {
-      // given
-      String expectedUserTransactionJndi = "java:jboss/UserTransaction";
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFrom(properties);
-
-      // then
-      assertThat(configuration.getUserTransactionJndi()).isEqualTo(expectedUserTransactionJndi);
    }
 
 }
