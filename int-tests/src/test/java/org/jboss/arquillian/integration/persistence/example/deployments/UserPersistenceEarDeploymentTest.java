@@ -22,6 +22,7 @@ import org.jboss.arquillian.integration.persistence.example.NonDeployableUserPer
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -30,6 +31,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
+@Transactional
 public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest
 {
 

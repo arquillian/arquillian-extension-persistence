@@ -27,6 +27,7 @@ import org.jboss.arquillian.persistence.UsingDataSet;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -35,6 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
+@Transactional
 public class MatchingDatabaseContentUsingDataSetsTest
 {
 

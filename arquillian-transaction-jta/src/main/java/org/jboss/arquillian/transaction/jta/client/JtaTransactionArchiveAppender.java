@@ -38,7 +38,7 @@ public class JtaTransactionArchiveAppender implements AuxiliaryArchiveAppender {
     @Override
     public Archive<?> createAuxiliaryArchive() {
 
-        JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-transaction-jta.jar");
+        JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-transaction-impl-jta.jar");
 
         archive.addPackage(JtaTransactionRemoteExtension.class.getPackage());
         archive.addPackage(JtaTransactionProvider.class.getPackage());

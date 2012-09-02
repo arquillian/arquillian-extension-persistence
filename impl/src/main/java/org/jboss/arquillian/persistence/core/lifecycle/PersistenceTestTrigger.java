@@ -93,7 +93,7 @@ public class PersistenceTestTrigger
       }
    }
 
-   public void beforeTest(@Observes Before beforeTestEvent)
+   public void beforeTest(@Observes(precedence = 25) Before beforeTestEvent)
    {
       PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
       persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
@@ -106,7 +106,7 @@ public class PersistenceTestTrigger
 
    }
 
-   public void afterTest(@Observes After afterTestEvent)
+   public void afterTest(@Observes(precedence = 25) After afterTestEvent)
    {
       if (persistenceExtensionEnabler.get().isPersistenceExtensionRequired())
       {

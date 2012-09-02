@@ -116,7 +116,6 @@ public class MetadataExtractor
       return using(CreateSchema.class);
    }
 
-
    public boolean hasPersistenceTestAnnotation()
    {
       return testClass.getAnnotation(PersistenceTest.class) != null;
