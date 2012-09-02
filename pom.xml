@@ -129,6 +129,9 @@
     <module>impl</module>
     <module>int-tests</module>
     <module>int-tests-testng</module>
+
+    <!-- TODO I don't know whether you whant to keep it here (and with this name) -->
+    <module>arquillian-transaction-jta</module>
   </modules>
 
   <build>
