@@ -5,3 +5,4 @@ useraccount:
         username: doovde
         password: password
         nickname: "[null]"
+        openDate: "2001-01-01"

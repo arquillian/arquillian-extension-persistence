@@ -19,6 +19,8 @@ package org.jboss.arquillian.integration.persistence.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -60,6 +62,30 @@ public abstract class NonDeployableUserPersistenceTest
 
       // then
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
+   }
+
+   /*
+    * Timestamp is converted to string but with "displayed value", not what was specified
+    * Unable to typecast value <Mon Jan 01 01:00:00 CET 2001> of type <java.lang.String> to DATE
+    *
+    * The idea is to let DBUnit handle string conversions but apparently snakeyaml
+    * is getting     before and converts timestamp to its string representation.
+    *
+    * That's happening when you use 2011-01-01 without quotes. With quoting it works.
+    *
+    */
+   @Test
+   @UsingDataSet("datasets/single-user.yml")
+   public void should_have_timestamp_populated() throws Exception
+   {
+      // given
+      final Date expectedOpenDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("2001-01-01 00:00:00");
+
+      // when
+      UserAccount user = em.find(UserAccount.class, 1L);
+
+      // then
+      assertThat(user.getOpenDate()).isEqualTo(expectedOpenDate);
    }
 
    @Test
