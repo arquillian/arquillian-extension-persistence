@@ -19,6 +19,7 @@ package org.jboss.arquillian.integration.persistence.example;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -68,6 +71,9 @@ public class UserAccount implements Serializable
    @Basic
    @Size(max = 128)
    private String nickname;
+
+   @Temporal(TemporalType.DATE)
+   private Date openDate;
 
    @OneToMany(cascade = CascadeType.ALL)
    private Set<Address> addresses = new HashSet<Address>();
@@ -160,6 +166,16 @@ public class UserAccount implements Serializable
    public void setNickname(String nickname)
    {
       this.nickname = nickname;
+   }
+
+   public Date getOpenDate()
+   {
+      return openDate;
+   }
+
+   public void setOpenDate(Date openDate)
+   {
+      this.openDate = openDate;
    }
 
 }

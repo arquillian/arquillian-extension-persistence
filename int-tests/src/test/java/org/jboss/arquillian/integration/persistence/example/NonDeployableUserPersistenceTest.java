@@ -62,6 +62,30 @@ public abstract class NonDeployableUserPersistenceTest
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
    }
 
+   /*
+    * Timestamp is converted to string but with "displayed value", not what was specified
+    * Unable to typecast value <Mon Jan 01 01:00:00 CET 2001> of type <java.lang.String> to DATE
+    *
+    * The idea is to let DBUnit handle string conversions but apparently snakeyaml
+    * is getting     before and converts timestamp to its string representation.
+    *
+    * That's happening when you use 2011-01-01 without quotes. With quoting it works.
+    *
+    */
+   @Test
+   @UsingDataSet("datasets/single-user.yml")
+   public void should_have_timestamp_populated() throws Exception
+   {
+      // given
+      final String expectedOpenDate = "2001-01-01T00:00:00";
+
+      // when
+      UserAccount user = em.find(UserAccount.class, 1L);
+
+      // then
+      assertThat(user.getOpenDate()).isEqualTo(expectedOpenDate);
+   }
+
    @Test
    @UsingDataSet({"single-user.xml", "address.yml"}) // Convention over configuration - no need to specify 'datasets' folder
    public void should_have_address_linked_to_user_account_using_multiple_files() throws Exception
