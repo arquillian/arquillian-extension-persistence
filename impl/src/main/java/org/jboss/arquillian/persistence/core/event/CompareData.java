@@ -26,15 +26,23 @@ public class CompareData extends DataEvent<DataSetResourceDescriptor>
 
    private final String[] columnsToExclude;
 
-   public CompareData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String ... columnsToExclude)
+   private final String[] sortByColumns;
+
+   public CompareData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns, String [] columnsToExclude)
    {
       super(dataSetDescriptors);
       this.columnsToExclude = columnsToExclude;
+      this.sortByColumns = sortByColumns;
    }
 
    public String[] getColumnsToExclude()
    {
       return columnsToExclude;
+   }
+
+   public String[] getSortByColumns()
+   {
+      return sortByColumns;
    }
 
 }

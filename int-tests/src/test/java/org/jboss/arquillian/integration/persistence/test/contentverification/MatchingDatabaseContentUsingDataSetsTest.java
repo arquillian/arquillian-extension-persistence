@@ -54,7 +54,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
    @Test
    @UsingDataSet("users.yml")
-   @ShouldMatchDataSet(value = "expected-users.yml", excludeColumns = "id")
+   @ShouldMatchDataSet(value = "expected-users.yml")
    public void should_verify_database_content_using_custom_data_set() throws Exception
    {
       // given
@@ -71,8 +71,8 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
    @Test
    @UsingDataSet("users.yml")
-   @ShouldMatchDataSet(value = "expected-users-with-ids.yml", excludeColumns = "id")
-   // expected-users-with-ids.yml is constructed in a way that it will fail withouth exclusion
+   @ShouldMatchDataSet(value = "expected-users-with-ids.yml", excludeColumns = "id", orderBy = "id")
+   // expected-users-with-ids.yml is constructed in a way that it will fail without exclusion
    public void should_verify_database_content_using_custom_data_set_with_column_exclusion() throws Exception
    {
       // given

@@ -57,15 +57,18 @@ import java.lang.annotation.Target;
 public @interface ShouldMatchDataSet
 {
    /**
-    * List of data set files used for comparision
-    * @return
+    * List of data set files used for comparison.
     */
    String[] value() default "";
 
    /**
+    * List of columns to be used for sorting rows to determine order of data sets comparison.
+    */
+   String[] orderBy() default "";
+
+   /**
     * List of columns to be excluded.
     * Alternatively can be defined for all tests in <code>arquillian.xml</code>.
-    * @return
     */
    String[] excludeColumns() default "";
 

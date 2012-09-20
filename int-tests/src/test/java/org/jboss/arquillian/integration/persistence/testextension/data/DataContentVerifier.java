@@ -57,7 +57,7 @@ public class DataContentVerifier
 
    public void verifyDatabaseContentAfterTest(@Observes(precedence = -1000) AfterPersistenceTest afterPersistenceTest)
    {
-      final DataSetComparator dataSetComparator = new DataSetComparator();
+      final DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
       try
       {
          Method testMethod = afterPersistenceTest.getTestMethod();

@@ -21,8 +21,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
 import static org.jboss.arquillian.persistence.core.testutils.CollectionUtils.list;
 
-
-import org.jboss.arquillian.persistence.dbunit.DataSetComparator;
 import org.junit.Test;
 
 public class DataSetComparatorTest
@@ -32,34 +30,34 @@ public class DataSetComparatorTest
    public void should_map_columns_associated_with_particular_table() throws Exception
    {
       // given
-      DataSetComparator dataSetComparator = new DataSetComparator("table1.id", "table2.name", "table1.test");
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "table1.id", "table2.name", "table1.test" });
 
       // then
-      assertThat(dataSetComparator.columnsPerTableToExclude).includes(entry("table1", list("id", "test")), entry("table2", list("name")))
-                                                            .hasSize(2);
+      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table1", list("id", "test")), entry("table2", list("name")))
+                                                             .hasSize(2);
    }
 
    @Test
    public void should_map_columns_associated_with_any_table() throws Exception
    {
       // given
-      DataSetComparator dataSetComparator = new DataSetComparator("id", "name");
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "id", "name" });
 
       // then
-      assertThat(dataSetComparator.generalColumnsToExclude).containsOnly("id", "name")
-                                                           .hasSize(2);
+      assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
+                                                    .hasSize(2);
    }
 
    @Test
    public void should_map_columns_used_for_all_filtering_and_associated_with_given_table() throws Exception
    {
       // given
-      DataSetComparator dataSetComparator = new DataSetComparator("id", "name", "table.test");
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "id", "name", "table.test" });
 
       // then
-      assertThat(dataSetComparator.generalColumnsToExclude).containsOnly("id", "name")
-                                                           .hasSize(2);
-      assertThat(dataSetComparator.columnsPerTableToExclude).includes(entry("table", list("test")))
-                                                            .hasSize(1);
+      assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
+                                                    .hasSize(2);
+      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table", list("test")))
+                                                             .hasSize(1);
    }
 }

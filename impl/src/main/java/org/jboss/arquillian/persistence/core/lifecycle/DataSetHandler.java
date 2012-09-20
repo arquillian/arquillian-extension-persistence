@@ -77,7 +77,7 @@ public class DataSetHandler
          final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
                                                                       .fetchFrom(testMethod);
 
-         compareDataEvent.fire(new CompareData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.excludeColumns()));
+         compareDataEvent.fire(new CompareData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.orderBy(), dataSetsToVerify.excludeColumns()));
       }
 
    }
