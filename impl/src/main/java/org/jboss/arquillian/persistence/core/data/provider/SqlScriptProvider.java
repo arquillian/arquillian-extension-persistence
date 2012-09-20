@@ -20,13 +20,21 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
+import org.jboss.arquillian.persistence.ApplyScriptAfter;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
+import org.jboss.arquillian.persistence.CreateSchema;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
+import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
+import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  *
@@ -58,6 +66,99 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
       return SqlScriptProviderBuilder.<K>create(annotation);
    }
 
+   public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass, PersistenceConfiguration configuration)
+   {
+      return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
+                              .usingConfiguration(configuration)
+                              .extractingMetadataUsing(new MetadataExtractor(testClass))
+                              .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
+                              .build(new ValueExtractor<CleanupUsingScript>()
+                              {
+                                 @Override
+                                 public String[] extract(CleanupUsingScript toExtract)
+                                 {
+                                    return toExtract.value();
+                                 }
+
+                                 @Override
+                                 public boolean shouldExtract(CleanupUsingScript toExtract)
+                                 {
+                                    return (toExtract != null && !TestExecutionPhase.NONE.equals(toExtract.phase()));
+                                 }
+                              });
+   }
+
+   public static SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass, PersistenceConfiguration configuration)
+   {
+      return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
+                              .usingConfiguration(configuration)
+                              .extractingMetadataUsing(new MetadataExtractor(testClass))
+                              .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
+                              .build(new ValueExtractor<ApplyScriptAfter>()
+                              {
+                                 @Override
+                                 public String[] extract(ApplyScriptAfter toExtract)
+                                 {
+                                    return toExtract.value();
+                                 }
+
+                                 @Override
+                                 public boolean shouldExtract(ApplyScriptAfter toExtract)
+                                 {
+                                    return (toExtract != null);
+                                 }
+                              });
+   }
+
+   public static  SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass, PersistenceConfiguration configuration)
+   {
+      return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
+                              .usingConfiguration(configuration)
+                              .extractingMetadataUsing(new MetadataExtractor(testClass))
+                              .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+                              .build(new ValueExtractor<ApplyScriptBefore>()
+                              {
+                                 @Override
+                                 public String[] extract(ApplyScriptBefore toExtract)
+                                 {
+                                    return toExtract.value();
+                                 }
+
+                                 @Override
+                                 public boolean shouldExtract(ApplyScriptBefore toExtract)
+                                 {
+                                    return (toExtract != null);
+                                 }
+                              });
+   }
+
+   public static  SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass, PersistenceConfiguration configuration)
+   {
+      return SqlScriptProvider.forAnnotation(CreateSchema.class)
+            .usingConfiguration(configuration)
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new FileNamingStrategy<String>("sql"){
+               @Override
+               public String getFileExtension()
+               {
+                  return extension;
+               }})
+            .build(new ValueExtractor<CreateSchema>()
+            {
+               @Override
+               public String[] extract(CreateSchema toExtract)
+               {
+                  return toExtract.value();
+               }
+
+               @Override
+               public boolean shouldExtract(CreateSchema toExtract)
+               {
+                  return (toExtract != null);
+               }
+            });
+   }
+
    @Override
    protected FileSqlScriptResourceDescriptor createDescriptor(String dataFileName)
    {
@@ -79,13 +180,24 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    @Override
    public Collection<String> getResourceFileNames(Method testMethod)
    {
-      T annotation = getResourceAnnotation(testMethod);
-      String[] specifiedFileNames = extractor.extract(annotation);
-      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
+      final T annotation = getResourceAnnotation(testMethod);
+      if (!extractor.shouldExtract(annotation))
+      {
+         return Collections.emptyList();
+      }
+
+      if (filesNotSpecified(annotation))
       {
          return Arrays.asList(getDefaultFileName(testMethod));
       }
-      return Arrays.asList(specifiedFileNames);
+
+      return Arrays.asList(extractor.extract(annotation));
+   }
+
+   private boolean filesNotSpecified(T annotation)
+   {
+      final String[] specifiedFileNames = extractor.extract(annotation);
+      return specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim());
    }
 
    private T getResourceAnnotation(Method testMethod)

@@ -29,10 +29,7 @@ import org.jboss.arquillian.persistence.core.configuration.PersistenceConfigurat
 import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -191,19 +188,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
 
    private SqlScriptProvider<ApplyScriptAfter> createSqlScriptProviderFor(TestEvent testEvent)
    {
-      return SqlScriptProvider
-            .forAnnotation(ApplyScriptAfter.class)
-            .usingConfiguration(defaultConfiguration)
-            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
-            .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
-            .build(new ValueExtractor<ApplyScriptAfter>()
-            {
-               @Override
-               public String[] extract(ApplyScriptAfter a)
-               {
-                  return a.value();
-               }
-            });
+      return SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testEvent.getTestClass(), defaultConfiguration);
    }
 
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException

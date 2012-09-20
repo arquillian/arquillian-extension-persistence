@@ -25,18 +25,13 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.core.command.SchemaCreationControlCommand;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
-import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
@@ -63,7 +58,7 @@ public class SchemaCreationScriptsExecutor
       final BeforePersistenceTest beforePersistenceTest = context.getEvent();
       if (persistenceExtensionFeatureResolver.get().shouldCreateSchema() && !schemaCreated(beforePersistenceTest))
       {
-         final Set<SqlScriptResourceDescriptor> schemaDescriptors = createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass()).getDescriptors(beforePersistenceTest.getTestClass());
+         final Set<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
          if (!schemaDescriptors.isEmpty())
          {
             executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, schemaDescriptors));
@@ -78,30 +73,4 @@ public class SchemaCreationScriptsExecutor
    {
       return commandService.get().execute(new SchemaCreationControlCommand(beforePersistenceTest.getTestInstance().getClass().getSimpleName()));
    }
-
-   private SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass)
-   {
-      return SqlScriptProvider.forAnnotation(CreateSchema.class)
-            .usingConfiguration(configuration.get())
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
-            .namingFollows(new FileNamingStrategy<String>("sql"){
-               @Override
-               public String getFileExtension()
-               {
-                  return extension;
-               }})
-            .build(new ValueExtractor<CreateSchema>()
-            {
-               @Override
-               public String[] extract(CreateSchema toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
-   }
-
 }

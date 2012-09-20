@@ -22,9 +22,12 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
+import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldBeTriggered;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldBeTriggered;
+import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
@@ -60,7 +63,29 @@ public class DataCleanupUsingScriptEventHandlingTest
    @PersistenceContext
    EntityManager em;
 
-   @Test
+
+   @Test @InSequence(1)
+   @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
+   @ShouldMatchDataSet("empty.xml")
+   @CleanupShouldNotBeTriggered
+   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
+   public void should_cleanup_data_using_custom_sql_script_before_test() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+      em.flush();
+      em.clear();
+
+      // then
+      // data cleanup should be called before the test
+   }
+
+   @Test @InSequence(2)
    @CleanupUsingScript("delete-users.sql")
    @CleanupShouldNotBeTriggered
    @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.AFTER)
@@ -80,12 +105,12 @@ public class DataCleanupUsingScriptEventHandlingTest
       // data cleanup should be called before the test
    }
 
-   @Test
-   @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
-   @ShouldMatchDataSet("empty.xml")
-   @CleanupShouldNotBeTriggered
-   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_cleanup_data_using_custom_sql_script_after_test() throws Exception
+   @Test @InSequence(3)
+   @CleanupUsingScript(phase = TestExecutionPhase.NONE)
+   @ShouldMatchDataSet("expected-users.json")
+   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+   @CleanupUsingScriptShouldNotBeTriggered
+   public void should_not_infer_filename_when_cleanup_using_custom_sql_script_is_disabled() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");

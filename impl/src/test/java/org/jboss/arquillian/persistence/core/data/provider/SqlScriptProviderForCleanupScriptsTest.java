@@ -25,14 +25,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.jboss.arquillian.persistence.CleanupUsingScript;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -52,7 +50,7 @@ public class SqlScriptProviderForCleanupScriptsTest
    public void should_fetch_all_scripts_defined_for_test_class() throws Exception
    {
       // given
-      TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
+      TestEvent testEvent = createTestEvent("shouldPassWithDataFileButWithoutFormatDefinedOnMethodLevel");
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
@@ -69,7 +67,7 @@ public class SqlScriptProviderForCleanupScriptsTest
    {
       // given
       String expectedDataFile = SQL_DATA_SET_ON_METHOD_LEVEL;
-      TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
+      TestEvent testEvent = createTestEvent("shouldPassWithDataFileButWithoutFormatDefinedOnMethodLevel");
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
@@ -191,19 +189,7 @@ public class SqlScriptProviderForCleanupScriptsTest
 
    private SqlScriptProvider<CleanupUsingScript> createSqlScriptProviderFor(TestEvent testEvent)
    {
-      return SqlScriptProvider
-            .forAnnotation(CleanupUsingScript.class)
-            .usingConfiguration(defaultConfiguration)
-            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
-            .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
-            .build(new ValueExtractor<CleanupUsingScript>()
-            {
-               @Override
-               public String[] extract(CleanupUsingScript a)
-               {
-                  return a.value();
-               }
-            });
+      return SqlScriptProvider.createProviderForCleanupScripts(testEvent.getTestClass(), defaultConfiguration);
    }
 
    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
@@ -218,10 +204,13 @@ public class SqlScriptProviderForCleanupScriptsTest
       public void shouldPassWithoutDataDefinedOnMethodLevel() {}
 
       @CleanupUsingScript(SQL_DATA_SET_ON_METHOD_LEVEL)
-      public void shouldPassWithDataButWithoutFormatDefinedOnMethodLevel () {}
+      public void shouldPassWithDataFileButWithoutFormatDefinedOnMethodLevel () {}
 
       @CleanupUsingScript
       public void shouldPassWithDataFileNotSpecified() {}
+
+      @CleanupUsingScript(phase = TestExecutionPhase.NONE)
+      public void shouldNotInferCleanupFileWhenPhaseDefinedToNone() {}
 
       @CleanupUsingScript({"one.sql", "two.sql", "three.sql"})
       public void shouldPassWithMultipleFilesDefined() {}

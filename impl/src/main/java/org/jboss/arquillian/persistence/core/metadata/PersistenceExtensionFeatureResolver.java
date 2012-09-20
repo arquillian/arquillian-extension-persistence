@@ -152,7 +152,8 @@ public class PersistenceExtensionFeatureResolver
 
    public boolean shouldCleanup()
    {
-      return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) == null;
+      final CleanupUsingScript cleanupUsingScriptAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
+      return cleanupUsingScriptAnnotation == null || TestExecutionPhase.NONE.equals(cleanupUsingScriptAnnotation.phase());
    }
 
    public boolean shouldCleanupUsingScript()

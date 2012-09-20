@@ -19,4 +19,6 @@ package org.jboss.arquillian.persistence.core.metadata;
 public interface ValueExtractor<T>
 {
    String[] extract(T toExtract);
+
+   boolean shouldExtract(T toExtract);
 }

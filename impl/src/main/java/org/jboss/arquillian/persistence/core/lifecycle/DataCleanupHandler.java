@@ -23,24 +23,18 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 
 public class DataCleanupHandler
 {
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-
-   @Inject
-   private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
@@ -62,7 +56,7 @@ public class DataCleanupHandler
 
       if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptBefore())
       {
-         final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
+         final SqlScriptProvider<CleanupUsingScript> scriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(beforePersistenceTest.getTestClass(), configuration.get());
          cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
       }
    }
@@ -78,32 +72,9 @@ public class DataCleanupHandler
 
       if (persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter())
       {
-         final SqlScriptProvider<CleanupUsingScript> scriptsProvider = createScriptProvider();
+         final SqlScriptProvider<CleanupUsingScript> scriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(afterPersistenceTest.getTestClass(), configuration.get());
          cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
       }
-   }
-
-   // Private methods
-
-   private SqlScriptProvider<CleanupUsingScript> createScriptProvider()
-   {
-      return SqlScriptProvider
-            .forAnnotation(CleanupUsingScript.class)
-            .usingConfiguration(configuration.get())
-            .extractingMetadataUsing(metadataExtractor.get())
-            .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
-            .build(new ValueExtractor<CleanupUsingScript>()
-            {
-               @Override
-               public String[] extract(CleanupUsingScript toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
    }
 
 }

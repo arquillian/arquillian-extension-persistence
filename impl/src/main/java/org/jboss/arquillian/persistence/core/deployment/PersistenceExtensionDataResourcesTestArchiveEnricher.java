@@ -33,12 +33,9 @@ import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.TextFileResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
@@ -119,10 +116,11 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
 
       final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
       final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
-      final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = createProviderForScriptsToBeAppliedBeforeTest(testClass);
-      final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = createProviderForScriptsToBeAppliedAfterTest(testClass);
-      final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = createProviderForCleanupScripts(testClass);
-      final SqlScriptProvider<CreateSchema> createSchemaScripts = createProviderForCreateSchemaScripts(testClass);
+      final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testClass, configurationInstance.get());
+      final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testClass, configurationInstance.get());
+      final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(testClass, configurationInstance.get());
+      final SqlScriptProvider<CreateSchema> createSchemaScripts = SqlScriptProvider.createProviderForCreateSchemaScripts(testClass, configurationInstance.get());
+
       allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
       allDataSets.addAll(extractDtds(dataSetProvider.getDescriptors(testClass)));
@@ -164,91 +162,6 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       }
 
       return dataSetsArchive;
-   }
-
-   private SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass)
-   {
-      return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
-                              .usingConfiguration(configurationInstance.get())
-                              .extractingMetadataUsing(new MetadataExtractor(testClass))
-                              .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
-                              .build(new ValueExtractor<ApplyScriptAfter>()
-                              {
-                                 @Override
-                                 public String[] extract(ApplyScriptAfter toExtract)
-                                 {
-                                    if (toExtract == null)
-                                    {
-                                       return new String[0];
-                                    }
-                                    return toExtract.value();
-                                 }
-                              });
-   }
-
-   private SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass)
-   {
-      return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
-                              .usingConfiguration(configurationInstance.get())
-                              .extractingMetadataUsing(new MetadataExtractor(testClass))
-                              .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-                              .build(new ValueExtractor<ApplyScriptBefore>()
-                              {
-                                 @Override
-                                 public String[] extract(ApplyScriptBefore toExtract)
-                                 {
-                                    if (toExtract == null)
-                                    {
-                                       return new String[0];
-                                    }
-                                    return toExtract.value();
-                                 }
-                              });
-   }
-
-   private SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass)
-   {
-      return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
-            .usingConfiguration(configurationInstance.get())
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
-            .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
-            .build(new ValueExtractor<CleanupUsingScript>()
-            {
-               @Override
-               public String[] extract(CleanupUsingScript toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
-   }
-
-   private SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass)
-   {
-      return SqlScriptProvider.forAnnotation(CreateSchema.class)
-            .usingConfiguration(configurationInstance.get())
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
-            .namingFollows(new FileNamingStrategy<String>("sql"){
-               @Override
-               public String getFileExtension()
-               {
-                  return extension;
-               }})
-            .build(new ValueExtractor<CreateSchema>()
-            {
-               @Override
-               public String[] extract(CreateSchema toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
    }
 
 }

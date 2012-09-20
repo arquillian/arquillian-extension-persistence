@@ -19,6 +19,8 @@ package org.jboss.arquillian.integration.persistence.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -77,7 +79,7 @@ public abstract class NonDeployableUserPersistenceTest
    public void should_have_timestamp_populated() throws Exception
    {
       // given
-      final String expectedOpenDate = "2001-01-01T00:00:00";
+      final Date expectedOpenDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("2001-01-01 00:00:00");
 
       // when
       UserAccount user = em.find(UserAccount.class, 1L);

@@ -24,23 +24,17 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 
 public class DataScriptsHandler
 {
 
    @Inject
    private Instance<PersistenceConfiguration> configuration;
-
-   @Inject
-   private Instance<MetadataExtractor> metadataExtractor;
 
    @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
@@ -67,23 +61,7 @@ public class DataScriptsHandler
          return;
       }
 
-      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = SqlScriptProvider
-            .forAnnotation(ApplyScriptBefore.class)
-            .usingConfiguration(configuration.get())
-            .extractingMetadataUsing(metadataExtractor.get())
-            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-            .build(new ValueExtractor<ApplyScriptBefore>()
-            {
-               @Override
-               public String[] extract(ApplyScriptBefore toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
+      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(beforePersistenceTest.getTestClass(), configuration.get());
 
       executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
    }
@@ -95,23 +73,7 @@ public class DataScriptsHandler
          return;
       }
 
-      SqlScriptProvider<ApplyScriptAfter> scriptsProvider = SqlScriptProvider
-            .forAnnotation(ApplyScriptAfter.class)
-            .usingConfiguration(configuration.get())
-            .extractingMetadataUsing(metadataExtractor.get())
-            .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
-            .build(new ValueExtractor<ApplyScriptAfter>()
-            {
-               @Override
-               public String[] extract(ApplyScriptAfter toExtract)
-               {
-                  if (toExtract == null)
-                  {
-                     return new String[0];
-                  }
-                  return toExtract.value();
-               }
-            });
+      SqlScriptProvider<ApplyScriptAfter> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(afterPersistenceTest.getTestClass(), configuration.get());
 
       executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
    }

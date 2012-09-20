@@ -72,6 +72,7 @@ public class UserAccount implements Serializable
    @Size(max = 128)
    private String nickname;
 
+   @Basic
    @Temporal(TemporalType.DATE)
    private Date openDate;
 

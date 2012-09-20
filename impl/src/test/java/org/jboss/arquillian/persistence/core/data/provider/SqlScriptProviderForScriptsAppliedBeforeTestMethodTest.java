@@ -28,10 +28,7 @@ import org.jboss.arquillian.persistence.core.configuration.PersistenceConfigurat
 import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -196,19 +193,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
 
    private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent)
    {
-      return SqlScriptProvider
-            .forAnnotation(ApplyScriptBefore.class)
-            .usingConfiguration(defaultConfiguration)
-            .extractingMetadataUsing(new MetadataExtractor(testEvent.getTestClass()))
-            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-            .build(new ValueExtractor<ApplyScriptBefore>()
-            {
-               @Override
-               public String[] extract(ApplyScriptBefore a)
-               {
-                  return a.value();
-               }
-            });
+      return SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testEvent.getTestClass(), defaultConfiguration);
    }
 
    @ApplyScriptBefore(SQL_DATA_SET_ON_CLASS_LEVEL)
