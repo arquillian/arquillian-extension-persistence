@@ -35,7 +35,12 @@ import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
 import org.jboss.arquillian.persistence.dbunit.dataset.Row;
 import org.jboss.arquillian.persistence.dbunit.dataset.Table;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
  * Produces YAML data set from the given file.
@@ -71,7 +76,7 @@ public class YamlDataSetProducer implements IDataSetProducer
       consumer.startDataSet();
 
       @SuppressWarnings("unchecked")
-      final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) new Yaml().load(input));
+      final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
 
       for (Table table : tables)
       {
@@ -92,6 +97,28 @@ public class YamlDataSetProducer implements IDataSetProducer
 
       consumer.endDataSet();
 
+   }
+
+   public Yaml createYamlReader()
+   {
+      final Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions(),
+            new Resolver()
+      {
+         @Override
+         protected void addImplicitResolvers()
+         {
+            // Intentionally left TIMESTAMP as string to let DBUnit deal with the conversion
+            addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
+            addImplicitResolver(Tag.INT, INT, "-+0123456789");
+            addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
+            addImplicitResolver(Tag.MERGE, MERGE, "<");
+            addImplicitResolver(Tag.NULL, NULL, "~nN\0");
+            addImplicitResolver(Tag.NULL, EMPTY, null);
+            addImplicitResolver(Tag.VALUE, VALUE, "=");
+            addImplicitResolver(Tag.YAML, YAML, "!&*");
+         }
+      });
+      return yaml;
    }
 
    private ITableMetaData createTableMetaData(Table table)

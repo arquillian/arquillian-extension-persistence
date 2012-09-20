@@ -4,6 +4,7 @@ useraccount:
     lastname: Kent
     username: superman
     password: LexLuthor
+    openDate: 2001-01-01
 address:
   - id: 1
     streetname: "Luthor Street"

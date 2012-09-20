@@ -17,7 +17,7 @@
   <description>Extension for controlling data sources</description>
 
   <properties>
-    <version.snakeyaml>1.9</version.snakeyaml>
+    <version.snakeyaml>1.10</version.snakeyaml>
     <version.jackson>1.9.2</version.jackson>
     <version.poi>3.2-FINAL</version.poi>
     <version.dbunit>2.4.8</version.dbunit>
