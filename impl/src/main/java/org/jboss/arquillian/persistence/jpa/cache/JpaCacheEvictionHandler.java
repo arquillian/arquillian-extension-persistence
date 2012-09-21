@@ -70,7 +70,7 @@ public class JpaCacheEvictionHandler
       Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
    }
 
-   public final void onBeforeTestMethod(@Observes(precedence = 5) BeforePersistenceTest event)
+   public final void onBeforeTestMethod(@Observes(precedence = 15) BeforePersistenceTest event)
    {
       executeCacheEviction(event, TestExecutionPhase.BEFORE);
    }

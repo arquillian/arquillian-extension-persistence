@@ -23,6 +23,7 @@ import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.CreateSchema;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -31,6 +32,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 @CreateSchema("schema/create.sql")
+@Transactional
 public class CreatingSchemaUsingCustomScriptTest extends NonDeployableUserPersistenceTest
 {
 

@@ -42,8 +42,8 @@ public class PersistenceExtensionEnabler
    public boolean isPersistenceExtensionRequired()
    {
       return (hasDataSetAnnotation() || hasApplyScriptAnnotation()
-            || hasPersistenceTestAnnotation() || hasTransactionalAnnotation()
-            || hasJpaCacheEvictionAnnotation() || hasCreateSchemaAnnotation());
+            || hasPersistenceTestAnnotation() || hasJpaCacheEvictionAnnotation()
+            || hasCreateSchemaAnnotation());
    }
 
    // ---------------------------------------------------------------------------------------------------
@@ -69,12 +69,6 @@ public class PersistenceExtensionEnabler
    private boolean hasPersistenceTestAnnotation()
    {
       return metadataExtractor.hasPersistenceTestAnnotation();
-   }
-
-   private boolean hasTransactionalAnnotation()
-   {
-      return metadataExtractor.transactional().isDefinedOnClassLevel()
-            || metadataExtractor.transactional().isDefinedOnAnyMethod();
    }
 
    private boolean hasJpaCacheEvictionAnnotation()

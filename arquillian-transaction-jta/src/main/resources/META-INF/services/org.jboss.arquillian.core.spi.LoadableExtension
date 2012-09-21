@@ -1,0 +1,1 @@
+org.jboss.arquillian.transaction.jta.client.JtaTransactionExtension

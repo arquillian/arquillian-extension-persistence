@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.testng.annotations.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +29,6 @@ import org.jboss.arquillian.integration.persistence.testextension.event.annotati
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

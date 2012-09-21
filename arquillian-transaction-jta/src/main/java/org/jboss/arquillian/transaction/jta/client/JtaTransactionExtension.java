@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -14,31 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.transaction;
 
-public class TransactionNotAvailableException extends RuntimeException
-{
+package org.jboss.arquillian.transaction.jta.client;
 
-   private static final long serialVersionUID = 4731651869310084827L;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
-   public TransactionNotAvailableException()
-   {
-      super();
-   }
+/**
+ * Register the extension.
+ *
+ * @author <a href="mailto:jmnarloch@gmail.com">Jakub Narloch</a>
+ */
+public class JtaTransactionExtension implements LoadableExtension {
 
-   public TransactionNotAvailableException(String message)
-   {
-      super(message);
-   }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void register(ExtensionBuilder builder) {
 
-   public TransactionNotAvailableException(Throwable cause)
-   {
-      super(cause);
-   }
-
-   public TransactionNotAvailableException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
-
+        builder.service(AuxiliaryArchiveAppender.class, JtaTransactionArchiveAppender.class);
+    }
 }

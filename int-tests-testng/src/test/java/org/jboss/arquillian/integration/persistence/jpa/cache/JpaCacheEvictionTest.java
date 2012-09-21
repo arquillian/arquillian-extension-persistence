@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.testng.Arquillian;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
 @JpaCacheEviction(entityManager = "jpacacheeviction")
+@Transactional
 public class JpaCacheEvictionTest extends Arquillian
 {
 

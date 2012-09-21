@@ -27,8 +27,6 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.fest.util.Arrays;
-import org.jboss.arquillian.persistence.TransactionMode;
-import org.jboss.arquillian.persistence.core.configuration.ConfigurationTypeConverter;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -130,48 +128,6 @@ public class ConfigurationTypeConverterTest
 
       // then
       assertThat(convertedStringArray).isEqualTo(expectedArray);
-   }
-
-   @Test
-   public void should_convert_transactional_mode_to_corresponding_enum() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.COMMIT;
-      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-
-      // when
-      TransactionMode convertedMode = typeConverter.convert("COMMIT", TransactionMode.class);
-
-      // then
-      assertThat(convertedMode).isEqualTo(expectedMode);
-   }
-
-   @Test
-   public void should_convert_transactional_mode_to_corresponding_enum_ignoring_case() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.DISABLED;
-      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-
-      // when
-      TransactionMode convertedMode = typeConverter.convert("disabled", TransactionMode.class);
-
-      // then
-      assertThat(convertedMode).isEqualTo(expectedMode);
-   }
-
-   @Test
-   public void should_convert_transactional_mode_to_corresponding_enum_ignoring_case_and_whitespaces() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-
-      // when
-      TransactionMode convertedMode = typeConverter.convert("  rollBACK  ", TransactionMode.class);
-
-      // then
-      assertThat(convertedMode).isEqualTo(expectedMode);
    }
 
    @Test
