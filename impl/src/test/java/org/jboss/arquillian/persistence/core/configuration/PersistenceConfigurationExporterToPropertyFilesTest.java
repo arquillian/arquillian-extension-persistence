@@ -54,6 +54,7 @@ public class PersistenceConfigurationExporterToPropertyFilesTest
    {
       // given
       Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
+      expectedProperties.setProperty("arquillian.extension.persistence.dump.directory", System.getProperty("java.io.tmpdir"));
 
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
       persistenceConfiguration.setDefaultDataSource("DefaultDS");

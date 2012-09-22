@@ -63,7 +63,7 @@ public class PropertiesSerializer
       sb.append(prefix)
         .append(entry.getKey())
         .append("=")
-        .append(entry.getValue())
+        .append(entry.getValue().replace("\\", "\\\\"))
         .append('\n');
       serializedAsProperty = sb.toString();
       return serializedAsProperty;
