@@ -58,8 +58,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private CleanupStrategy defaultCleanupStrategy = CleanupStrategy.STRICT;
 
-   private String[] alwaysExcludeFromDataSetsComparision;
-
    public PersistenceConfiguration()
    {
       super("persistence", "arquillian.extension.persistence.");
@@ -263,34 +261,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public void setDefaultDataSeedStrategy(DataSeedStrategy defaultDataSeedStrategy)
    {
       this.defaultDataSeedStrategy = defaultDataSeedStrategy;
-   }
-
-   public String[] getAlwaysExcludeForDataSetsComparision()
-   {
-      return getAlwaysExcludeFromDataSetsComparision();
-   }
-
-   public String[] getAlwaysExcludeFromDataSetsComparision()
-   {
-      return alwaysExcludeFromDataSetsComparision;
-   }
-
-   /**
-    * @param alwaysExcludeForDataSetsComparision List of columns always to be excluded when comparing
-    * data sets.
-    */
-   public void setAlwaysExcludeForDataSetsComparision(String[] alwaysExcludeForDataSetsComparision)
-   {
-      setAlwaysExcludeFromDataSetsComparision(alwaysExcludeForDataSetsComparision);
-   }
-
-   /**
-    * @param alwaysExcludeFromDataSetsComparision List of columns always to be excluded when comparing
-    * data sets.
-    */
-   public void setAlwaysExcludeFromDataSetsComparision(String[] alwaysExcludeFromDataSetsComparision)
-   {
-      this.alwaysExcludeFromDataSetsComparision = alwaysExcludeFromDataSetsComparision;
    }
 
 }

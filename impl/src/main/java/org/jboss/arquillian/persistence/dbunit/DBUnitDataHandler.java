@@ -20,7 +20,9 @@ package org.jboss.arquillian.persistence.dbunit;
 import java.sql.SQLException;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
@@ -87,7 +89,12 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         final IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         IDataSet currentDataSet = databaseConnection.get().createDataSet();
+         final String[] excludeTablesFromComparisonWhenEmptyExpected = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
+         if (excludeTablesFromComparisonWhenEmptyExpected.length != 0)
+         {
+            currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTablesFromComparisonWhenEmptyExpected), currentDataSet);
+         }
          final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
          new DataSetComparator(compareDataEvent.getSortByColumns(), compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet,
                assertionErrorCollector.get());

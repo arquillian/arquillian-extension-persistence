@@ -19,7 +19,6 @@ package org.jboss.arquillian.persistence.dbunit.configuration;
 
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
-import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy.StrategyProvider;
 
 /**

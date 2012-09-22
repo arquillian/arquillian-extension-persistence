@@ -105,6 +105,8 @@ public class DBUnitConfiguration extends Configuration
 
    private String[] excludeTablesFromCleanup = new String[0];
 
+   private String[] excludeTablesFromComparisonWhenEmptyExpected = new String[0];
+
    private String schema;
 
    public DBUnitConfiguration()
@@ -420,6 +422,18 @@ public class DBUnitConfiguration extends Configuration
       this.schema = schema;
    }
 
-   // TODO exclude columns (useful for ID and VERSION)
+   public String[] getExcludeTablesFromComparisonWhenEmptyExpected()
+   {
+      return excludeTablesFromComparisonWhenEmptyExpected;
+   }
+
+   /**
+    * @param excludeTablesFromComparisonWhenEmptyExpected list of tables which should not be considered when asserting database content for emptiness.
+    */
+   public void setExcludeTablesFromComparisonWhenEmptyExpected(String[] excludeFromComparisonWhenEmptyExpected)
+   {
+      this.excludeTablesFromComparisonWhenEmptyExpected = excludeFromComparisonWhenEmptyExpected;
+   }
+
 
 }

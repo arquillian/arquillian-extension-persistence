@@ -31,9 +31,11 @@ import java.util.logging.Logger;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
@@ -54,19 +56,33 @@ public class DataSetComparator
 
    public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector) throws DatabaseUnitException
    {
+      if (expectedDataSet.getTableNames().length == 0)
+      {
+         shouldBeEmpty(currentDataSet, errorCollector);
+      }
+      else
+      {
+         compareContent(currentDataSet, expectedDataSet, errorCollector);
+      }
+   }
+
+   public void compareContent(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
+         throws DataSetException, DatabaseUnitException
+   {
       final String[] tableNames = expectedDataSet.getTableNames();
+      final FilteredDataSet filteredCurrentDataSet = new FilteredDataSet(new IncludeTableFilter(tableNames), currentDataSet);
       for (String tableName : tableNames)
       {
-         final List<String> columnsForSorting = defineColumnsForSorting(currentDataSet, expectedDataSet, tableName);
+         final List<String> columnsForSorting = defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet, tableName);
 
          final SortedTable expectedTable = new SortedTable(expectedDataSet.getTable(tableName), toArray(columnsForSorting));
          expectedTable.setUseComparable(true);
-         final SortedTable currentTableState = new SortedTable(currentDataSet.getTable(tableName), toArray(columnsForSorting));
+         final SortedTable currentTableState = new SortedTable(filteredCurrentDataSet.getTable(tableName), toArray(columnsForSorting));
          currentTableState.setUseComparable(true);
 
          try
          {
-            final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName), currentDataSet.getTable(tableName));
+            final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName), filteredCurrentDataSet.getTable(tableName));
             Assertion.assertEqualsIgnoreCols(expectedTable, currentTableState, toArray(columnsToIgnore));
          }
          catch (AssertionError error)
@@ -81,18 +97,18 @@ public class DataSetComparator
       final String[] tableNames = dataSet.getTableNames();
       for (String tableName : tableNames)
       {
-         shouldBeEmpty(tableName, dataSet, errorCollector);
+         shouldBeEmpty(dataSet, tableName, errorCollector);
       }
    }
 
-   public void shouldBeEmpty(String tableName, IDataSet dataSet, AssertionErrorCollector errorCollector)
+   public void shouldBeEmpty(IDataSet dataSet, String tableName, AssertionErrorCollector errorCollector)
          throws DataSetException
    {
       final SortedTable tableState = new SortedTable(dataSet.getTable(tableName));
       int rowCount = tableState.getRowCount();
       if (rowCount != 0)
       {
-         errorCollector.collect(new AssertionError(tableName + "expected to be empty, but was <" + rowCount + ">."));
+         errorCollector.collect(new AssertionError(tableName + " expected to be empty, but was <" + rowCount + ">."));
       }
    }
 

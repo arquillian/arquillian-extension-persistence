@@ -66,7 +66,6 @@ public class DataCleanupUsingScriptEventHandlingTest
 
    @Test @InSequence(1)
    @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
-   @ShouldMatchDataSet("empty.xml")
    @CleanupShouldNotBeTriggered
    @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
    public void should_cleanup_data_using_custom_sql_script_before_test() throws Exception

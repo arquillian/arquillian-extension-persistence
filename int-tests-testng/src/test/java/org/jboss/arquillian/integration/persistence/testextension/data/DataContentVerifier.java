@@ -82,7 +82,7 @@ public class DataContentVerifier
             final IDataSet expectedDataSet = actualContent;
             for (String tableName : shouldBeEmpty.value())
             {
-               dataSetComparator.shouldBeEmpty(tableName, expectedDataSet, assertionErrorCollector.get());
+               dataSetComparator.shouldBeEmpty(expectedDataSet, tableName, assertionErrorCollector.get());
             }
          }
 

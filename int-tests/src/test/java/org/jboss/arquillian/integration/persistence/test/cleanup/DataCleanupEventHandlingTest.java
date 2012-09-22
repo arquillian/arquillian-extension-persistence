@@ -26,6 +26,7 @@ import org.jboss.arquillian.integration.persistence.testextension.event.annotati
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.Transactional;
@@ -60,26 +61,7 @@ public class DataCleanupEventHandlingTest
    @PersistenceContext
    EntityManager em;
 
-   @Test
-   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
-   @CleanupUsingScriptShouldNotBeTriggered
-   public void should_cleanup_data_after_test_when_not_specified() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
-
-      // then
-      // data cleanup should be called before the test
-   }
-
-   @Test
+   @Test @InSequence(1)
    @Cleanup(phase = TestExecutionPhase.BEFORE)
    @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
    @CleanupUsingScriptShouldNotBeTriggered
@@ -99,7 +81,26 @@ public class DataCleanupEventHandlingTest
       // data cleanup should be called after the test
    }
 
-   @Test
+   @Test @InSequence(2)
+   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+   @CleanupUsingScriptShouldNotBeTriggered
+   public void should_cleanup_data_after_test_when_not_specified() throws Exception
+   {
+      // given
+      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+
+      // when
+      em.persist(johnSmith);
+      em.persist(clarkKent);
+      em.flush();
+      em.clear();
+
+      // then
+      // data cleanup should be called before the test
+   }
+
+   @Test @InSequence(3)
    @Cleanup(phase = TestExecutionPhase.NONE)
    @CleanupShouldNotBeTriggered
    public void should_not_cleanup_data() throws Exception

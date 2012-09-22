@@ -28,7 +28,9 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.Transactional;
+import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -45,7 +47,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-@Transactional
+@Cleanup(phase = TestExecutionPhase.BEFORE)
 public class EmptyDataSetsTest
 {
 
@@ -92,7 +94,46 @@ public class EmptyDataSetsTest
       assertNoUserAccountsStored();
    }
 
+   @Test(expected = AssertionError.class)
+   @UsingDataSet("users.json")
+   @ShouldMatchDataSet("empty/empty.yml")
+   public void should_fail_when_empty_set_yaml_used_for_verifying_content_of_non_empty_database()
+   {
+      assertUserAccountsStored();
+   }
+
+   @Test(expected = AssertionError.class)
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet("empty/empty.json")
+   public void should_fail_when_empty_set_json_used_for_verifying_content_of_non_empty_database() throws Exception
+   {
+      assertUserAccountsStored();
+   }
+
+   @Test(expected = AssertionError.class)
+   @UsingDataSet("users.xml")
+   @ShouldMatchDataSet("empty/empty.xls")
+   public void should_fail_when_empty_set_xls_used_for_verifying_content_of_non_empty_database() throws Exception
+   {
+      assertUserAccountsStored();
+   }
+
+   @Test(expected = AssertionError.class)
+   @UsingDataSet("users.xml")
+   @ShouldMatchDataSet("empty/empty.xml")
+   public void should_fail_when_empty_set_xml_used_for_verifying_content_of_non_empty_database() throws Exception
+   {
+      assertUserAccountsStored();
+   }
+
    // Private helper methods
+
+   private void assertUserAccountsStored()
+   {
+      @SuppressWarnings("unchecked")
+      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+      assertThat(savedUserAccounts).isNotEmpty();
+   }
 
    private void assertNoUserAccountsStored()
    {

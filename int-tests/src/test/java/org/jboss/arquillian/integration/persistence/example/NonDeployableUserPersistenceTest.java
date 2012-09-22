@@ -64,16 +64,6 @@ public abstract class NonDeployableUserPersistenceTest
       assertThat(user.getUsername()).isEqualTo(expectedUsername);
    }
 
-   /*
-    * Timestamp is converted to string but with "displayed value", not what was specified
-    * Unable to typecast value <Mon Jan 01 01:00:00 CET 2001> of type <java.lang.String> to DATE
-    *
-    * The idea is to let DBUnit handle string conversions but apparently snakeyaml
-    * is getting     before and converts timestamp to its string representation.
-    *
-    * That's happening when you use 2011-01-01 without quotes. With quoting it works.
-    *
-    */
    @Test
    @UsingDataSet("datasets/single-user.yml")
    public void should_have_timestamp_populated() throws Exception
@@ -308,7 +298,7 @@ public abstract class NonDeployableUserPersistenceTest
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -324,7 +314,7 @@ public abstract class NonDeployableUserPersistenceTest
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -341,7 +331,7 @@ public abstract class NonDeployableUserPersistenceTest
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
    }
 
    @Test
@@ -357,7 +347,19 @@ public abstract class NonDeployableUserPersistenceTest
       clarkKent = em.merge(clarkKent);
 
       // then
-      // verified by DataSet comparision
+      // verified by DataSet comparison
+   }
+
+   @Test
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet("empty/empty.json")
+   public void should_remove_all_users() throws Exception
+   {
+      // when
+      em.createQuery("delete from UserAccount u").executeUpdate();
+
+      // then
+      // verified by DataSet comparison
    }
 
 }
