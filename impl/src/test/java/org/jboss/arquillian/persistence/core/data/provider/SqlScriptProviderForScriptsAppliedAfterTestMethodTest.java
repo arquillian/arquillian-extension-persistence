@@ -22,7 +22,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
@@ -42,7 +41,6 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
 
    private static final String SQL_DATA_SET_ON_METHOD_LEVEL = "scripts/method-level.sql";
 
-
    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
    @Test
@@ -53,7 +51,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,

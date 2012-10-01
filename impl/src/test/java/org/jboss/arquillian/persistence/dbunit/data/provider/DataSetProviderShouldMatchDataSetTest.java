@@ -22,11 +22,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatException;
@@ -35,7 +33,6 @@ import org.jboss.arquillian.persistence.core.testutils.DataSetDescriptorAssert;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -60,7 +57,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
+      Collection<DataSetResourceDescriptor> dataSetDescriptors = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       DataSetDescriptorAssert.assertThat(dataSetDescriptors).containsOnlyFollowingFiles(XML_EXPECTED_DATA_SET_ON_CLASS_LEVEL,
@@ -181,7 +178,7 @@ public class DataSetProviderShouldMatchDataSetTest
       ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
-      Set<DataSetResourceDescriptor> files = dataSetProvider.getDescriptors(testEvent.getTestClass());
+      Collection<DataSetResourceDescriptor> files = dataSetProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       assertThat(files).containsOnly(new DataSetResourceDescriptor(expectedFileName, Format.EXCEL));

@@ -20,8 +20,8 @@ package org.jboss.arquillian.persistence.core.data.provider;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
@@ -52,7 +52,7 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
       SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,

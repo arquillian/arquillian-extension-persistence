@@ -50,6 +50,11 @@ public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAs
       return this;
    }
 
+   public SqlScriptDescriptorAssert containsExactlyFollowingFiles(String ... files)
+   {
+      Assertions.assertThat(extractFileNames()).containsExactly(files);
+      return this;
+   }
 
    private List<String> extractFileNames()
    {

@@ -19,7 +19,6 @@ package org.jboss.arquillian.integration.persistence.testextension.deployment;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
@@ -52,7 +51,7 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
       }
 
       final CleanupVerificationDataSetProvider dataSetProvider = new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
-      final Set<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
+      final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
       if (!dataSets.isEmpty())
       {
          addResources(applicationArchive, toJavaArchive(dataSets));

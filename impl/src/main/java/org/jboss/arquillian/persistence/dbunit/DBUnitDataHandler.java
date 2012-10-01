@@ -127,7 +127,6 @@ public class DBUnitDataHandler implements DataHandler
          final String script = scriptDescriptor.getContent();
          executeScript(script);
       }
-
    }
 
    // -- Private methods

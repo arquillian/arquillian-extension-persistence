@@ -17,7 +17,7 @@
  */
 package org.jboss.arquillian.persistence.core.lifecycle;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.jboss.arquillian.container.test.spi.command.CommandService;
 import org.jboss.arquillian.core.api.Event;
@@ -58,7 +58,7 @@ public class SchemaCreationScriptsExecutor
       final BeforePersistenceTest beforePersistenceTest = context.getEvent();
       if (persistenceExtensionFeatureResolver.get().shouldCreateSchema() && !schemaCreated(beforePersistenceTest))
       {
-         final Set<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
+         final Collection<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
          if (!schemaDescriptors.isEmpty())
          {
             executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, schemaDescriptors));

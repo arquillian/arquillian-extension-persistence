@@ -22,7 +22,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
@@ -54,7 +53,7 @@ public class SqlScriptProviderForCleanupScriptsTest
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
       // when
-      Set<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
 
       // then
       SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,

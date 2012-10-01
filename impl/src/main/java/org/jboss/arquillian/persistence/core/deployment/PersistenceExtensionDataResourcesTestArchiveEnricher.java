@@ -133,7 +133,7 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       return allDataSets;
    }
 
-   private Collection<TextFileResourceDescriptor> extractDtds(Set<DataSetResourceDescriptor> descriptors)
+   private Collection<TextFileResourceDescriptor> extractDtds(Collection<DataSetResourceDescriptor> descriptors)
    {
       final Collection<TextFileResourceDescriptor> dtds = new ArrayList<TextFileResourceDescriptor>();
       final DtdResolver dtdResolver = new DtdResolver();

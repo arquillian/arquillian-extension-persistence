@@ -138,6 +138,10 @@ public class DataSetBuilder
       {
          final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
          dataSet = new YamlDataSet(inputStream);
+         if (inputStream != null)
+         {
+            inputStream.close();
+         }
       }
       return dataSet;
    }
@@ -146,7 +150,12 @@ public class DataSetBuilder
    private boolean isYamlEmpty(final String yamlFile) throws IOException
    {
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
-      return new Yaml().load(inputStream) == null;
+      final boolean isEmpty = new Yaml().load(inputStream) == null;
+      if (inputStream != null)
+      {
+         inputStream.close();
+      }
+      return isEmpty;
    }
 
    private IDataSet defineReplaceableExpressions(IDataSet dataSet)

@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.UsingDataSet;
@@ -68,9 +66,9 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
     * @param testClass
     * @return
     */
-   public Set<T> getDescriptors(TestClass testClass)
+   public Collection<T> getDescriptors(TestClass testClass)
    {
-      final Set<T> descriptors = new HashSet<T>();
+      final List<T> descriptors = new ArrayList<T>();
       for (Method testMethod : testClass.getMethods(resourceAnnotation))
       {
          descriptors.addAll(getDescriptorsDefinedFor(testMethod));

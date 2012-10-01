@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -68,14 +69,29 @@ public class ConfigurationImporter<T extends Configuration>
    public void loadFromPropertyFile(String propertyFilename)
    {
       final Properties properties = new Properties();
+      InputStream propertiesStream = null;
       try
       {
-         properties.load(Thread.currentThread().getContextClassLoader()
-                               .getResourceAsStream(propertyFilename));
+         propertiesStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFilename);
+         properties.load(propertiesStream);
       }
       catch (Exception e)
       {
          throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container. Missing file " + propertyFilename, e);
+      }
+      finally
+      {
+         if (propertiesStream != null)
+         {
+            try
+            {
+               propertiesStream.close();
+            }
+            catch (IOException e)
+            {
+               throw new PersistenceExtensionInitializationException("Failed to close the stream for file " + propertyFilename, e);
+            }
+         }
       }
 
       loadFrom(properties);
