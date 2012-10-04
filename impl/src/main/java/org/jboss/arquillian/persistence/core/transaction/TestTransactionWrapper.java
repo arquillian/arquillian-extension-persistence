@@ -20,6 +20,7 @@ package org.jboss.arquillian.persistence.core.transaction;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.transaction.Status;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.core.api.Instance;
@@ -33,7 +34,7 @@ import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableExcept
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 
 /**
- * 
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
@@ -51,7 +52,11 @@ public class TestTransactionWrapper
 
    public void beforeTest(@Observes StartTransaction startTransaction) throws Exception
    {
-      obtainTransaction().begin();
+      final UserTransaction transaction = obtainTransaction();
+      if (isTransactionNotActive(transaction))
+      {
+         transaction.begin();
+      }
    }
 
    public void afterTest(@Observes EndTransaction endTransaction) throws Exception
@@ -93,5 +98,9 @@ public class TestTransactionWrapper
       }
    }
 
+   private boolean isTransactionNotActive(final UserTransaction transaction) throws SystemException
+   {
+      return Status.STATUS_NO_TRANSACTION == transaction.getStatus();
+   }
 
 }
