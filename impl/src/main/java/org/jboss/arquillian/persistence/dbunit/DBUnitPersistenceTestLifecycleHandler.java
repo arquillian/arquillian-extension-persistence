@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.dbunit;
 
 import java.lang.reflect.Method;
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,6 +47,7 @@ import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionExcepti
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
+import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
  *
@@ -77,14 +79,14 @@ public class DBUnitPersistenceTestLifecycleHandler
    // Intercepting data handling events
    // ------------------------------------------------------------------------------------------------
 
-   public void createDatabaseConnection(@Observes(precedence = 1001) EventContext<BeforePersistenceTest> context)
+   public void provideDatabaseConnectionAroundBeforePersistenceTest(@Observes(precedence = 100000) EventContext<BeforePersistenceTest> context)
    {
-      if (databaseConnectionProducer.get() == null)
-      {
-         createDatabaseConnection();
-         configure();
-      }
-      context.proceed();
+      provideDatabaseConnection(context);
+   }
+
+   public void provideDatabaseConnectionAroundAfterPersistenceTest(@Observes(precedence = 100000) EventContext<AfterPersistenceTest> context)
+   {
+      provideDatabaseConnection(context);
    }
 
    public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
@@ -106,31 +108,31 @@ public class DBUnitPersistenceTestLifecycleHandler
       context.proceed();
    }
 
-   public void closeConnection(@Observes(precedence = 1000) EventContext<AfterPersistenceTest> context)
+   // ------------------------------------------------------------------------------------------------
+
+   private void provideDatabaseConnection(EventContext<? extends TestEvent> context)
    {
+      createDatabaseConnection();
       try
       {
          context.proceed();
       }
       finally
       {
-         try
-         {
-            databaseConnectionProducer.get().getConnection().close();
-         }
-         catch (Exception e)
-         {
-            throw new DBUnitConnectionException("Unable to close connection.", e);
-         }
+         closeDatabaseConnection();
       }
    }
 
-   // ------------------------------------------------------------------------------------------------
-
    private void createDatabaseConnection()
    {
+
       try
       {
+         if (databaseConnectionProducer.get() != null && !databaseConnectionProducer.get().getConnection().isClosed())
+         {
+            closeDatabaseConnection();
+         }
+
          DataSource dataSource = dataSourceInstance.get();
          final String schema = dbUnitConfigurationInstance.get().getSchema();
          DatabaseConnection databaseConnection = null;
@@ -142,13 +144,37 @@ public class DBUnitPersistenceTestLifecycleHandler
          {
             databaseConnection = new DatabaseConnection(dataSource.getConnection());
          }
-         databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-               new DefaultDataTypeFactory());
+
          databaseConnectionProducer.set(databaseConnection);
+
+         final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
+         dbUnitConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
+
+         final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
+         for (Entry<String, Object> property : properties.entrySet())
+         {
+            dbUnitConfig.setProperty(property.getKey(), property.getValue());
+         }
       }
       catch (Exception e)
       {
-         throw new DBUnitInitializationException("Unable to initialize database connection for dbunit module.", e);
+         throw new DBUnitInitializationException("Unable to initialize database connection for DBUnit module.", e);
+      }
+   }
+
+   private void closeDatabaseConnection()
+   {
+      try
+      {
+         final Connection connection = databaseConnectionProducer.get().getConnection();
+         if (!connection.isClosed())
+         {
+            connection.close();
+         }
+      }
+      catch (Exception e)
+      {
+         throw new DBUnitConnectionException("Unable to close connection.", e);
       }
    }
 
@@ -182,16 +208,5 @@ public class DBUnitPersistenceTestLifecycleHandler
       return dataSetRegister;
    }
 
-   private void configure()
-   {
-      final DatabaseConnection databaseConnection = databaseConnectionProducer.get();
-      final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
-
-      final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
-      for (Entry<String, Object> property : properties.entrySet())
-      {
-         dbUnitConfig.setProperty(property.getKey(), property.getValue());
-      }
-   }
 
 }
