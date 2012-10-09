@@ -1,0 +1,11 @@
+address:
+  - id: 1
+    streetname: "Main Street"
+    houseNumber: 1
+    city: JavaPolis
+    zipCode: 5678
+  - id: 2
+    streetname: "Testing Street"
+    houseNumber: 7
+    city: JavaPolis
+    zipCode: 1234
