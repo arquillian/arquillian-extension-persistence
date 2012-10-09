@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.integration.persistence.example.Address;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
@@ -119,6 +120,27 @@ public class MatchingDatabaseContentUsingDataSetsTest
 
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
+   }
+   
+   @Test
+   @UsingDataSet("users.yml")
+   @ShouldMatchDataSet(value = { "expected-addresses.yml" }, orderBy = { "address.streetName" }, excludeColumns = { "id" })
+   // The order of INSERTs for Addresses is dictated by hashcode values, which differ across test runs.
+   // Verify the row order by ordering on the streetName column.
+   public void should_verify_database_content_using_custom_data_set_with_custom_row_order() throws Exception
+   {
+      // given
+      UserAccount user = em.find(UserAccount.class, 1L);
+      Address residentialAddress =  new Address("Testing Street", 7, "JavaPolis", 1234);
+      Address officeAddress = new Address("Main Street", 1, "JavaPolis", 5678);
+
+      // when
+      user.addAddress(residentialAddress);
+      user.addAddress(officeAddress);
+      user = em.merge(user);
+
+      // then
+      assertThat(user.getAddresses()).hasSize(2);
    }
 
 }
