@@ -30,17 +30,22 @@ import java.util.logging.Logger;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.assertion.DiffCollectingFailureHandler;
+import org.dbunit.assertion.Difference;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
 public class DataSetComparator
 {
+
+   private static final String DIFF_ERROR = "%s | In row %d: expected value of %s \"%s\" but was \"%s\".";
 
    private static final Logger log = Logger.getLogger(DataSetComparator.class.getName());
 
@@ -54,7 +59,8 @@ public class DataSetComparator
       this.orderBy = new ColumnsHolder(orderBy);
    }
 
-   public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector) throws DatabaseUnitException
+   public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
+         throws DatabaseUnitException
    {
       if (expectedDataSet.getTableNames().length == 0)
       {
@@ -71,24 +77,27 @@ public class DataSetComparator
    {
       final String[] tableNames = expectedDataSet.getTableNames();
       final FilteredDataSet filteredCurrentDataSet = new FilteredDataSet(new IncludeTableFilter(tableNames), currentDataSet);
+
       for (String tableName : tableNames)
       {
-         final List<String> columnsForSorting = defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet, tableName);
+         final List<String> columnsForSorting = defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet,
+               tableName);
 
-         final SortedTable expectedTable = new SortedTable(expectedDataSet.getTable(tableName), toArray(columnsForSorting));
-         expectedTable.setUseComparable(true);
-         final SortedTable currentTableState = new SortedTable(filteredCurrentDataSet.getTable(tableName), toArray(columnsForSorting));
-         currentTableState.setUseComparable(true);
+         final ITable expectedTable = sort(expectedDataSet, tableName, columnsForSorting);
+         final ITable currentTable = sort(filteredCurrentDataSet, tableName, columnsForSorting);
 
-         try
-         {
-            final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName), filteredCurrentDataSet.getTable(tableName));
-            Assertion.assertEqualsIgnoreCols(expectedTable, currentTableState, toArray(columnsToIgnore));
-         }
-         catch (AssertionError error)
-         {
-            errorCollector.collect(error);
-         }
+         final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName),
+               filteredCurrentDataSet.getTable(tableName));
+
+
+         final DiffCollectingFailureHandler diffCollector = new DiffCollectingFailureHandler();
+
+         Assertion.assertEquals(filter(currentTable, toArray(columnsToIgnore)),
+               filter(expectedTable, toArray(columnsToIgnore)), diffCollector);
+
+         @SuppressWarnings("unchecked")
+         final List<Difference> diffs = diffCollector.getDiffList();
+         collectErrors(errorCollector, diffs);
       }
    }
 
@@ -114,6 +123,23 @@ public class DataSetComparator
 
    // -- Private methods
 
+   private void collectErrors(AssertionErrorCollector errorCollector, List<Difference> diffs)
+   {
+      for (Difference diff : diffs)
+      {
+         final String tableName = diff.getActualTable().getTableMetaData().getTableName();
+         errorCollector.collect(String.format(DIFF_ERROR, tableName, diff.getRowIndex(), diff.getColumnName(),
+               diff.getExpectedValue(), diff.getActualValue()));
+      }
+   }
+
+   private ITable sort(IDataSet dataSet, String tableName, final List<String> columnsForSorting) throws DataSetException
+   {
+      final SortedTable sortedTable = new SortedTable(dataSet.getTable(tableName), toArray(columnsForSorting));
+      sortedTable.setUseComparable(true);
+      return sortedTable;
+   }
+
    private List<String> defineColumnsForSorting(IDataSet currentDataSet, IDataSet expectedDataSet, String tableName)
          throws DataSetException
    {
@@ -124,7 +150,8 @@ public class DataSetComparator
       {
          columnsForSorting.addAll(columsPerTable);
       }
-      columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName), currentDataSet.getTable(tableName)));
+      columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName),
+            currentDataSet.getTable(tableName)));
       return columnsForSorting;
    }
 
@@ -138,8 +165,10 @@ public class DataSetComparator
       final List<String> columnsForSorting = new ArrayList<String>();
       try
       {
-         final Set<String> allColumns = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
-         final Set<String> columnsToIgnore = new HashSet<String>(extractColumnsToBeIgnored(expectedTableState, currentTableState));
+         final Set<String> allColumns = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData()
+               .getColumns()));
+         final Set<String> columnsToIgnore = new HashSet<String>(extractColumnsToBeIgnored(expectedTableState,
+               currentTableState));
          for (String column : allColumns)
          {
             if (!columnsToIgnore.contains(column))
@@ -157,10 +186,11 @@ public class DataSetComparator
       return columnsForSorting;
    }
 
-   private List<String> extractColumnsToBeIgnored(final ITable expectedTableState,
-         final ITable currentTableState) throws DataSetException
+   private List<String> extractColumnsToBeIgnored(final ITable expectedTableState, final ITable currentTableState)
+         throws DataSetException
    {
-      final List<String> columnsToIgnore = extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState, currentTableState);
+      final List<String> columnsToIgnore = extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState,
+            currentTableState);
       final String tableName = expectedTableState.getTableMetaData().getTableName();
       final List<String> tableColumns = toExclude.columnsPerTable.get(tableName);
 
@@ -171,17 +201,20 @@ public class DataSetComparator
          columnsToIgnore.addAll(tableColumns);
       }
 
-      final List<String> nonExistingColumns = extractNonExistingColumns(columnsToIgnore, extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+      final List<String> nonExistingColumns = extractNonExistingColumns(columnsToIgnore,
+            extractColumnNames(currentTableState.getTableMetaData().getColumns()));
 
       if (!nonExistingColumns.isEmpty())
       {
-         log.warning("Columns which are specified to be filtered out [" +
-               Arrays.toString(nonExistingColumns.toArray())+ "] are not existing in the table.");
+         log.warning("Columns which are specified to be filtered out [" + Arrays.toString(nonExistingColumns.toArray())
+               + "] are not existing in the table.");
       }
       return columnsToIgnore;
    }
 
-
-
+   private ITable filter(ITable table, String[] columnsToFilter) throws DataSetException
+   {
+      return DefaultColumnFilter.excludedColumnsTable(table, columnsToFilter);
+   }
 
 }

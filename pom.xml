@@ -60,7 +60,7 @@
   <properties>
     <!-- Versioning -->
     <version.arquillian_core>1.0.3.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.0.Final-SNAPSHOT</version.arquillian_transaction>
+    <version.arquillian_transaction>1.0.0.Alpha3</version.arquillian_transaction>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>5.14.6</version.testng>
     <version.mockito>1.9.0</version.mockito>

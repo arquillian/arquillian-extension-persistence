@@ -1,0 +1,11 @@
+useraccount:
+  - id: 12
+    firstname: Johna
+    lastname: Smitha
+    username: doovdea
+    password: passworda
+  - id: 21
+    firstname: Clarka
+    lastname: Kenta
+    username: supermana
+    password: kryptonitea

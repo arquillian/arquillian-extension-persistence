@@ -1,0 +1,21 @@
+{
+
+	"useraccount":
+	[
+		{
+			"id" : 1,
+			"firstname" : "John",
+			"lastname" : "Smith",
+			"username" : "doovde",
+			"password" : "password"
+		},
+		{
+			"id" : 2,
+			"firstname" : "Clark",
+			"lastname" : "Kent",
+			"username" : "ckent",
+			"password" : "LexLuthor123",
+			"nickname" : "superman"
+		}
+	]
+}

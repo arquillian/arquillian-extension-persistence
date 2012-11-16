@@ -36,7 +36,12 @@ public class AssertionErrorCollector
 
    public void collect(AssertionError error)
    {
-      assertionErrors.add(error.getMessage());
+      collect(error.getMessage());
+   }
+
+   public void collect(String errorMessage)
+   {
+      assertionErrors.add(errorMessage);
    }
 
    public void report()
@@ -46,14 +51,25 @@ public class AssertionErrorCollector
          return;
       }
 
+      throw new AssertionError(createErrorMessage());
+   }
+
+   public int amountOfErrors()
+   {
+      return assertionErrors.size();
+   }
+
+   private String createErrorMessage()
+   {
       final StringBuilder builder = new StringBuilder();
 
-      builder.append("Test failed in " + assertionErrors.size() + " cases. \n");
+      builder.append("Test failed in " + amountOfErrors() + " case" + (amountOfErrors() > 1 ? "s" : "") +  ". \n");
       for (String errorMessage : assertionErrors)
       {
          builder.append(errorMessage).append('\n');
       }
-      throw new AssertionError(builder.toString());
+      final String errorMessage = builder.toString();
+      return errorMessage;
    }
 
 }

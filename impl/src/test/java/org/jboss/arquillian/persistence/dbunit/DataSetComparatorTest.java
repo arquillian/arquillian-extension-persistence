@@ -17,11 +17,16 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
+import static org.fest.assertions.Assertions.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
 
 import java.util.Arrays;
 
+import org.dbunit.dataset.IDataSet;
+import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.junit.Test;
 
 public class DataSetComparatorTest
@@ -61,4 +66,53 @@ public class DataSetComparatorTest
       assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table", Arrays.asList("test")))
                                                              .hasSize(1);
    }
+
+   @Test
+   public void should_find_all_differences_between_datasets() throws Exception
+   {
+      // given
+      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml");
+
+      // when
+      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+
+      // then
+      assertThat(errorCollector.amountOfErrors()).isEqualTo(10);
+   }
+
+   @Test
+   public void should_find_no_differences_between_identical_datasets() throws Exception
+   {
+      // given
+      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json");
+
+      // when
+      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+
+      // then
+      assertThat(errorCollector.amountOfErrors()).isZero();
+   }
+
+   @Test
+   public void should_find_no_differences_comparing_the_same_dataset() throws Exception
+   {
+      // given
+      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+
+      // when
+      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+
+      // then
+      assertThat(errorCollector.amountOfErrors()).isZero();
+   }
+
 }
