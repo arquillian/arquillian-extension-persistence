@@ -92,8 +92,8 @@ public class DataSetComparator
 
          final DiffCollectingFailureHandler diffCollector = new DiffCollectingFailureHandler();
 
-         Assertion.assertEquals(filter(currentTable, toArray(columnsToIgnore)),
-               filter(expectedTable, toArray(columnsToIgnore)), diffCollector);
+         Assertion.assertEquals(filter(expectedTable, toArray(columnsToIgnore)),
+               filter(currentTable, toArray(columnsToIgnore)), diffCollector);
 
          @SuppressWarnings("unchecked")
          final List<Difference> diffs = diffCollector.getDiffList();
