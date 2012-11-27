@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset;
 
+import org.dbunit.dataset.Column;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +37,7 @@ public class Table
 {
    private final String tableName;
 
-   private final Set<String> columns = new HashSet<String>();
+   private final Set<Column> columns = new HashSet<Column>();
 
    private final List<Row> rows = new ArrayList<Row>();
 
@@ -49,7 +51,7 @@ public class Table
       this.rows.addAll(rows);
    }
 
-   public void addColumns(Collection<String> columns)
+   public void addColumns(Collection<Column> columns)
    {
       this.columns.addAll(columns);
    }
@@ -59,7 +61,7 @@ public class Table
       return tableName;
    }
 
-   public Set<String> getColumns()
+   public Set<Column> getColumns()
    {
       return Collections.unmodifiableSet(columns);
    }
