@@ -180,7 +180,8 @@ public class DataSetComparator
       }
       catch (DataSetException e)
       {
-         throw new DBUnitDataSetHandlingException("Unable to resolve columns", e);
+         throw new DBUnitDataSetHandlingException("Unable to resolve columns in table " +
+                 expectedTableState.getTableMetaData().getTableName(), e);
       }
 
       return columnsForSorting;
@@ -207,7 +208,7 @@ public class DataSetComparator
       if (!nonExistingColumns.isEmpty())
       {
          log.warning("Columns which are specified to be filtered out [" + Arrays.toString(nonExistingColumns.toArray())
-               + "] are not existing in the table.");
+                 + "] are not existing in the table " + expectedTableState.getTableMetaData().getTableName());
       }
       return columnsToIgnore;
    }
