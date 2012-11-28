@@ -123,7 +123,7 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    private ITableMetaData createTableMetaData(Table table)
    {
-      return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
+      return new DefaultTableMetaData(table.getTableName(), table.getColumns().toArray(new Column[table.getColumns().size()]));
    }
 
    private Column[] createColumns(Collection<String> columnNames)
@@ -160,13 +160,33 @@ public class YamlDataSetProducer implements IDataSetProducer
       return extractedRows;
    }
 
-   private Collection<String> extractColumns(List<Map<String, String>> rows)
+   private Collection<Column> extractColumns(List<Map<String, String>> rows)
    {
-      final Set<String> columns = new HashSet<String>();
+      final Set<Column> columns = new HashSet<Column>();
       for (Map<String, String> row : rows)
       {
-         columns.addAll(row.keySet());
+         columns.addAll(extractColumnsFromDatasetRow(row));
       }
+      return columns;
+   }
+
+   private Collection<Column> extractColumnsFromDatasetRow(Map<String, String> row)
+   {
+      final Set<Column> columns = new HashSet<Column>();
+      for (Map.Entry<String, String> currentEntry : row.entrySet()) {
+         String columnName = currentEntry.getKey();
+         Object value = currentEntry.getValue();
+         DataType dataType = null;
+
+         if (value instanceof Integer) {
+            dataType = DataType.INTEGER;
+         } else {
+            dataType = DataType.VARCHAR;
+         }
+
+         columns.add(new Column(columnName, dataType));
+      }
+
       return columns;
    }
 
