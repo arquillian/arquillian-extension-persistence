@@ -141,7 +141,7 @@ public abstract class DataSetProducer implements IDataSetProducer
          Object value = currentEntry.getValue();
          DataType dataType = null;
 
-         dataType = new JsonDataTypeConverter().convertJSonDataTypeToDBUnitDataType(value.getClass());
+         dataType = new JsonDataTypeConverter().convertJSonDataTypeToDBUnitDataType(value, value.getClass());
 
          columns.add(new Column(columnName, dataType));
       }
