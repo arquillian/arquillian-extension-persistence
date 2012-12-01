@@ -25,6 +25,7 @@ import java.io.InputStream;
 
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 
 /**
  * DBUnit data set produced from JSON format.
@@ -75,14 +76,14 @@ public class JsonDataSet extends CachedDataSet
       super(producer, caseSensitiveTableNames);
    }
 
-   public JsonDataSet(File file, boolean caseSensitiveTableNames) throws DataSetException, FileNotFoundException
+   public JsonDataSet(File file, DBUnitConfiguration configuration, boolean caseSensitiveTableNames) throws DataSetException, FileNotFoundException
    {
-      this(new FileInputStream(file), caseSensitiveTableNames);
+      this(new FileInputStream(file), configuration, caseSensitiveTableNames);
    }
 
-   public JsonDataSet(File file) throws IOException, DataSetException
+   public JsonDataSet(File file, DBUnitConfiguration configuration) throws IOException, DataSetException
    {
-      this(new FileInputStream(file), false);
+      this(new FileInputStream(file), configuration, false);
    }
 
    public JsonDataSet(JsonDataSetProducer producer) throws DataSetException
@@ -90,14 +91,14 @@ public class JsonDataSet extends CachedDataSet
       this(producer, false);
    }
 
-   public JsonDataSet(InputStream inputStream) throws DataSetException
+   public JsonDataSet(InputStream inputStream, DBUnitConfiguration configuration) throws DataSetException
    {
-      this(inputStream, false);
+      this(inputStream, configuration, false);
    }
 
-   public JsonDataSet(InputStream inputStream, boolean caseSensitiveTableNames) throws DataSetException
+   public JsonDataSet(InputStream inputStream, DBUnitConfiguration configuration, boolean caseSensitiveTableNames) throws DataSetException
    {
-      this(new JsonDataSetProducer(inputStream), caseSensitiveTableNames);
+      this(new JsonDataSetProducer(inputStream, configuration), caseSensitiveTableNames);
    }
 
 }

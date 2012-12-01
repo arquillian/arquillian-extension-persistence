@@ -19,75 +19,61 @@ package org.jboss.arquillian.persistence.dbunit.dataset.json;
 
 
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 import java.util.regex.Pattern;
 
 public class JsonDataTypeConverter {
 
+   JsonDataTypeToDatabaseConverter jsonDataTypeToDatabaseConverter = new JsonDataTypeToDatabaseConverter();
+
+   @Inject
+   DBUnitConfiguration configuration;
+
    public DataType convertJSonDataTypeToDBUnitDataType(Object value, Class clazz)
    {
-      return JsonDataTypes.dataTypeForClass(value, clazz);
+      DataType dataType = DataType.UNKNOWN;
+
+      JsonDataType jsonDataType = dataTypeForClass(value, clazz);
+
+      if (jsonDataType != JsonDataType.UNKNOWN)
+      {
+         dataType = jsonDataTypeToDatabaseConverter.dataTpeForJsonDataType(jsonDataType, configuration.getDatatypeFactory());
+      }
+
+      return dataType;
    }
 
-   /**
-    * The regex pattern differentiates between the same data types reported by Jackson and the real data type to be applied
-    * for DBUnit so the comparison with the real data type read from the metadata of the database by DBUnit. Because we have
-    * no data type information available in JSON, we have to perform a best guess. For example, a normal String and a Timestamp
-    * are reported both as data type String and whould end up as a VARCHAR. The differentiation is done by an additional regex pattern
-    * which will detect the real datatypes.
-    */
-   private static enum JsonDataTypes {
-      STRING(String.class, DataType.VARCHAR, "[^-|:]*"),
-      INTEGER(Integer.class, DataType.DECIMAL, "\\d*"),
-      LONG(Long.class,DataType.DECIMAL, "\\d*"),
-      BIGINTEGER(BigInteger.class, DataType.DECIMAL, "\\d*"),
-      UNKNOWN(ArrayList.class, DataType.UNKNOWN, ".*"), // value == [null], we have no data type information available
-      TIMESTAMP(String.class, DataType.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}[\\.\\d]*");
+   public JsonDataType dataTypeForClass(Object value, Class clazz)
+   {
+      JsonDataType jsonDataType = JsonDataType.STRING;
 
-      private Class clazz;
-
-      private DataType dataType;
-
-      private String regexPattern;
-
-      private JsonDataTypes(Class clazz, DataType dataType, String regexPattern)
+      for (JsonDataType currentDataType : JsonDataType.values())
       {
-         this.clazz = clazz;
-         this.dataType = dataType;
-         this.regexPattern = regexPattern;
-      }
+         boolean matches = match(value, currentDataType.getRegexPattern());
 
-      public static DataType dataTypeForClass(Object value, Class clazz)
-      {
-         DataType dataType = DataType.VARCHAR;
-
-         for (JsonDataTypes currentDataType : JsonDataTypes.values())
+         if (currentDataType.getClazz().equals(clazz) && matches)
          {
-            boolean matches = match(value, currentDataType.regexPattern);
-
-            if (currentDataType.clazz.equals(clazz) && matches)
-            {
-               dataType = currentDataType.dataType;
-            }
+            jsonDataType = currentDataType;
          }
-
-         return dataType;
       }
 
-      public static boolean match(Object value, String regexPattern)
+      return jsonDataType;
+   }
+
+   boolean match(Object value, String regexPattern)
+   {
+      boolean matches = false;
+
+      if (null != regexPattern && null != value)
       {
-         boolean matches = false;
-
-         if (null != regexPattern && null != value)
-         {
-            String stringValue = value.toString();
-            matches = Pattern.matches(regexPattern, stringValue);
-         }
-
-         return matches;
+         String stringValue = value.toString();
+         matches = Pattern.matches(regexPattern, stringValue);
       }
+
+      return matches;
    }
 }

@@ -2,6 +2,9 @@ package org.jboss.arquillian.persistence.dbunit.dataset.json;
 
 
 import org.dbunit.dataset.datatype.DataType;
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
+import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,12 +20,15 @@ public class JsonDataTypeConverterTest {
    public void setup()
    {
       converter = new JsonDataTypeConverter();
+      converter.configuration = new DBUnitConfiguration();
+      converter.configuration.setDatatypeFactory(new HsqldbDataTypeFactory());
+      converter.jsonDataTypeToDatabaseConverter = new JsonDataTypeToDatabaseConverter();
    }
 
    @Test
    public void withInteger()
    {
-      assertEquals("DataType is not the expected one", DataType.DECIMAL, converter.convertJSonDataTypeToDBUnitDataType(Integer.valueOf(1), Integer.class));
+      assertEquals("DataType is not the expected one", DataType.BIGINT, converter.convertJSonDataTypeToDBUnitDataType(Integer.valueOf(1), Integer.class));
    }
 
    @Test

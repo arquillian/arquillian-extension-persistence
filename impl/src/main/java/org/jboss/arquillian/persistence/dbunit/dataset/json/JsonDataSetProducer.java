@@ -27,6 +27,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.dbunit.dataset.DataSetException;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 
 /**
  * Produces JSON data set from the given file.
@@ -39,9 +40,9 @@ import org.dbunit.dataset.DataSetException;
 public class JsonDataSetProducer extends DataSetProducer
 {
 
-   public JsonDataSetProducer(InputStream input)
+   public JsonDataSetProducer(InputStream input, DBUnitConfiguration configuration)
    {
-      super(input);
+      super(input, configuration);
    }
 
    @Override
