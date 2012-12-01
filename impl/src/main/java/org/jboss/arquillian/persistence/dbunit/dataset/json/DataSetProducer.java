@@ -49,9 +49,6 @@ import javax.inject.Inject;
  */
 public abstract class DataSetProducer implements IDataSetProducer
 {
-
-   private static final Logger log = Logger.getLogger(DataSetProducer.class.getName());
-
    private JsonDataTypeConverter jsonDataTypeConverter = new JsonDataTypeConverter();
 
    private boolean caseSensitiveTableNames;
@@ -151,8 +148,6 @@ public abstract class DataSetProducer implements IDataSetProducer
          DataType dataType = null;
 
          dataType = jsonDataTypeConverter.convertJSonDataTypeToDBUnitDataType(value, value.getClass());
-
-         log.warning("Set DataType=" + dataType + " for column=" + columnName);
 
          columns.add(new Column(columnName, dataType));
       }
