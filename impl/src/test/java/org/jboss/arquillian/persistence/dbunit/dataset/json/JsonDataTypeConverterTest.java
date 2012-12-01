@@ -57,4 +57,11 @@ public class JsonDataTypeConverterTest {
       // A Timestamp is also reported as data type String by Jackson. We have to differenciate normal Strings and Timestamps
       assertEquals("Datatype is not the expected one", DataType.TIMESTAMP, converter.convertJSonDataTypeToDBUnitDataType("2012-12-12 00:00:00", String.class));
    }
+
+   @Test
+   public void withTimestampMilliseconds()
+   {
+      // A Timestamp is also reported as data type String by Jackson. We have to differenciate normal Strings and Timestamps
+      assertEquals("Datatype is not the expected one", DataType.TIMESTAMP, converter.convertJSonDataTypeToDBUnitDataType("2012-12-12 00:00:00.425", String.class));
+   }
 }

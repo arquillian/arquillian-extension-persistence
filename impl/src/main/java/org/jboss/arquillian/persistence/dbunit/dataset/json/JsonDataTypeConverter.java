@@ -45,7 +45,7 @@ public class JsonDataTypeConverter {
       LONG(Long.class,DataType.DECIMAL, "\\d*"),
       BIGINTEGER(BigInteger.class, DataType.DECIMAL, "\\d*"),
       UNKNOWN(ArrayList.class, DataType.UNKNOWN, ".*"), // value == [null], we have no data type information available
-      TIMESTAMP(String.class, DataType.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}");
+      TIMESTAMP(String.class, DataType.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}[\\.\\d]*");
 
       private Class clazz;
 
