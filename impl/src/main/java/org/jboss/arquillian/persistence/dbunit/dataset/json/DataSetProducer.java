@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -33,8 +34,11 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.Row;
 import org.jboss.arquillian.persistence.dbunit.dataset.Table;
+
+import javax.inject.Inject;
 
 /**
  * Abstract DataSetProducer class with template method for producing data
@@ -46,15 +50,20 @@ import org.jboss.arquillian.persistence.dbunit.dataset.Table;
 public abstract class DataSetProducer implements IDataSetProducer
 {
 
+   private static final Logger log = Logger.getLogger(DataSetProducer.class.getName());
+
+   private JsonDataTypeConverter jsonDataTypeConverter = new JsonDataTypeConverter();
+
    private boolean caseSensitiveTableNames;
 
    private IDataSetConsumer consumer = new DefaultConsumer();
 
    protected final InputStream input;
 
-   public DataSetProducer(InputStream input)
+   public DataSetProducer(InputStream input, DBUnitConfiguration configuration)
    {
       this.input = input;
+      jsonDataTypeConverter.configuration = configuration;
    }
 
    abstract Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException;
@@ -141,7 +150,9 @@ public abstract class DataSetProducer implements IDataSetProducer
          Object value = currentEntry.getValue();
          DataType dataType = null;
 
-         dataType = new JsonDataTypeConverter().convertJSonDataTypeToDBUnitDataType(value, value.getClass());
+         dataType = jsonDataTypeConverter.convertJSonDataTypeToDBUnitDataType(value, value.getClass());
+
+         log.warning("Set DataType=" + dataType + " for column=" + columnName);
 
          columns.add(new Column(columnName, dataType));
       }

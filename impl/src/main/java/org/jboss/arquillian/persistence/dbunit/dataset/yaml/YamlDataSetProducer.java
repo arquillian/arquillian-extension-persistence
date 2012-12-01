@@ -179,7 +179,7 @@ public class YamlDataSetProducer implements IDataSetProducer
          DataType dataType = null;
 
          if (value instanceof Integer) {
-            dataType = DataType.INTEGER;
+            dataType = DataType.BIGINT;
          } else {
             dataType = DataType.VARCHAR;
          }
