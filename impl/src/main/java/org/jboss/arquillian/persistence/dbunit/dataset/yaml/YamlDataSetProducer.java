@@ -176,13 +176,7 @@ public class YamlDataSetProducer implements IDataSetProducer
       for (Map.Entry<String, String> currentEntry : row.entrySet()) {
          String columnName = currentEntry.getKey();
          Object value = currentEntry.getValue();
-         DataType dataType = null;
-
-         if (value instanceof Integer) {
-            dataType = DataType.BIGINT;
-         } else {
-            dataType = DataType.VARCHAR;
-         }
+         DataType dataType = DataType.UNKNOWN;
 
          columns.add(new Column(columnName, dataType));
       }
