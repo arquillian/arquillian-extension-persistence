@@ -4,17 +4,16 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
 
+/**
+ * Only define exceptions to the default value defined in <code>JsonDataType</code>.
+ */
 public enum DatabaseDataType {
-   ORACLESTRING(JsonDataType.STRING, Oracle10DataTypeFactory.class, DataType.VARCHAR),
    ORACLEBIGINTEGER(JsonDataType.BIGINTEGER, Oracle10DataTypeFactory.class, DataType.DECIMAL),
    ORACLEINTEGER(JsonDataType.INTEGER, Oracle10DataTypeFactory.class, DataType.DECIMAL),
    ORACLELONG(JsonDataType.LONG, Oracle10DataTypeFactory.class, DataType.DECIMAL),
-   ORACLETIMESTAMP(JsonDataType.TIMESTAMP, Oracle10DataTypeFactory.class, DataType.TIMESTAMP),
-   HSQLSTRING(JsonDataType.STRING, HsqldbDataTypeFactory.class, DataType.VARCHAR),
    HSQLBIGINTEGER(JsonDataType.BIGINTEGER, HsqldbDataTypeFactory.class, DataType.BIGINT),
    HSQLINTEGER(JsonDataType.INTEGER, HsqldbDataTypeFactory.class, DataType.BIGINT),
-   HSQLLONG(JsonDataType.LONG, HsqldbDataTypeFactory.class, DataType.BIGINT),
-   HSQLTIMESTAMP(JsonDataType.TIMESTAMP, HsqldbDataTypeFactory.class, DataType.TIMESTAMP);
+   HSQLLONG(JsonDataType.LONG, HsqldbDataTypeFactory.class, DataType.BIGINT);
 
    private JsonDataType jsonDataType;
 
