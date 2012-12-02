@@ -32,10 +32,23 @@ public class JsonDataTypeConverterTest {
    }
 
    @Test
+   public void withDouble()
+   {
+      assertEquals("DataType is not the expected one", DataType.DOUBLE, converter.convertJSonDataTypeToDBUnitDataType(Double.valueOf(12.345345), Double.class));
+   }
+
+   @Test
+   public void withBoolean()
+   {
+      assertEquals("DataType is not the expected one", DataType.BOOLEAN, converter.convertJSonDataTypeToDBUnitDataType("true", Boolean.class));
+   }
+
+   @Test
    public void withString()
    {
       assertEquals("DataType is not the expected one", DataType.VARCHAR, converter.convertJSonDataTypeToDBUnitDataType("Good morning", String.class));
    }
+
    @Test
    public void withNull()
    {

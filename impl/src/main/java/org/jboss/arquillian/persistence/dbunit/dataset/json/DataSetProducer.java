@@ -134,9 +134,42 @@ public abstract class DataSetProducer implements IDataSetProducer
       final Set<Column> columns = new HashSet<Column>();
       for (Map<String, String> row : rows)
       {
-         columns.addAll(extractColumnsFromDatasetRow(row));
+         addAndOverrideUnknownDataTypeColumns(columns, extractColumnsFromDatasetRow(row));
       }
+
       return columns;
+   }
+
+   private void addAndOverrideUnknownDataTypeColumns(Set<Column> tableColumns, Collection<Column> columnsToAdd)
+   {
+      for (Column currentColumnToAdd : columnsToAdd)
+      {
+         Column existingColumn = columnForColumnName(tableColumns, currentColumnToAdd.getColumnName());
+
+         if (null == existingColumn)
+         {
+            tableColumns.add(currentColumnToAdd);
+         } else if (existingColumn.getDataType().equals(DataType.UNKNOWN) && !currentColumnToAdd.getDataType().equals(DataType.UNKNOWN))
+         {
+            tableColumns.remove(existingColumn);
+            tableColumns.add(currentColumnToAdd);
+         }
+      }
+   }
+
+   private Column columnForColumnName(Set<Column> columns, String columnName)
+   {
+      Column column = null;
+
+      for (Column currentColumn : columns)
+      {
+         if (currentColumn.getColumnName().equals(columnName))
+         {
+            column = currentColumn;
+         }
+      }
+
+      return column;
    }
 
    private Collection<Column> extractColumnsFromDatasetRow(Map<String, String> row)
