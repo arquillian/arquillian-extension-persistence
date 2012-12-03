@@ -31,40 +31,42 @@ Enough talking, let's see it in action!
 ### Code example
 ---
 
-    @RunWith(Arquillian.class)
-    public class UserPersistenceTest
-    {
+```java
+@RunWith(Arquillian.class)
+public class UserPersistenceTest
+{
 
-      @Deployment
-      public static Archive<?> createDeploymentPackage()
-      {
-          return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                           .addPackage(UserAccount.class.getPackage())
-                           .addPackages(true, "org.fest") // FEST Assert is not part of Arquillian JUnit
-                           .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                           .addAsManifestResource("test-persistence.xml", "persistence.xml");
-      }
+  @Deployment
+  public static Archive<?> createDeploymentPackage()
+  {
+      return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                       .addPackage(UserAccount.class.getPackage())
+                       .addPackages(true, "org.fest") // FEST Assert is not part of Arquillian JUnit
+                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
+  }
 
-      @PersistenceContext
-      EntityManager em;
+  @PersistenceContext
+  EntityManager em;
 
-      @Test
-      @UsingDataSet("datasets/users.yml")
-      @ShouldMatchDataSet("datasets/expected-users.yml")
-      public void should_change_user_password() throws Exception
-      {
-          // given
-          String expectedPassword = "LexLuthor";
-          UserAccount user = em.find(UserAccount.class, 2L);
+  @Test
+  @UsingDataSet("datasets/users.yml")
+  @ShouldMatchDataSet("datasets/expected-users.yml")
+  public void should_change_user_password() throws Exception
+  {
+      // given
+      String expectedPassword = "LexLuthor";
+      UserAccount user = em.find(UserAccount.class, 2L);
 
-          // when
-          user.setPassword("LexLuthor");
-          em.merge(user);
+      // when
+      user.setPassword("LexLuthor");
+      em.merge(user);
 
-          // then
-          assertThat(user.getPassword()).isEqualTo(expectedPassword);
-      }
-    }
+      // then
+      assertThat(user.getPassword()).isEqualTo(expectedPassword);
+  }
+}
+```
 
 There are just two things which are different from the standard Arquillian test - `@UsingDataSet` and `@ShouldMatchDataSet` annotations. Former
 seeds the database using file in YAML format, and latter verifies database state using given file.
