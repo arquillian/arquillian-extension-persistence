@@ -21,11 +21,7 @@ import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumn
 import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumnsNotSpecifiedInExpectedDataSet;
 import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractNonExistingColumns;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import org.dbunit.Assertion;
@@ -144,15 +140,37 @@ public class DataSetComparator
          throws DataSetException
    {
       final List<String> columnsForSorting = new ArrayList<String>();
-      columnsForSorting.addAll(orderBy.global);
+      columnsForSorting.addAll(existingColumnsForTable(expectedDataSet, tableName, orderBy.global));
       final List<String> columsPerTable = orderBy.columnsPerTable.get(tableName);
       if (columsPerTable != null)
       {
          columnsForSorting.addAll(columsPerTable);
       }
-      columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName),
-            currentDataSet.getTable(tableName)));
+
+      // Add all columns if none are defined in orderBy
+      if (columnsForSorting.isEmpty()) {
+         columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName),
+                 currentDataSet.getTable(tableName)));
+      }
+
       return columnsForSorting;
+   }
+
+   private Collection<String> existingColumnsForTable(IDataSet set, String tableName, List<String> expectedColumns) throws DataSetException
+   {
+      Set<String> existingColumns = new HashSet<String>();
+
+      Collection<String> tableColumns = extractColumnNames(set.getTable(tableName).getTableMetaData().getColumns());
+
+      for (String currentColumn : expectedColumns) {
+         if (tableColumns.contains(currentColumn.toLowerCase())) {
+            existingColumns.add(currentColumn.toLowerCase());
+         } else {
+            log.warning("Column " + currentColumn.toLowerCase() + " in Table " + tableName + " was set to be an ordering column but does not exist in this table. Ignoring it. Consider using [TABLENAME.COLUMNNAME]");
+         }
+      }
+
+      return existingColumns;
    }
 
    private static <T> String[] toArray(final List<T> list)
@@ -180,7 +198,8 @@ public class DataSetComparator
       }
       catch (DataSetException e)
       {
-         throw new DBUnitDataSetHandlingException("Unable to resolve columns", e);
+         throw new DBUnitDataSetHandlingException("Unable to resolve columns in table " +
+                 expectedTableState.getTableMetaData().getTableName(), e);
       }
 
       return columnsForSorting;
@@ -207,7 +226,7 @@ public class DataSetComparator
       if (!nonExistingColumns.isEmpty())
       {
          log.warning("Columns which are specified to be filtered out [" + Arrays.toString(nonExistingColumns.toArray())
-               + "] are not existing in the table.");
+                 + "] are not existing in the table " + expectedTableState.getTableMetaData().getTableName());
       }
       return columnsToIgnore;
    }

@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+
 /**
  * Describes resource attributes such as it's location in classpath
  * and format.
@@ -35,7 +37,7 @@ public abstract class ResourceDescriptor<T>
       this.location = location;
    }
 
-   public abstract T getContent();
+   public abstract T getContent(DBUnitConfiguration configuration);
 
    public String getLocation()
    {

@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
 import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 
 /**
  *
@@ -35,7 +36,7 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
    }
 
    @Override
-   public String getContent()
+   public String getContent(DBUnitConfiguration configuration)
    {
       return ScriptLoader.loadScript(getLocation());
    }

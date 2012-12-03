@@ -115,7 +115,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors())
       {
-         final String script = scriptDescriptor.getContent();
+         final String script = scriptDescriptor.getContent(dbunitConfigurationInstance.get());
          executeScript(script);
       }
    }
@@ -124,7 +124,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       for (SqlScriptResourceDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
       {
-         final String script = scriptDescriptor.getContent();
+         final String script = scriptDescriptor.getContent(dbunitConfigurationInstance.get());
          executeScript(script);
       }
    }

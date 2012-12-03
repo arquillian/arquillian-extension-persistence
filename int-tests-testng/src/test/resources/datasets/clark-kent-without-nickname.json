@@ -2,7 +2,7 @@
 	"useraccount":
 	[
 		{
-			"id": "2",
+			"id": 2,
 			"firstname" : "Clark",
 			"lastname" : "Kent",
 			"username" : "ckent",

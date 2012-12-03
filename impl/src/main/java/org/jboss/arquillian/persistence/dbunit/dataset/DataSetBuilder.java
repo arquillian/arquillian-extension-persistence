@@ -26,6 +26,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
@@ -48,7 +49,7 @@ public class DataSetBuilder
       this.format = format;
    }
 
-   public IDataSet build(final String file)
+   public IDataSet build(final String file, DBUnitConfiguration configuration)
    {
       IDataSet dataSet = null;
       try
@@ -65,7 +66,7 @@ public class DataSetBuilder
                dataSet = loadYamlDataSet(file);
                break;
             case JSON:
-               dataSet = loadJsonDataSet(file);
+               dataSet = loadJsonDataSet(file, configuration);
                break;
             default:
                throw new DBUnitInitializationException("Unsupported data type " + format);
@@ -120,10 +121,10 @@ public class DataSetBuilder
       return new XlsDataSet(inputStream);
    }
 
-   private JsonDataSet loadJsonDataSet(final String file) throws IOException, DataSetException
+   private JsonDataSet loadJsonDataSet(final String file, DBUnitConfiguration configuration) throws IOException, DataSetException
    {
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-      return new JsonDataSet(inputStream);
+      return new JsonDataSet(inputStream, configuration);
    }
 
    private IDataSet loadYamlDataSet(final String file) throws IOException,

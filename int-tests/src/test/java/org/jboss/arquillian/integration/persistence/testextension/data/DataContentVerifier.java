@@ -101,7 +101,7 @@ public class DataContentVerifier
       List<IDataSet> dataSets = new ArrayList<IDataSet>(descriptors.size());
       for (DataSetResourceDescriptor dataSetDescriptor : descriptors)
       {
-         dataSets.add(dataSetDescriptor.getContent());
+         dataSets.add(dataSetDescriptor.getContent(dbunitConfiguration.get()));
       }
       IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSets);
       return expectedDataSet;

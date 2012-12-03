@@ -24,13 +24,25 @@ import static org.fest.assertions.MapAssert.entry;
 import java.util.Arrays;
 
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DataSetComparatorTest
 {
+
+   private DBUnitConfiguration configuration;
+
+   @Before
+   public void setup()
+   {
+      configuration = new DBUnitConfiguration();
+      configuration.setDatatypeFactory(new HsqldbDataTypeFactory());
+   }
 
    @Test
    public void should_map_columns_associated_with_particular_table() throws Exception
@@ -73,8 +85,8 @@ public class DataSetComparatorTest
       // given
       final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
       DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml");
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml", configuration);
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml", configuration);
 
       // when
       dataSetComparator.compare(usersXml, usersYaml, errorCollector);
@@ -89,8 +101,8 @@ public class DataSetComparatorTest
       // given
       final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
       DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json");
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml", configuration);
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json", configuration);
 
       // when
       dataSetComparator.compare(usersXml, usersYaml, errorCollector);
@@ -105,8 +117,8 @@ public class DataSetComparatorTest
       // given
       final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
       DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml", configuration);
+      IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml", configuration);
 
       // when
       dataSetComparator.compare(usersXml, usersYaml, errorCollector);

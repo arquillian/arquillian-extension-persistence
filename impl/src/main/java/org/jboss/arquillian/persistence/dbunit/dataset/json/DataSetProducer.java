@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -33,8 +34,11 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.Row;
 import org.jboss.arquillian.persistence.dbunit.dataset.Table;
+
+import javax.inject.Inject;
 
 /**
  * Abstract DataSetProducer class with template method for producing data
@@ -45,6 +49,7 @@ import org.jboss.arquillian.persistence.dbunit.dataset.Table;
  */
 public abstract class DataSetProducer implements IDataSetProducer
 {
+   private JsonDataTypeConverter jsonDataTypeConverter = new JsonDataTypeConverter();
 
    private boolean caseSensitiveTableNames;
 
@@ -52,9 +57,10 @@ public abstract class DataSetProducer implements IDataSetProducer
 
    protected final InputStream input;
 
-   public DataSetProducer(InputStream input)
+   public DataSetProducer(InputStream input, DBUnitConfiguration configuration)
    {
       this.input = input;
+      jsonDataTypeConverter.configuration = configuration;
    }
 
    abstract Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException;
@@ -97,18 +103,7 @@ public abstract class DataSetProducer implements IDataSetProducer
 
    private ITableMetaData createTableMetaData(Table table)
    {
-      return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
-   }
-
-   private Column[] createColumns(Collection<String> columnNames)
-   {
-      final List<Column> columns = new ArrayList<Column>();
-      for (String columnName : columnNames)
-      {
-         Column column = new Column(columnName, DataType.UNKNOWN);
-         columns.add(column);
-      }
-      return columns.toArray(new Column[columns.size()]);
+      return new DefaultTableMetaData(table.getTableName(), table.getColumns().toArray(new Column[table.getColumns().size()]));
    }
 
    private List<Table> createTables(Map<String, List<Map<String, String>>> jsonStructure)
@@ -134,13 +129,62 @@ public abstract class DataSetProducer implements IDataSetProducer
       return extractedRows;
    }
 
-   private Collection<String> extractColumns(List<Map<String, String>> rows)
+   private Collection<Column> extractColumns(List<Map<String, String>> rows)
    {
-      final Set<String> columns = new HashSet<String>();
+      final Set<Column> columns = new HashSet<Column>();
       for (Map<String, String> row : rows)
       {
-         columns.addAll(row.keySet());
+         addAndOverrideUnknownDataTypeColumns(columns, extractColumnsFromDatasetRow(row));
       }
+
+      return columns;
+   }
+
+   private void addAndOverrideUnknownDataTypeColumns(Set<Column> tableColumns, Collection<Column> columnsToAdd)
+   {
+      for (Column currentColumnToAdd : columnsToAdd)
+      {
+         Column existingColumn = columnForColumnName(tableColumns, currentColumnToAdd.getColumnName());
+
+         if (null == existingColumn)
+         {
+            tableColumns.add(currentColumnToAdd);
+         } else if (existingColumn.getDataType().equals(DataType.UNKNOWN) && !currentColumnToAdd.getDataType().equals(DataType.UNKNOWN))
+         {
+            tableColumns.remove(existingColumn);
+            tableColumns.add(currentColumnToAdd);
+         }
+      }
+   }
+
+   private Column columnForColumnName(Set<Column> columns, String columnName)
+   {
+      Column column = null;
+
+      for (Column currentColumn : columns)
+      {
+         if (currentColumn.getColumnName().equals(columnName))
+         {
+            column = currentColumn;
+         }
+      }
+
+      return column;
+   }
+
+   private Collection<Column> extractColumnsFromDatasetRow(Map<String, String> row)
+   {
+      final Set<Column> columns = new HashSet<Column>();
+      for (Map.Entry<String, String> currentEntry : row.entrySet()) {
+         String columnName = currentEntry.getKey();
+         Object value = currentEntry.getValue();
+         DataType dataType = null;
+
+         dataType = jsonDataTypeConverter.convertJSonDataTypeToDBUnitDataType(value, value.getClass());
+
+         columns.add(new Column(columnName, dataType));
+      }
+
       return columns;
    }
 

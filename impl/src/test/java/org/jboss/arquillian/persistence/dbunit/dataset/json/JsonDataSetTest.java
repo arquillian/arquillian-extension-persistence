@@ -19,17 +19,29 @@ package org.jboss.arquillian.persistence.dbunit.dataset.json;
 
 import java.io.InputStream;
 
+import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.jboss.arquillian.persistence.dbunit.DataSetAssert;
 import org.jboss.arquillian.persistence.dbunit.TableAssert;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class JsonDataSetTest
 {
 
    private InputStream input;
+
+   private DBUnitConfiguration configuration;
+
+   @Before
+   public void setup()
+   {
+      configuration = new DBUnitConfiguration();
+      configuration.setDatatypeFactory(new HsqldbDataTypeFactory());
+   }
 
    @After
    public void closeStream()
@@ -44,7 +56,7 @@ public class JsonDataSetTest
       input = FileLoader.load("one-table.json");
 
       // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+      JsonDataSet jsonDataSet = new JsonDataSet(input, configuration);
 
       // then
       DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount");
@@ -57,7 +69,7 @@ public class JsonDataSetTest
       input = FileLoader.load("one-table.json");
 
       // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+      JsonDataSet jsonDataSet = new JsonDataSet(input, configuration);
 
       // then
       TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
@@ -70,7 +82,7 @@ public class JsonDataSetTest
       input = FileLoader.load("one-table.json");
 
       // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+      JsonDataSet jsonDataSet = new JsonDataSet(input, configuration);
 
       // then
       TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasRows(2);
@@ -83,7 +95,7 @@ public class JsonDataSetTest
       input = FileLoader.load("one-table.json");
 
       // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+      JsonDataSet jsonDataSet = new JsonDataSet(input, configuration);
 
       // then
       TableAssert.assertThat(jsonDataSet.getTable("useraccount"))
@@ -98,7 +110,7 @@ public class JsonDataSetTest
       input = FileLoader.load("tables.json");
 
       // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+      JsonDataSet jsonDataSet = new JsonDataSet(input, configuration);
 
       // then
       DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount", "testtable");

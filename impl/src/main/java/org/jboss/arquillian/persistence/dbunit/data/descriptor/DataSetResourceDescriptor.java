@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.dbunit.data.descriptor;
 
 import org.dbunit.dataset.IDataSet;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 
 
@@ -41,9 +42,9 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
    }
 
    @Override
-   public IDataSet getContent()
+   public IDataSet getContent(DBUnitConfiguration configuration)
    {
-      return DataSetBuilder.builderFor(format).build(location);
+      return DataSetBuilder.builderFor(format).build(location, configuration);
    }
 
    @Override

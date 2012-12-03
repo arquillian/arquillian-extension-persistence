@@ -183,7 +183,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         dataSetRegister.addInitial(dataSetDescriptor.getContent());
+         dataSetRegister.addInitial(dataSetDescriptor.getContent(dbUnitConfigurationInstance.get()));
       }
       dataSetRegisterProducer.set(dataSetRegister);
    }
@@ -193,7 +193,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
       for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
       {
-         dataSetRegister.addExpected(dataSetDescriptor.getContent());
+         dataSetRegister.addExpected(dataSetDescriptor.getContent(dbUnitConfigurationInstance.get()));
       }
       dataSetRegisterProducer.set(dataSetRegister);
    }

@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.core.data.descriptor;
 
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -36,7 +38,7 @@ public class TextFileResourceDescriptor extends SqlScriptResourceDescriptor
    }
 
    @Override
-   public String getContent()
+   public String getContent(DBUnitConfiguration configuration)
    {
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(getLocation());
       return new Scanner(inputStream).useDelimiter("\\A").next();
