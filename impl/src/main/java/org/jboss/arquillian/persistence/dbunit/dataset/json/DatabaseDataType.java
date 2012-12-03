@@ -11,6 +11,7 @@ public enum DatabaseDataType {
    ORACLEBIGINTEGER(JsonDataType.BIGINTEGER, Oracle10DataTypeFactory.class, DataType.DECIMAL),
    ORACLEINTEGER(JsonDataType.INTEGER, Oracle10DataTypeFactory.class, DataType.DECIMAL),
    ORACLELONG(JsonDataType.LONG, Oracle10DataTypeFactory.class, DataType.DECIMAL),
+   ORACLEDOUBLE(JsonDataType.DOUBLE, Oracle10DataTypeFactory.class, DataType.DECIMAL),
    HSQLBIGINTEGER(JsonDataType.BIGINTEGER, HsqldbDataTypeFactory.class, DataType.BIGINT),
    HSQLINTEGER(JsonDataType.INTEGER, HsqldbDataTypeFactory.class, DataType.BIGINT),
    HSQLLONG(JsonDataType.LONG, HsqldbDataTypeFactory.class, DataType.BIGINT);
