@@ -6,10 +6,7 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">Ike</property>
-    <property name="scriptsToExecuteBeforeTest">SELECT * FROM ARQUILLIAN_TESTS</property>
-    <property name="scriptsToExecuteAfterTest">SELECT * FROM ARQUILLIAN_TESTS</property>
     <property name="defaultTransactionMode">ROLLBACK</property>
-    <property name="defaultSqlScriptLocation">scripts</property>
     <property name="dumpData">true</property>
     <property name="dumpDirectory">/home/ike/dump</property>
     <property name="userTransactionJndi">java:jboss/UserTransaction</property>

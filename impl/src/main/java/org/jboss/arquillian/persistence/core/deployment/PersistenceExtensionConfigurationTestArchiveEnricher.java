@@ -32,11 +32,12 @@ import org.jboss.arquillian.persistence.core.configuration.PersistenceConfigurat
 import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorExtractor;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorParser;
 import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
-import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
+import org.jboss.arquillian.persistence.script.ScriptLoader;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -62,6 +63,9 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
    Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
    @Inject
+   Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+
+   @Inject
    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
    @Override
@@ -75,13 +79,16 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
       }
       obtainDataSourceFromPersistenceXml(applicationArchive);
       final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-extension-additional-resources.jar");
-      merge(additionalPersistenceResources, sqlScriptsAsResource(configurationInstance.get().getScriptsToExecuteAfterTest()),
-                                            sqlScriptsAsResource(configurationInstance.get().getScriptsToExecuteBeforeTest()),
+      merge(additionalPersistenceResources, sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
+                                            sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),
                                             persistenceConfigurationSerializedAsProperties(),
                                             dbUnitConfigurationSerializedAsProperties(),
+                                            scriptingConfigurationSerializedAsProperties(),
                                             jpaCacheEvictionConfigurationSerializedAsProperties());
       addResources(applicationArchive, additionalPersistenceResources);
    }
+
+   // Private helper methods
 
    private void obtainDataSourceFromPersistenceXml(final Archive<?> applicationArchive)
    {
@@ -107,8 +114,6 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
       }
 
    }
-
-   // Private helper methods
 
    private void merge(final JavaArchive target, final JavaArchive ... archivesToMerge)
    {
@@ -140,6 +145,16 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
       return ShrinkWrap.create(JavaArchive.class)
                        .addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
    }
+
+   private JavaArchive scriptingConfigurationSerializedAsProperties()
+   {
+      final ScriptingConfiguration scriptingConfigurationPrototype = new ScriptingConfiguration();
+      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), scriptingConfigurationPrototype.getQualifier());
+      final ByteArrayOutputStream properties = new PropertiesSerializer(scriptingConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+      return ShrinkWrap.create(JavaArchive.class)
+                       .addAsResource(new ByteArrayAsset(properties.toByteArray()), new ScriptingConfiguration().getPrefix() + "properties");
+   }
+
 
    private JavaArchive jpaCacheEvictionConfigurationSerializedAsProperties()
    {

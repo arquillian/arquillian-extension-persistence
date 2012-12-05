@@ -21,6 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Properties;
 
+import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 
@@ -40,20 +41,6 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
-   }
-
-   @Test
-   public void should_extract_scripts_to_execute_before_test_from_external_configuration_file() throws Exception
-   {
-      // given
-      String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
-
-      // when
-      Configuration.importTo(configuration).loadFromPropertyFile("properties/custom.arquillian.persistence.properties");
-
-      // then
-      assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
    }
 
    @Test

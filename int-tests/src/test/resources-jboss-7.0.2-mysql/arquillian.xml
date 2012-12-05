@@ -31,4 +31,8 @@
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
   </extension>
 
+  <extension qualifier="persistence-script">
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
+  </extension>
+
 </arquillian>

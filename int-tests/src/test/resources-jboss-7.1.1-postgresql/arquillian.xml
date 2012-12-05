@@ -18,13 +18,18 @@
     </configuration>
   </container>
 
-  <extension qualifier="transaction">
-    <property name="manager">java:jboss/UserTransaction</property>
-  </extension>
-
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
   </extension>
+
+  <extension qualifier="persistence-script">
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
+  </extension>
+
+  <extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
+  </extension>
+
 
 </arquillian>

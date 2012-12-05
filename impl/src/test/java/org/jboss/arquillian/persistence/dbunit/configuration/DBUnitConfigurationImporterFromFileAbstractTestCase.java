@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.junit.Test;
 
 public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase

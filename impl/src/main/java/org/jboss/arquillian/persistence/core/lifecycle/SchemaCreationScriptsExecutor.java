@@ -27,11 +27,12 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.persistence.core.command.SchemaCreationControlCommand;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
@@ -42,7 +43,7 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 public class SchemaCreationScriptsExecutor
 {
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<ScriptingConfiguration> configuration;
 
    @Inject
    private Event<ExecuteScripts> executeScriptsEvent;

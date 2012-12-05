@@ -23,18 +23,18 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
 
 public class DataScriptsHandler
 {
 
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<ScriptingConfiguration> configuration;
 
    @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;

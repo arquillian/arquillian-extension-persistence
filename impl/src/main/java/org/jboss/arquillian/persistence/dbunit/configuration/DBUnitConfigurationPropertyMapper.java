@@ -65,8 +65,7 @@ public class DBUnitConfigurationPropertyMapper
       }
       catch (Exception e)
       {
-         // TODO introduce / reuse dbunit exception
-         throw new RuntimeException("Unable to map dbunit settings", e);
+         throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
       }
    }
 
@@ -93,8 +92,7 @@ public class DBUnitConfigurationPropertyMapper
       }
       catch (Exception e)
       {
-         // TODO introduce / reuse dbunit exception
-         throw new RuntimeException("Unable to map dbunit settings", e);
+         throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
       }
    }
 

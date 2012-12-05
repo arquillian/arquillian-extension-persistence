@@ -24,7 +24,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.shrinkwrap.api.Archive;
@@ -51,18 +51,18 @@ public class ApplyingCustomScriptsTest
    EntityManager em;
 
    @Test
-   @ApplyScriptAfter("users.sql")
+   @ApplyScriptBefore("users.sql")
    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.AFTER)
-   public void should_add_users_after_test_using_custom_script() throws Exception
+   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
+   public void should_add_users_before_test_using_custom_script() throws Exception
    {
    }
 
    @Test
-   @ApplyScriptAfter("clark-kent.sql")
+   @ApplyScriptBefore("clark-kent.sql")
    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.AFTER)
-   public void should_add_users_after_test_to_already_created_entries_using_custom_script() throws Exception
+   @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.BEFORE)
+   public void should_add_user_to_already_created_entries_using_custom_script() throws Exception
    {
       // given
       UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
@@ -71,7 +71,7 @@ public class ApplyingCustomScriptsTest
       em.persist(johnSmith);
 
       // then
-      // superman should be added after test execution
+      // superman should be added before test execution
       // and data should be compared using dataset defined in @ShouldMatchDataSet
    }
 

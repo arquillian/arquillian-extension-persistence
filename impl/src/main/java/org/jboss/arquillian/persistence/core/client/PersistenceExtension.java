@@ -24,6 +24,7 @@ import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionArch
 import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
 import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationClientSideProducer;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationClientSideProducer;
 
 /**
  * Wires persistence extension services which are used to prepare
@@ -42,6 +43,7 @@ public class PersistenceExtension implements LoadableExtension {
              .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
              .observer(PersistenceConfigurationClientSideProducer.class)
              .observer(DBUnitConfigurationClientSideProducer.class)
+             .observer(ScriptingConfigurationClientSideProducer.class)
              .observer(SchemaCreationCoordinator.class)
              .observer(DatabaseStateDumper.class);
    }

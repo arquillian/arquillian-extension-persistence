@@ -36,6 +36,8 @@ import org.jboss.arquillian.persistence.core.exception.DataSourceNotFoundExcepti
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
@@ -62,6 +64,9 @@ public class PersistenceTestTrigger
    private InstanceProducer<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverProvider;
 
    @Inject @TestScoped
+   private InstanceProducer<PersistenceExtensionScriptingFeatureResolver> persistenceExtensionScriptingFeatureResolverProvider;
+
+   @Inject @TestScoped
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
 
    @Inject
@@ -69,6 +74,9 @@ public class PersistenceTestTrigger
 
    @Inject
    private Instance<PersistenceConfiguration> configurationInstance;
+
+   @Inject
+   private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
    @Inject
    private Event<BeforePersistenceTest> beforePersistenceTestEvent;
@@ -97,6 +105,7 @@ public class PersistenceTestTrigger
    {
       PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
       persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
+      persistenceExtensionScriptingFeatureResolverProvider.set(new PersistenceExtensionScriptingFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), scriptingConfigurationInstance.get()));
 
       if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {

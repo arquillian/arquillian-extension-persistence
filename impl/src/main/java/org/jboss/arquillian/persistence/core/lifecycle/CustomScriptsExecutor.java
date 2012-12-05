@@ -25,16 +25,16 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.data.descriptor.FileSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.descriptor.InlineSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.script.ScriptLoader;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.ApplyScriptsAfterTest;
 import org.jboss.arquillian.persistence.core.event.ApplyScriptsBeforeTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.util.Strings;
+import org.jboss.arquillian.persistence.script.ScriptLoader;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 /**
  *
@@ -44,7 +44,7 @@ import org.jboss.arquillian.persistence.core.util.Strings;
 public class CustomScriptsExecutor
 {
    @Inject
-   private Instance<PersistenceConfiguration> configuration;
+   private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
    @Inject
    private Event<ApplyScriptsBeforeTest> applyScriptsBeforeTestEvent;
@@ -66,16 +66,16 @@ public class CustomScriptsExecutor
 
    private void executeScriptsBeforeTest(BeforePersistenceTest beforePersistenceTest)
    {
-      final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String[] scriptsToExecuteBeforeTest = persistenceConfiguration.getScriptsToExecuteBeforeTest();
+      final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
+      String[] scriptsToExecuteBeforeTest = configuration.getScriptsToExecuteBeforeTest();
       final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteBeforeTest);
       applyScriptsBeforeTestEvent.fire(new ApplyScriptsBeforeTest(beforePersistenceTest, scripts));
    }
 
    private void executeScriptsAfterTest(AfterPersistenceTest afterPersistenceTest)
    {
-      final PersistenceConfiguration persistenceConfiguration = configuration.get();
-      String[] scriptsToExecuteAfterTest = persistenceConfiguration.getScriptsToExecuteAfterTest();
+      final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
+      String[] scriptsToExecuteAfterTest = configuration.getScriptsToExecuteAfterTest();
       final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteAfterTest);
       applyScriptsAfterTestEvent.fire(new ApplyScriptsAfterTest(afterPersistenceTest, scripts));
    }

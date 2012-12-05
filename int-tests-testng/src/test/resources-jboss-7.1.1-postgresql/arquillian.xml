@@ -18,15 +18,17 @@
     </configuration>
   </container>
 
-  <extension qualifier="persistence">
-    <property name="defaultDataSource">java:app/datasources/postgresql_ds</property>
-    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
-    <property name="alwaysExcludeFromDataSetsComparision">id</property>
-  </extension>
-
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
+  </extension>
+
+  <extension qualifier="persistence-script">
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
+  </extension>
+
+  <extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
   </extension>
 
 </arquillian>

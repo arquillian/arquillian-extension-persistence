@@ -17,8 +17,12 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">arq/hsql</property>
-    <property name="scriptsToExecuteBeforeTest">SET DATABASE REFERENTIAL INTEGRITY FALSE</property>
     <property name="dumpData">true</property>
+  </extension>
+
+  <extension qualifier="persistence-script">
+    <property name="scriptsToExecuteBeforeTest">SET DATABASE REFERENTIAL INTEGRITY FALSE</property>
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

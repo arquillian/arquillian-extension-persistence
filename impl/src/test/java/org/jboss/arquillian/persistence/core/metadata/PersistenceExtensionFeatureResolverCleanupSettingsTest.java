@@ -23,122 +23,15 @@ import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.configuration.TestConfigurationLoader;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
 public class PersistenceExtensionFeatureResolverCleanupSettingsTest
 {
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
-
-   @Test
-   public void should_have_default_cleanup_test_phase_set_to_after() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
-            DefaultCleanupSettings.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
-
-      // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
-   }
-
-   @Test
-   public void should_obtain_cleanup_test_phase_from_class_level_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new ClassLevelCleanupAfterSettings(),
-            ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
-
-      // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
-   }
-
-   @Test
-   public void should_obtain_test_phase_from_method_level_annotation_containing_both_phase_and_mode() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
-
-      // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
-   }
-
-   @Test
-   public void should_use_default_test_phase_from_method_level_annotation_containing_mode() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
-
-      // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.AFTER);
-   }
-
-   @Test
-   public void should_obtain_test_phase_from_method_level_annotation_containing_phase() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassPhaseOnly"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
-
-      // then
-      assertThat(phase).isEqualTo(TestExecutionPhase.NONE);
-   }
-
-   @Test
-   public void should_cleanup_after_when_no_annotation_defined() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
-            DefaultCleanupSettings.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
-
-      // then
-      assertThat(shouldCleanupAfter).isTrue();
-   }
-
-   @Test
-   public void should_cleanup_after_when_phase_is_defined() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
-
-      // then
-      assertThat(shouldCleanupAfter).isTrue();
-   }
+   private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
 
    @Test
    public void should_cleanup_using_script_when_defined_on_method_level() throws Exception
@@ -146,43 +39,13 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest
       // given
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
             CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+      PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
       // when
       boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();
 
       // then
       assertThat(shouldCleanupUsingScriptAfter).isTrue();
-   }
-
-   @Test
-   public void should_have_strict_cleanup_strategy_as_default() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStragety();
-
-      // then
-      assertThat(cleanupStragety).isEqualTo(CleanupStrategy.STRICT);
-   }
-
-   @Test
-   public void should_fetch_cleanup_strategy_from_test() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
-
-      // when
-      CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStragety();
-
-      // then
-      assertThat(cleanupStragety).isEqualTo(CleanupStrategy.USED_ROWS_ONLY);
    }
 
    // ----------------------------------------------------------------------------------------

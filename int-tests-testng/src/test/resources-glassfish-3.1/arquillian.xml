@@ -17,16 +17,18 @@
 
   <extension qualifier="persistence">
     <property name="defaultDataSource">arq/hsql</property>
-    <property name="scriptsToExecuteBeforeTest">SET DATABASE REFERENTIAL INTEGRITY FALSE</property>
     <property name="dumpData">true</property>
-    <property name="dumpDirectory">/home/bartek/tmp/current</property>
-    <property name="excludeTablesFromCleanup">SEQUENCE</property>
-    <property name="alwaysExcludeFromDataSetsComparision">id</property>
+  </extension>
+
+  <extension qualifier="persistence-script">
+    <property name="scriptsToExecuteBeforeTest">SET DATABASE REFERENTIAL INTEGRITY FALSE</property>
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">
     <property name="excludeTablesFromCleanup">SEQUENCE</property>
     <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
+    <property name="excludeTablesFromComparisonWhenEmptyExpected">SEQUENCE</property>
   </extension>
 
 </arquillian>

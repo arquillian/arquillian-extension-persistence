@@ -36,12 +36,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
    private String defaultDataSource;
 
-   private String defaultSqlScriptLocation = "scripts/";
-
-   private String[] scriptsToExecuteBeforeTest;
-
-   private String[] scriptsToExecuteAfterTest;
-
    private TransactionMode defaultTransactionMode = TransactionMode.COMMIT;
 
    private DataSeedStrategy defaultDataSeedStrategy = DataSeedStrategy.INSERT;
@@ -51,8 +45,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    private String dumpDirectory = System.getProperty("java.io.tmpdir");
 
    private TestExecutionPhase defaultCleanupPhase = TestExecutionPhase.AFTER;
-
-   private TestExecutionPhase defaultCleanupUsingScriptPhase = TestExecutionPhase.AFTER;
 
    private CleanupStrategy defaultCleanupStrategy = CleanupStrategy.STRICT;
 
@@ -87,34 +79,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public boolean isDefaultDataSourceDefined()
    {
       return isDefined(defaultDataSource);
-   }
-
-   public String[] getScriptsToExecuteBeforeTest()
-   {
-      return scriptsToExecuteBeforeTest;
-   }
-
-   /**
-    * @param scriptsToExecuteBeforeTest Ad-hoc scripts or file location to be used before every test.
-    * Might be handy for turning off integrity checks.
-    */
-   public void setScriptsToExecuteBeforeTest(String[] scriptsToExecuteBeforeTest)
-   {
-      this.scriptsToExecuteBeforeTest = scriptsToExecuteBeforeTest;
-   }
-
-   public String[] getScriptsToExecuteAfterTest()
-   {
-      return scriptsToExecuteAfterTest;
-   }
-
-   /**
-    * @param scriptsToExecuteAfterTest Ad-hoc scripts or file location to be used after every test.
-    * Could be used to revert operations applied by {@link #scriptsToExecuteBeforeTest}
-    */
-   public void setScriptsToExecuteAfterTest(String[] scriptsToExecuteAfterTest)
-   {
-      this.scriptsToExecuteAfterTest = scriptsToExecuteAfterTest;
    }
 
    public TransactionMode getDefaultTransactionMode()
@@ -164,20 +128,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
       this.dumpDirectory = dumpDirectory;
    }
 
-   public String getDefaultSqlScriptLocation()
-   {
-      return defaultSqlScriptLocation;
-   }
-
-   /**
-    * @param defaultSqlScriptLocation Folder where all custom SQL scripts are located.
-    * Default value is <code>scripts</code>
-    */
-   public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation)
-   {
-      this.defaultSqlScriptLocation = defaultSqlScriptLocation;
-   }
-
    public TestExecutionPhase getDefaultCleanupPhase()
    {
       return defaultCleanupPhase;
@@ -190,20 +140,6 @@ public class PersistenceConfiguration extends Configuration implements Serializa
    public void setDefaultCleanupPhase(TestExecutionPhase defaultCleanupPhase)
    {
       this.defaultCleanupPhase = defaultCleanupPhase;
-   }
-
-   public TestExecutionPhase getDefaultCleanupUsingScriptPhase()
-   {
-      return defaultCleanupUsingScriptPhase;
-   }
-
-   /**
-    * @param defaultCleanupUsingScriptPhase Defines default cleanup phase for custom SQL scripts.
-    * If not specified it's assumed to be AFTER test method.
-    */
-   public void setDefaultCleanupUsingScriptPhase(TestExecutionPhase defaultCleanupUsingScriptPhase)
-   {
-      this.defaultCleanupUsingScriptPhase = defaultCleanupUsingScriptPhase;
    }
 
    public CleanupStrategy getDefaultCleanupStrategy()

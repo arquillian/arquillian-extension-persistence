@@ -19,9 +19,9 @@ package org.jboss.arquillian.persistence.dbunit.dataset.json;
 
 import java.io.InputStream;
 
-import org.jboss.arquillian.persistence.dbunit.DataSetAssert;
-import org.jboss.arquillian.persistence.dbunit.TableAssert;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
+import org.jboss.arquillian.persistence.dbunit.testutils.DataSetAssert;
+import org.jboss.arquillian.persistence.dbunit.testutils.TableAssert;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.After;
 import org.junit.Test;

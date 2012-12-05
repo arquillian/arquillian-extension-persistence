@@ -18,18 +18,20 @@
     </configuration>
   </container>
 
-  <extension qualifier="persistence">
-    <property name="defaultDataSource">java:app/datasources/mssql_ds</property>
-    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
+  <extension qualifier="persistence-script">
     <property name="scriptsToExecuteBeforeTest">scripts/mssql-identity-insert-off.sql, scripts/mssql-identity-insert-on.sql</property>
     <property name="scriptsToExecuteAfterTest">scripts/mssql-identity-insert-off.sql</property>
-    <property name="alwaysExcludeFromDataSetsComparision">id</property>
+  </extension>
+
+  <extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.mssql.MsSqlDataTypeFactory</property>
     <property name="useIdentityInsert">true</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
+    <property name="excludeTablesFromComparisonWhenEmptyExpected">hibernate_sequence</property>
   </extension>
 
 </arquillian>

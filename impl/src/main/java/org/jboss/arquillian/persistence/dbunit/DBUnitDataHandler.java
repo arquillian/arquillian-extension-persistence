@@ -19,6 +19,8 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import java.sql.SQLException;
 
+import javax.script.ScriptContext;
+
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
@@ -31,8 +33,6 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.core.data.DataHandler;
-import org.jboss.arquillian.persistence.core.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.script.ScriptExecutor;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
 import org.jboss.arquillian.persistence.core.event.CompareData;
@@ -47,6 +47,9 @@ import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrat
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.jboss.arquillian.persistence.script.ScriptExecutor;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 /**
  *
@@ -67,6 +70,9 @@ public class DBUnitDataHandler implements DataHandler
 
    @Inject
    private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
+
+   @Inject
+   private Instance<ScriptingConfiguration> scriptConfigurationInstance;
 
    @Inject
    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
@@ -135,7 +141,9 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         new ScriptExecutor(databaseConnection.get().getConnection()).execute(script);
+         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection());
+         scriptExecutor.setStatementDelimiter(scriptConfigurationInstance.get().getSqlStatementDelimiter());
+         scriptExecutor.execute(script);
       }
       catch (SQLException e)
       {

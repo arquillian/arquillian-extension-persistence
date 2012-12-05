@@ -14,26 +14,26 @@
   <container qualifier="jboss-7.1" default="true">
     <configuration>
       <property name="jbossHome">target/jboss-as-7.0.2.Final</property>
-      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>
+      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n</property>
     </configuration>
   </container>
-
-  <extension qualifier="persistence">
-    <property name="defaultDataSource">java:app/datasources/mysql_ds</property>
-    <property name="userTransactionJndi">java:jboss/UserTransaction</property>
-    <!--
-    <property name="scriptsToExecuteBeforeTest">scripts/mssql-identity-insert-off.sql, scripts/mssql-identity-insert-on.sql</property>
-    <property name="scriptsToExecuteAfterTest">scripts/mssql-identity-insert-off.sql</property>
-     -->
-    <property name="alwaysExcludeFromDataSetsComparision">id</property>
-  </extension>
 
   <extension qualifier="persistence-dbunit">
     <property name="schema">ape</property>
     <property name="datatypeFactory">org.dbunit.ext.mysql.MySqlDataTypeFactory</property>
     <property name="metadataHandler">org.dbunit.ext.mysql.MySqlMetadataHandler</property>
     <property name="caseSensitiveTableNames">true</property>
+    <property name="excludeTablesFromComparisonWhenEmptyExpected">hibernate_sequence</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
   </extension>
+
+  <extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
+  </extension>
+
+  <extension qualifier="persistence-script">
+    <property name="sqlStatementDelimiter">NEW_LINE</property>
+  </extension>
+
 
 </arquillian>

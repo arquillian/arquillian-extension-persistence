@@ -97,20 +97,7 @@ public class PersistenceExtensionFeatureResolver
       return phase;
    }
 
-   public TestExecutionPhase getCleanupUsingScriptTestPhase()
-   {
-      final CleanupUsingScript cleanupAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
-
-      TestExecutionPhase phase = configuration.getDefaultCleanupUsingScriptPhase();
-      if (cleanupAnnotation != null && !TestExecutionPhase.DEFAULT.equals(cleanupAnnotation.phase()))
-      {
-         phase = cleanupAnnotation.phase();
-      }
-
-      return phase;
-   }
-
-   public CleanupStrategy getCleanupStragety()
+   public CleanupStrategy getCleanupStrategy()
    {
       final Cleanup cleanup = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
       if (cleanup == null || CleanupStrategy.DEFAULT.equals(cleanup.strategy()))
@@ -134,21 +121,6 @@ public class PersistenceExtensionFeatureResolver
    {
       final CleanupUsingScript cleanupUsingScriptAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
       return cleanupUsingScriptAnnotation == null || TestExecutionPhase.NONE.equals(cleanupUsingScriptAnnotation.phase());
-   }
-
-   public boolean shouldCleanupUsingScript()
-   {
-      return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) != null;
-   }
-
-   public boolean shouldCleanupUsingScriptBefore()
-   {
-      return shouldCleanupUsingScript() && TestExecutionPhase.BEFORE.equals(getCleanupUsingScriptTestPhase());
-   }
-
-   public boolean shouldCleanupUsingScriptAfter()
-   {
-      return shouldCleanupUsingScript() && TestExecutionPhase.AFTER.equals(getCleanupUsingScriptTestPhase());
    }
 
    public boolean shouldCleanupBefore()

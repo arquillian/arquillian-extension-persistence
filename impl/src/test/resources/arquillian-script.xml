@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://jboss.org/schema/arquillian"
+  xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+  <extension qualifier="persistence-script">
+    <property name="scriptsToExecuteBeforeTest">SELECT * FROM ARQUILLIAN_TESTS</property>
+    <property name="scriptsToExecuteAfterTest">SELECT * FROM ARQUILLIAN_TESTS</property>
+    <property name="defaultSqlScriptLocation">scripts</property>
+    <property name="defaultCleanupUsingScriptPhase">BEFORE</property>
+    <property name="sqlStatementDelimiter">;</property>
+  </extension>
+
+</arquillian>
