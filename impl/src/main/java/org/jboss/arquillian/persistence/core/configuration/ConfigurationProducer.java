@@ -18,25 +18,18 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 public abstract class ConfigurationProducer<T extends Configuration>
 {
 
-   @Inject @ApplicationScoped
-   protected Instance<ArquillianDescriptor> descriptor;
-
-   public abstract void observe(BeforeSuite beforeSuiteEvent);
+   public abstract void observe(ArquillianDescriptor descriptorCreated);
 
    protected abstract T create();
 
-   public T configureFromArquillianDescriptor()
+   public T configureFromArquillianDescriptor(ArquillianDescriptor descriptor)
    {
       final T configuration = create();
-      Configuration.importTo(configuration).createFrom(descriptor.get());
+      Configuration.importTo(configuration).createFrom(descriptor);
       return configuration;
    }
 
