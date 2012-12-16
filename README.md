@@ -25,6 +25,7 @@ It comes with following features:
 - MS SQL 2008 Express (with Microsoft JDBC Driver)
 - MySQL 5.5.24
 - PostgreSQL 9.1.4
+- Derby
 
 Enough talking, let's see it in action!
 
