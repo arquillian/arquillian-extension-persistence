@@ -167,7 +167,7 @@
 
   <profiles>
     <profile>
-      <id>glassfish-3.1-embedded</id>
+      <id>glassfish-3.1-embedded-hsqldb</id>
       <dependencies>
         <dependency>
           <groupId>org.slf4j</groupId>
@@ -201,7 +201,43 @@
             <directory>src/test/resources</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-glassfish-3.1</directory>
+            <directory>src/test/resources-glassfish-3.1-hsqldb</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
+      <id>glassfish-3.1-embedded-derby</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>1.7.2</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.container</groupId>
+          <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+          <version>${version.arq.container.glassfish}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.glassfish.main.extras</groupId>
+          <artifactId>glassfish-embedded-all</artifactId>
+          <version>${version.glassfish}</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-glassfish-3.1-derby</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-test-extension</directory>

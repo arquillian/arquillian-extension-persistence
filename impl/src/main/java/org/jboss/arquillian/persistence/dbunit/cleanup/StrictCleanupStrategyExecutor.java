@@ -18,6 +18,8 @@
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.DatabaseSequenceFilter;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
@@ -39,7 +41,8 @@ public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
    {
       try
       {
-         final IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
+         IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
+         dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
          new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
       }
       catch (Exception e)

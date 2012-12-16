@@ -18,6 +18,8 @@
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.DatabaseSequenceFilter;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.dbunit.operation.TransactionOperation;
@@ -44,7 +46,8 @@ public class UsedTablesOnlyCleanupStrategyExecutor implements CleanupStrategyExe
       try
       {
          final IDataSet mergeDataSets = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
-         final IDataSet dataSet = DataSetUtils.excludeTables(mergeDataSets, tablesToExclude);
+         IDataSet dataSet = DataSetUtils.excludeTables(mergeDataSets, tablesToExclude);
+         dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
          new TransactionOperation(DatabaseOperation.DELETE_ALL).execute(connection, dataSet);
       }
       catch (Exception e)

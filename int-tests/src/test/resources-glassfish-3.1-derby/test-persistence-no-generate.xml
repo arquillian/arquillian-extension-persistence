@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+  xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+  <persistence-unit name="arquillian-derby">
+    <jta-data-source>arq/derby</jta-data-source>
+    <!-- Otherwise DBUnit might not work when using REFRESH or UPDATE seeding strategy.
+         Bean validation is complaining about constraints in such case. -->
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.target-database" value="Derby"/>
+      <property name="eclipselink.weaving" value="false"/>
+      <!--
+        It's important to turn off caching, otherwise entity manager
+        won't be aware of changes made by DBUnit.
+      -->
+      <property name="eclipselink.cache.shared.default" value="false"/>
+    </properties>
+  </persistence-unit>
+
+</persistence>

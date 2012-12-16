@@ -39,7 +39,6 @@ import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -72,8 +71,7 @@ public class DataCleanupStrategiesTest
    @DatabaseShouldBeEmptyAfterTest
    public void should_cleanup_whole_database_content_when_using_strict_mode()
    {
-      Address address = new Address("Kryptonite", 1, "Metropolis", 7272);
-      em.persist(address);
+      em.persist(new Address("Kryptonite", 1, "Metropolis", 7272));
    }
 
    @Test @InSequence(2)
@@ -88,7 +86,7 @@ public class DataCleanupStrategiesTest
    @Test @InSequence(3)
    @ApplyScriptBefore({"delete-all.sql", "one-address.sql"})
    @UsingDataSet("users.yml")
-   @ShouldMatchDataSet({"users.yml", "lex-luthor.yml", "expected-address.yml"})
+   @ShouldMatchDataSet(value = {"users.yml", "lex-luthor.yml", "expected-address.yml"}, excludeColumns = { "id" })
    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
    @DatabaseShouldContainAfterTest({"expected-address.yml", "lex-luthor.yml"})
    public void should_cleanup_entries_added_using_data_set_but_not_by_script()

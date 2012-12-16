@@ -49,7 +49,7 @@ public class UserAccount implements Serializable
    private static final long serialVersionUID = -5070859529655572725L;
 
    @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue
    private Long id;
 
    @Basic

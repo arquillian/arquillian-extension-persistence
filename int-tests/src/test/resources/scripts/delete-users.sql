@@ -1,1 +1,1 @@
-DELETE FROM useraccount;
+DELETE FROM useraccount

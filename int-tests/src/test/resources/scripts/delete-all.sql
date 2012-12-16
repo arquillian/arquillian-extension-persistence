@@ -1,2 +1,2 @@
-DELETE FROM useraccount;
-DELETE FROM address;
+DELETE FROM useraccount
+DELETE FROM address

@@ -19,9 +19,8 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import java.sql.SQLException;
 
-import javax.script.ScriptContext;
-
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
@@ -153,9 +152,11 @@ public class DBUnitDataHandler implements DataHandler
 
    private void fillDatabase() throws Exception
    {
-      final IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
+      final DatabaseConnection connection = databaseConnection.get();
+      IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
+      initialDataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), initialDataSet);
       final DatabaseOperation selectedSeedingStrategy = getSelectedSeedingStrategy();
-      new TransactionOperation(selectedSeedingStrategy).execute(databaseConnection.get(), initialDataSet);
+      new TransactionOperation(selectedSeedingStrategy).execute(connection, initialDataSet);
    }
 
    private DatabaseOperation getSelectedSeedingStrategy()

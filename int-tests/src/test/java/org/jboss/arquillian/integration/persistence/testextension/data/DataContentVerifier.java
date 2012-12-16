@@ -31,6 +31,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldBeEmptyAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.ShouldBeEmptyAfterTest;
+import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
@@ -57,7 +58,12 @@ public class DataContentVerifier
 
    public void verifyDatabaseContentAfterTest(@Observes(precedence = -1000) AfterPersistenceTest afterPersistenceTest)
    {
-      final DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      ShouldMatchDataSet shouldMatchDataSet = afterPersistenceTest.getTestMethod().getAnnotation(ShouldMatchDataSet.class);
+      if (shouldMatchDataSet != null)
+      {
+         dataSetComparator = new DataSetComparator(shouldMatchDataSet.orderBy(), shouldMatchDataSet.excludeColumns());
+      }
       try
       {
          Method testMethod = afterPersistenceTest.getTestMethod();
