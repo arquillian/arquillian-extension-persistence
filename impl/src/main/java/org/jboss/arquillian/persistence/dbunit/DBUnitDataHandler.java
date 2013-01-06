@@ -25,7 +25,6 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
 import org.dbunit.operation.DatabaseOperation;
-import org.dbunit.operation.TransactionOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -155,8 +154,7 @@ public class DBUnitDataHandler implements DataHandler
       final DatabaseConnection connection = databaseConnection.get();
       IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
       initialDataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), initialDataSet);
-      final DatabaseOperation selectedSeedingStrategy = getSelectedSeedingStrategy();
-      new TransactionOperation(selectedSeedingStrategy).execute(connection, initialDataSet);
+      getSelectedSeedingStrategy().execute(connection, initialDataSet);
    }
 
    private DatabaseOperation getSelectedSeedingStrategy()

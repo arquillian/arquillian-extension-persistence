@@ -24,7 +24,7 @@ import javax.ejb.Startup;
 @DataSourceDefinition(name = "java:app/datasources/mysql_ds",
    className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
    url = "jdbc:mysql://localhost:3306/ape",
-   user = "root",
+   user = "ape",
    password = "letmein")
 @Singleton
 @Startup

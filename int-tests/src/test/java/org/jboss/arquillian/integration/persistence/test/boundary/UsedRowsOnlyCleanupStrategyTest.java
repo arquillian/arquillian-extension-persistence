@@ -59,7 +59,7 @@ public class UsedRowsOnlyCleanupStrategyTest
    EntityManager em;
 
    @Test @InSequence(1)
-   @ApplyScriptBefore({ "clark-kent-with-nickname.sql", "john-smith.sql" })
+   @ApplyScriptBefore({ "clark-kent-without-nickname.sql", "john-smith.sql" })
    @Cleanup(phase = TestExecutionPhase.NONE)
    public void insert_data_for_test()
    {
