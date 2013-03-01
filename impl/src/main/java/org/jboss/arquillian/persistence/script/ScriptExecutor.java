@@ -37,6 +37,8 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
@@ -56,6 +58,8 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 public class ScriptExecutor
 {
 
+   private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\\\*.*?\\\\*/|(?s)\\{.*?\\}";
+
    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
    private static final String DEFAULT_SQL_DELIMITER = ";";
@@ -66,6 +70,8 @@ public class ScriptExecutor
 
    private boolean fullLineDelimiter = false;
 
+   private List<String> statements = new ArrayList<String>();
+
    public ScriptExecutor(final Connection connection)
    {
       this.connection = connection;
@@ -75,39 +81,51 @@ public class ScriptExecutor
    {
       try
       {
+         script = removeComments(script);
          final BufferedReader lineReader = new BufferedReader(new StringReader(script));
-         final StringBuilder sql = new StringBuilder();
+         final StringBuilder readSqlStatement = new StringBuilder();
          String line = null;
+         statements.clear();
          while ((line = lineReader.readLine()) != null)
          {
-            boolean shouldExecute = parseLine(line, sql);
-            if (shouldExecute)
+            boolean isFullCommand = parseLine(line, readSqlStatement);
+            if (isFullCommand)
             {
                if(multipleInlineStatements(line))
                {
-                  executeMultipleInlineStatements(line, sql);
+                  splitInlineStatements(line);
                }
                else
                {
-                  executeStatements(sql);
+                  addStatement(readSqlStatement.toString());
                }
+               readSqlStatement.setLength(0);
             }
          }
-         if (shouldExecuteRemainingStatements(sql))
+         if (shouldExecuteRemainingStatements(readSqlStatement))
          {
-            executeStatements(sql);
+            addStatement(readSqlStatement.toString());
          }
       }
       catch (Exception e)
       {
-         throw new RuntimeException("Failed parsing file. ", e);
+         throw new RuntimeException("Failed parsing file.", e);
       }
+
+      for (String statement : statements)
+      {
+         executeStatement(statement);
+      }
+   }
+
+   private String removeComments(String script)
+   {
+      return script.replaceAll(ANSI_SQL_COMMENTS_PATTERN, "");
    }
 
    void executeStatement(String sqlStatement)
    {
       Statement statement = null;
-      sqlStatement = removeTrailingComment(sqlStatement).trim();
       try
       {
          statement = connection.createStatement();
@@ -137,15 +155,10 @@ public class ScriptExecutor
 
    private boolean parseLine(final String line, final StringBuilder sql)
    {
-      if (isComment(line))
-      {
-         return false;
-      }
-      String trimmedLine = trim(removeTrailingComment(line));
-      sql.append(trimmedLine)
-         .append(LINE_SEPARATOR);
+      String trimmedLine = trim(line);
+      sql.append(trimmedLine).append(LINE_SEPARATOR);
 
-      return commandShouldBeExecuted(trimmedLine);
+      return isFullCommand(trimmedLine);
    }
 
    private String trim(final String line)
@@ -163,20 +176,18 @@ public class ScriptExecutor
       return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(getStatementDelimiter());
    }
 
-   private void executeMultipleInlineStatements(String line, StringBuilder sql)
+   private void splitInlineStatements(String line)
    {
       final StringTokenizer sqlStatements = new StringTokenizer(line, getStatementDelimiter());
       while (sqlStatements.hasMoreElements())
       {
-         sql.append(sqlStatements.nextToken());
-         executeStatements(sql);
+         addStatement(sqlStatements.nextToken());
       }
    }
 
-   private void executeStatements(final StringBuilder sql)
+   private void addStatement(String statement)
    {
-      executeStatement(sql.toString());
-      sql.setLength(0);
+      statements.add(statement.trim());
    }
 
    private boolean multipleInlineStatements(String line)
@@ -185,25 +196,10 @@ public class ScriptExecutor
       {
          return false;
       }
-      return new StringTokenizer(removeTrailingComment(line), getStatementDelimiter()).countTokens() > 1;
+      return new StringTokenizer(line, getStatementDelimiter()).countTokens() > 1;
    }
 
-   private String removeTrailingComment(String line)
-   {
-      if (line.contains("--"))
-      {
-         line = line.substring(0, line.indexOf("--") - 1);
-      }
-
-      if (line.contains("//"))
-      {
-         line = line.substring(0, line.indexOf("//") - 1);
-      }
-
-      return line;
-   }
-
-   private boolean commandShouldBeExecuted(String line)
+   private boolean isFullCommand(String line)
    {
       return !fullLineDelimiter && lineEndsWithStatementDelimiter(line)
             || fullLineDelimiter && lineIsStatementDelimiter(line);
@@ -229,11 +225,6 @@ public class ScriptExecutor
       return ends;
    }
 
-
-   private boolean isComment(final String line)
-   {
-      return line.startsWith("--") || line.startsWith("//");
-   }
 
    // -- Accessors
 
