@@ -17,16 +17,13 @@
  */
 package org.jboss.arquillian.integration.persistence.test.boundary;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
+import org.jboss.arquillian.integration.persistence.util.UserPersistenceAssertion;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
@@ -56,7 +53,7 @@ public class EmptyDataSetsTest
    {
       return ShrinkWrap.create(WebArchive.class, "test.war")
                        .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
+                       .addClasses(Query.class, UserPersistenceAssertion.class)
                        // required for remote containers in order to run tests with FEST-Asserts
                        .addPackages(true, "org.fest")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -70,28 +67,35 @@ public class EmptyDataSetsTest
    @UsingDataSet("empty/empty.yml")
    public void should_skip_empty_yaml_data_set() throws Exception
    {
-      assertNoUserAccountsStored();
+      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.json")
    public void should_skip_empty_json_data_set() throws Exception
    {
-      assertNoUserAccountsStored();
+      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.xml")
    public void should_skip_empty_xml_data_set() throws Exception
    {
-      assertNoUserAccountsStored();
+      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
    }
 
    @Test
    @UsingDataSet("empty/empty.xls")
    public void should_skip_empty_xls_data_set() throws Exception
    {
-      assertNoUserAccountsStored();
+      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+   }
+
+   @Test
+   @UsingDataSet("empty/empty-tables.yml")
+   public void should_clean_when_yaml_with_empty_tables_provided() throws Exception
+   {
+      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
    }
 
    @Test(expected = AssertionError.class)
@@ -99,7 +103,7 @@ public class EmptyDataSetsTest
    @ShouldMatchDataSet("empty/empty.yml")
    public void should_fail_when_empty_set_yaml_used_for_verifying_content_of_non_empty_database()
    {
-      assertUserAccountsStored();
+      new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
    @Test(expected = AssertionError.class)
@@ -107,7 +111,7 @@ public class EmptyDataSetsTest
    @ShouldMatchDataSet("empty/empty.json")
    public void should_fail_when_empty_set_json_used_for_verifying_content_of_non_empty_database() throws Exception
    {
-      assertUserAccountsStored();
+      new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
    @Test(expected = AssertionError.class)
@@ -115,7 +119,7 @@ public class EmptyDataSetsTest
    @ShouldMatchDataSet("empty/empty.xls")
    public void should_fail_when_empty_set_xls_used_for_verifying_content_of_non_empty_database() throws Exception
    {
-      assertUserAccountsStored();
+      new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
    @Test(expected = AssertionError.class)
@@ -123,23 +127,7 @@ public class EmptyDataSetsTest
    @ShouldMatchDataSet("empty/empty.xml")
    public void should_fail_when_empty_set_xml_used_for_verifying_content_of_non_empty_database() throws Exception
    {
-      assertUserAccountsStored();
-   }
-
-   // Private helper methods
-
-   private void assertUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isNotEmpty();
-   }
-
-   private void assertNoUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isEmpty();
+      new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
 }

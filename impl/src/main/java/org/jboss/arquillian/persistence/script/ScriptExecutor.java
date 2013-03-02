@@ -70,8 +70,6 @@ public class ScriptExecutor
 
    private boolean fullLineDelimiter = false;
 
-   private List<String> statements = new ArrayList<String>();
-
    public ScriptExecutor(final Connection connection)
    {
       this.connection = connection;
@@ -79,13 +77,13 @@ public class ScriptExecutor
 
    public void execute(String script)
    {
+      final List<String> statements = new ArrayList<String>();
       try
       {
          script = removeComments(script);
          final BufferedReader lineReader = new BufferedReader(new StringReader(script));
          final StringBuilder readSqlStatement = new StringBuilder();
          String line = null;
-         statements.clear();
          while ((line = lineReader.readLine()) != null)
          {
             boolean isFullCommand = parseLine(line, readSqlStatement);
@@ -93,18 +91,18 @@ public class ScriptExecutor
             {
                if(multipleInlineStatements(line))
                {
-                  splitInlineStatements(line);
+                  statements.addAll(splitInlineStatements(line));
                }
                else
                {
-                  addStatement(readSqlStatement.toString());
+                  statements.add(readSqlStatement.toString().trim());
                }
                readSqlStatement.setLength(0);
             }
          }
          if (shouldExecuteRemainingStatements(readSqlStatement))
          {
-            addStatement(readSqlStatement.toString());
+            statements.add(readSqlStatement.toString().trim());
          }
       }
       catch (Exception e)
@@ -176,18 +174,15 @@ public class ScriptExecutor
       return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(getStatementDelimiter());
    }
 
-   private void splitInlineStatements(String line)
+   private List<String> splitInlineStatements(String line)
    {
+      final List<String> statements = new ArrayList<String>();
       final StringTokenizer sqlStatements = new StringTokenizer(line, getStatementDelimiter());
       while (sqlStatements.hasMoreElements())
       {
-         addStatement(sqlStatements.nextToken());
+         statements.add(sqlStatements.nextToken().trim());
       }
-   }
-
-   private void addStatement(String statement)
-   {
-      statements.add(statement.trim());
+      return statements;
    }
 
    private boolean multipleInlineStatements(String line)

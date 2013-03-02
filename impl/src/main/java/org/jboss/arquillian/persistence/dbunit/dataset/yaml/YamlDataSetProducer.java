@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -61,7 +60,7 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    public YamlDataSetProducer(InputStream inputStream)
    {
-      this.input = inputStream;
+      input = inputStream;
    }
 
    @Override
@@ -152,7 +151,12 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    private Collection<Row> extractRows(List<Map<String, String>> rows)
    {
-      final List<Row> extractedRows = new ArrayList<Row>();
+      final Collection<Row> extractedRows = new ArrayList<Row>();
+      if (rows == null || rows.isEmpty())
+      {
+         return extractedRows;
+      }
+
       for (Map<String, String> row : rows)
       {
          extractedRows.add(new Row(row));
@@ -162,7 +166,12 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    private Collection<String> extractColumns(List<Map<String, String>> rows)
    {
-      final Set<String> columns = new HashSet<String>();
+      final Collection<String> columns = new HashSet<String>();
+      if (rows == null || rows.isEmpty())
+      {
+         return columns;
+      }
+
       for (Map<String, String> row : rows)
       {
          columns.addAll(row.keySet());
