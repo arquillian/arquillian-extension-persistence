@@ -106,6 +106,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
          {
             final String dataSourceName = parser.obtainDataSourceName(persistenceXmlAsStream);
             configurationInstance.get().setDefaultDataSource(dataSourceName);
+
          }
          catch (MultiplePersistenceUnitsException e)
          {

@@ -23,10 +23,12 @@
     <property name="scriptsToExecuteBeforeTest">SET REFERENTIAL_INTEGRITY FALSE;</property>
     <property name="scriptsToExecuteAfterTest">scripts/turn-on-integrity-checks.sql</property>
     <property name="sqlStatementDelimiter">NEW_LINE</property>
+    <property name="$JacocoData">NEW_LINE</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.h2.H2DataTypeFactory</property>
+    <property name="$JacocoData">NEW_LINE</property>
   </extension>
 
   <extension qualifier="transaction">

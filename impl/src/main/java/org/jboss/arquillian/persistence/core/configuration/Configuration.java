@@ -54,4 +54,10 @@ public abstract class Configuration implements Serializable
       return new ConfigurationExporter<K>(configuration);
    }
 
+   @Override
+   public String toString()
+   {
+      return super.toString() + "[qualifier=" + qualifier + "]";
+   }
+
 }

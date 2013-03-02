@@ -22,12 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
@@ -45,6 +46,8 @@ import org.jboss.shrinkwrap.descriptor.api.Descriptors;
  */
 public class ConfigurationImporter<T extends Configuration>
 {
+
+   private static final Logger log = Logger.getLogger(ConfigurationImporter.class.getName());
 
    private final T configuration;
 
@@ -107,8 +110,8 @@ public class ConfigurationImporter<T extends Configuration>
       Map<String, String> convertedFieldsWithValues = new HashMap<String, String>();
       for (Entry<Object, Object> property : properties.entrySet())
       {
-         String key = (String) property.getKey();
-         String value = (String) property.getValue();
+         String key = String.valueOf(property.getKey());
+         String value = String.valueOf(property.getValue());
          convertedFieldsWithValues.put(convertFromPropertyKey(key), value);
 
       }
@@ -134,7 +137,7 @@ public class ConfigurationImporter<T extends Configuration>
    private void createConfiguration(final Map<String, String> fieldsWithValues)
    {
       final ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-      final List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
+      final Collection<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {
@@ -142,6 +145,7 @@ public class ConfigurationImporter<T extends Configuration>
          if (fieldsWithValues.containsKey(fieldName))
          {
             final String value = fieldsWithValues.get(fieldName);
+            fieldsWithValues.remove(fieldName);
             final Class<?> fieldType = field.getType();
             try
             {
@@ -160,6 +164,16 @@ public class ConfigurationImporter<T extends Configuration>
          }
       }
 
+      reportNonExistingFields(fieldsWithValues);
+
+   }
+
+   private void reportNonExistingFields(final Map<String, String> fieldsWithValues)
+   {
+      for (String nonExistingField : fieldsWithValues.keySet())
+      {
+         log.warning(configuration + " does not have property named '" + nonExistingField + "'. Please revise your arquillian.xml.");
+      }
    }
 
    private Map<String, String> extractPropertiesFromDescriptor(String extenstionName, ArquillianDescriptor descriptor)

@@ -150,7 +150,7 @@ public class PersistenceExtensionFeatureResolver
 
       if (Strings.isEmpty(dataSource))
       {
-         throw new DataSourceNotDefinedException("DataSource not defined! Please declare in arquillian.xml or by using @DataSource annotation.");
+         throw new DataSourceNotDefinedException("DataSource not defined! Please declare it in arquillian.xml or by using @DataSource annotation.");
       }
 
       return dataSource;
