@@ -21,6 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Properties;
 
+import org.fest.assertions.Assertions;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
@@ -103,4 +104,17 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
    }
 
+   @Test
+   public void should_ignore_unknown_property() throws Exception
+   {
+      // given
+      final Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/arquillian.persistence.with.unhandled.entries.properties");
+      final PersistenceConfiguration configuration = new PersistenceConfiguration();
+
+      // when
+      Configuration.importTo(configuration).createFrom(properties);
+
+      // then
+      assertThat(configuration.isDumpData()).isFalse();
+   }
 }

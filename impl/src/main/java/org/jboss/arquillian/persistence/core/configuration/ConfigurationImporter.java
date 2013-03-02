@@ -107,11 +107,11 @@ public class ConfigurationImporter<T extends Configuration>
 
    private Map<String, String> convertKeys(Properties properties)
    {
-      Map<String, String> convertedFieldsWithValues = new HashMap<String, String>();
+      final Map<String, String> convertedFieldsWithValues = new HashMap<String, String>();
       for (Entry<Object, Object> property : properties.entrySet())
       {
-         String key = String.valueOf(property.getKey());
-         String value = String.valueOf(property.getValue());
+         final String key = String.valueOf(property.getKey());
+         final String value = String.valueOf(property.getValue());
          convertedFieldsWithValues.put(convertFromPropertyKey(key), value);
 
       }
@@ -172,21 +172,21 @@ public class ConfigurationImporter<T extends Configuration>
    {
       for (String nonExistingField : fieldsWithValues.keySet())
       {
-         log.warning(configuration + " does not have property named '" + nonExistingField + "'. Please revise your arquillian.xml.");
+         log.warning(configuration + " does not support property named '" + nonExistingField + "'. Please revise your arquillian.xml.");
       }
    }
 
-   private Map<String, String> extractPropertiesFromDescriptor(String extenstionName, ArquillianDescriptor descriptor)
+   private Map<String, String> extractPropertiesFromDescriptor(String extensionName, ArquillianDescriptor descriptor)
    {
       for (ExtensionDef extension : descriptor.getExtensions())
       {
-         if (extenstionName.equals(extension.getExtensionName()))
+         if (extensionName.equals(extension.getExtensionName()))
          {
             return extension.getExtensionProperties();
          }
       }
 
-      return Collections.<String, String> emptyMap();
+      return Collections.emptyMap();
    }
 
 }
