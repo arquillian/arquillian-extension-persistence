@@ -104,7 +104,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
       // then
       assertThat(user.getPassword()).isEqualTo(expectedPassword);
    }
-   
+
    @Test
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet(value = { "expected-addresses.yml" }, orderBy = { "address.streetName" }, excludeColumns = { "id" })

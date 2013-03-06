@@ -206,8 +206,8 @@ public class DataSetComparator
 
       if (!nonExistingColumns.isEmpty())
       {
-         log.warning("Columns which are specified to be filtered out [" + Arrays.toString(nonExistingColumns.toArray())
-               + "] are not existing in the table.");
+         log.warning("Columns which are specified to be filtered out " + Arrays.toString(nonExistingColumns.toArray())
+               + " are not existing in the table " + tableName );
       }
       return columnsToIgnore;
    }
