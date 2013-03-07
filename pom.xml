@@ -15,7 +15,7 @@
   <!-- Artifact Configuration -->
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-persistence-parent</artifactId>
-  <version>1.0.0.Final-SNAPSHOT</version>
+  <version>1.0.0.Alpha6</version>
   <packaging>pom</packaging>
 
   <name>Arquillian Persistence Extension Aggregator</name>
