@@ -58,7 +58,7 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 public class ScriptExecutor
 {
 
-   private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\\\*.*?\\\\*/|(?s)\\{.*?\\}";
+   private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
 
    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
