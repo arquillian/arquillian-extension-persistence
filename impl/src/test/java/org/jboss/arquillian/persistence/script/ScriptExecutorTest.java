@@ -216,5 +216,20 @@ public class ScriptExecutorTest
             "END");
    }
 
+	@Test
+	public void should_insert_slash_as_value() throws Exception
+	{
+      // given
+      ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
+      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
+      // when
+      scriptExecutor.execute(FileLoader.loadAsString("scripts/insert-slash.sql"));
+
+      // then
+      verify(connection, times(1)).createStatement();
+      verify(connection.createStatement(), times(1)).execute(statementsCaptor.capture());
+      assertThat(statementsCaptor.getAllValues())
+      .containsSequence("insert into useraccount (id, firstname, lastname, username, password) values  (1, 'John', 'Smith', 'doovde', 'pa/ss/wo/rd')");
+	}
 }
