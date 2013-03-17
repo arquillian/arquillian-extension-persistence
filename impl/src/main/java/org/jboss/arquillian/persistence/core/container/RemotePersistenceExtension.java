@@ -27,11 +27,13 @@ import org.jboss.arquillian.persistence.core.lifecycle.PersistenceTestTrigger;
 import org.jboss.arquillian.persistence.core.lifecycle.SchemaCreationScriptsExecutor;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
+import org.jboss.arquillian.persistence.dbunit.DBUnitDatabaseConnectionProvider;
 import org.jboss.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
 import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionHandler;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationRemoteProducer;
 import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 /**
@@ -63,7 +65,8 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
       builder.observer(DBUnitDataHandler.class)
              .observer(DBUnitConfigurationRemoteProducer.class)
              .observer(DBUnitPersistenceTestLifecycleHandler.class)
-             .observer(DBUnitDataStateLogger.class);
+             .observer(DBUnitDataStateLogger.class)
+             .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class);
    }
 
    private void registerTestLifecycleHandlers(ExtensionBuilder builder)

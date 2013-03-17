@@ -137,7 +137,7 @@ public class ConfigurationImporter<T extends Configuration>
    private void createConfiguration(final Map<String, String> fieldsWithValues)
    {
       final ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
-      final Collection<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
+      final Collection<Field> fields = ReflectionHelper.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {

@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
+ * Copyright 2013 Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the @authors tag. All rights reserved.
  * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
@@ -19,16 +19,12 @@ package org.jboss.arquillian.integration.persistence.example;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -37,17 +33,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- *
- * This test is using {@link PersistenceTest} annotation which is marker
- * annotation for triggering persistence extension. All tests within
- * marked test class are wrapped in transaction.
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
+
 @RunWith(Arquillian.class)
 @PersistenceTest
-public class UserPersistenceTest
+public class DatabaseConnectionInjectionTest
 {
 
    @Deployment
@@ -62,26 +54,16 @@ public class UserPersistenceTest
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }
 
-   @PersistenceContext
-   EntityManager em;
+   // Test needs to be "persistence-extension-aware" in order to get this reference.
+   // This can be achieved using any of APE annotations such as
+   // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
+   @ArquillianResource
+   private DatabaseConnection databaseConnection;
 
    @Test
-   public void should_persist_users_within_transaction() throws Exception
+   public void should_inject_dbunit_database_connection() throws Exception
    {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
-
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
-
-      // then
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).hasSize(2);
+      assertThat(databaseConnection).isNotNull();
    }
 
 }

@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @version $Revision: $
  */
-final class SecurityActions {
+final class ReflectionHelper {
 
     // -------------------------------------------------------------------------------||
     // Constructor
@@ -45,7 +45,7 @@ final class SecurityActions {
     /**
      * No instantiation
      */
-    private SecurityActions() {
+    private ReflectionHelper() {
         throw new UnsupportedOperationException("No instantiation");
     }
 

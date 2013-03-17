@@ -47,11 +47,10 @@ import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionExcepti
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
  *
- * @author Bartosz Majsak
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
 public class DBUnitPersistenceTestLifecycleHandler
@@ -81,12 +80,20 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    public void provideDatabaseConnectionAroundBeforePersistenceTest(@Observes(precedence = 100000) EventContext<BeforePersistenceTest> context)
    {
-      provideDatabaseConnection(context);
+      createDatabaseConnection();
+      context.proceed();
    }
 
    public void provideDatabaseConnectionAroundAfterPersistenceTest(@Observes(precedence = 100000) EventContext<AfterPersistenceTest> context)
    {
-      provideDatabaseConnection(context);
+      try
+      {
+         context.proceed();
+      }
+      finally
+      {
+         closeDatabaseConnection();
+      }
    }
 
    public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
@@ -110,29 +117,11 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    // ------------------------------------------------------------------------------------------------
 
-   private void provideDatabaseConnection(EventContext<? extends TestEvent> context)
-   {
-      createDatabaseConnection();
-      try
-      {
-         context.proceed();
-      }
-      finally
-      {
-         closeDatabaseConnection();
-      }
-   }
-
    private void createDatabaseConnection()
    {
 
       try
       {
-         if (databaseConnectionProducer.get() != null && !databaseConnectionProducer.get().getConnection().isClosed())
-         {
-            closeDatabaseConnection();
-         }
-
          DataSource dataSource = dataSourceInstance.get();
          final String schema = dbUnitConfigurationInstance.get().getSchema();
          DatabaseConnection databaseConnection = null;

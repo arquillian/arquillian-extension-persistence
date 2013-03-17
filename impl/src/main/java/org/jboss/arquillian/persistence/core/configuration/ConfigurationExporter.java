@@ -74,7 +74,7 @@ public class ConfigurationExporter<T extends Configuration>
    private Map<String, String> mapFieldsToProperties() throws IllegalArgumentException, IllegalAccessException
    {
       final Map<String,String> extractedValues = new HashMap<String, String>();
-      final List<Field> fields = SecurityActions.getAccessibleFields(configuration.getClass());
+      final List<Field> fields = ReflectionHelper.getAccessibleFields(configuration.getClass());
 
       for (Field field : fields)
       {
