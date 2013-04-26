@@ -23,6 +23,10 @@ public class Arrays
 {
    public static <T> T[] copy(final T[] source)
    {
+      if (source == null)
+      {
+         return null;
+      }
       @SuppressWarnings("unchecked")
       final T[] copy = (T[]) Array.newInstance(source.getClass().getComponentType(), source.length);
       System.arraycopy(source, 0, copy, 0, source.length);

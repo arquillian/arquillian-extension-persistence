@@ -58,6 +58,8 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 public class ScriptExecutor
 {
 
+   private static final String CHAR_SEQUENCE_PATTERN = "(?m)'([^']*)'|\"([^\"]*)\"";
+
    private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
 
    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
@@ -77,10 +79,11 @@ public class ScriptExecutor
 
    public void execute(String script)
    {
+      final SpecialCharactersReplacer specialCharactersReplacer = new SpecialCharactersReplacer();
       final List<String> statements = new ArrayList<String>();
+      script = removeComments(specialCharactersReplacer.escape(script));
       try
       {
-         script = removeComments(script);
          final BufferedReader lineReader = new BufferedReader(new StringReader(script));
          final StringBuilder readSqlStatement = new StringBuilder();
          String line;
@@ -112,7 +115,7 @@ public class ScriptExecutor
 
       for (String statement : statements)
       {
-         executeStatement(statement);
+         executeStatement(specialCharactersReplacer.unescape(statement));
       }
    }
 
@@ -191,7 +194,12 @@ public class ScriptExecutor
       {
          return false;
       }
-      return new StringTokenizer(line, getStatementDelimiter()).countTokens() > 1;
+      return new StringTokenizer(markCharSequences(line), getStatementDelimiter()).countTokens() > 1;
+   }
+
+   private String markCharSequences(String line)
+   {
+      return line.replaceAll(CHAR_SEQUENCE_PATTERN, "char_seq");
    }
 
    private boolean isFullCommand(String line)
@@ -205,7 +213,7 @@ public class ScriptExecutor
       boolean isStatementDelimiter = line.equals(getStatementDelimiter());
       if (!isStatementDelimiter && isNewLineStatementDelimiter())
       {
-         isStatementDelimiter = line.matches("^\\r?\\n|\\r$");
+         isStatementDelimiter = line.matches("^\\r?\\n$|^\\r$");
       }
       return isStatementDelimiter;
    }
@@ -215,7 +223,7 @@ public class ScriptExecutor
       boolean ends = line.endsWith(getStatementDelimiter());
       if (!ends && isNewLineStatementDelimiter())
       {
-         ends = line.matches("^.+?\\r?\\n|^.+?\\r$");
+         ends = line.matches("^.+?\\r?\\n$|^.+?\\r$");
       }
       return ends;
    }
