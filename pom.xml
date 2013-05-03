@@ -623,5 +623,43 @@
         </testResources>
       </build>
     </profile>
+    <profile>
+      <id>tomee-1.5-managed</id>
+      <dependencies>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>arquillian-tomee-remote</artifactId>
+            <version>1.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>apache-tomee</artifactId>
+            <version>1.5.2</version>
+            <classifier>webprofile</classifier>
+            <type>zip</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0-4</version>
+            <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-tomee-1.5</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
   </profiles>
 </project>
