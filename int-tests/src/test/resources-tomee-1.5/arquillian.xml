@@ -29,9 +29,9 @@
   </extension>
 
   <extension qualifier="persistence-dbunit">
-    <property name="excludeTablesFromCleanup">SEQUENCE</property>
+    <property name="excludeTablesFromCleanup">openjpa_sequence_table</property>
     <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
-    <property name="excludeTablesFromComparisonWhenEmptyExpected">SEQUENCE</property>
+    <property name="excludeTablesFromComparisonWhenEmptyExpected">openjpa_sequence_table</property>
   </extension>
 
 </arquillian>
