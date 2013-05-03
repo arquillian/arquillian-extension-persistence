@@ -202,6 +202,11 @@
           <type>jar</type>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <build>
         <testResources>
@@ -237,6 +242,11 @@
           <artifactId>glassfish-embedded-all</artifactId>
           <version>${version.glassfish}</version>
           <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -282,6 +292,11 @@
               <artifactId>xalan</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -351,6 +366,11 @@
               <artifactId>xalan</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
         <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
           2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
@@ -453,6 +473,11 @@
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>5.1.21</version>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -560,6 +585,11 @@
           <groupId>postgresql</groupId>
           <artifactId>postgresql</artifactId>
           <version>9.1-901.jdbc4</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
           <scope>test</scope>
         </dependency>
       </dependencies>
