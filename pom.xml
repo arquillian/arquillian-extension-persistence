@@ -72,10 +72,18 @@
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
     <version.surefire.plugin>2.14.1</version.surefire.plugin>
+    <version.shrinkwrap.resolver>2.0.0-beta-2</version.shrinkwrap.resolver>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-bom</artifactId>
+        <version>${version.shrinkwrap.resolver}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
@@ -208,6 +216,11 @@
           <type>jar</type>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <build>
         <testResources>
@@ -243,6 +256,11 @@
           <artifactId>glassfish-embedded-all</artifactId>
           <version>${version.glassfish}</version>
           <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -288,6 +306,11 @@
               <artifactId>xalan</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -357,6 +380,11 @@
               <artifactId>xalan</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
         <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
           2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
@@ -459,6 +487,11 @@
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>5.1.21</version>
+        </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -568,6 +601,11 @@
           <version>9.1-901.jdbc4</version>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <build>
         <plugins>
@@ -625,6 +663,44 @@
           </testResource>
           <testResource>
             <directory>src/test/resources-jboss-7.1.1-postgresql</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
+      <id>tomee-1.5-managed</id>
+      <dependencies>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>arquillian-tomee-remote</artifactId>
+            <version>1.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>apache-tomee</artifactId>
+            <version>1.5.2</version>
+            <classifier>webprofile</classifier>
+            <type>zip</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0-4</version>
+            <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-tomee-1.5</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
           </testResource>
         </testResources>
       </build>

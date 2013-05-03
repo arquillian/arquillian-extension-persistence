@@ -36,6 +36,12 @@
       <artifactId>arquillian-persistence-impl</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <groupId>org.jboss.arquillian.extension</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

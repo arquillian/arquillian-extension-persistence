@@ -17,12 +17,13 @@
  */
 package org.jboss.arquillian.integration.persistence.datasource;
 
+import java.io.File;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 
 public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppender
 {
@@ -37,12 +38,9 @@ public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppen
 
    private Archive<?> resolveDriverArtifact(final String driverCoordinates)
    {
-      final MavenDependencyResolver resolver = DependencyResolvers.use(MavenDependencyResolver.class)
-                                                                  .loadMetadataFromPom("pom.xml")
-                                                                  .goOffline();
-      final MavenDependencyResolver driverArtifact = resolver.artifact(driverCoordinates);
-
-      return ShrinkWrap.createFromZipFile(JavaArchive.class, driverArtifact.resolveAsFiles()[0]);
+      PomEquippedResolveStage resolver = Maven.resolver().offline().loadPomFromFile("pom.xml");
+      File[] jars = resolver.resolve(driverCoordinates).withoutTransitivity().asFile();
+      return ShrinkWrap.createFromZipFile(JavaArchive.class, jars[0]);
    }
 
 }
