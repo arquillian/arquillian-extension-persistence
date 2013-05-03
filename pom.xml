@@ -72,10 +72,18 @@
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
     <version.surefire.plugin>2.12.4</version.surefire.plugin>
+    <version.shrinkwrap.resolver>2.0.0-beta-2</version.shrinkwrap.resolver>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-bom</artifactId>
+        <version>${version.shrinkwrap.resolver}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
