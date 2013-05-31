@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.persistence.script.configuration;
 
+import static org.jboss.arquillian.persistence.util.Arrays.*;
+
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
-
-import java.util.Arrays;
 
 /**
  *
@@ -55,7 +55,7 @@ public class ScriptingConfiguration extends Configuration
 
    public String[] getScriptsToExecuteBeforeTest()
    {
-      return Arrays.copyOf(scriptsToExecuteBeforeTest, scriptsToExecuteBeforeTest.length);
+      return copy(scriptsToExecuteBeforeTest);
    }
 
    /**
@@ -64,12 +64,12 @@ public class ScriptingConfiguration extends Configuration
     */
    public void setScriptsToExecuteBeforeTest(String[] scriptsToExecuteBeforeTest)
    {
-      this.scriptsToExecuteBeforeTest = Arrays.copyOf(scriptsToExecuteBeforeTest, scriptsToExecuteBeforeTest.length);
+      this.scriptsToExecuteBeforeTest = copy(scriptsToExecuteBeforeTest);
    }
 
    public String[] getScriptsToExecuteAfterTest()
    {
-      return Arrays.copyOf(scriptsToExecuteAfterTest, scriptsToExecuteAfterTest.length);
+      return copy(scriptsToExecuteAfterTest);
    }
 
    /**

@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
+import static org.jboss.arquillian.persistence.util.Arrays.*;
+
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DefaultMetadataHandler;
 import org.dbunit.database.IMetadataHandler;
@@ -32,11 +34,6 @@ import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature;
 import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
-
-import java.util.Arrays;
-
-import static java.util.Arrays.*;
-import static java.util.Arrays.copyOf;
 
 /**
  *
@@ -217,7 +214,7 @@ public class DBUnitConfiguration extends Configuration
 
    public String[] getTableType()
    {
-      return Arrays.copyOf(tableType, tableType.length);
+      return copy(tableType);
    }
 
    /**
@@ -226,7 +223,7 @@ public class DBUnitConfiguration extends Configuration
     */
    public void setTableType(String[] tableType)
    {
-      this.tableType = Arrays.copyOf(tableType, tableType.length);
+      this.tableType = copy(tableType);
    }
 
    public IDataTypeFactory getDatatypeFactory()
@@ -401,7 +398,7 @@ public class DBUnitConfiguration extends Configuration
 
    public String[] getExcludeTablesFromCleanup()
    {
-      return Arrays.copyOf(excludeTablesFromCleanup, excludeTablesFromCleanup.length);
+      return copy(excludeTablesFromCleanup);
    }
 
    /**
@@ -411,7 +408,7 @@ public class DBUnitConfiguration extends Configuration
     */
    public void setExcludeTablesFromCleanup(String[] excludeTablesFromCleanup)
    {
-      this.excludeTablesFromCleanup = Arrays.copyOf(excludeTablesFromCleanup, excludeTablesFromCleanup.length);
+      this.excludeTablesFromCleanup = copy(excludeTablesFromCleanup);
    }
 
    public String getSchema()
