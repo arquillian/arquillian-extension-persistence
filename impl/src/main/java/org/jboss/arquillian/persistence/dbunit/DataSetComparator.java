@@ -21,11 +21,7 @@ import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumn
 import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumnsNotSpecifiedInExpectedDataSet;
 import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractNonExistingColumns;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import org.dbunit.Assertion;
@@ -73,7 +69,7 @@ public class DataSetComparator
    }
 
    public void compareContent(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
-         throws DataSetException, DatabaseUnitException
+         throws DatabaseUnitException
    {
       final String[] tableNames = expectedDataSet.getTableNames();
       final FilteredDataSet filteredCurrentDataSet = new FilteredDataSet(new IncludeTableFilter(tableNames), currentDataSet);
@@ -92,8 +88,8 @@ public class DataSetComparator
 
          final DiffCollectingFailureHandler diffCollector = new DiffCollectingFailureHandler();
 
-         Assertion.assertEquals(filter(expectedTable, toArray(columnsToIgnore)),
-               filter(currentTable, toArray(columnsToIgnore)), diffCollector);
+         Assertion.assertEquals(filter(expectedTable, toStringArray(columnsToIgnore)),
+               filter(currentTable, toStringArray(columnsToIgnore)), diffCollector);
 
          @SuppressWarnings("unchecked")
          final List<Difference> diffs = diffCollector.getDiffList();
@@ -135,7 +131,7 @@ public class DataSetComparator
 
    private ITable sort(IDataSet dataSet, String tableName, final List<String> columnsForSorting) throws DataSetException
    {
-      final SortedTable sortedTable = new SortedTable(dataSet.getTable(tableName), toArray(columnsForSorting));
+      final SortedTable sortedTable = new SortedTable(dataSet.getTable(tableName), toStringArray(columnsForSorting));
       sortedTable.setUseComparable(true);
       return sortedTable;
    }
@@ -155,9 +151,9 @@ public class DataSetComparator
       return columnsForSorting;
    }
 
-   private static <T> String[] toArray(final List<T> list)
+   private static <T> String[] toStringArray(final Collection<T> collection)
    {
-      return list.toArray(new String[list.size()]);
+      return collection.toArray(new String[collection.size()]);
    }
 
    private List<String> additionalColumnsForSorting(final ITable expectedTableState, final ITable currentTableState)

@@ -68,16 +68,14 @@ public class PersistenceDescriptorParser
 
    private Document parseXmlDescriptor(final String descriptor)
    {
-      Document document = null;
       try
       {
-         document = factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
+         return factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
       }
       catch (Exception e)
       {
          throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
       }
-      return document;
    }
    
    private Node getNonJtaDataSource(Node persistenceUnit)

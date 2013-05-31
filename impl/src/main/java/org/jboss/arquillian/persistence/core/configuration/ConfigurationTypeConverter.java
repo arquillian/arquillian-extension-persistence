@@ -151,9 +151,7 @@ class ConfigurationTypeConverter
          String trimmedValue = extractEnumName(value);
          if (to.isEnum())
          {
-            @SuppressWarnings({"unchecked","rawtypes"})
-            final T enumInstance = (T) Enum.valueOf((Class<Enum>) to, trimmedValue.toUpperCase());
-            return enumInstance;
+            return (T) Enum.valueOf((Class<Enum>) to, trimmedValue.toUpperCase());
          }
          else if (String[].class.equals(to))
          {

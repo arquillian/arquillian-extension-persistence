@@ -171,12 +171,12 @@ public class UserAccount implements Serializable
 
    public Date getOpenDate()
    {
-      return openDate;
+      return (Date) openDate.clone();
    }
 
    public void setOpenDate(Date openDate)
    {
-      this.openDate = openDate;
+      this.openDate = (Date) openDate.clone();
    }
 
 }

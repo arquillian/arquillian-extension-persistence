@@ -162,9 +162,7 @@ public class DBUnitDataHandler implements DataHandler
       final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
       final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
       final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
-      final DatabaseOperation selectedSeedingStrategy = dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(
-            useIdentityInsert));
-      return selectedSeedingStrategy;
+      return dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
    }
 
    private void cleanDatabase(CleanupStrategy cleanupStrategy)

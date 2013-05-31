@@ -33,6 +33,11 @@ import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature
 import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 
+import java.util.Arrays;
+
+import static java.util.Arrays.*;
+import static java.util.Arrays.copyOf;
+
 /**
  *
  * DBUnit configuration which can be customized in <code>arquillian.xml</code>
@@ -212,7 +217,7 @@ public class DBUnitConfiguration extends Configuration
 
    public String[] getTableType()
    {
-      return tableType;
+      return Arrays.copyOf(tableType, tableType.length);
    }
 
    /**
@@ -221,7 +226,7 @@ public class DBUnitConfiguration extends Configuration
     */
    public void setTableType(String[] tableType)
    {
-      this.tableType = tableType;
+      this.tableType = Arrays.copyOf(tableType, tableType.length);
    }
 
    public IDataTypeFactory getDatatypeFactory()
@@ -396,7 +401,7 @@ public class DBUnitConfiguration extends Configuration
 
    public String[] getExcludeTablesFromCleanup()
    {
-      return excludeTablesFromCleanup;
+      return Arrays.copyOf(excludeTablesFromCleanup, excludeTablesFromCleanup.length);
    }
 
    /**
@@ -406,7 +411,7 @@ public class DBUnitConfiguration extends Configuration
     */
    public void setExcludeTablesFromCleanup(String[] excludeTablesFromCleanup)
    {
-      this.excludeTablesFromCleanup = excludeTablesFromCleanup;
+      this.excludeTablesFromCleanup = Arrays.copyOf(excludeTablesFromCleanup, excludeTablesFromCleanup.length);
    }
 
    public String getSchema()

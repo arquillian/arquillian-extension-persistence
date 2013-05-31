@@ -63,13 +63,12 @@ public class AssertionErrorCollector
    {
       final StringBuilder builder = new StringBuilder();
 
-      builder.append("Test failed in " + amountOfErrors() + " case" + (amountOfErrors() > 1 ? "s" : "") +  ". \n");
+      builder.append("Test failed in ").append(amountOfErrors()).append(" case").append(amountOfErrors() > 1 ? "s" : "").append(". \n");
       for (String errorMessage : assertionErrors)
       {
          builder.append(errorMessage).append('\n');
       }
-      final String errorMessage = builder.toString();
-      return errorMessage;
+      return builder.toString();
    }
 
 }

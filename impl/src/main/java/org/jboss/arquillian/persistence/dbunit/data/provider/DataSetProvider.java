@@ -63,8 +63,7 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
    protected String defaultFileName()
    {
       Format format = configuration.getDefaultDataSetFormat();
-      String defaultFileName = new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-      return defaultFileName;
+      return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
 
    @Override

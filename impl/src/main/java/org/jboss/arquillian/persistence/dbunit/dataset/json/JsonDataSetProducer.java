@@ -47,7 +47,7 @@ public class JsonDataSetProducer extends DataSetProducer
    @Override
    Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException
    {
-      Map<String, List<Map<String, String>>> dataset = Collections.emptyMap();
+      Map<String, List<Map<String, String>>> dataset;
       try
       {
          dataset = new ObjectMapper().readValue(input, Map.class);

@@ -100,7 +100,7 @@ public class Row
       final StringBuilder sb = new StringBuilder();
       for (Map.Entry<String, String> cell : cells.entrySet())
       {
-         sb.append("{key = " + cell.getKey() + ", value = " + cell.getValue() + "} ");
+         sb.append("{key = ").append(cell.getKey()).append(", value = ").append(cell.getValue()).append("} ");
       }
       return sb.toString();
    }

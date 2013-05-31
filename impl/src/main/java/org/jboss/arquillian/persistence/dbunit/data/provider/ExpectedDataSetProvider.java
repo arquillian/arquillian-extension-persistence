@@ -63,8 +63,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
    protected String defaultFileName()
    {
       Format format = configuration.getDefaultDataSetFormat();
-      String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-      return defaultFileName;
+      return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
    }
 
    @Override

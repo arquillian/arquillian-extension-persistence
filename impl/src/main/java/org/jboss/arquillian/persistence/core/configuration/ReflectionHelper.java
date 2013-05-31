@@ -25,6 +25,8 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.security.AccessController.*;
+
 /**
  * SecurityActions
  *
@@ -55,57 +57,28 @@ final class ReflectionHelper {
     // -------------------------------------------------------------------------------||
 
     static List<Field> getAccessibleFields(final Class<?> source) {
-        List<Field> declaredAccessableFields = AccessController.doPrivileged(new PrivilegedAction<List<Field>>() {
-            public List<Field> run() {
-                List<Field> foundFields = new ArrayList<Field>();
-                for (Field field : source.getDeclaredFields()) {
-                    // omit final fields
-                    if (Modifier.isFinal(field.getModifiers())) {
-                        continue;
-                    }
+       return doPrivileged(new PrivilegedAction<List<Field>>()
+       {
+          public List<Field> run()
+          {
+             List<Field> foundFields = new ArrayList<Field>();
+             for (Field field : source.getDeclaredFields())
+             {
+                // omit final fields
+                if (Modifier.isFinal(field.getModifiers()))
+                {
+                   continue;
+                }
 
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                    }
-                    foundFields.add(field);
+                if (!field.isAccessible())
+                {
+                   field.setAccessible(true);
                 }
-                return foundFields;
-            }
-        });
-        return declaredAccessableFields;
-    }
-
-    static String getProperty(final String key) {
-        try {
-            String value = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
-                public String run() {
-                    return System.getProperty(key);
-                }
-            });
-            return value;
-        }
-        // Unwrap
-        catch (final PrivilegedActionException pae) {
-            final Throwable t = pae.getCause();
-            // Rethrow
-            if (t instanceof SecurityException) {
-                throw (SecurityException) t;
-            }
-            if (t instanceof NullPointerException) {
-                throw (NullPointerException) t;
-            } else if (t instanceof IllegalArgumentException) {
-                throw (IllegalArgumentException) t;
-            } else {
-                // No other checked Exception thrown by System.getProperty
-                try {
-                    throw (RuntimeException) t;
-                }
-                // Just in case we've really messed up
-                catch (final ClassCastException cce) {
-                    throw new RuntimeException("Obtained unchecked Exception; this code should never be reached", t);
-                }
-            }
-        }
+                foundFields.add(field);
+             }
+             return foundFields;
+          }
+       });
     }
 
 }

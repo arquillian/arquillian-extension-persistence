@@ -50,7 +50,7 @@ public class DataSetBuilder
 
    public IDataSet build(final String file)
    {
-      IDataSet dataSet = null;
+      IDataSet dataSet;
       try
       {
          switch (format)
@@ -120,7 +120,7 @@ public class DataSetBuilder
       return new XlsDataSet(inputStream);
    }
 
-   private JsonDataSet loadJsonDataSet(final String file) throws IOException, DataSetException
+   private JsonDataSet loadJsonDataSet(final String file) throws DataSetException
    {
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
       return new JsonDataSet(inputStream);

@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
@@ -37,12 +38,12 @@ public class CompareData extends DataEvent<DataSetResourceDescriptor>
 
    public String[] getColumnsToExclude()
    {
-      return columnsToExclude;
+      return Arrays.copyOf(columnsToExclude, columnsToExclude.length);
    }
 
    public String[] getSortByColumns()
    {
-      return sortByColumns;
+      return Arrays.copyOf(sortByColumns, sortByColumns.length);
    }
 
 }

@@ -20,6 +20,8 @@ package org.jboss.arquillian.persistence.script.configuration;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 
+import java.util.Arrays;
+
 /**
  *
  * Scripting configuration which can be customized in <code>arquillian.xml</code>
@@ -53,7 +55,7 @@ public class ScriptingConfiguration extends Configuration
 
    public String[] getScriptsToExecuteBeforeTest()
    {
-      return scriptsToExecuteBeforeTest;
+      return Arrays.copyOf(scriptsToExecuteBeforeTest, scriptsToExecuteBeforeTest.length);
    }
 
    /**
@@ -62,12 +64,12 @@ public class ScriptingConfiguration extends Configuration
     */
    public void setScriptsToExecuteBeforeTest(String[] scriptsToExecuteBeforeTest)
    {
-      this.scriptsToExecuteBeforeTest = scriptsToExecuteBeforeTest;
+      this.scriptsToExecuteBeforeTest = Arrays.copyOf(scriptsToExecuteBeforeTest, scriptsToExecuteBeforeTest.length);
    }
 
    public String[] getScriptsToExecuteAfterTest()
    {
-      return scriptsToExecuteAfterTest;
+      return Arrays.copyOf(scriptsToExecuteAfterTest, scriptsToExecuteAfterTest.length);
    }
 
    /**

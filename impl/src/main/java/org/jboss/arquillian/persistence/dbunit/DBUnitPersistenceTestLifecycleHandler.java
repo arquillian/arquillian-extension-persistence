@@ -124,7 +124,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       {
          DataSource dataSource = dataSourceInstance.get();
          final String schema = dbUnitConfigurationInstance.get().getSchema();
-         DatabaseConnection databaseConnection = null;
+         DatabaseConnection databaseConnection;
          if (schema != null && schema.length() > 0)
          {
             databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);

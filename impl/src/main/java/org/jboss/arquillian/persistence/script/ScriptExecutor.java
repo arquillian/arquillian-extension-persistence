@@ -83,7 +83,7 @@ public class ScriptExecutor
          script = removeComments(script);
          final BufferedReader lineReader = new BufferedReader(new StringReader(script));
          final StringBuilder readSqlStatement = new StringBuilder();
-         String line = null;
+         String line;
          while ((line = lineReader.readLine()) != null)
          {
             boolean isFullCommand = parseLine(line, readSqlStatement);

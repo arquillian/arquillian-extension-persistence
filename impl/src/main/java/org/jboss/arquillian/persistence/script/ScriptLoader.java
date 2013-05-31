@@ -39,7 +39,7 @@ public final class ScriptLoader
       final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
 
       BufferedReader reader = null;
-      String line = null;
+      String line;
 
       try
       {
