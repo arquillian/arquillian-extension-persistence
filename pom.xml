@@ -64,14 +64,14 @@
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>5.14.6</version.testng>
     <version.mockito>1.9.0</version.mockito>
-    <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
-    <version.glassfish>3.1.2</version.glassfish>
+    <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
+    <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-    <version.surefire.plugin>2.12.4</version.surefire.plugin>
+    <version.surefire.plugin>2.14.1</version.surefire.plugin>
   </properties>
 
   <dependencyManagement>
@@ -140,6 +140,20 @@
           <pushChanges>false</pushChanges>
           <localCheckout>true</localCheckout>
         </configuration>
+      </plugin>
+      <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+              <forkMode>always</forkMode>
+              <classpathDependencyExcludes>
+                  <classpathDependencyExcludes>
+                      javax.servlet:servlet-api
+                  </classpathDependencyExcludes>
+                  <classpathDependencyExcludes>
+                      org.apache.felix:javax.servlet
+                  </classpathDependencyExcludes>
+              </classpathDependencyExcludes>
+          </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
