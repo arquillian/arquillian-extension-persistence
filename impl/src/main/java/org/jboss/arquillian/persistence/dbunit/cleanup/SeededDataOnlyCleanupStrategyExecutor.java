@@ -23,6 +23,7 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
@@ -33,10 +34,13 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
 
    private final DataSetRegister dataSetRegister;
 
-   public SeededDataOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister)
+   private final DBUnitConfiguration dbUnitConfiguration;
+
+   public SeededDataOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister, DBUnitConfiguration dbUnitConfiguration)
    {
       this.connection = connection;
       this.dataSetRegister = dataSetRegister;
+      this.dbUnitConfiguration = dbUnitConfiguration;
    }
 
    @Override
@@ -46,7 +50,10 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
       {
          final IDataSet mergeDataSets = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
          IDataSet dataSet = DataSetUtils.excludeTables(mergeDataSets, tablesToExclude);
-         dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
+         if (dbUnitConfiguration.isFilterForeignKeysEnabled())
+         {
+            dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
+         }
          DatabaseOperation.DELETE.execute(connection, dataSet);
       }
       catch (Exception e)

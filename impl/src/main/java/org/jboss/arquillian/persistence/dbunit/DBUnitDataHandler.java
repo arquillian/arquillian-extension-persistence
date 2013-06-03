@@ -145,7 +145,7 @@ public class DBUnitDataHandler implements DataHandler
       }
       catch (SQLException e)
       {
-         throw new DBUnitConnectionException("Unable to obtain JDBC connection", e);
+         throw new DBUnitConnectionException("Unable to execute script.", e);
       }
    }
 
@@ -153,7 +153,10 @@ public class DBUnitDataHandler implements DataHandler
    {
       final DatabaseConnection connection = databaseConnection.get();
       IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
-      initialDataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), initialDataSet);
+      if (dbunitConfigurationInstance.get().isFilterForeignKeysEnabled())
+      {
+         initialDataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), initialDataSet);
+      }
       getSelectedSeedingStrategy().execute(connection, initialDataSet);
    }
 
@@ -168,7 +171,7 @@ public class DBUnitDataHandler implements DataHandler
    private void cleanDatabase(CleanupStrategy cleanupStrategy)
    {
       final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
-            databaseConnection.get(), dataSetRegister.get()));
+            databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
       cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
    }
 

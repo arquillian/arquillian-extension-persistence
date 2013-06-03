@@ -27,6 +27,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
+import org.jboss.arquillian.persistence.DataSource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -38,6 +39,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 @JpaCacheEviction(entityManager = "jpacacheeviction")
+@DataSource("java:app/datasources/mysql_ds")
 public class JpaCacheEvictionMultiplePersistenceUnitsTest
 {
 

@@ -111,6 +111,8 @@ public class DBUnitConfiguration extends Configuration
 
    private String schema;
 
+   private boolean filterForeignKeysEnabled = false;
+
    public DBUnitConfiguration()
    {
       super("persistence-dbunit", "arquillian.extension.persistence.dbunit.");
@@ -437,5 +439,17 @@ public class DBUnitConfiguration extends Configuration
       this.excludeTablesFromComparisonWhenEmptyExpected = excludeFromComparisonWhenEmptyExpected;
    }
 
+   public boolean isFilterForeignKeysEnabled()
+   {
+      return filterForeignKeysEnabled;
+   }
 
+   /**
+    * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
+    * @param filterForeignKeysEnabled
+    */
+   public void setFilterForeignKeysEnabled(boolean filterForeignKeysEnabled)
+   {
+      this.filterForeignKeysEnabled = filterForeignKeysEnabled;
+   }
 }

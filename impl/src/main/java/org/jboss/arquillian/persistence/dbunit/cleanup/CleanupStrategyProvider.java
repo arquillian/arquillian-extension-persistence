@@ -19,6 +19,7 @@ package org.jboss.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.persistence.CleanupStrategy.StrategyProvider;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 
 public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategyExecutor>
@@ -28,34 +29,37 @@ public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategy
 
    private final DataSetRegister register;
 
-   public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register)
+   private final DBUnitConfiguration dbUnitConfiguration;
+
+   public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register, DBUnitConfiguration dbUnitConfiguration)
    {
       this.connection = connection;
       this.register = register;
+      this.dbUnitConfiguration = dbUnitConfiguration;
    }
 
    @Override
    public CleanupStrategyExecutor strictStrategy()
    {
-      return new StrictCleanupStrategyExecutor(connection);
+      return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
    }
 
    @Override
    public CleanupStrategyExecutor usedTablesOnlyStrategy()
    {
-      return new UsedTablesOnlyCleanupStrategyExecutor(connection, register);
+      return new UsedTablesOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
    }
 
    @Override
    public CleanupStrategyExecutor usedRowsOnlyStrategy()
    {
-      return new SeededDataOnlyCleanupStrategyExecutor(connection, register);
+      return new SeededDataOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
    }
 
    @Override
    public CleanupStrategyExecutor defaultStrategy()
    {
-      return new StrictCleanupStrategyExecutor(connection);
+      return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
    }
 
 }

@@ -23,6 +23,7 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
+import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
 public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
@@ -30,9 +31,12 @@ public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
 
    private final DatabaseConnection connection;
 
-   public StrictCleanupStrategyExecutor(DatabaseConnection connection)
+   private final DBUnitConfiguration dbUnitConfiguration;
+
+   public StrictCleanupStrategyExecutor(DatabaseConnection connection, DBUnitConfiguration dbUnitConfiguration)
    {
       this.connection = connection;
+      this.dbUnitConfiguration = dbUnitConfiguration;
    }
 
    @Override
@@ -41,7 +45,10 @@ public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
       try
       {
          IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
-         dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
+         if (dbUnitConfiguration.isFilterForeignKeysEnabled())
+         {
+            dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
+         }
          DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
       }
       catch (Exception e)
