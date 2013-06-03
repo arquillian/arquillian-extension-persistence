@@ -34,7 +34,7 @@ public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategy
    public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register, DBUnitConfiguration dbUnitConfiguration)
    {
       this.connection = connection;
-      this.register = register;
+      this.register = (register != null) ? register : new DataSetRegister();
       this.dbUnitConfiguration = dbUnitConfiguration;
    }
 

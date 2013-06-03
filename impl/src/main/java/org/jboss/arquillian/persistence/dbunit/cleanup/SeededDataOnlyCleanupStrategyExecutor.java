@@ -27,8 +27,12 @@ import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
+import java.util.logging.Logger;
+
 public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExecutor
 {
+
+   private static final Logger LOG = Logger.getLogger(SeededDataOnlyCleanupStrategyExecutor.class.getName());
 
    private final DatabaseConnection connection;
 
@@ -46,6 +50,11 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
    @Override
    public void cleanupDatabase(String ... tablesToExclude)
    {
+      if (dataSetRegister.getInitial() == null || dataSetRegister.getInitial().isEmpty())
+      {
+         LOG.warning("Attempted to cleanup database using USED_ROWS strategy, but no data sets were used.");
+         return;
+      }
       try
       {
          final IDataSet mergeDataSets = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
