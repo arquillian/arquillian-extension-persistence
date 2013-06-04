@@ -9,6 +9,7 @@
          Bean validation is complaining about constraints in such case. -->
     <validation-mode>NONE</validation-mode>
     <properties>
+      <property name="openejb.jpa.init-entitymanager" value="true" />
       <!--
         It's important to turn off caching, otherwise entity manager
         won't be aware of changes made by DBUnit.

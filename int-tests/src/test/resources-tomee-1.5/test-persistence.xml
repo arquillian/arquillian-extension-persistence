@@ -9,6 +9,7 @@
          Bean validation is complaining about constraints in such case. -->
     <validation-mode>NONE</validation-mode>
     <properties>
+        <property name="openejb.jpa.init-entitymanager" value="true" />
         <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
       <!--
         It's important to turn off caching, otherwise entity manager

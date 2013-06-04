@@ -7,6 +7,7 @@
     <jta-data-source>openejb:Resource/arq/hsql</jta-data-source>
     <validation-mode>NONE</validation-mode>
     <properties>
+        <property name="openejb.jpa.init-entitymanager" value="true" />
         <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
     </properties>
   </persistence-unit>
