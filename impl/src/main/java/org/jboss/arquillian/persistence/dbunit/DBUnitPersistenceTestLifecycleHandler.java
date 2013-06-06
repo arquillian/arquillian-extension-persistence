@@ -18,7 +18,6 @@
 package org.jboss.arquillian.persistence.dbunit;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,11 +38,11 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationPropertyMapper;
+import org.jboss.arquillian.persistence.dbunit.connection.DatabaseConnectionRegistry;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
@@ -67,6 +66,9 @@ public class DBUnitPersistenceTestLifecycleHandler
 
    @Inject @ClassScoped
    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
+
+   @Inject @ClassScoped
+   private InstanceProducer<DatabaseConnectionRegistry> databaseConnectionRegistryProducer;
 
    @Inject @TestScoped
    private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
@@ -92,7 +94,7 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
       finally
       {
-         closeDatabaseConnection();
+         closeDatabaseConnections();
       }
    }
 
@@ -120,20 +122,16 @@ public class DBUnitPersistenceTestLifecycleHandler
    private void createDatabaseConnection()
    {
 
+      if (databaseConnectionRegistryProducer.get() == null)
+      {
+         databaseConnectionRegistryProducer.set(new DatabaseConnectionRegistry());
+      }
+
       try
       {
-         DataSource dataSource = dataSourceInstance.get();
+         final DataSource dataSource = dataSourceInstance.get();
          final String schema = dbUnitConfigurationInstance.get().getSchema();
-         DatabaseConnection databaseConnection;
-         if (schema != null && schema.length() > 0)
-         {
-            databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);
-         }
-         else
-         {
-            databaseConnection = new DatabaseConnection(dataSource.getConnection());
-         }
-
+         final DatabaseConnection databaseConnection = databaseConnectionRegistryProducer.get().createDatabaseConnection(dataSource, schema);
          databaseConnectionProducer.set(databaseConnection);
 
          final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
@@ -151,20 +149,9 @@ public class DBUnitPersistenceTestLifecycleHandler
       }
    }
 
-   private void closeDatabaseConnection()
+   private void closeDatabaseConnections()
    {
-      try
-      {
-         final Connection connection = databaseConnectionProducer.get().getConnection();
-         if (!connection.isClosed())
-         {
-            connection.close();
-         }
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitConnectionException("Unable to close connection.", e);
-      }
+      databaseConnectionRegistryProducer.get().closeConnections();
    }
 
    private void createInitialDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors)

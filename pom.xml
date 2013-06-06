@@ -217,8 +217,8 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
           <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -363,6 +363,11 @@
           <scope>test</scope>
         </dependency>
         <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
           <version>7.1.1.Final</version>
@@ -380,11 +385,6 @@
               <artifactId>xalan</artifactId>
             </exclusion>
           </exclusions>
-        </dependency>
-        <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <scope>test</scope>
         </dependency>
         <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
           2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
@@ -465,6 +465,11 @@
           <scope>test</scope>
         </dependency>
         <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
           <version>7.0.2.Final</version>
@@ -487,11 +492,6 @@
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>5.1.21</version>
-        </dependency>
-        <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <scope>test</scope>
         </dependency>
       </dependencies>
       <build>
@@ -577,6 +577,11 @@
           <scope>test</scope>
         </dependency>
         <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
           <groupId>org.jboss.as</groupId>
           <artifactId>jboss-as-arquillian-container-managed</artifactId>
           <version>7.1.1.Final</version>
@@ -599,11 +604,6 @@
           <groupId>postgresql</groupId>
           <artifactId>postgresql</artifactId>
           <version>9.1-901.jdbc4</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <groupId>org.jboss.arquillian.extension</groupId>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -692,6 +692,17 @@
         </dependency>
       </dependencies>
       <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
         <testResources>
           <testResource>
             <directory>src/test/resources</directory>

@@ -37,6 +37,10 @@
       <version>${project.version}</version>
       <scope>test</scope>
       <exclusions>
+      	<!--
+      		As TomEE comes with his own SPI we need to exclude it globally.
+      		It's imported on a profile basis.
+      	-->
         <exclusion>
           <artifactId>arquillian-transaction-jta</artifactId>
           <groupId>org.jboss.arquillian.extension</groupId>
