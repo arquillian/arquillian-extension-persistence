@@ -247,7 +247,7 @@ public class ScriptExecutorTest
       verify(connection.createStatement(), times(1)).execute(statementsCaptor.capture());
       assertThat(statementsCaptor.getAllValues()).containsSequence(
             "insert into useraccount (id, firstname, lastname, username, password)" +
-                  " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;');"
+                  " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;')"
       );
    }
 
@@ -266,7 +266,7 @@ public class ScriptExecutorTest
       verify(connection.createStatement(), times(1)).execute(statementsCaptor.capture());
       assertThat(statementsCaptor.getAllValues()).containsSequence(
             "insert into useraccount (id, firstname, lastname, username, password)" +
-                  " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;')\nGO"
+                  " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;')\n"
       );
    }
 
@@ -284,9 +284,9 @@ public class ScriptExecutorTest
       verify(connection.createStatement(), times(2)).execute(statementsCaptor.capture());
       assertThat(statementsCaptor.getAllValues()).containsSequence(
             "insert into useraccount (id, firstname, lastname, username, password)" +
-                  " values (1, 'John', 'Smith', 'doovde', '<strong>vodka</strong>');",
+                  " values (1, 'John', 'Smith', 'doovde', '<strong>vodka</strong>')",
             "insert into useraccount (id, firstname, lastname, username, password)" +
-                  " values (2, 'John', 'Sharp', 'asdqwe', 'closing only</strong>');"
+                  " values (2, 'John', 'Sharp', 'asdqwe', 'closing only</strong>')"
       );
    }
 
