@@ -48,6 +48,8 @@ public class ScriptingConfiguration extends Configuration
 
    private String sqlStatementDelimiter = ";";
 
+   private boolean trimLineEndStatementDelimiter = false;
+
    public ScriptingConfiguration()
    {
       super("persistence-script", "arquillian.extension.persistence.script.");
@@ -122,4 +124,16 @@ public class ScriptingConfiguration extends Configuration
       this.sqlStatementDelimiter = sqlStatementDelimiter;
    }
 
+   public boolean isTrimLineEndStatementDelimiter()
+   {
+      return trimLineEndStatementDelimiter;
+   }
+
+   /**
+    * @param trimLineEndStatementDelimiter determines if statement delimiter should be removed at the end of each statement.
+    */
+   public void setTrimLineEndStatementDelimiter(boolean trimLineEndStatementDelimiter)
+   {
+      this.trimLineEndStatementDelimiter = trimLineEndStatementDelimiter;
+   }
 }

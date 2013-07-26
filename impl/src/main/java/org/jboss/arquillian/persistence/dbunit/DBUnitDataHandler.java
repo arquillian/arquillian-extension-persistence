@@ -139,8 +139,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection());
-         scriptExecutor.setStatementDelimiter(scriptConfigurationInstance.get().getSqlStatementDelimiter());
+         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get());
          scriptExecutor.execute(script);
       }
       catch (SQLException e)

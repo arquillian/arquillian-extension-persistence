@@ -64,17 +64,14 @@ public class ScriptExecutor
 
    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
-   private static final String DEFAULT_SQL_DELIMITER = ";";
-
    private final Connection connection;
 
-   private String statementDelimiter = DEFAULT_SQL_DELIMITER;
+   private final ScriptingConfiguration scriptingConfiguration;
 
-   private boolean fullLineDelimiter = false;
-
-   public ScriptExecutor(final Connection connection)
+   public ScriptExecutor(final Connection connection, ScriptingConfiguration scriptingConfiguration)
    {
       this.connection = connection;
+      this.scriptingConfiguration = scriptingConfiguration;
    }
 
    public void execute(String script)
@@ -98,7 +95,11 @@ public class ScriptExecutor
                }
                else
                {
-                  statements.add(readSqlStatement.toString().trim());
+                  final String trimmed = readSqlStatement.toString().trim();
+                  if (trimmed.length() > 0)
+                  {
+                     statements.add(trimmed);
+                  }
                }
                readSqlStatement.setLength(0);
             }
@@ -115,8 +116,18 @@ public class ScriptExecutor
 
       for (String statement : statements)
       {
+         if (shouldTrimStatementDelimiter(statement)) {
+            statement = statement.substring(0, statement.length() - scriptingConfiguration.getSqlStatementDelimiter().length());
+         }
+
          executeStatement(specialCharactersReplacer.unescape(statement));
       }
+   }
+
+   private boolean shouldTrimStatementDelimiter(String sql)
+   {
+      return scriptingConfiguration.isTrimLineEndStatementDelimiter()
+            && sql.endsWith(scriptingConfiguration.getSqlStatementDelimiter());
    }
 
    private String removeComments(String script)
@@ -174,13 +185,13 @@ public class ScriptExecutor
 
    private boolean isNewLineStatementDelimiter()
    {
-      return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(getStatementDelimiter());
+      return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(scriptingConfiguration.getSqlStatementDelimiter());
    }
 
    private List<String> splitInlineStatements(String line)
    {
       final List<String> statements = new ArrayList<String>();
-      final StringTokenizer sqlStatements = new StringTokenizer(line, getStatementDelimiter());
+      final StringTokenizer sqlStatements = new StringTokenizer(line, scriptingConfiguration.getSqlStatementDelimiter());
       while (sqlStatements.hasMoreElements())
       {
          statements.add(sqlStatements.nextToken().trim());
@@ -194,7 +205,7 @@ public class ScriptExecutor
       {
          return false;
       }
-      return new StringTokenizer(markCharSequences(line), getStatementDelimiter()).countTokens() > 1;
+      return new StringTokenizer(markCharSequences(line), scriptingConfiguration.getSqlStatementDelimiter()).countTokens() > 1;
    }
 
    private String markCharSequences(String line)
@@ -204,13 +215,12 @@ public class ScriptExecutor
 
    private boolean isFullCommand(String line)
    {
-      return !fullLineDelimiter && lineEndsWithStatementDelimiter(line)
-            || fullLineDelimiter && lineIsStatementDelimiter(line);
+      return lineEndsWithStatementDelimiter(line) || lineIsStatementDelimiter(line);
    }
 
    private boolean lineIsStatementDelimiter(String line)
    {
-      boolean isStatementDelimiter = line.equals(getStatementDelimiter());
+      boolean isStatementDelimiter = line.equals(scriptingConfiguration.getSqlStatementDelimiter());
       if (!isStatementDelimiter && isNewLineStatementDelimiter())
       {
          isStatementDelimiter = line.matches("^\\r?\\n$|^\\r$");
@@ -220,7 +230,7 @@ public class ScriptExecutor
 
    private boolean lineEndsWithStatementDelimiter(String line)
    {
-      boolean ends = line.endsWith(getStatementDelimiter());
+      boolean ends = line.endsWith(scriptingConfiguration.getSqlStatementDelimiter());
       if (!ends && isNewLineStatementDelimiter())
       {
          ends = line.matches("^.+?\\r?\\n$|^.+?\\r$");
@@ -228,27 +238,5 @@ public class ScriptExecutor
       return ends;
    }
 
-
-   // -- Accessors
-
-   public String getStatementDelimiter()
-   {
-      return statementDelimiter;
-   }
-
-   public void setStatementDelimiter(String statementDelimiter)
-   {
-      this.statementDelimiter = statementDelimiter;
-   }
-
-   public boolean isFullLineDelimiter()
-   {
-      return fullLineDelimiter;
-   }
-
-   public void setFullLineDelimiter(boolean fullLineDelimiter)
-   {
-      this.fullLineDelimiter = fullLineDelimiter;
-   }
 
 }

@@ -31,7 +31,6 @@ import java.sql.Statement;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -45,15 +44,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ScriptExecutorTest
 {
 
-   ScriptExecutor scriptExecutor;
+   private ScriptExecutor scriptExecutor;
+
+   private ScriptingConfiguration scriptingConfiguration;
 
    @Mock
-   Connection connection;
+   private Connection connection;
 
    @Before
    public void initializeScriptExecutor() throws SQLException
    {
-      scriptExecutor = spy(new ScriptExecutor(connection));
+      scriptingConfiguration = new ScriptingConfiguration();
+      scriptExecutor = spy(new ScriptExecutor(connection, scriptingConfiguration));
       when(connection.createStatement()).thenReturn(mock(Statement.class));
    }
 
@@ -111,7 +113,7 @@ public class ScriptExecutorTest
    public void should_execute_statements_with_custom_delimiter() throws Exception
    {
       // given
-      scriptExecutor.setStatementDelimiter("GO");
+      scriptingConfiguration.setSqlStatementDelimiter("GO");
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/t-sql-example.sql"));
@@ -125,7 +127,7 @@ public class ScriptExecutorTest
    public void should_execute_script_with_new_line_as_statement_delimiter() throws Exception
    {
       // given
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/new-line-delimiter.sql"));
@@ -139,7 +141,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/new-line-delimiter-with-trailing-comments.sql"));
@@ -170,7 +172,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/new-line-delimiter-begin-end.sql"));
@@ -195,7 +197,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/new-line-delimiter-with-multiple-line-comment.sql"));
@@ -220,7 +222,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/insert-slash.sql"));
@@ -258,7 +260,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter("GO");
+      scriptingConfiguration.setSqlStatementDelimiter("GO");
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/insert-html-special-chars-with-custom-end-line.sql"));
@@ -297,7 +299,7 @@ public class ScriptExecutorTest
    {
       // given
       ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
-      scriptExecutor.setStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
+      scriptingConfiguration.setSqlStatementDelimiter(ScriptingConfiguration.NEW_LINE_SYMBOL);
 
       // when
       scriptExecutor.execute(FileLoader.loadAsString("scripts/insert-with-xml-new-line.sql"));
