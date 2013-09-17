@@ -75,3 +75,7 @@ seeds the database using file in YAML format, and latter verifies database state
 This example is taken from **integration tests** written for this project, so feel free to have a closer look. 
 
 But it's that easy! And there's more to come!
+
+### How to reach us out?
+
+If you have any questions or would like to file feature request or bug report (hope not!) please have a look at [the ways how you can get in touch with us](http://arquillian.org/community/).
