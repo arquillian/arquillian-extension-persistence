@@ -36,6 +36,7 @@ import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.jboss.arquillian.persistence.dbunit.dataset.TableWrapper;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
 public class DataSetComparator
@@ -79,8 +80,8 @@ public class DataSetComparator
          final List<String> columnsForSorting = defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet,
                tableName);
 
-         final ITable expectedTable = sort(expectedDataSet, tableName, columnsForSorting);
-         final ITable currentTable = sort(filteredCurrentDataSet, tableName, columnsForSorting);
+         final ITable expectedTable = sort(new TableWrapper(expectedDataSet.getTable(tableName), filteredCurrentDataSet.getTable(tableName).getTableMetaData()), columnsForSorting);  
+         final ITable currentTable = sort(filteredCurrentDataSet.getTable(tableName), columnsForSorting);
 
          final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName),
                filteredCurrentDataSet.getTable(tableName));
@@ -129,9 +130,9 @@ public class DataSetComparator
       }
    }
 
-   private ITable sort(IDataSet dataSet, String tableName, final List<String> columnsForSorting) throws DataSetException
+   private ITable sort(ITable table, final List<String> columnsForSorting) throws DataSetException
    {
-      final SortedTable sortedTable = new SortedTable(dataSet.getTable(tableName), toStringArray(columnsForSorting));
+      final SortedTable sortedTable = new SortedTable(table, toStringArray(columnsForSorting));  
       sortedTable.setUseComparable(true);
       return sortedTable;
    }

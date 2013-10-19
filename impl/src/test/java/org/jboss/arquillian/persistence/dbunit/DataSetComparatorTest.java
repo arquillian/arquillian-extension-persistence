@@ -18,12 +18,15 @@
 package org.jboss.arquillian.persistence.dbunit;
 
 import static org.fest.assertions.Assertions.*;
-import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 
+import org.dbunit.dataset.Column;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.datatype.DataType;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
@@ -113,6 +116,30 @@ public class DataSetComparatorTest
 
       // then
       assertThat(errorCollector.amountOfErrors()).isZero();
+   }
+   
+   @Test
+   public void should_sort_data_using_data_type_of_current_dataset() throws Exception
+   {
+      // given
+      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {"id"}, new String[] {"nickname"});
+      IDataSet current = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
+      IDataSet expected = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
+      
+      ITable useraccount = current.getTable("useraccount");
+      Column[] columns = useraccount.getTableMetaData().getColumns();
+      columns[0] = spy(columns[0]);
+      doReturn(DataType.BIGINT).when(columns[0]).getDataType();
+      
+      // when
+      dataSetComparator.compare(current, expected, errorCollector);
+
+      // then
+      errorCollector.report();
+      assertThat(errorCollector.amountOfErrors()).isZero();
+      
+      verify(columns[0], atLeastOnce()).getDataType();
    }
 
 }
