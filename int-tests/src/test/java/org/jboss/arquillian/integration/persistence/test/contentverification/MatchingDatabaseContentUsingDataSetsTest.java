@@ -126,4 +126,8 @@ public class MatchingDatabaseContentUsingDataSetsTest
       assertThat(user.getAddresses()).hasSize(2);
    }
 
+   @Test
+   @UsingDataSet("three-users.yml")
+   @ShouldMatchDataSet(value = { "three-users.yml" }, orderBy = { "id" })
+   public void should_verify_database_content_using_custom_data_set_with_order_by_number_type_column() throws Exception{}
 }
