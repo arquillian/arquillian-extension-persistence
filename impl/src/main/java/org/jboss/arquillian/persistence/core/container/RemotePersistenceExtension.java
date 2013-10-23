@@ -49,15 +49,15 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
+
       registerTestLifecycleHandlers(builder);
       registerDBUnitHandlers(builder);
+      registerThirdPartyServices(builder);
 
       builder.observer(PersistenceConfigurationRemoteProducer.class)
              .observer(ScriptingConfigurationRemoteProducer.class)
              .observer(CommandServiceProducer.class)
              .observer(JpaCacheEvictionHandler.class);
-
-      builder.service(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
    }
 
    private void registerDBUnitHandlers(ExtensionBuilder builder)
@@ -80,4 +80,8 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension
              .observer(DataSetHandler.class);               // 20 / 30
    }
 
+    private void registerThirdPartyServices(ExtensionBuilder builder)
+    {
+        builder.service(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
+    }
 }

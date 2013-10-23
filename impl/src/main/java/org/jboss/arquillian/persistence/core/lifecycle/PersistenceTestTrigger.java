@@ -17,32 +17,31 @@
  */
 package org.jboss.arquillian.persistence.core.lifecycle;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.datasource.JndiDataSourceProvider;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceClass;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
-import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableException;
-import org.jboss.arquillian.persistence.core.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.spi.datasource.DataSourceProvider;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
+
+import javax.sql.DataSource;
 
 /**
  * Determines if persistence extension should be triggered for the given
@@ -70,9 +69,6 @@ public class PersistenceTestTrigger
    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
 
    @Inject
-   private Instance<Context> contextInstance;
-
-   @Inject
    private Instance<PersistenceConfiguration> configurationInstance;
 
    @Inject
@@ -90,10 +86,14 @@ public class PersistenceTestTrigger
    @Inject
    private Event<BeforePersistenceClass> beforePersistenceClassEvent;
 
+   @Inject
+   private Instance<ServiceLoader> serviceLoaderInstance;
+
    public void beforeClass(@Observes BeforeClass beforeClass)
    {
       metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
       persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
+
       if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {
          initializeConfigurationEvent.fire(new InitializeConfiguration());
@@ -131,21 +131,16 @@ public class PersistenceTestTrigger
       dataSourceProducer.set(loadDataSource(dataSourceName));
    }
 
+   /**
+    * @param dataSourceName
+    * @return
+    * @throws  IllegalStateException when more than one data source provider exists on the classpath
+    */
    private DataSource loadDataSource(String dataSourceName)
    {
-      try
-      {
-         final Context context = contextInstance.get();
-         if (context == null)
-         {
-            throw new ContextNotAvailableException("No Naming Context available.");
-         }
-         return (DataSource) context.lookup(dataSourceName);
-      }
-      catch (NamingException e)
-      {
-         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
-      }
-   }
+      final DataSourceProvider dataSourceProvider = serviceLoaderInstance.get()
+            .onlyOne(DataSourceProvider.class, JndiDataSourceProvider.class);
 
+      return dataSourceProvider.lookupDataSource(dataSourceName);
+   }
 }
