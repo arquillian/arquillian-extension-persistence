@@ -37,6 +37,12 @@
 
     <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-spi</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-transaction-spi</artifactId>
     </dependency>
 
