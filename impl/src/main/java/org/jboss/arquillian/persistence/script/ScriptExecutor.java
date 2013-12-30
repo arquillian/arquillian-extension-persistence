@@ -115,7 +115,12 @@ public class ScriptExecutor
 
       for (String statement : statements)
       {
-         executeStatement(specialCharactersReplacer.unescape(statement));
+         String sql = statement;
+         if (sql.endsWith(statementDelimiter)) {
+            sql = sql.substring(0, sql.length() - statementDelimiter.length());
+         }
+
+         executeStatement(specialCharactersReplacer.unescape(sql));
       }
    }
 
