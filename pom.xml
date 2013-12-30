@@ -25,6 +25,7 @@
   <modules>
     <module>api</module>
     <module>impl</module>
+    <module>spi</module>
     <module>int-tests</module>
     <module>int-tests-testng</module>
   </modules>
@@ -59,11 +60,11 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.4.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.0.Alpha3</version.arquillian_transaction>
+    <version.arquillian_core>1.1.0.Final</version.arquillian_core>
+    <version.arquillian_transaction>1.0.0.Final</version.arquillian_transaction>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>5.14.6</version.testng>
-    <version.mockito>1.9.0</version.mockito>
+    <version.mockito>1.9.5</version.mockito>
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
@@ -71,8 +72,8 @@
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-    <version.surefire.plugin>2.14.1</version.surefire.plugin>
-    <version.shrinkwrap.resolver>2.0.0-beta-2</version.shrinkwrap.resolver>
+    <version.surefire.plugin>2.16</version.surefire.plugin>
+    <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
   </properties>
 
   <dependencyManagement>
