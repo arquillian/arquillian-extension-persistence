@@ -115,7 +115,7 @@ public class PersistenceTestTrigger
 
    }
 
-   public void afterTest(@Observes(precedence = 25) After afterTestEvent)
+   public void afterTest(@Observes(precedence = -2) After afterTestEvent)
    {
       if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
       {

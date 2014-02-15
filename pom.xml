@@ -27,7 +27,9 @@
     <module>impl</module>
     <module>spi</module>
     <module>int-tests</module>
+    <!--
     <module>int-tests-testng</module>
+    -->
   </modules>
 
   <developers>
@@ -61,7 +63,7 @@
   <properties>
     <!-- Versioning -->
     <version.arquillian_core>1.1.2.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.0.Final</version.arquillian_transaction>
+    <version.arquillian_transaction>1.0.1.Final-SNAPSHOT</version.arquillian_transaction>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>5.14.6</version.testng>
     <version.mockito>1.9.5</version.mockito>
@@ -141,6 +143,11 @@
   </dependencyManagement>
 
   <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
@@ -226,7 +233,10 @@
       <build>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-glassfish-3.1-hsqldb</directory>
@@ -267,7 +277,10 @@
       <build>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-glassfish-3.1-derby</directory>
@@ -344,7 +357,10 @@
         </plugins>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-jboss-7.0.2</directory>
@@ -449,10 +465,120 @@
         </plugins>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-jboss-7.1.1-mssql</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
+      <!-- In order to use this profile you need to have Oracle 11c installed and running -->
+      <!-- For development purposes Oracle provides VirtualBox image with pre-configured database -->
+      <!-- http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html -->
+      <id>jbossas-7.1-managed-oracle11g</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <version>7.1.1.Final</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.spec</groupId>
+          <artifactId>jboss-javaee-6.0</artifactId>
+          <version>${version.jbossas_spec}</version>
+          <type>pom</type>
+          <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <!-- 1. Download this dependency from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
+             2. install it in your local maven repository
+                mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.2.0 -Dpackaging=jar -->
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>11.2.0.2.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.3</version>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jboss.as</groupId>
+                      <artifactId>jboss-as-dist</artifactId>
+                      <version>7.1.1.Final</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
+                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <!-- Unlike other profiles we use scripts from the profile-specific resource folder
+               so that they can use specific delimiters-->
+          <testResource>
+            <directory>src/test/resources-jboss-7.1.1-oracle11g</directory>
           </testResource>
         </testResources>
       </build>
@@ -561,7 +687,10 @@
         </plugins>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-jboss-7.0.2-mysql</directory>
@@ -660,7 +789,10 @@
         </plugins>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-jboss-7.1.1-postgresql</directory>
@@ -706,7 +838,10 @@
         </plugins>
         <testResources>
           <testResource>
-            <directory>src/test/resources</directory>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-tomee-1.5</directory>

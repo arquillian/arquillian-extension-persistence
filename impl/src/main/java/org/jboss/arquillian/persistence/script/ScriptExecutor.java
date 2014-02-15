@@ -15,42 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- *    Copyright 2009-2012 The MyBatis Team
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 package org.jboss.arquillian.persistence.script;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.oracle.OracleStatementSplitter;
+import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- *
- * Splits SQL script into executable sql parts and execute them one by one.
- *
- * To some extent based on <a href="http://code.google.com/p/mybatis/source/browse/trunk/src/main/java/org/apache/ibatis/jdbc/ScriptRunner.java?spec=svn5175&r=5175">ScriptRunner</a>
- * from MyBatis project, therefore license attribution
- * in the header.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
@@ -58,85 +36,38 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 public class ScriptExecutor
 {
 
-   private static final String CHAR_SEQUENCE_PATTERN = "(?m)'([^']*)'|\"([^\"]*)\"";
-
-   private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
-
-   private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+   private static final Logger log = Logger.getLogger(ScriptExecutor.class.getName());
 
    private final Connection connection;
 
    private final ScriptingConfiguration scriptingConfiguration;
 
-   public ScriptExecutor(final Connection connection, ScriptingConfiguration scriptingConfiguration)
+   private final StatementSplitter statementSplitter;
+
+   public ScriptExecutor(final Connection connection, final ScriptingConfiguration scriptingConfiguration, final StatementSplitter statementSplitter)
    {
       this.connection = connection;
       this.scriptingConfiguration = scriptingConfiguration;
+      this.statementSplitter = statementSplitter;
    }
 
    public void execute(String script)
    {
-      final SpecialCharactersReplacer specialCharactersReplacer = new SpecialCharactersReplacer();
-      final List<String> statements = new ArrayList<String>();
-      script = removeComments(specialCharactersReplacer.escape(script));
-      try
-      {
-         final BufferedReader lineReader = new BufferedReader(new StringReader(script));
-         final StringBuilder readSqlStatement = new StringBuilder();
-         String line;
-         while ((line = lineReader.readLine()) != null)
-         {
-            boolean isFullCommand = parseLine(line, readSqlStatement);
-            if (isFullCommand)
-            {
-               if(multipleInlineStatements(line))
-               {
-                  statements.addAll(splitInlineStatements(line));
-               }
-               else
-               {
-                  final String trimmed = readSqlStatement.toString().trim();
-                  if (trimmed.length() > 0)
-                  {
-                     statements.add(trimmed);
-                  }
-               }
-               readSqlStatement.setLength(0);
-            }
-         }
-         if (shouldExecuteRemainingStatements(readSqlStatement))
-         {
-            statements.add(readSqlStatement.toString().trim());
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Failed parsing file.", e);
-      }
+      final List<String> statements = statementSplitter.splitStatements(script);
 
       for (String statement : statements)
       {
-         if (shouldTrimStatementDelimiter(statement)) {
-            statement = statement.substring(0, statement.length() - scriptingConfiguration.getSqlStatementDelimiter().length());
-         }
-
-         executeStatement(specialCharactersReplacer.unescape(statement));
+         executeStatement(statement);
       }
-   }
-
-   private boolean shouldTrimStatementDelimiter(String sql)
-   {
-      return scriptingConfiguration.isTrimLineEndStatementDelimiter()
-            && sql.endsWith(scriptingConfiguration.getSqlStatementDelimiter());
-   }
-
-   private String removeComments(String script)
-   {
-      return script.replaceAll(ANSI_SQL_COMMENTS_PATTERN, "");
    }
 
    void executeStatement(String sqlStatement)
    {
+      if (scriptingConfiguration.isShowSql())
+      {
+         log.info("Executing SQL statement: " + sqlStatement);
+      }
+
       Statement statement = null;
       try
       {
@@ -162,81 +93,5 @@ public class ScriptExecutor
          }
       }
    }
-
-   // -- Private methods
-
-   private boolean parseLine(final String line, final StringBuilder sql)
-   {
-      String trimmedLine = trim(line);
-      sql.append(trimmedLine).append(LINE_SEPARATOR);
-
-      return isFullCommand(trimmedLine);
-   }
-
-   private String trim(final String line)
-   {
-      return line.trim() + (isNewLineStatementDelimiter() ? LINE_SEPARATOR : "");
-   }
-
-   private boolean shouldExecuteRemainingStatements(final StringBuilder sql)
-   {
-      return sql.toString().trim().length() > 0;
-   }
-
-   private boolean isNewLineStatementDelimiter()
-   {
-      return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(scriptingConfiguration.getSqlStatementDelimiter());
-   }
-
-   private List<String> splitInlineStatements(String line)
-   {
-      final List<String> statements = new ArrayList<String>();
-      final StringTokenizer sqlStatements = new StringTokenizer(line, scriptingConfiguration.getSqlStatementDelimiter());
-      while (sqlStatements.hasMoreElements())
-      {
-         statements.add(sqlStatements.nextToken().trim());
-      }
-      return statements;
-   }
-
-   private boolean multipleInlineStatements(String line)
-   {
-      if (isNewLineStatementDelimiter())
-      {
-         return false;
-      }
-      return new StringTokenizer(markCharSequences(line), scriptingConfiguration.getSqlStatementDelimiter()).countTokens() > 1;
-   }
-
-   private String markCharSequences(String line)
-   {
-      return line.replaceAll(CHAR_SEQUENCE_PATTERN, "char_seq");
-   }
-
-   private boolean isFullCommand(String line)
-   {
-      return lineEndsWithStatementDelimiter(line) || lineIsStatementDelimiter(line);
-   }
-
-   private boolean lineIsStatementDelimiter(String line)
-   {
-      boolean isStatementDelimiter = line.equals(scriptingConfiguration.getSqlStatementDelimiter());
-      if (!isStatementDelimiter && isNewLineStatementDelimiter())
-      {
-         isStatementDelimiter = line.matches("^\\r?\\n$|^\\r$");
-      }
-      return isStatementDelimiter;
-   }
-
-   private boolean lineEndsWithStatementDelimiter(String line)
-   {
-      boolean ends = line.endsWith(scriptingConfiguration.getSqlStatementDelimiter());
-      if (!ends && isNewLineStatementDelimiter())
-      {
-         ends = line.matches("^.+?\\r?\\n$|^.+?\\r$");
-      }
-      return ends;
-   }
-
 
 }

@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2014 Red Hat Inc. and/or its affiliates and other contributors
+ * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the @authors tag. All rights reserved.
  * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
@@ -15,18 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script;
+package org.jboss.arquillian.integration.persistence.datasource.oracle11g;
 
-public class SpecialCharactersReplacer
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.spi.LoadableExtension;
+
+public class Oracle11gDataSourceExtension implements LoadableExtension
 {
 
-   public String escape(String source)
+   @Override
+   public void register(ExtensionBuilder builder)
    {
-      return source.replaceAll("(?m)&(.[a-zA-Z0-9]*);", "ape_special[$1]");
+      builder.service(AuxiliaryArchiveAppender.class, Oracle11gDataSourceArchiveCreator.class);
+      builder.service(AuxiliaryArchiveAppender.class, Oracle11gDriverArchiveAppender.class);
    }
 
-   public String unescape(String source)
-   {
-      return source.replaceAll("(?m)ape_special\\[(.[a-zA-Z0-9]*)]", "&$1;") ;
-   }
 }

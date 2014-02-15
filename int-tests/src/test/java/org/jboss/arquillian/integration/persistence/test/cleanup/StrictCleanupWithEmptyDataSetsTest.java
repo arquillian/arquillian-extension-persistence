@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 @CreateSchema( {"schema/create.sql", "schema/additional-audit-useraccount.sql",
-                "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
+      "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class StrictCleanupWithEmptyDataSetsTest
 {
@@ -55,11 +55,13 @@ public class StrictCleanupWithEmptyDataSetsTest
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      return ShrinkWrap.create(WebArchive.class, "test.war").addPackage(UserAccount.class.getPackage())
-            .addClass(Query.class)
-            // required for remote containers in order to run tests with FEST-Asserts
-            .addPackages(true, "org.fest").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-            .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
+      return ShrinkWrap.create(WebArchive.class, "test.war")
+                       .addPackage(UserAccount.class.getPackage())
+                       .addClass(Query.class)
+                       // required for remote containers in order to run tests with FEST-Asserts
+                       .addPackages(true, "org.fest")
+                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
    }
 
    @PersistenceContext

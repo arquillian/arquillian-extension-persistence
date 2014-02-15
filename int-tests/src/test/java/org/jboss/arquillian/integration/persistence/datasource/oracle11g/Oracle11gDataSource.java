@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2014 Red Hat Inc. and/or its affiliates and other contributors
+ * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the @authors tag. All rights reserved.
  * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
@@ -15,18 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script;
+package org.jboss.arquillian.integration.persistence.datasource.oracle11g;
 
-public class SpecialCharactersReplacer
+import javax.annotation.sql.DataSourceDefinition;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+
+@DataSourceDefinition(name = "java:app/datasources/oracle_ds",
+   className = "oracle.jdbc.pool.OracleDataSource",
+   user = "ape",
+   password = "letmein",
+   properties={"driverType=thin", "URL=jdbc:oracle:thin:@localhost:11521:orcl"})
+@Singleton
+@Startup
+public class Oracle11gDataSource
 {
 
-   public String escape(String source)
-   {
-      return source.replaceAll("(?m)&(.[a-zA-Z0-9]*);", "ape_special[$1]");
-   }
-
-   public String unescape(String source)
-   {
-      return source.replaceAll("(?m)ape_special\\[(.[a-zA-Z0-9]*)]", "&$1;") ;
-   }
 }

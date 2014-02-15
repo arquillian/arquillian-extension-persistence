@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import java.sql.SQLException;
-
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.FilteredDataSet;
@@ -31,11 +29,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.core.data.DataHandler;
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
-import org.jboss.arquillian.persistence.core.event.CompareData;
-import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.core.event.PrepareData;
+import org.jboss.arquillian.persistence.core.event.*;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyExecutor;
@@ -48,6 +42,10 @@ import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingEx
 import org.jboss.arquillian.persistence.script.ScriptExecutor;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+
+import java.sql.SQLException;
+import java.util.ServiceLoader;
 
 /**
  *
@@ -139,7 +137,8 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get());
+         StatementSplitter statementSplitter = resolveStatementSplitter(scriptConfigurationInstance.get().getSqlDialect());
+         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(), statementSplitter);
          scriptExecutor.execute(script);
       }
       catch (SQLException e)
@@ -172,6 +171,32 @@ public class DBUnitDataHandler implements DataHandler
       final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
             databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
       cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
+   }
+
+   private StatementSplitter resolveStatementSplitter(String sqlDialect)
+   {
+      StatementSplitter resolved = null;
+      final ServiceLoader<StatementSplitter> statementSplitters = ServiceLoader.load(StatementSplitter.class);
+      for (StatementSplitter statementSplitter : statementSplitters)
+      {
+         if (statementSplitter.supports().equalsIgnoreCase(sqlDialect))
+         {
+            if (resolved != null)
+            {
+               throw new IllegalStateException("Found multiple implementations of " + StatementSplitter.class.getName()
+                     + " for specified dialect " + sqlDialect);
+            }
+            resolved = statementSplitter;
+            resolved.setStatementDelimiter(scriptConfigurationInstance.get().getSqlStatementDelimiter());
+         }
+      }
+
+      if (resolved == null)
+      {
+         throw new IllegalStateException("Unresolvable implementation of " + StatementSplitter.class.getName() + " for specified dialect " + sqlDialect);
+      }
+
+      return resolved;
    }
 
 }

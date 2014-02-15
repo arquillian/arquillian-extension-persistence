@@ -29,6 +29,11 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.client.PersistenceExtension;
 import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.persistence.script.DefaultStatementSplitter;
+import org.jboss.arquillian.persistence.script.oracle.OracleStatementSplitter;
+import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -61,7 +66,10 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                                                                       Filters.exclude(PersistenceExtension.class.getPackage()),
                                                                       "org.jboss.arquillian.persistence")
                                                                 .addPackages(true, requiredLibraries())
-                                                                .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class);
+                                                                .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
+                                                                .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class, OracleStatementSplitter.class)
+                                                                .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
+
       return persistenceExtensionArchive;
    }
 

@@ -48,7 +48,9 @@ public class ScriptingConfiguration extends Configuration
 
    private String sqlStatementDelimiter = ";";
 
-   private boolean trimLineEndStatementDelimiter = false;
+   private boolean showSql = false;
+
+   private String sqlDialect = "default";
 
    public ScriptingConfiguration()
    {
@@ -124,16 +126,32 @@ public class ScriptingConfiguration extends Configuration
       this.sqlStatementDelimiter = sqlStatementDelimiter;
    }
 
-   public boolean isTrimLineEndStatementDelimiter()
+   public boolean isShowSql()
    {
-      return trimLineEndStatementDelimiter;
+      return showSql;
    }
 
    /**
-    * @param trimLineEndStatementDelimiter determines if statement delimiter should be removed at the end of each statement.
+    * @param showSql Defines if each SQL statements should be logged when executing.
     */
-   public void setTrimLineEndStatementDelimiter(boolean trimLineEndStatementDelimiter)
+   public void setShowSql(boolean showSql)
    {
-      this.trimLineEndStatementDelimiter = trimLineEndStatementDelimiter;
+      this.showSql = showSql;
+   }
+
+
+   public String getSqlDialect()
+   {
+      return sqlDialect;
+   }
+
+   /**
+    * Defines which SQL-specific implementation of {@link org.jboss.arquillian.persistence.spi.script.StatementSplitter} (parser)
+    * should be used when splitting sql script into separated statements. Default value is "default" and {@link org.jboss.arquillian.persistence.script.DefaultStatementSplitter} is used.
+    * @param sqlDialect
+    */
+   public void setSqlDialect(String sqlDialect)
+   {
+      this.sqlDialect = sqlDialect;
    }
 }
