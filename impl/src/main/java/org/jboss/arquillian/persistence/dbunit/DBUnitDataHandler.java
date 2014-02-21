@@ -43,8 +43,10 @@ import org.jboss.arquillian.persistence.script.ScriptExecutor;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.ServiceLoader;
 
 /**
@@ -176,7 +178,7 @@ public class DBUnitDataHandler implements DataHandler
    private StatementSplitter resolveStatementSplitter(String sqlDialect)
    {
       StatementSplitter resolved = null;
-      final ServiceLoader<StatementSplitter> statementSplitters = ServiceLoader.load(StatementSplitter.class);
+      final Collection<StatementSplitter> statementSplitters = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
       for (StatementSplitter statementSplitter : statementSplitters)
       {
          if (statementSplitter.supports().equalsIgnoreCase(sqlDialect))
