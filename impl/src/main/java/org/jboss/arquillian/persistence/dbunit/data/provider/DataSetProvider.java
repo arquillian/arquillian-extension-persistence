@@ -28,7 +28,7 @@ import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatExce
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.data.naming.DataSetFileNamingStrategy;
 
 /**
@@ -48,9 +48,9 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
    }
 
    @Override
-   protected DataSetResourceDescriptor createDescriptor(String dataFileName)
+   protected DataSetResourceDescriptor createDescriptor(String resource)
    {
-      return new DataSetResourceDescriptor(determineLocation(dataFileName), inferFormat(dataFileName));
+      return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
    }
 
    @Override

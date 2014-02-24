@@ -29,13 +29,13 @@ import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.CreateSchema;
+import org.jboss.arquillian.persistence.core.data.descriptor.DtdFileResourceDescriptor;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.descriptor.TextFileResourceDescriptor;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
@@ -46,6 +46,8 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+
+import static org.jboss.arquillian.persistence.core.data.descriptor.Format.isFileType;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -100,10 +102,13 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
 
       for (ResourceDescriptor<?> descriptor : descriptors)
       {
-         paths.add(descriptor.getLocation());
+         if (isFileType(descriptor.getFormat()))
+         {
+            paths.add(descriptor.getLocation());
+         }
       }
 
-      return createArchiveWithResources(paths.toArray(new String[descriptors.size()]));
+      return createArchiveWithResources(paths.toArray(new String[paths.size()]));
    }
 
    private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
@@ -129,9 +134,9 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       return allDataSets;
    }
 
-   private Collection<TextFileResourceDescriptor> extractDtds(Collection<DataSetResourceDescriptor> descriptors)
+   private Collection<DtdFileResourceDescriptor> extractDtds(Collection<DataSetResourceDescriptor> descriptors)
    {
-      final Collection<TextFileResourceDescriptor> dtds = new ArrayList<TextFileResourceDescriptor>();
+      final Collection<DtdFileResourceDescriptor> dtds = new ArrayList<DtdFileResourceDescriptor>();
       final DtdResolver dtdResolver = new DtdResolver();
       for (DataSetResourceDescriptor dataSet : descriptors)
       {
@@ -140,7 +145,7 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
             final String dtd = dtdResolver.resolveDtdLocationFullPath(dataSet.getLocation());
             if (dtd != null)
             {
-               dtds.add(new TextFileResourceDescriptor(dtd));
+               dtds.add(new DtdFileResourceDescriptor(dtd));
             }
 
          }

@@ -29,12 +29,18 @@ import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResource
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  */
-public class TextFileResourceDescriptor extends SqlScriptResourceDescriptor
+public class DtdFileResourceDescriptor extends ResourceDescriptor<String>
 {
 
-   public TextFileResourceDescriptor(String location)
+   public DtdFileResourceDescriptor(String location)
    {
       super(location);
+   }
+
+   @Override
+   public Format getFormat()
+   {
+      return Format.DTD;
    }
 
    @Override
@@ -52,12 +58,12 @@ public class TextFileResourceDescriptor extends SqlScriptResourceDescriptor
          return true;
       }
 
-      if (!(obj instanceof TextFileResourceDescriptor))
+      if (!(obj instanceof DtdFileResourceDescriptor))
       {
          return false;
       }
 
-      final TextFileResourceDescriptor other = (TextFileResourceDescriptor) obj;
+      final DtdFileResourceDescriptor other = (DtdFileResourceDescriptor) obj;
       return location.equals(other.location);
    }
 
@@ -68,12 +74,6 @@ public class TextFileResourceDescriptor extends SqlScriptResourceDescriptor
       int result = 1;
       result = prime * result + ((location == null) ? 0 : location.hashCode());
       return result;
-   }
-
-   @Override
-   public String toString()
-   {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + "]";
    }
 
 }

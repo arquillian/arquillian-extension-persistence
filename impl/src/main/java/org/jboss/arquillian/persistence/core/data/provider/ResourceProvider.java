@@ -91,7 +91,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 
    public abstract Collection<String> getResourceFileNames(Method testMethod);
 
-   protected abstract T createDescriptor(String dataFileName);
+   protected abstract T createDescriptor(String resource);
 
    protected abstract String defaultLocation();
 
@@ -167,7 +167,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       return location;
    }
 
-   private boolean existsInGivenLocation(String location)
+   protected boolean existsInGivenLocation(String location)
    {
       try
       {
@@ -185,9 +185,9 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       return true;
    }
 
-   private boolean existsInDefaultLocation(String location)
+   protected boolean existsInDefaultLocation(String location)
    {
-      String defaultLocation = defaultFolder() + location;
+      final String defaultLocation = defaultFolder() + location;
       return existsInGivenLocation(defaultLocation);
    }
 

@@ -25,7 +25,7 @@ import java.util.List;
 import org.fest.assertions.Assertions;
 import org.fest.assertions.GroupAssert;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 
 public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert, Collection<DataSetResourceDescriptor>>
 {

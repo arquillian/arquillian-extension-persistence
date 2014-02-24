@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.script.data.descriptor;
 
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.script.ScriptLoader;
 
 /**
@@ -32,6 +33,12 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
    public FileSqlScriptResourceDescriptor(String location)
    {
       super(location);
+   }
+
+   @Override
+   public Format getFormat()
+   {
+      return Format.SQL_SCRIPT;
    }
 
    @Override
@@ -64,12 +71,6 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
       int result = 1;
       result = prime * result + ((location == null) ? 0 : location.hashCode());
       return result;
-   }
-
-   @Override
-   public String toString()
-   {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + "]";
    }
 
 }

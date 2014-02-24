@@ -37,9 +37,17 @@ public abstract class ResourceDescriptor<T>
 
    public abstract T getContent();
 
+   public abstract Format getFormat();
+
    public String getLocation()
    {
       return location;
    }
 
+   @Override
+   public String toString()
+   {
+      return this.getClass().getName() + "|" + hashCode()
+            + "@[location = " + getLocation() + ", format = " + getFormat() + "]";
+   }
 }

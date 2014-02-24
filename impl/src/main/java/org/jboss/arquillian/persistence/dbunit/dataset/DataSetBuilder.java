@@ -26,7 +26,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
 import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;

@@ -29,10 +29,13 @@ import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
+import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
+import org.jboss.arquillian.persistence.script.ScriptLoader;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.script.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -64,7 +67,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
    public static <K extends Annotation> SqlScriptProviderBuilder<K> forAnnotation(Class<K> annotation)
    {
-      return SqlScriptProviderBuilder.<K>create(annotation);
+      return SqlScriptProviderBuilder.create(annotation);
    }
 
    public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass, ScriptingConfiguration configuration)
@@ -161,9 +164,15 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
    }
 
    @Override
-   protected FileSqlScriptResourceDescriptor createDescriptor(String dataFileName)
+   protected SqlScriptResourceDescriptor createDescriptor(String resource)
    {
-      return new FileSqlScriptResourceDescriptor(determineLocation(dataFileName));
+
+      if (!ScriptLoader.isSqlScriptFile(resource))
+      {
+         return new InlineSqlScriptResourceDescriptor(resource);
+      }
+
+      return new FileSqlScriptResourceDescriptor(determineLocation(resource));
    }
 
    @Override

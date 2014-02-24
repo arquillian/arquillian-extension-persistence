@@ -22,6 +22,10 @@
     <property name="manager">java:jboss/UserTransaction</property>
   </extension>
 
+  <extension qualifier="persistence">
+    <property name="defaultDataSource">java:app/datasources/mysql_ds</property>
+  </extension>
+
   <extension qualifier="persistence-dbunit">
     <property name="schema">ape</property>
     <property name="datatypeFactory">org.dbunit.ext.mysql.MySqlDataTypeFactory</property>

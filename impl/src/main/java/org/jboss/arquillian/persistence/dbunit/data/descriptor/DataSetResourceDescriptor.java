@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.dbunit.data.descriptor;
 
 import org.dbunit.dataset.IDataSet;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 
@@ -38,6 +39,12 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
    {
       super(location);
       this.format = format;
+   }
+
+   @Override
+   public Format getFormat()
+   {
+      return format;
    }
 
    @Override
@@ -71,17 +78,6 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
       result = prime * result + ((location == null) ? 0 : location.hashCode());
       result = prime * result + ((format == null) ? 0 : format.hashCode());
       return result;
-   }
-
-   @Override
-   public String toString()
-   {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + location + ", " + format + "]";
-   }
-
-   public Format getFormat()
-   {
-      return format;
    }
 
 }

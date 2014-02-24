@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.script.data.descriptor;
 
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
+
 /**
  *
  * Inline SQL script descriptor.
@@ -33,6 +35,12 @@ public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescript
    {
       super("-inline-file-");
       this.content = content;
+   }
+
+   @Override
+   public Format getFormat()
+   {
+      return Format.INLINE_SQL;
    }
 
    @Override
@@ -70,7 +78,7 @@ public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescript
    @Override
    public String toString()
    {
-      return this.getClass().getSimpleName() + "@" + hashCode() + "[" + content + "]";
+      return super.toString() + "\n content {" + content + "}";
    }
 
 }

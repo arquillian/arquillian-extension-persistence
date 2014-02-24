@@ -59,6 +59,16 @@ public class ApplyingCustomScriptsTest
    }
 
    @Test
+   @ApplyScriptBefore({"INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
+                       "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')" })
+   @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
+   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
+   public void should_add_users_before_test_using_inline_script() throws Exception
+   {
+   }
+
+
+   @Test
    @ApplyScriptBefore("clark-kent.sql")
    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
    @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.BEFORE)

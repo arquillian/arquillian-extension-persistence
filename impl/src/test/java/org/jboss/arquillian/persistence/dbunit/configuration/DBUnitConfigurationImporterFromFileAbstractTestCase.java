@@ -17,16 +17,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
+import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Properties;
 
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
-import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
-import org.junit.Test;
+import static org.fest.assertions.Assertions.assertThat;
 
 public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase
 {

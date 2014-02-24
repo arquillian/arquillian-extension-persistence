@@ -31,9 +31,9 @@ import org.dbunit.dataset.filter.IColumnFilter;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature;
 import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
 
 /**
  *

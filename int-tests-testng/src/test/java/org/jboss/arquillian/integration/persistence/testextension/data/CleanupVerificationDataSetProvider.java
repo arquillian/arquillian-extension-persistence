@@ -30,7 +30,7 @@ import org.jboss.arquillian.persistence.core.metadata.AnnotationInspector;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.Format;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
@@ -54,9 +54,9 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
    }
 
    @Override
-   protected DataSetResourceDescriptor createDescriptor(String dataFileName)
+   protected DataSetResourceDescriptor createDescriptor(String resource)
    {
-      return new DataSetResourceDescriptor(determineLocation(dataFileName), inferFormat(dataFileName));
+      return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
    }
 
    @Override

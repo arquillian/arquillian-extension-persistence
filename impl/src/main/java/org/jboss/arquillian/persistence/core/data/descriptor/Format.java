@@ -1,8 +1,7 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
- * as indicated by the @authors tag. All rights reserved.
- * See the copyright.txt in the distribution for a
+ * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,25 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.descriptor;
+package org.jboss.arquillian.persistence.core.data.descriptor;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-/**
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- */
 public enum Format
 {
+   DTD("dtd"),
    XML("xml"),
    EXCEL("xls"),
    YAML("yml"),
    JSON("json"),
+   INLINE_SQL("-inline-"),
+   SQL_SCRIPT("sql"),
    UNSUPPORTED("-none-");
 
-   private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED);
+   private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED, INLINE_SQL);
 
    private final String fileExtension;
 
@@ -49,7 +46,6 @@ public enum Format
 
    public static Format inferFromFile(String fileName)
    {
-      Format result = UNSUPPORTED;
       final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
 
       for (Format format : validFormats)
@@ -60,8 +56,12 @@ public enum Format
          }
       }
 
-      return result;
+      return UNSUPPORTED;
+   }
 
+   public static boolean isFileType(Format format)
+   {
+      return EnumSet.complementOf(NOT_REAL_FILE_TYPES).contains(format);
    }
 
 }
