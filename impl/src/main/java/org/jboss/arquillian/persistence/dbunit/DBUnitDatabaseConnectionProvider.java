@@ -17,20 +17,15 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import java.lang.annotation.Annotation;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.connection.DatabaseConnectionRegistry;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
+
+import javax.sql.DataSource;
+import java.lang.annotation.Annotation;
 
 /**
  * Injects DBUnit database connection through {@link ArquillianResource} annotation to the test class instance.
@@ -48,7 +43,7 @@ public class DBUnitDatabaseConnectionProvider implements ResourceProvider
    private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
    @Inject
-   private Instance<DatabaseConnectionRegistry> databaseConnectionRegistry;
+   private Instance<DatabaseConnection> databaseConnectionInstance;
 
    /* (non-Javadoc)
     * @see org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider#canProvide(java.lang.Class)
@@ -65,20 +60,7 @@ public class DBUnitDatabaseConnectionProvider implements ResourceProvider
    @Override
    public Object lookup(ArquillianResource resource, Annotation... qualifiers)
    {
-      final DataSource dataSource = dataSourceInstance.get();
-      final String schema = dbUnitConfigurationInstance.get().getSchema();
-      try
-      {
-         return databaseConnectionRegistry.get().createDatabaseConnection(dataSource, schema);
-      }
-      catch (DatabaseUnitException e)
-      {
-         throw new DBUnitConnectionException("Unable to inject database connection.", e);
-      }
-      catch (SQLException e)
-      {
-         throw new DBUnitConnectionException("Unable to inject database connection.", e);
-      }
+      return databaseConnectionInstance.get();
    }
 
 }
