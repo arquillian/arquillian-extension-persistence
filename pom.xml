@@ -27,9 +27,6 @@
     <module>impl</module>
     <module>spi</module>
     <module>int-tests</module>
-    <!--
-    <module>int-tests-testng</module>
-    -->
   </modules>
 
   <developers>

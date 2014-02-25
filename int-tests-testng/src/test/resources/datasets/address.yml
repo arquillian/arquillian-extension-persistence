@@ -1,9 +1,0 @@
-address:
-  - id: 1
-    streetname: "Kryptonite Street"
-    houseNumber: 7
-    city: Metropolis
-    zipCode: 1234 
-useraccount_address:
-  - useraccount_id: 1
-    addresses_id: 1  
