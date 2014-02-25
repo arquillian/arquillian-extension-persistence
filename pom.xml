@@ -160,7 +160,6 @@
       <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
-              <forkMode>always</forkMode>
               <classpathDependencyExcludes>
                   <classpathDependencyExcludes>
                       javax.servlet:servlet-api
