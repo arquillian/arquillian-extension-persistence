@@ -22,10 +22,13 @@ import java.util.List;
 
 /**
  *
- * Implements parsing of specific SQL dialect and splits the script into executable sql parts.
+ * By providing concrete implementation you can specify parsing logic for given SQL dialect
+ * and splits the script into executable sql parts.
+ *
+ * Custom implementation can be bundled with the test class (for example as separated JAR) and should have
+ * proper SPI entry in META-INF/services.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 public interface StatementSplitter
 {
