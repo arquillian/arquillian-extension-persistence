@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Before;
 import org.junit.Test;

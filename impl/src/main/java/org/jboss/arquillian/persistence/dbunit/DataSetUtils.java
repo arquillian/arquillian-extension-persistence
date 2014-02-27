@@ -89,4 +89,13 @@ public class DataSetUtils
       return new FilteredDataSet(new ExcludeTableFilter(tablesToExclude), dataSet);
    }
 
+   public static String[] tableNamesInUpperCase(String ... tableNamesOriginal) throws DataSetException
+   {
+      final List<String> tableNamesUpperCased = new ArrayList<String>(tableNamesOriginal.length);
+      for (String tableName : tableNamesOriginal)
+      {
+         tableNamesUpperCased.add(tableName.toUpperCase());
+      }
+      return tableNamesUpperCased.toArray(new String[tableNamesUpperCased.size()]);
+   }
 }

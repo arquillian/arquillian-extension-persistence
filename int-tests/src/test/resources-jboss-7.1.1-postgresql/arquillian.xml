@@ -21,6 +21,7 @@
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
+    <property name="filterTables">true</property>
   </extension>
 
   <extension qualifier="persistence-script">

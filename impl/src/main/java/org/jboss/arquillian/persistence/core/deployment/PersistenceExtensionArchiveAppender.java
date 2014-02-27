@@ -29,8 +29,11 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.client.PersistenceExtension;
 import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.script.DefaultStatementSplitter;
-import org.jboss.arquillian.persistence.script.oracle.OracleStatementSplitter;
+import org.jboss.arquillian.persistence.dbunit.filter.DefaultDatabaseSequenceFilterProvider;
+import org.jboss.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider;
+import org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter;
+import org.jboss.arquillian.persistence.script.splitter.oracle.OracleStatementSplitter;
+import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
 import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
@@ -68,7 +71,8 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                                                                 .addPackages(true, requiredLibraries())
                                                                 .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
                                                                 .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class, OracleStatementSplitter.class)
-                                                                .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
+                                                                .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class)
+                                                                .addAsServiceProvider(TableFilterProvider.class, DefaultDatabaseSequenceFilterProvider.class, OracleDatabaseSequenceFilterProvider.class);
 
       return persistenceExtensionArchive;
    }

@@ -111,7 +111,9 @@ public class DBUnitConfiguration extends Configuration
 
    private String schema;
 
-   private boolean filterForeignKeysEnabled = false;
+   private boolean filterTables = false;
+
+   private String customTableFilter;
 
    public DBUnitConfiguration()
    {
@@ -434,22 +436,40 @@ public class DBUnitConfiguration extends Configuration
    /**
     * @param excludeTablesFromComparisonWhenEmptyExpected list of tables which should not be considered when asserting database content for emptiness.
     */
-   public void setExcludeTablesFromComparisonWhenEmptyExpected(String[] excludeFromComparisonWhenEmptyExpected)
+   public void setExcludeTablesFromComparisonWhenEmptyExpected(String[] excludeTablesFromComparisonWhenEmptyExpected)
    {
-      this.excludeTablesFromComparisonWhenEmptyExpected = excludeFromComparisonWhenEmptyExpected;
+      this.excludeTablesFromComparisonWhenEmptyExpected = excludeTablesFromComparisonWhenEmptyExpected;
    }
 
-   public boolean isFilterForeignKeysEnabled()
+   public boolean isFilterTables()
    {
-      return filterForeignKeysEnabled;
+      return filterTables;
    }
 
    /**
     * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
-    * @param filterForeignKeysEnabled
+    * This property is related to {@link #customTableFilter} which is used to specify which implementation of
+    * {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
+    * @param filterTables
     */
-   public void setFilterForeignKeysEnabled(boolean filterForeignKeysEnabled)
+   public void setFilterTables(boolean filterTables)
    {
-      this.filterForeignKeysEnabled = filterForeignKeysEnabled;
+      this.filterTables = filterTables;
+   }
+
+   public String getCustomTableFilter()
+   {
+      return customTableFilter;
+   }
+
+   /**
+    * Specifies which implementation of {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
+    * should be used when {@link #filterTables} is enabled.
+    *
+    * @param customTableFilter
+    */
+   public void setCustomTableFilter(String customTableFilter)
+   {
+      this.customTableFilter = customTableFilter;
    }
 }

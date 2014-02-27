@@ -19,7 +19,6 @@ package org.jboss.arquillian.persistence.script;
 
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.oracle.OracleStatementSplitter;
 import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
 
 import java.sql.Connection;

@@ -18,14 +18,16 @@
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
+import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
 import java.util.logging.Logger;
 
@@ -59,9 +61,11 @@ public class UsedTablesOnlyCleanupStrategyExecutor implements CleanupStrategyExe
       {
          final IDataSet mergeDataSets = DataSetUtils.mergeDataSets(dataSetRegister.getInitial());
          IDataSet dataSet = DataSetUtils.excludeTables(mergeDataSets, tablesToExclude);
-         if (dbUnitConfiguration.isFilterForeignKeysEnabled())
+         if (dbUnitConfiguration.isFilterTables())
          {
-            dataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), dataSet);
+            final TableFilterProvider tableFilterProvider = new TableFilterResolver(dbUnitConfiguration).resolve();
+            final ITableFilter tableFilter = tableFilterProvider.provide(connection, dataSet.getTableNames());
+            dataSet = new FilteredDataSet(tableFilter, dataSet);
          }
          DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
       }

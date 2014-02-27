@@ -18,10 +18,10 @@
 package org.jboss.arquillian.persistence.dbunit;
 
 import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
+import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -39,15 +39,17 @@ import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrat
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
 import org.jboss.arquillian.persistence.script.ScriptExecutor;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.jboss.arquillian.persistence.script.splitter.StatementSplitterResolver;
+import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
-import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.ServiceLoader;
+
+import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.mergeDataSets;
 
 /**
  *
@@ -80,7 +82,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         fillDatabase();
+         seedDatabase();
       }
       catch (Exception e)
       {
@@ -94,12 +96,12 @@ public class DBUnitDataHandler implements DataHandler
       try
       {
          IDataSet currentDataSet = databaseConnection.get().createDataSet();
-         final String[] excludeTablesFromComparisonWhenEmptyExpected = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
-         if (excludeTablesFromComparisonWhenEmptyExpected.length != 0)
+         final String[] excludeTables = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
+         if (excludeTables.length != 0)
          {
-            currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTablesFromComparisonWhenEmptyExpected), currentDataSet);
+            currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
          }
-         final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
+         final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
          new DataSetComparator(compareDataEvent.getSortByColumns(), compareDataEvent.getColumnsToExclude()).compare(currentDataSet, expectedDataSet,
                assertionErrorCollector.get());
       }
@@ -139,7 +141,7 @@ public class DBUnitDataHandler implements DataHandler
    {
       try
       {
-         StatementSplitter statementSplitter = resolveStatementSplitter(scriptConfigurationInstance.get().getSqlDialect());
+         final StatementSplitter statementSplitter = new StatementSplitterResolver(scriptConfigurationInstance.get()).resolve();
          final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(), statementSplitter);
          scriptExecutor.execute(script);
       }
@@ -149,18 +151,20 @@ public class DBUnitDataHandler implements DataHandler
       }
    }
 
-   private void fillDatabase() throws Exception
+   private void seedDatabase() throws Exception
    {
       final DatabaseConnection connection = databaseConnection.get();
-      IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
-      if (dbunitConfigurationInstance.get().isFilterForeignKeysEnabled())
+      IDataSet initialDataSet = mergeDataSets(dataSetRegister.get().getInitial());
+      if (dbunitConfigurationInstance.get().isFilterTables())
       {
-         initialDataSet = new FilteredDataSet(new DatabaseSequenceFilter(connection), initialDataSet);
+         final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
+         final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
+         initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
       }
-      getSelectedSeedingStrategy().execute(connection, initialDataSet);
+      seedingStrategy().execute(connection, initialDataSet);
    }
 
-   private DatabaseOperation getSelectedSeedingStrategy()
+   private DatabaseOperation seedingStrategy()
    {
       final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
       final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
@@ -173,32 +177,6 @@ public class DBUnitDataHandler implements DataHandler
       final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
             databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
       cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
-   }
-
-   private StatementSplitter resolveStatementSplitter(String sqlDialect)
-   {
-      StatementSplitter resolved = null;
-      final Collection<StatementSplitter> statementSplitters = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
-      for (StatementSplitter statementSplitter : statementSplitters)
-      {
-         if (statementSplitter.supports().equalsIgnoreCase(sqlDialect))
-         {
-            if (resolved != null)
-            {
-               throw new IllegalStateException("Found multiple implementations of " + StatementSplitter.class.getName()
-                     + " for specified dialect " + sqlDialect);
-            }
-            resolved = statementSplitter;
-            resolved.setStatementDelimiter(scriptConfigurationInstance.get().getSqlStatementDelimiter());
-         }
-      }
-
-      if (resolved == null)
-      {
-         throw new IllegalStateException("Unresolvable implementation of " + StatementSplitter.class.getName() + " for specified dialect " + sqlDialect);
-      }
-
-      return resolved;
    }
 
 }

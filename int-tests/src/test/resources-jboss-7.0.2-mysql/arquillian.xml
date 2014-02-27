@@ -33,6 +33,7 @@
     <property name="caseSensitiveTableNames">true</property>
     <property name="excludeTablesFromComparisonWhenEmptyExpected">hibernate_sequence</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
+    <property name="filterTables">true</property>
   </extension>
 
   <extension qualifier="persistence-script">

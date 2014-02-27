@@ -147,7 +147,7 @@ public class ScriptingConfiguration extends Configuration
 
    /**
     * Defines which SQL-specific implementation of {@link org.jboss.arquillian.persistence.spi.script.StatementSplitter} (parser)
-    * should be used when splitting sql script into separated statements. Default value is "default" and {@link org.jboss.arquillian.persistence.script.DefaultStatementSplitter} is used.
+    * should be used when splitting sql script into separated statements. Default value is "default" and {@link org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter} is used.
     * @param sqlDialect
     */
    public void setSqlDialect(String sqlDialect)
