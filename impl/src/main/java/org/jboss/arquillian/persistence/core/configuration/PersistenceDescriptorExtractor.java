@@ -73,7 +73,7 @@ public class PersistenceDescriptorExtractor
             try
             {
                GenericArchive genericArchive = archive.getAsType(GenericArchive.class, path);
-               if (Testable.isArchiveToTest(genericArchive))
+               if (genericArchive != null && Testable.isArchiveToTest(genericArchive))
                {
                   return genericArchive;
                }

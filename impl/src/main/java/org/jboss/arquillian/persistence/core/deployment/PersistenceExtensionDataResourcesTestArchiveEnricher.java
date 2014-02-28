@@ -16,12 +16,6 @@
  */
 package org.jboss.arquillian.persistence.core.deployment;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -44,8 +38,11 @@ import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.container.LibraryContainer;
+import org.jboss.shrinkwrap.api.container.ResourceContainer;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+
+import java.util.*;
 
 import static org.jboss.arquillian.persistence.core.data.descriptor.Format.isFileType;
 
@@ -77,39 +74,11 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       final Set<ResourceDescriptor<?>> allDataResources = fetchAllDataResources(testClass);
       if (!allDataResources.isEmpty())
       {
-         addResources(applicationArchive, toJavaArchive(allDataResources));
+         addResources(applicationArchive, allDataResources);
       }
    }
 
    // Private helper methods
-
-   private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
-   {
-      if (JavaArchive.class.isInstance(applicationArchive))
-      {
-         applicationArchive.merge(dataArchive);
-      }
-      else
-      {
-         final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-         libraryContainer.addAsLibrary(dataArchive);
-      }
-   }
-
-   private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors)
-   {
-      final List<String> paths = new ArrayList<String>(descriptors.size());
-
-      for (ResourceDescriptor<?> descriptor : descriptors)
-      {
-         if (isFileType(descriptor.getFormat()))
-         {
-            paths.add(descriptor.getLocation());
-         }
-      }
-
-      return createArchiveWithResources(paths.toArray(new String[paths.size()]));
-   }
 
    private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
    {
@@ -134,6 +103,60 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       return allDataSets;
    }
 
+   private void addResources(Archive<?> applicationArchive, Set<ResourceDescriptor<?>> allDataResources)
+   {
+      final List<String> resources = extractPaths(allDataResources);
+
+      if (EnterpriseArchive.class.isInstance(applicationArchive))
+      {
+         ((EnterpriseArchive) applicationArchive).addAsLibrary(createArchiveWithResources(resources));
+      }
+      else if (ResourceContainer.class.isInstance(applicationArchive))
+      {
+         addResourcesToApplicationArchive((ResourceContainer<?>) applicationArchive, resources);
+      }
+      else
+      {
+         throw new RuntimeException("Unsupported archive type " + applicationArchive.getClass().getName());
+      }
+   }
+
+   private void addResourcesToApplicationArchive(ResourceContainer<?> applicationArchive, List<String> resourcePaths)
+   {
+      for (String path : resourcePaths)
+      {
+         applicationArchive.addAsResource(path);
+      }
+   }
+
+
+   private JavaArchive createArchiveWithResources(Collection<String> resourcePaths)
+   {
+      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-datasets.jar");
+
+      for (String path : resourcePaths)
+      {
+         dataSetsArchive.addAsResource(path);
+      }
+
+      return dataSetsArchive;
+   }
+
+   private List<String> extractPaths(final Collection<? extends ResourceDescriptor<?>> descriptors)
+   {
+      final List<String> paths = new ArrayList<String>(descriptors.size());
+
+      for (ResourceDescriptor<?> descriptor : descriptors)
+      {
+         if (isFileType(descriptor.getFormat()))
+         {
+            paths.add(descriptor.getLocation());
+         }
+      }
+
+      return paths;
+   }
+
    private Collection<DtdFileResourceDescriptor> extractDtds(Collection<DataSetResourceDescriptor> descriptors)
    {
       final Collection<DtdFileResourceDescriptor> dtds = new ArrayList<DtdFileResourceDescriptor>();
@@ -152,17 +175,4 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
       }
       return dtds;
    }
-
-   private JavaArchive createArchiveWithResources(String ... resourcePaths)
-   {
-      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
-
-      for (String path : resourcePaths)
-      {
-         dataSetsArchive.addAsResource(path);
-      }
-
-      return dataSetsArchive;
-   }
-
 }
