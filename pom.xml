@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>8</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <!-- Model Version -->
@@ -67,8 +68,10 @@
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
+    <version.wildfly>8.0.0.Final</version.wildfly>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.4.9</version.dbunit>
+    <version.mysql.driver>5.1.21</version.mysql.driver>
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
     <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
@@ -156,17 +159,17 @@
         </configuration>
       </plugin>
       <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-              <classpathDependencyExcludes>
-                  <classpathDependencyExcludes>
-                      javax.servlet:servlet-api
-                  </classpathDependencyExcludes>
-                  <classpathDependencyExcludes>
-                      org.apache.felix:javax.servlet
-                  </classpathDependencyExcludes>
-              </classpathDependencyExcludes>
-          </configuration>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <classpathDependencyExcludes>
+            <classpathDependencyExcludes>
+              javax.servlet:servlet-api
+            </classpathDependencyExcludes>
+            <classpathDependencyExcludes>
+              org.apache.felix:javax.servlet
+            </classpathDependencyExcludes>
+          </classpathDependencyExcludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -615,7 +618,7 @@
         <dependency>
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
-          <version>5.1.21</version>
+          <version>${version.mysql.driver}</version>
         </dependency>
       </dependencies>
       <build>
@@ -798,27 +801,121 @@
       </build>
     </profile>
     <profile>
+      <id>wildfly-managed-arquillian</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <version>${version.wildfly}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.extension</groupId>
+          <artifactId>arquillian-transaction-jta</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.spec</groupId>
+          <artifactId>jboss-javaee-6.0</artifactId>
+          <version>${version.jbossas_spec}</version>
+          <type>pom</type>
+          <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>${version.mysql.driver}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.wildfly</groupId>
+                      <artifactId>wildfly-dist</artifactId>
+                      <version>${version.wildfly}</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-wildfly-8.0.0</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
       <id>tomee-1.5-managed</id>
       <dependencies>
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>arquillian-tomee-remote</artifactId>
-            <version>1.5.2</version>
-            <scope>test</scope>
+          <groupId>org.apache.openejb</groupId>
+          <artifactId>arquillian-tomee-remote</artifactId>
+          <version>1.5.2</version>
+          <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>apache-tomee</artifactId>
-            <version>1.5.2</version>
-            <classifier>webprofile</classifier>
-            <type>zip</type>
-            <scope>test</scope>
+          <groupId>org.apache.openejb</groupId>
+          <artifactId>apache-tomee</artifactId>
+          <version>1.5.2</version>
+          <classifier>webprofile</classifier>
+          <type>zip</type>
+          <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0-4</version>
-            <scope>provided</scope>
+          <groupId>org.apache.openejb</groupId>
+          <artifactId>javaee-api</artifactId>
+          <version>6.0-4</version>
+          <scope>provided</scope>
         </dependency>
       </dependencies>
       <build>

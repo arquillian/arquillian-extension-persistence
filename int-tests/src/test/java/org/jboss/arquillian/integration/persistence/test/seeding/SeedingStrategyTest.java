@@ -32,6 +32,7 @@ public class SeedingStrategyTest
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
                        .addClass(Query.class)
+                       .addPackages(true, "org.fest")
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("test-persistence.xml", "persistence.xml");
    }
