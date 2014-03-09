@@ -22,12 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
@@ -163,17 +159,19 @@ public class ConfigurationImporter<T extends Configuration>
             }
          }
       }
-
-      reportNonExistingFields(fieldsWithValues);
+      if (!fieldsWithValues.keySet().isEmpty())
+      {
+         reportNonExistingFields(fieldsWithValues, fields);
+      }
 
    }
 
-   private void reportNonExistingFields(final Map<String, String> fieldsWithValues)
+   private void reportNonExistingFields(final Map<String, String> fieldsWithValues, final Collection<Field> fields)
    {
-      for (String nonExistingField : fieldsWithValues.keySet())
-      {
-         log.warning(configuration + " does not support property named '" + nonExistingField + "'. Please revise your arquillian.xml.");
-      }
+      String[] knownFields = extractFieldNames(fields);
+      log.warning(configuration + " does not support properties provided '" + Arrays.toString(fieldsWithValues.keySet().toArray())
+            + ". Possible values: " + Arrays.toString(knownFields) + "'. Please revise your arquillian.xml. "
+            + "For more details you can refer to the official documentation https://docs.jboss.org/author/display/ARQ/Persistence");
    }
 
    private Map<String, String> extractPropertiesFromDescriptor(String extensionName, ArquillianDescriptor descriptor)
@@ -187,6 +185,17 @@ public class ConfigurationImporter<T extends Configuration>
       }
 
       return Collections.emptyMap();
+   }
+
+   private String[] extractFieldNames(Collection<Field> fields)
+   {
+      final String[] knownFields = new String[fields.size()];
+      int index = 0;
+      for (Field field : fields)
+      {
+         knownFields[index++] = field.getName();
+      }
+      return knownFields;
    }
 
 }
