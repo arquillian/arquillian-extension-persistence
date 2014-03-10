@@ -33,7 +33,7 @@
 
     <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-impl</artifactId>
+      <artifactId>arquillian-persistence-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
       <exclusions>
@@ -46,6 +46,13 @@
           <groupId>org.jboss.arquillian.extension</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-dbunit</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

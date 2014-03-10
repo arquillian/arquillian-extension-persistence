@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- Parent -->
+  <parent>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-persistence-parent</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+  </parent>
+
+  <!-- Model Version -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Artifact Configuration -->
+  <artifactId>arquillian-persistence-dbunit</artifactId>
+  <name>Arquillian Persistence Extension DBUnit Integration</name>
+  <description>Extension for controlling data sources</description>
+
+  <properties>
+    <version.snakeyaml>1.10</version.snakeyaml>
+    <version.jackson>1.9.2</version.jackson>
+    <version.poi>3.2-FINAL</version.poi>
+    <version.cdi>1.0-SP1</version.cdi>
+    <version.jta>1.1</version.jta>
+    <version.slf4j>1.7.2</version.slf4j>
+    <version.junit_params>0.4.0</version.junit_params>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-spi</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-transaction-spi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.dbunit</groupId>
+      <artifactId>dbunit</artifactId>
+      <version>${version.dbunit}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${version.slf4j}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>${version.snakeyaml}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${version.jackson}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>${version.poi}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>${version.jta}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Arquillian dependencies -->
+    <dependency>
+      <groupId>org.jboss.arquillian.core</groupId>
+      <artifactId>arquillian-core-impl-base</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.test</groupId>
+      <artifactId>arquillian-test-impl-base</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.core</groupId>
+      <artifactId>arquillian-core-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-container-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-container-test-impl-base</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.test</groupId>
+      <artifactId>arquillian-test-spi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.config</groupId>
+      <artifactId>arquillian-config-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.shrinkwrap</groupId>
+      <artifactId>shrinkwrap-impl-base</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+        <artifactId>shrinkwrap-descriptors-api-base</artifactId>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.jboss.arquillian.test</groupId>
+      <artifactId>arquillian-test-impl-base</artifactId>
+      <scope>test</scope>
+      <classifier>tests</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.core</groupId>
+      <artifactId>arquillian-core-impl-base</artifactId>
+      <scope>test</scope>
+      <classifier>tests</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>pl.pragmatists</groupId>
+      <artifactId>JUnitParams</artifactId>
+      <version>${version.junit_params}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

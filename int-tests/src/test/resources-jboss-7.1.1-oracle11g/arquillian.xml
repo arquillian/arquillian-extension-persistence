@@ -31,7 +31,7 @@
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
     <property name="excludeTablesFromComparisonWhenEmptyExpected">hibernate_sequence</property>
     <property name="filterTables">true</property>
-    <property name="customTableFilter">org.jboss.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider</property>
+    <property name="customTableFilter">OracleDatabaseSequenceFilterProvider</property>
   </extension>
   
   <extension qualifier="persistence-script">

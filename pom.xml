@@ -25,7 +25,8 @@
 
   <modules>
     <module>api</module>
-    <module>impl</module>
+    <module>core</module>
+    <module>dbunit</module>
     <module>spi</module>
     <module>int-tests</module>
   </modules>
@@ -801,7 +802,7 @@
       </build>
     </profile>
     <profile>
-      <id>wildfly-managed-arquillian</id>
+      <id>wildfly-managed</id>
       <dependencies>
         <dependency>
           <groupId>org.wildfly</groupId>
