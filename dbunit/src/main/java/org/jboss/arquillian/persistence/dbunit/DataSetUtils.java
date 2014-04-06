@@ -30,6 +30,7 @@ import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
+import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
 
 /**
  *

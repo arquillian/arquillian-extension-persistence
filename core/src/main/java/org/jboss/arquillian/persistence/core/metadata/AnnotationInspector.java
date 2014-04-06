@@ -19,8 +19,7 @@ package org.jboss.arquillian.persistence.core.metadata;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.jboss.arquillian.test.spi.TestClass;
 
@@ -43,6 +42,18 @@ public class AnnotationInspector<T extends Annotation>
       this.testClass = testClass;
       this.annotationClass = annotationClass;
       this.annotatedMethods = fetch(annotationClass);
+   }
+
+   public Collection<T> fetchAll()
+   {
+      final Set<T> all = new HashSet<T>();
+      all.addAll(annotatedMethods.values());
+      final T annotationOnClassLevel = getAnnotationOnClassLevel();
+      if (annotationOnClassLevel != null)
+      {
+         all.add(annotationOnClassLevel);
+      }
+      return all;
    }
 
    public boolean isDefinedOn(Method method)

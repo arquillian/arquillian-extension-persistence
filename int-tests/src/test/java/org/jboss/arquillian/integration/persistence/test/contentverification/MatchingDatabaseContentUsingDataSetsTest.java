@@ -5,16 +5,21 @@ import static org.fest.assertions.Assertions.assertThat;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.Address;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
+import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,12 +30,12 @@ public class MatchingDatabaseContentUsingDataSetsTest
    @Deployment
    public static Archive<?> createDeploymentPackage()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
+      return ShrinkWrap.create(WebArchive.class, "test.war")
                        .addPackage(UserAccount.class.getPackage())
                        // required for remote containers in order to run tests with FEST-Asserts
                        .addPackages(true, "org.fest")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
+                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }
 
    @PersistenceContext
@@ -56,7 +61,7 @@ public class MatchingDatabaseContentUsingDataSetsTest
    @Test
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet(value = "expected-users-with-ids.yml", excludeColumns = "id", orderBy = "id")
-   // expected-users-with-ids.yml is constructed in a way that it will fail without exclusion
+   // expected-users-with-ids.yml is constructed in a way that it will fail without the exclusion
    public void should_verify_database_content_using_custom_data_set_with_column_exclusion() throws Exception
    {
       // given
@@ -129,5 +134,45 @@ public class MatchingDatabaseContentUsingDataSetsTest
    @Test
    @UsingDataSet("three-users.yml")
    @ShouldMatchDataSet(value = { "three-users.yml" }, orderBy = { "id" })
-   public void should_verify_database_content_using_custom_data_set_with_order_by_number_type_column() throws Exception{}
+   public void should_verify_database_content_using_custom_data_set_with_order_by_number_type_column() throws Exception {}
+
+   @Test
+   @UsingDataSet("three-users.yml")
+   @ShouldMatchDataSet(value = {"datasets/three-users-with-fake-firstname.yml"}, orderBy = { "id" })
+   @CustomColumnFilter(FirstNameColumnFilter.class)
+   public void should_filter_non_existing_columns_using_custom_filter() throws Exception
+   {
+   }
+
+   @Test
+   @UsingDataSet("three-users.yml")
+   @ShouldMatchDataSet(value = "datasets/three-users-with-fake-names.yml", orderBy = { "id" })
+   @CustomColumnFilter({ FirstNameColumnFilter.class, LastNameColumnFilter.class } )
+   public void should_filter_non_existing_columns_using_custom_filters_combined() throws Exception
+   {
+   }
+
+   @Test
+   @UsingDataSet("three-users.yml")
+   @ShouldMatchDataSet(value = "datasets/three-users-with-fake-names.yml", orderBy = { "id" })
+   @CustomColumnFilter(NameColumnFilter.class)
+   public void should_filter_non_existing_columns_using_custom_filter_from_external_class_which_should_be_autodeployed() throws Exception
+   {
+   }
+
+   public static class FirstNameColumnFilter extends DefaultColumnFilter
+   {
+      public FirstNameColumnFilter()
+      {
+         excludeColumn("first*");
+      }
+   }
+
+   public static class LastNameColumnFilter extends DefaultColumnFilter
+   {
+      public LastNameColumnFilter()
+      {
+         excludeColumn("last*");
+      }
+   }
 }

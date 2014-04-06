@@ -19,25 +19,22 @@ package org.jboss.arquillian.persistence.dbunit.deployment;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.core.data.descriptor.DtdFileResourceDescriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.core.metadata.AnnotationInspector;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -68,6 +65,12 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
          return;
       }
 
+      addCustomColumnFilters(applicationArchive, testClass);
+      addResources(applicationArchive, testClass);
+   }
+
+   private void addResources(Archive<?> applicationArchive, TestClass testClass)
+   {
       final Set<ResourceDescriptor<?>> allDataResources = fetchAllDataResources(testClass);
       if (!allDataResources.isEmpty())
       {
@@ -76,6 +79,34 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
    }
 
    // Private helper methods
+
+   private void addCustomColumnFilters(Archive<?> applicationArchive, TestClass testClass)
+   {
+      final AnnotationInspector<CustomColumnFilter> inspector = new AnnotationInspector<CustomColumnFilter>(testClass, CustomColumnFilter.class);
+      final Collection<CustomColumnFilter> allCustomAnnotations = inspector.fetchAll();
+      if (allCustomAnnotations.isEmpty())
+      {
+         return;
+      }
+
+      if (applicationArchive instanceof EnterpriseArchive)
+      {
+         final JavaArchive customFiltersArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-custom-filters.jar");
+         for (CustomColumnFilter filter : allCustomAnnotations)
+         {
+            customFiltersArchive.addClasses(filter.value());
+            EnterpriseArchive.class.cast(applicationArchive).addAsLibrary(customFiltersArchive);
+         }
+      }
+      else if (applicationArchive instanceof ClassContainer)
+      {
+         for (CustomColumnFilter filter : allCustomAnnotations)
+         {
+            (ClassContainer.class.cast(applicationArchive)).addClasses(filter.value());
+         }
+      }
+
+   }
 
    private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
    {

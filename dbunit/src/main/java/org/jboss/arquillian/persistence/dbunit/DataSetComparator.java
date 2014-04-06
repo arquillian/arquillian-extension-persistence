@@ -28,12 +28,9 @@ import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.assertion.DiffCollectingFailureHandler;
 import org.dbunit.assertion.Difference;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.dataset.TableWrapper;
@@ -50,10 +47,13 @@ public class DataSetComparator
 
    final ColumnsHolder orderBy;
 
-   public DataSetComparator(final String[] orderBy, final String[] toExclude)
+   final Set<Class<? extends IColumnFilter>> columnFilters;
+
+   public DataSetComparator(final String[] orderBy, final String[] toExclude, Set<Class<? extends IColumnFilter>> columnFilters)
    {
       this.toExclude = new ColumnsHolder(toExclude);
       this.orderBy = new ColumnsHolder(orderBy);
+      this.columnFilters = columnFilters;
    }
 
    public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
@@ -209,9 +209,28 @@ public class DataSetComparator
       return columnsToIgnore;
    }
 
-   private ITable filter(ITable table, String[] columnsToFilter) throws DataSetException
+   private ITable filter(final ITable table, final String[] columnsToFilter) throws DataSetException
    {
-      return DefaultColumnFilter.excludedColumnsTable(table, columnsToFilter);
+      ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(table, columnsToFilter);
+      return applyCustomFilters(filteredTable);
+   }
+
+   private ITable applyCustomFilters(ITable table)
+   {
+      for (Class<? extends IColumnFilter> columnFilter : columnFilters)
+      {
+         try
+         {
+            final IColumnFilter customColumnFilter = columnFilter.newInstance();
+            FilteredTableMetaData metaData = new FilteredTableMetaData(table.getTableMetaData(), customColumnFilter);
+            table = new CompositeTable(metaData, table);
+         }
+         catch (Exception e)
+         {
+            throw new DBUnitDataSetHandlingException("Unable to initialize custom column filters", e);
+         }
+      }
+      return table;
    }
 
 }

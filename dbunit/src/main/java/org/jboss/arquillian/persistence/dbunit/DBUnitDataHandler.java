@@ -105,7 +105,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
          }
          final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
          final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
-               compareDataEvent.getColumnsToExclude());
+               compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
          dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
       }
       catch (Exception e)

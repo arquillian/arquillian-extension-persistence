@@ -20,11 +20,13 @@ package org.jboss.arquillian.integration.persistence.testextension.data;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.filter.IColumnFilter;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -58,11 +60,11 @@ public class DataContentVerifier
 
    public void verifyDatabaseContentAfterTest(@Observes(precedence = -1000) AfterPersistenceTest afterPersistenceTest)
    {
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {});
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, Collections.<Class<? extends IColumnFilter>>emptySet());
       ShouldMatchDataSet shouldMatchDataSet = afterPersistenceTest.getTestMethod().getAnnotation(ShouldMatchDataSet.class);
       if (shouldMatchDataSet != null)
       {
-         dataSetComparator = new DataSetComparator(shouldMatchDataSet.orderBy(), shouldMatchDataSet.excludeColumns());
+         dataSetComparator = new DataSetComparator(shouldMatchDataSet.orderBy(), shouldMatchDataSet.excludeColumns(), Collections.<Class<? extends IColumnFilter>>emptySet());
       }
       try
       {

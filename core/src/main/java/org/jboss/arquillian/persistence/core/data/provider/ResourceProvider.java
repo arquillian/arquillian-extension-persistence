@@ -73,7 +73,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
       {
          descriptors.addAll(getDescriptorsDefinedFor(testMethod));
       }
-      descriptors.addAll(obtainClassLevelDataSet(testClass.getAnnotation(resourceAnnotation)));
+      descriptors.addAll(obtainClassLevelDescriptor(testClass.getAnnotation(resourceAnnotation)));
       return descriptors ;
    }
 
@@ -97,7 +97,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
 
    protected abstract String defaultFileName();
 
-   protected List<T> obtainClassLevelDataSet(Annotation classLevelAnnotation)
+   protected List<T> obtainClassLevelDescriptor(Annotation classLevelAnnotation)
    {
       if (classLevelAnnotation == null)
       {
@@ -112,16 +112,16 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
                                                                 .getMethod("value")
                                                                 .invoke(classLevelAnnotation);
 
-         final List<String> dataFileNames = new ArrayList<String>(Arrays.asList(values));
+         final List<String> resources = new ArrayList<String>(Arrays.asList(values));
 
-         if (dataFileNames.isEmpty() || Strings.isEmpty(dataFileNames.get(0)))
+         if (resources.isEmpty() || Strings.isEmpty(resources.get(0)))
          {
             String defaultFileName = defaultFileName();
-            dataFileNames.clear();
-            dataFileNames.add(defaultFileName);
+            resources.clear();
+            resources.add(defaultFileName);
          }
 
-         for (String dataFileName : dataFileNames)
+         for (String dataFileName : resources)
          {
             descriptors.add(createDescriptor(dataFileName));
          }

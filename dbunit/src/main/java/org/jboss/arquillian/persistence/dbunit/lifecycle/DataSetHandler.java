@@ -23,6 +23,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
 import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
 import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
@@ -75,8 +76,13 @@ public class DataSetHandler
          final Method testMethod = afterPersistenceTest.getTestMethod();
          final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
                                                                       .fetchFrom(testMethod);
-
-         compareDataEvent.fire(new CompareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.orderBy(), dataSetsToVerify.excludeColumns()));
+         final CustomColumnFilter customColumnFilter = metadataExtractor.using(CustomColumnFilter.class).fetchFrom(testMethod);
+         final CompareDBUnitData compareDBUnitDataEvent = new CompareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.orderBy(), dataSetsToVerify.excludeColumns());
+         if (customColumnFilter != null)
+         {
+               compareDBUnitDataEvent.add(customColumnFilter.value());
+         }
+         compareDataEvent.fire(compareDBUnitDataEvent);
       }
 
    }

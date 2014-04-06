@@ -1,0 +1,16 @@
+useraccount:
+  - id: 2
+    firstname: John_faked
+    lastname: Smith
+    username: doovde
+    password: password
+  - id: 11
+    firstname: Clark_faked
+    lastname: Kent
+    username: superman
+    password: kryptonite
+  - id: 1
+    firstname: Tony_faked
+    lastname: Stark
+    username: ironman
+    password: pepper

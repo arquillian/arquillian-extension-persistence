@@ -99,49 +99,41 @@
     <dependency>
       <groupId>org.jboss.arquillian.core</groupId>
       <artifactId>arquillian-core-impl-base</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.test</groupId>
       <artifactId>arquillian-test-impl-base</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.core</groupId>
       <artifactId>arquillian-core-spi</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-spi</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-test-impl-base</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.test</groupId>
       <artifactId>arquillian-test-spi</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.config</groupId>
       <artifactId>arquillian-config-api</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jboss.shrinkwrap</groupId>
       <artifactId>shrinkwrap-impl-base</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.jboss.shrinkwrap.descriptors</groupId>
