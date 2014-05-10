@@ -73,11 +73,12 @@
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.0</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
-    <!-- override from parent -->
-    <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
-    <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-    <version.surefire.plugin>2.16</version.surefire.plugin>
+    <version.surefire.plugin>2.17</version.surefire.plugin>
     <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
+    <!-- override from parent -->
+    <jdk.min.version>1.5</jdk.min.version>
+    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.source>1.5</maven.compiler.source>
   </properties>
 
   <dependencyManagement>
