@@ -71,7 +71,7 @@
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.wildfly>8.0.0.Final</version.wildfly>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
-    <version.dbunit>2.4.9</version.dbunit>
+    <version.dbunit>2.5.0</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
     <!-- override from parent -->
     <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
