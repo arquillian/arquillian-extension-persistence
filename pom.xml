@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>14</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <!-- Model Version -->
@@ -16,7 +15,7 @@
   <!-- Artifact Configuration -->
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-persistence-parent</artifactId>
-  <version>1.0.0.Final-SNAPSHOT</version>
+  <version>1.0.0.Alpha7</version>
   <packaging>pom</packaging>
 
   <name>Arquillian Persistence Extension Aggregator</name>
@@ -51,6 +50,7 @@
     <connection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</connection>
     <developerConnection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</developerConnection>
     <url>https://github.com/arquillian/arquillian-extension-persistence</url>
+    <tag>1.0.0.Alpha7</tag>
   </scm>
 
   <issueManagement>
