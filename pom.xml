@@ -15,7 +15,7 @@
   <!-- Artifact Configuration -->
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-persistence-parent</artifactId>
-  <version>1.0.0.Alpha7</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Arquillian Persistence Extension Aggregator</name>
@@ -50,7 +50,7 @@
     <connection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</connection>
     <developerConnection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</developerConnection>
     <url>https://github.com/arquillian/arquillian-extension-persistence</url>
-    <tag>1.0.0.Alpha7</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
