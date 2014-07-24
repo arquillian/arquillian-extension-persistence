@@ -104,6 +104,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.2-FINAL</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 </project>

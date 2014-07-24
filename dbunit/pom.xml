@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -86,6 +87,17 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>${version.poi}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -136,8 +148,8 @@
       <artifactId>shrinkwrap-impl-base</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.jboss.shrinkwrap.descriptors</groupId>
-        <artifactId>shrinkwrap-descriptors-api-base</artifactId>
+      <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+      <artifactId>shrinkwrap-descriptors-api-base</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
