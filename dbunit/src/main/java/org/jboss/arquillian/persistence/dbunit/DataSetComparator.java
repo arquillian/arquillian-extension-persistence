@@ -17,13 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumnNames;
-import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractColumnsNotSpecifiedInExpectedDataSet;
-import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.extractNonExistingColumns;
-
-import java.util.*;
-import java.util.logging.Logger;
-
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.assertion.DiffCollectingFailureHandler;
@@ -35,6 +28,11 @@ import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.dataset.TableWrapper;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+
+import java.util.*;
+import java.util.logging.Logger;
+
+import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.*;
 
 public class DataSetComparator
 {
@@ -90,7 +88,14 @@ public class DataSetComparator
          final ITable expectedTableWithFilteredColumns = filter(expectedTable, toStringArray(columnsToIgnore));
          final ITable actualTableWithFilteredColumns = filter(currentTable, toStringArray(columnsToIgnore));
 
-         Assertion.assertEquals(expectedTableWithFilteredColumns, actualTableWithFilteredColumns, diffCollector);
+         try
+         {
+            Assertion.assertEquals(expectedTableWithFilteredColumns, actualTableWithFilteredColumns, diffCollector);
+         }
+         catch (Throwable e)
+         {
+            errorCollector.collect(e);
+         }
 
          @SuppressWarnings("unchecked")
          final List<Difference> diffs = diffCollector.getDiffList();
@@ -125,8 +130,8 @@ public class DataSetComparator
       for (Difference diff : diffs)
       {
          final String tableName = diff.getActualTable().getTableMetaData().getTableName();
-         errorCollector.collect(String.format(DIFF_ERROR, tableName, diff.getRowIndex(), diff.getColumnName(),
-               diff.getExpectedValue(), diff.getActualValue()));
+         errorCollector.collect(new AssertionError(String.format(DIFF_ERROR, tableName, diff.getRowIndex(), diff.getColumnName(),
+               diff.getExpectedValue(), diff.getActualValue())));
       }
    }
 

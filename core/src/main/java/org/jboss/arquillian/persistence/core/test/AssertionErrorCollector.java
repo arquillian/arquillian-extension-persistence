@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,16 +33,11 @@ import java.util.List;
  */
 public class AssertionErrorCollector
 {
-   private final List<String> assertionErrors = new ArrayList<String>();
+   private final List<Throwable> assertionErrors = new ArrayList<Throwable>();
 
-   public void collect(AssertionError error)
+   public void collect(Throwable error)
    {
-      collect(error.getMessage());
-   }
-
-   public void collect(String errorMessage)
-   {
-      assertionErrors.add(errorMessage);
+      assertionErrors.add(error);
    }
 
    public void report()
@@ -54,6 +50,27 @@ public class AssertionErrorCollector
       throw new AssertionError(createErrorMessage());
    }
 
+   public String showAllErrors() {
+      return Arrays.toString(assertionErrors.toArray());
+   }
+
+   public boolean contains(Class<? extends Throwable> throwable)
+   {
+      for (Throwable error : assertionErrors)
+      {
+         if (error.getClass().equals(throwable))
+         {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   public void clear()
+   {
+      assertionErrors.clear();
+   }
+
    public int amountOfErrors()
    {
       return assertionErrors.size();
@@ -64,9 +81,9 @@ public class AssertionErrorCollector
       final StringBuilder builder = new StringBuilder();
 
       builder.append("Test failed in ").append(amountOfErrors()).append(" case").append(amountOfErrors() > 1 ? "s" : "").append(". \n");
-      for (String errorMessage : assertionErrors)
+      for (Throwable error : assertionErrors)
       {
-         builder.append(errorMessage).append('\n');
+         builder.append(error.getMessage()).append('\n');
       }
       return builder.toString();
    }

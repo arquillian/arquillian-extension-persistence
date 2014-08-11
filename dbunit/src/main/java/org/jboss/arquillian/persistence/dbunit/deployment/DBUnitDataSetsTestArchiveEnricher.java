@@ -55,7 +55,6 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
    @Inject
    Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
-   @Override
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
 

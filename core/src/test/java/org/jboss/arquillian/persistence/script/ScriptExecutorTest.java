@@ -261,7 +261,6 @@ public class ScriptExecutorTest
    }
 
    @Test
-//   @Ignore("Fails due to the end of line char on windows")
    public void should_insert_special_entities_with_custom_end_line() throws Exception
    {
       // given

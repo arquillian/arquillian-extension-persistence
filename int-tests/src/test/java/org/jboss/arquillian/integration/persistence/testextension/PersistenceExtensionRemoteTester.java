@@ -20,14 +20,15 @@ package org.jboss.arquillian.integration.persistence.testextension;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.integration.persistence.testextension.data.DataContentVerifier;
 import org.jboss.arquillian.integration.persistence.testextension.event.EventObserver;
+import org.jboss.arquillian.integration.persistence.testextension.exception.ErrorObserver;
 
 public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
 {
 
-   @Override
    public void register(ExtensionBuilder builder)
    {
       builder.observer(EventObserver.class)
+             .observer(ErrorObserver.class)
              .observer(DataContentVerifier.class);
    }
 

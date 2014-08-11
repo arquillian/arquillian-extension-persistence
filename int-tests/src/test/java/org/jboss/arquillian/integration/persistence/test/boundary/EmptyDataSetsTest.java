@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.integration.persistence.test.boundary;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.dbunit.assertion.DbComparisonFailure;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
+import org.jboss.arquillian.integration.persistence.testextension.exception.ShouldFailWith;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.integration.persistence.util.UserPersistenceAssertion;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,6 +34,9 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -98,7 +100,8 @@ public class EmptyDataSetsTest
       new UserPersistenceAssertion(em).assertNoUserAccountsStored();
    }
 
-   @Test(expected = AssertionError.class)
+   @Test
+   @ShouldFailWith(AssertionError.class)
    @UsingDataSet("users.json")
    @ShouldMatchDataSet("empty/empty.yml")
    public void should_fail_when_empty_set_yaml_used_for_verifying_content_of_non_empty_database()
@@ -106,7 +109,8 @@ public class EmptyDataSetsTest
       new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
-   @Test(expected = AssertionError.class)
+   @Test
+   @ShouldFailWith(AssertionError.class)
    @UsingDataSet("users.yml")
    @ShouldMatchDataSet("empty/empty.json")
    public void should_fail_when_empty_set_json_used_for_verifying_content_of_non_empty_database() throws Exception
@@ -114,7 +118,8 @@ public class EmptyDataSetsTest
       new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
-   @Test(expected = AssertionError.class)
+   @Test
+   @ShouldFailWith(DbComparisonFailure.class)
    @UsingDataSet("users.xml")
    @ShouldMatchDataSet("empty/empty.xls")
    public void should_fail_when_empty_set_xls_used_for_verifying_content_of_non_empty_database() throws Exception
@@ -122,7 +127,8 @@ public class EmptyDataSetsTest
       new UserPersistenceAssertion(em).assertUserAccountsStored();
    }
 
-   @Test(expected = AssertionError.class)
+   @Test
+   @ShouldFailWith(AssertionError.class)
    @UsingDataSet("users.xml")
    @ShouldMatchDataSet("empty/empty.xml")
    public void should_fail_when_empty_set_xml_used_for_verifying_content_of_non_empty_database() throws Exception
