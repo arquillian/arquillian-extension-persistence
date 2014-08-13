@@ -891,7 +891,7 @@
             <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-wildfly-8.0.0</directory>
+            <directory>src/test/resources-wildfly-8.1.0</directory>
           </testResource>
         </testResources>
       </build>
