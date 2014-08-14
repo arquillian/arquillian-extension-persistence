@@ -22,10 +22,21 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.nio.charset.Charset;
 
 public class ScriptingConfigurationImporterFromXmlTest
 {
+
+   private ScriptingConfiguration configuration;
+
+   @Before
+   public void initialize()
+   {
+      configuration = new ScriptingConfiguration();
+   }
 
    @Test
    public void should_extract_init_statement_from_external_configuration_file() throws Exception
@@ -33,14 +44,40 @@ public class ScriptingConfigurationImporterFromXmlTest
       // given
       String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
       ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
-      ScriptingConfiguration configuration = new ScriptingConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
    }
 
+   @Test
+   public void should_extract_script_charset_from_external_configuration_file() throws Exception
+   {
+      // given
+      Charset expectedCharset  = Charset.forName("ISO-8859-1");
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
+
+      // when
+      Configuration.importTo(configuration).from(descriptor);
+
+      // then
+      assertThat(configuration.getCharset()).isEqualTo(expectedCharset);
+   }
+
+   @Test
+   public void should_use_default_charset_if_not_specified_in_the_configuration() throws Exception
+   {
+      // given
+      Charset utf8  = Charset.forName("UTF-8");
+      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+
+      // when
+      Configuration.importTo(configuration).from(descriptor);
+
+      // then
+      assertThat(configuration.getCharset()).isEqualTo(utf8);
+   }
 
 }

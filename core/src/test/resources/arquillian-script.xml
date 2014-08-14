@@ -10,6 +10,7 @@
     <property name="defaultSqlScriptLocation">scripts</property>
     <property name="defaultCleanupUsingScriptPhase">BEFORE</property>
     <property name="sqlStatementDelimiter">;</property>
+    <property name="charset">ISO-8859-1</property>
   </extension>
 
 </arquillian>

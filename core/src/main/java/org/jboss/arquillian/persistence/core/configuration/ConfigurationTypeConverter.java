@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import org.jboss.arquillian.persistence.core.util.Strings;
 
@@ -169,6 +170,10 @@ class ConfigurationTypeConverter
             }
 
             return to.cast(convertedArray);
+         }
+         else if (Charset.class.equals(to))
+         {
+            return to.cast(Charset.forName(trimmedValue.toUpperCase()));
          }
          else if (Class.class.equals(to) )
          {

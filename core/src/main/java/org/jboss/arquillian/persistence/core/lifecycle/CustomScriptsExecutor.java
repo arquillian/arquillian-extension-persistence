@@ -92,7 +92,7 @@ public class CustomScriptsExecutor
       {
          if (ScriptLoader.isSqlScriptFile(script))
          {
-            processedScripts.add(new FileSqlScriptResourceDescriptor(script));
+            processedScripts.add(new FileSqlScriptResourceDescriptor(script, scriptingConfigurationInstance.get().getCharset()));
          }
          else if (!Strings.isEmpty(script))
          {

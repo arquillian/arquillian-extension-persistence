@@ -21,7 +21,6 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Properties;
 
-import org.fest.assertions.Assertions;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -54,7 +53,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -68,7 +67,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
@@ -83,7 +82,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
@@ -98,7 +97,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
@@ -112,7 +111,7 @@ public class PersistenceConfigurationImporterFromPropertyFileTest
       final PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(properties);
+      Configuration.importTo(configuration).from(properties);
 
       // then
       assertThat(configuration.isDumpData()).isFalse();

@@ -36,7 +36,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
@@ -51,7 +51,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -66,7 +66,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
@@ -80,7 +80,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isTrue();
@@ -94,7 +94,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.isDumpData()).isFalse();
@@ -109,7 +109,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
@@ -124,7 +124,7 @@ public class PersistenceConfigurationImporterFromXmlTest
       PersistenceConfiguration configuration = new PersistenceConfiguration();
 
       // when
-      Configuration.importTo(configuration).createFrom(descriptor);
+      Configuration.importTo(configuration).from(descriptor);
 
       // then
       assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);

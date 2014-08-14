@@ -123,9 +123,9 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
    public void should_extract_all_scirpts() throws Exception
    {
       // given
-      FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql");
-      FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql");
-      FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql");
+      FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
+      FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
+      FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
       TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedClass(), ApplyScriptAfterAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
@@ -170,7 +170,7 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest
    public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception
    {
       // given
-      FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
+      FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql", defaultConfiguration.getCharset());
       TestEvent testEvent = new TestEvent(new ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
       SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);

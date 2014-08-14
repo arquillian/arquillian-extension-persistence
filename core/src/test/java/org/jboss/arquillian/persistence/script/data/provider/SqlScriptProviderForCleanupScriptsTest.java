@@ -124,9 +124,9 @@ public class SqlScriptProviderForCleanupScriptsTest
    public void should_extract_all_scirpts() throws Exception
    {
       // given
-      FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql");
-      FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql");
-      FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql");
+      FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
+      FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
+      FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(), CleanupUsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
@@ -171,7 +171,7 @@ public class SqlScriptProviderForCleanupScriptsTest
    public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception
    {
       // given
-      FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql");
+      FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql", defaultConfiguration.getCharset());
       TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
             CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
       SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);

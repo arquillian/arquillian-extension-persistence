@@ -20,6 +20,8 @@ package org.jboss.arquillian.persistence.script.data.descriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.script.ScriptLoader;
 
+import java.nio.charset.Charset;
+
 /**
  *
  * SQL script file descriptor.
@@ -29,10 +31,12 @@ import org.jboss.arquillian.persistence.script.ScriptLoader;
  */
 public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
 {
+   private final Charset charset;
 
-   public FileSqlScriptResourceDescriptor(String location)
+   public FileSqlScriptResourceDescriptor(String location, Charset charset)
    {
       super(location);
+      this.charset = charset;
    }
 
    @Override
@@ -44,7 +48,7 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
    @Override
    public String getContent()
    {
-      return ScriptLoader.loadScript(getLocation());
+      return ScriptLoader.loadScript(getLocation(), charset);
    }
 
    @Override

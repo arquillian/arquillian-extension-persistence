@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.jboss.arquillian.persistence.core.exception.ScriptLoadingException;
 
@@ -32,7 +33,7 @@ import org.jboss.arquillian.persistence.core.exception.ScriptLoadingException;
 public final class ScriptLoader
 {
 
-   public static String loadScript(String location)
+   public static String loadScript(String location, Charset charset)
    {
       final StringBuilder builder = new StringBuilder();
 
@@ -43,7 +44,7 @@ public final class ScriptLoader
 
       try
       {
-         reader = new BufferedReader(new InputStreamReader(inputStream));
+         reader = new BufferedReader(new InputStreamReader(inputStream, charset));
          while ((line  = reader.readLine()) != null)
          {
             builder.append(line)

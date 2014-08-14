@@ -22,6 +22,8 @@ import static org.jboss.arquillian.persistence.util.Arrays.*;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 
+import java.nio.charset.Charset;
+
 /**
  *
  * Scripting configuration which can be customized in <code>arquillian.xml</code>
@@ -51,6 +53,8 @@ public class ScriptingConfiguration extends Configuration
    private boolean showSql = false;
 
    private String sqlDialect = "default";
+
+   private Charset charset = Charset.forName("UTF-8");
 
    public ScriptingConfiguration()
    {
@@ -153,5 +157,32 @@ public class ScriptingConfiguration extends Configuration
    public void setSqlDialect(String sqlDialect)
    {
       this.sqlDialect = sqlDialect;
+   }
+
+   public Charset getCharset()
+   {
+      return charset;
+   }
+
+   /**
+    * Defines which @{link Charset} should be used when executing SQL scripts.
+    * <br/>
+    * Possible values:
+    * <ul>
+    *    <li>US-ASCII</li>
+    *    <li>ISO-8859-1</li>
+    *    <li>UTF-8 (default and strongly recommended)</li>
+    *    <li>UTF-16</li>
+    *    <li>UTF-16BE (big endian byte order)</li>
+    *    <li>UTF-16LE (little endian byte order)</li>
+    * </ul>
+    * <br/>
+    * which are guaranteed to be supported by all Java platform implementations.
+    *
+    * @param charset
+    */
+   public void setCharset(Charset charset)
+   {
+      this.charset = charset;
    }
 }

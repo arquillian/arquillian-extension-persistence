@@ -172,7 +172,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
          return new InlineSqlScriptResourceDescriptor(resource);
       }
 
-      return new FileSqlScriptResourceDescriptor(determineLocation(resource));
+      return new FileSqlScriptResourceDescriptor(determineLocation(resource), configuration.getCharset());
    }
 
    @Override

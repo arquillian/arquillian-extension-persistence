@@ -79,7 +79,7 @@ public class TestConfigurationLoader
    {
       ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
-      Configuration.importTo(persistenceConfiguration).createFrom(descriptor);
+      Configuration.importTo(persistenceConfiguration).from(descriptor);
       return persistenceConfiguration;
    }
 
@@ -87,7 +87,7 @@ public class TestConfigurationLoader
    {
       ArquillianDescriptor descriptor = createArquillianDescriptor(fileName);
       ScriptingConfiguration scriptingConfiguration = new ScriptingConfiguration();
-      Configuration.importTo(scriptingConfiguration).createFrom(descriptor);
+      Configuration.importTo(scriptingConfiguration).from(descriptor);
       return scriptingConfiguration;
    }
 }

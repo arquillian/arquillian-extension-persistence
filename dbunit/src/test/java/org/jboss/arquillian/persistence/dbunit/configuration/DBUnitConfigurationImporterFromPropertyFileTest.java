@@ -34,7 +34,7 @@ public class DBUnitConfigurationImporterFromPropertyFileTest extends DBUnitConfi
       DBUnitConfiguration dbunitConfiguration = new DBUnitConfiguration();
 
       // when
-      Configuration.importTo(dbunitConfiguration).createFrom(properties);
+      Configuration.importTo(dbunitConfiguration).from(properties);
       return dbunitConfiguration;
    }
 
