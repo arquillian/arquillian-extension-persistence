@@ -132,6 +132,13 @@ public class MatchingDatabaseContentUsingDataSetsTest
    }
 
    @Test
+   @UsingDataSet("simple-with-negative-ids.yml")
+   @ShouldMatchDataSet("simple-with-negative-ids.yml")
+   public void should_verify_database_content_using_custom_data_set_respecting_ordering_by_proper_type() throws Exception
+   {
+   }
+
+   @Test
    @UsingDataSet("three-users.yml")
    @ShouldMatchDataSet(value = { "three-users.yml" }, orderBy = { "id" })
    public void should_verify_database_content_using_custom_data_set_with_order_by_number_type_column() throws Exception {}

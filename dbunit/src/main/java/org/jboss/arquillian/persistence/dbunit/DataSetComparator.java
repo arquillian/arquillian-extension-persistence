@@ -94,6 +94,7 @@ public class DataSetComparator
          }
          catch (Throwable e)
          {
+            e.printStackTrace();
             errorCollector.collect(e);
          }
 
@@ -137,9 +138,15 @@ public class DataSetComparator
 
    private ITable sort(ITable table, final List<String> columnsForSorting) throws DataSetException
    {
-      final SortedTable sortedTable = new SortedTable(table, toStringArray(columnsForSorting));
+      final Column[] columnsToSort = extractColumnsToSort(table, columnsForSorting);
+      final SortedTable sortedTable = new SortedTable(table, columnsToSort);
       sortedTable.setUseComparable(true);
       return sortedTable;
+   }
+
+   private Column[] extractColumnsToSort(ITable table, List<String> columnsForSorting) throws DataSetException
+   {
+      return Columns.findColumnsByName(toStringArray(columnsForSorting), table.getTableMetaData());
    }
 
    private List<String> defineColumnsForSorting(IDataSet currentDataSet, IDataSet expectedDataSet, String tableName)
@@ -216,7 +223,7 @@ public class DataSetComparator
 
    private ITable filter(final ITable table, final String[] columnsToFilter) throws DataSetException
    {
-      ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(table, columnsToFilter);
+      ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(table, Columns.findColumnsByName(columnsToFilter, table.getTableMetaData()));
       return applyCustomFilters(filteredTable);
    }
 
