@@ -127,7 +127,7 @@ public class DataSetComparatorTest
    {
       // given
       final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {"id"}, new String[] {"nickname"}, noCustomFilters());
+      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {"id"}, new String[] {"username"}, noCustomFilters());
       IDataSet current = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
       IDataSet expected = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
 

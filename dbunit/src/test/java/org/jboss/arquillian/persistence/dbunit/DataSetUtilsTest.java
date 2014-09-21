@@ -27,7 +27,6 @@ import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-import org.fest.assertions.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,10 +50,10 @@ public class DataSetUtilsTest
    {
       return JUnitParamsRunner.$(
             //   expected    ,   actual             , non existing in actual
-            JUnitParamsRunner.$(Arrays.asList("id", "name"), Arrays.asList("name", "password"), Arrays.asList("id")),
-            JUnitParamsRunner.$(Arrays.asList("id", "username", "password"), Arrays.asList("id", "username", "password"), Collections.emptyList()),
-            JUnitParamsRunner.$(Collections.emptyList(), Arrays.asList("id", "name"), Collections.emptyList()),
-            JUnitParamsRunner.$(Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
+            $(Arrays.asList("id", "name"), Arrays.asList("name", "password"), Arrays.asList("id")),
+            $(Arrays.asList("id", "username", "password"), Arrays.asList("id", "username", "password"), Collections.emptyList()),
+            $(Collections.emptyList(), Arrays.asList("id", "name"), Collections.emptyList()),
+            $(Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
       );
    }
 
