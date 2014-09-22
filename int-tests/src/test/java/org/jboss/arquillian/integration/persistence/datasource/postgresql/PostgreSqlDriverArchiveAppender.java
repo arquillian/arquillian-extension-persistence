@@ -26,7 +26,7 @@ public class PostgreSqlDriverArchiveAppender extends JdbcDriverArchiveAppender
    public String getDriverCoordinates()
    {
       // Version needs to be specified explicitly because the artifact is defined for the profile
-      return "postgresql:postgresql:9.1-901.jdbc4";
+      return "org.postgresql:postgresql:9.3-1102-jdbc41";
    }
 
 }
