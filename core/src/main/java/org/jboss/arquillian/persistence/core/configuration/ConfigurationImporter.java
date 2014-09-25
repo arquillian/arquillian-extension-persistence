@@ -135,8 +135,7 @@ public class ConfigurationImporter<T extends Configuration> {
                         setter.invoke(configuration, convertedValue);
                     }
                 } catch (Exception e) {
-                    throw new PersistenceExtensionInitializationException("Unable to create persistence configuration.",
-                        e);
+                    log.warning("Could not convert property " + fieldName + " value with value " + value + ". Ignoring it.");
                 }
             }
         }
