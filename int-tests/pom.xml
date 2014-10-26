@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -36,10 +37,10 @@
       <version>${project.version}</version>
       <scope>test</scope>
       <exclusions>
-      	<!--
-      		As TomEE comes with his own SPI we need to exclude it globally.
-      		It's imported on a profile basis.
-      	-->
+        <!--
+          As TomEE comes with his own SPI we need to exclude it globally.
+          It's imported on a profile basis.
+        -->
         <exclusion>
           <artifactId>arquillian-transaction-jta</artifactId>
           <groupId>org.jboss.arquillian.extension</groupId>
@@ -55,9 +56,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax</groupId>
+      <groupId>org.apache.openejb</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
+      <version>6.0-5</version>
       <scope>provided</scope>
     </dependency>
 
@@ -474,11 +475,12 @@
         </testResources>
       </build>
     </profile>
-    <!-- Dockerized profiles -->
+    <!-- Dockerized profiles
+        Make sure that
+        * your docker host is runnung
+        * you have DOCKER_HOST env variable defined
+    -->
     <profile>
-      <!-- In order to use this profile you need to have Oracle 11c installed and running -->
-      <!-- For development purposes Oracle provides VirtualBox image with pre-configured database -->
-      <!-- http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html -->
       <id>jbossas-7.1-managed-oracle11g</id>
       <properties>
         <additional.test.resources>resources-jboss-7.1.1-oracle11g</additional.test.resources>
@@ -577,14 +579,23 @@
             <artifactId>docker-maven-plugin</artifactId>
             <version>${version.docker.plugin}</version>
             <configuration>
-              <image>alexeiled/docker-oracle-xe-11g</image>
-              <ports>
-                <port>49160:22</port>
-                <port>49161:1521</port>
-                <port>49162:8080</port>
-              </ports>
-              <waitHttp>http://localhost:49162/apex/</waitHttp>
-              <wait>120000</wait>
+              <images>
+                <image>
+                  <alias>db</alias>
+                  <name>alexeiled/docker-oracle-xe-11g</name>
+                  <run>
+                    <ports>
+                      <port>49160:22</port>
+                      <port>49161:1521</port>
+                      <port>49162:8080</port>
+                    </ports>
+                    <wait>
+                      <url>http://localhost:49162/apex/</url>
+                      <time>120000</time>
+                    </wait>
+                  </run>
+                </image>
+              </images>
             </configuration>
             <executions>
               <execution>
@@ -617,7 +628,8 @@
                 <configuration>
                   <executable>${project.basedir}/src/test/${additional.test.resources}/shell/run.sh</executable>
                   <arguments>
-                    <argument>${project.basedir}/src/test/${additional.test.resources}/shell/create-ape-schema.sh</argument>
+                    <argument>${project.basedir}/src/test/${additional.test.resources}/shell/create-ape-schema.sh
+                    </argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -745,14 +757,22 @@
             <artifactId>docker-maven-plugin</artifactId>
             <version>${version.docker.plugin}</version>
             <configuration>
-              <image>mysql</image>
-              <ports>
-                <port>33306:3306</port>
-              </ports>
-              <env>
-                <MYSQL_ROOT_PASSWORD>letmein</MYSQL_ROOT_PASSWORD>
-              </env>
-              <wait>10000</wait>
+              <images>
+                <image>
+                  <name>mysql</name>
+                  <run>
+                    <ports>
+                      <port>33306:3306</port>
+                    </ports>
+                    <env>
+                      <MYSQL_ROOT_PASSWORD>letmein</MYSQL_ROOT_PASSWORD>
+                    </env>
+                    <wait>
+                      <time>10000</time>
+                    </wait>
+                  </run>
+                </image>
+              </images>
             </configuration>
             <executions>
               <execution>
@@ -898,11 +918,19 @@
             <artifactId>docker-maven-plugin</artifactId>
             <version>${version.docker.plugin}</version>
             <configuration>
-              <image>postgres</image>
-              <ports>
-                <port>65432:5432</port>
-              </ports>
-              <wait>10000</wait>
+              <images>
+                <image>
+                  <name>postgres</name>
+                  <run>
+                    <ports>
+                      <port>65432:5432</port>
+                    </ports>
+                    <wait>
+                      <time>10000</time>
+                    </wait>
+                  </run>
+                </image>
+              </images>
             </configuration>
             <executions>
               <execution>

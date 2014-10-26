@@ -76,7 +76,7 @@
     <version.surefire.plugin>2.17</version.surefire.plugin>
     <version.failsafe.plugin>2.17</version.failsafe.plugin>
     <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
-    <version.docker.plugin>0.9.9</version.docker.plugin>
+    <version.docker.plugin>0.10.3</version.docker.plugin>
     <!-- override from parent -->
     <jdk.min.version>1.5</jdk.min.version>
     <maven.compiler.target>1.5</maven.compiler.target>
