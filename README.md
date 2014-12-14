@@ -8,7 +8,7 @@ deal with the underlying data storage.
 
 It comes with following features:
 
-* Wrapping each test in the seperated transaction (with **commit**(default) or **rollback** at the end).
+* Wrapping each test in the separated transaction (with **commit**(default) or **rollback** at the end).
 * Seeding database using:
     * [DBUnit](http://dbunit.org) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
     * Custom SQL scripts.
@@ -20,7 +20,7 @@ It comes with following features:
 - JBoss AS 7.0.2 Final (managed) 
 - JBoss AS 7.1.1.Final (managed)
 
-##### Verified with follolwing databases
+##### Verified with following databases
 - HSQL
 - MS SQL 2008 Express (with Microsoft JDBC Driver)
 - MySQL 5.5.24
