@@ -34,9 +34,12 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
+@NotThreadSafe
 public class JpaCacheEvictionHandlerTest
 {
    private static boolean tmpCacheEvicted;

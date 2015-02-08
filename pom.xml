@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>14</version>
+    <version>17</version>
     <relativePath />
   </parent>
 
@@ -61,23 +61,31 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
+    <!-- Arquillian dependencies -->
     <version.arquillian_core>1.1.6.Final</version.arquillian_core>
     <version.arquillian_transaction>1.0.1.Final</version.arquillian_transaction>
+    <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
+    <version.dbunit>2.5.0</version.dbunit>
+    <version.mysql.driver>5.1.21</version.mysql.driver>
+
+    <!-- Testing dependencies -->
+    <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
     <version.fest.assert>1.4</version.fest.assert>
-    <version.testng>5.14.6</version.testng>
     <version.mockito>1.10.19</version.mockito>
+
+    <!-- Containers -->
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.wildfly>8.1.0.Final</version.wildfly>
-    <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
-    <version.dbunit>2.5.0</version.dbunit>
-    <version.mysql.driver>5.1.21</version.mysql.driver>
+
+    <!-- Maven pluings -->
     <version.surefire.plugin>2.18.1</version.surefire.plugin>
     <version.failsafe.plugin>2.18.1</version.failsafe.plugin>
     <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
     <version.docker.plugin>0.10.3</version.docker.plugin>
-    <!-- override from parent -->
+
+    <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
     <maven.compiler.target>1.5</maven.compiler.target>
     <maven.compiler.source>1.5</maven.compiler.source>
@@ -132,16 +140,15 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>${version.testng}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-all</artifactId>
         <version>${version.mockito}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>annotations</artifactId>
+        <version>${version.findbugs.annotations}</version>
       </dependency>
     </dependencies>
 
