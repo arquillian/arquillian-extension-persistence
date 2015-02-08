@@ -19,8 +19,6 @@ package org.jboss.arquillian.persistence.script.data.descriptor;
 
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 
-import java.nio.charset.Charset;
-
 /**
  *
  * Inline SQL script descriptor.

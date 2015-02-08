@@ -17,18 +17,17 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.fest.assertions.Assertions.assertThat;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static junitparams.JUnitParamsRunner.$;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class DataSetUtilsTest

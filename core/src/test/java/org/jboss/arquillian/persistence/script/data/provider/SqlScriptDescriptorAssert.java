@@ -17,21 +17,20 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.fest.assertions.Assertions;
-import org.fest.assertions.GroupAssert;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
-public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAssert, Collection<SqlScriptResourceDescriptor>>
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceDescriptor>
 {
 
-   protected SqlScriptDescriptorAssert(Collection<SqlScriptResourceDescriptor> actual)
+   protected SqlScriptDescriptorAssert(Iterable<SqlScriptResourceDescriptor> actual)
    {
-      super(SqlScriptDescriptorAssert.class, actual);
+      super(actual);
    }
 
    public static SqlScriptDescriptorAssert assertThat(SqlScriptResourceDescriptor ... scriptDescriptors)
@@ -39,7 +38,7 @@ public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAs
       return new SqlScriptDescriptorAssert(Arrays.asList(scriptDescriptors));
    }
 
-   public static SqlScriptDescriptorAssert assertThat(Collection<SqlScriptResourceDescriptor> scriptDescriptors)
+   public static SqlScriptDescriptorAssert assertThat(Iterable<SqlScriptResourceDescriptor> scriptDescriptors)
    {
       return new SqlScriptDescriptorAssert(scriptDescriptors);
    }
@@ -64,12 +63,6 @@ public class SqlScriptDescriptorAssert extends GroupAssert<SqlScriptDescriptorAs
          fileNames.add(scriptDescriptor.getLocation());
       }
       return fileNames;
-   }
-
-   @Override
-   protected int actualGroupSize()
-   {
-      return actual.size();
    }
 
 }

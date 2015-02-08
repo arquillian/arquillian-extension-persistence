@@ -17,20 +17,10 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.CompositeDataSet;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
-import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
+
+import java.util.*;
 
 /**
  *

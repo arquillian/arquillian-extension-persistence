@@ -17,20 +17,17 @@
  */
 package org.jboss.arquillian.persistence.jpa.cache;
 
-import static org.fest.assertions.MapAssert.entry;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
-import org.jboss.arquillian.persistence.jpa.cache.FullCacheEvictionStrategy;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
@@ -82,7 +79,7 @@ public class JpaCacheEvictionConfigurationTest
       properties.load(new ByteArrayInputStream(output.toByteArray()));
 
       assertThat(properties).hasSize(3);
-      assertThat(properties).includes(
+      assertThat(properties).contains(
             entry("arquillian.extension.persistence.jpacacheeviction.default.phase", config.getDefaultPhase().toString()),
             entry("arquillian.extension.persistence.jpacacheeviction.default.entity.manager", config.getDefaultEntityManager()),
             entry("arquillian.extension.persistence.jpacacheeviction.default.strategy", config.getDefaultStrategy().getName()));

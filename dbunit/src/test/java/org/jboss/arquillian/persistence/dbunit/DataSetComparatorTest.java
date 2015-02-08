@@ -17,14 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import static org.fest.assertions.Assertions.*;
-import static org.fest.assertions.MapAssert.entry;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Set;
-
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -36,6 +28,14 @@ import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.*;
+
 public class DataSetComparatorTest
 {
 
@@ -46,7 +46,7 @@ public class DataSetComparatorTest
       DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "table1.id", "table2.name", "table1.test" }, noCustomFilters());
 
       // then
-      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
+      assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
                                                              .hasSize(2);
    }
 
@@ -70,7 +70,7 @@ public class DataSetComparatorTest
       // then
       assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
                                                     .hasSize(2);
-      assertThat(dataSetComparator.toExclude.columnsPerTable).includes(entry("table", Arrays.asList("test")))
+      assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Arrays.asList("test")))
                                                              .hasSize(1);
    }
 

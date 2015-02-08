@@ -17,13 +17,6 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
@@ -37,6 +30,12 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -59,7 +58,7 @@ public class StrictCleanupWithEmptyDataSetsTest
                        .addPackage(UserAccount.class.getPackage())
                        .addClass(Query.class)
                        // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
    }

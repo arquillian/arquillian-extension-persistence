@@ -17,18 +17,17 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.core.exception.PersistenceDescriptorParsingException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Scanner;
 
 /**
  *

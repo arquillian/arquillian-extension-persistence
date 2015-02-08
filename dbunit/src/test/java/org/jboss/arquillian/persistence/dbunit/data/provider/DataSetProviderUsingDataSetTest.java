@@ -17,23 +17,23 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatException;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.testutils.DataSetDescriptorAssert;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DataSetProviderUsingDataSetTest
 {

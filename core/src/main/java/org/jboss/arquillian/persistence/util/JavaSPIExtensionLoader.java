@@ -1,5 +1,9 @@
 package org.jboss.arquillian.persistence.util;
 
+import org.jboss.arquillian.core.spi.ExtensionLoader;
+import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.core.spi.Validate;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,10 +12,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.jboss.arquillian.core.spi.ExtensionLoader;
-import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.core.spi.Validate;
 
 /**
  * ServiceLoader implementation that use META-INF/services/interface files to registered Services.

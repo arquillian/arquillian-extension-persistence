@@ -17,15 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-import static org.fest.assertions.Assertions.assertThat;
-
+import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.PersistenceTest;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceExtensionEnablerTest
 {

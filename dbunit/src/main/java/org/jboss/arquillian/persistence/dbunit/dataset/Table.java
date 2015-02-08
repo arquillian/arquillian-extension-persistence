@@ -17,12 +17,7 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents table described in data set. Stores information such as

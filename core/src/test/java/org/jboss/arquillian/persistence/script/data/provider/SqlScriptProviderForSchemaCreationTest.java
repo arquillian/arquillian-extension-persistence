@@ -17,14 +17,14 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import java.util.Collection;
-
 import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
+
+import java.util.Collection;
 
 public class SqlScriptProviderForSchemaCreationTest
 {

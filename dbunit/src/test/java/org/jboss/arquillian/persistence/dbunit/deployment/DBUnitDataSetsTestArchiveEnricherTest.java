@@ -32,8 +32,8 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 public class DBUnitDataSetsTestArchiveEnricherTest
 {
@@ -76,8 +76,7 @@ public class DBUnitDataSetsTestArchiveEnricherTest
    private static void assertThatContainsOnly(Archive<?> archive, String path)
    {
       final Map<ArchivePath,Node> content = archive.getContent(Filters.include(path));
-      assertThat(content).hasSize(1)
-                         .includes(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+      assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
    }
 
    private static class ScriptOnMethodLevel

@@ -17,13 +17,13 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import static org.fest.assertions.Assertions.*;
-
-import java.io.InputStream;
-
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Test;
+
+import java.io.InputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceDescriptorParserTest
 {

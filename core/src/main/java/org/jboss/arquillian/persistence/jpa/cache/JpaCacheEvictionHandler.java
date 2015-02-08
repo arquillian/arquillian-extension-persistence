@@ -17,13 +17,6 @@
  */
 package org.jboss.arquillian.persistence.jpa.cache;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -37,6 +30,12 @@ import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * JPA cache eviction handler, which is registered in {@link RemotePersistenceExtension}.

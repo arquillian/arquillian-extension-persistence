@@ -17,15 +17,6 @@
  */
 package org.jboss.arquillian.integration.persistence.example;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -34,6 +25,14 @@ import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.junit.Test;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Defines tests to perform with Persistence Extension but leaves deployment declaration as

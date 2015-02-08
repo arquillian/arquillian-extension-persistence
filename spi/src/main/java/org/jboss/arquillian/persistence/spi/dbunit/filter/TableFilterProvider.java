@@ -17,7 +17,6 @@
  */
 package org.jboss.arquillian.persistence.spi.dbunit.filter;
 
-import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.ITableFilter;

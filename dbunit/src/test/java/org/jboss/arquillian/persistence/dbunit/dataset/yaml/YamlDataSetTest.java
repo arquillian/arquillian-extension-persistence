@@ -17,13 +17,13 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.yaml;
 
-import java.io.InputStream;
-
 import org.jboss.arquillian.persistence.testutils.DataSetAssert;
-import org.jboss.arquillian.persistence.testutils.TableAssert;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
+import org.jboss.arquillian.persistence.testutils.TableAssert;
 import org.junit.After;
 import org.junit.Test;
+
+import java.io.InputStream;
 
 public class YamlDataSetTest
 {

@@ -17,10 +17,6 @@
  */
 package org.jboss.arquillian.persistence.core.lifecycle;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -35,6 +31,10 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *

@@ -17,18 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import org.jboss.arquillian.container.test.api.Testable;
+import org.jboss.shrinkwrap.api.*;
+import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
+
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-
-import org.jboss.arquillian.container.test.api.Testable;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ArchivePath;
-import org.jboss.shrinkwrap.api.Filters;
-import org.jboss.shrinkwrap.api.GenericArchive;
-import org.jboss.shrinkwrap.api.Node;
-import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 
 /**
  *

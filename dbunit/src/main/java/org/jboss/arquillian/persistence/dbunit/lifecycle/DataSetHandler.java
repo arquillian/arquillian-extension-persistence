@@ -23,14 +23,14 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
-import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
-import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
 import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
+import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
+import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 
 import java.lang.reflect.Method;
 

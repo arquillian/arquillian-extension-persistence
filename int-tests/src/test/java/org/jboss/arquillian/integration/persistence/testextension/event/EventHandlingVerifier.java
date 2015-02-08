@@ -17,14 +17,14 @@
  */
 package org.jboss.arquillian.integration.persistence.testextension.event;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventHandlingVerifier
 {

@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceConfigurationImporterFromXmlTest
 {

@@ -1,12 +1,5 @@
 package org.jboss.arquillian.integration.persistence.test.seeding;
 
-import static org.fest.assertions.Assertions.*;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
@@ -22,6 +15,12 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(Arquillian.class)
 public class SeedingStrategyTest
 {
@@ -32,7 +31,7 @@ public class SeedingStrategyTest
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
                        .addClass(Query.class)
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("test-persistence.xml", "persistence.xml");
    }

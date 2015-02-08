@@ -1,12 +1,11 @@
 package org.jboss.arquillian.integration.persistence.util;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.List;
+import org.jboss.arquillian.integration.persistence.example.UserAccount;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
-import org.jboss.arquillian.integration.persistence.example.UserAccount;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserPersistenceAssertion
 {

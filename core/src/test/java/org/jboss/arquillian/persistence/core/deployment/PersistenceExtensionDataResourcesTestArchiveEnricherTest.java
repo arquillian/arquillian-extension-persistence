@@ -22,20 +22,17 @@ import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.*;
-import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
-import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.NodeImpl;
 import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Map;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 public class PersistenceExtensionDataResourcesTestArchiveEnricherTest
 {
@@ -89,7 +86,7 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest
    {
       final Map<ArchivePath,Node> content = archive.getContent(Filters.include(path));
       assertThat(content).hasSize(1)
-                         .includes(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+                         .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
    }
 
    private static class ScriptOnMethodLevel
@@ -98,9 +95,6 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest
       @ApplyScriptAfter("two-inserts.sql")
       public void should_work() throws Exception
       {
-         // given
-         // when
-         // then
       }
 
    }
@@ -111,9 +105,6 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest
       @ShouldMatchDataSet("users.json")
       public void should_work() throws Exception
       {
-         // given
-         // when
-         // then
       }
 
    }

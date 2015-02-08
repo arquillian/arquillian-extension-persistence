@@ -16,12 +16,12 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import java.lang.annotation.Annotation;
-
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+
+import java.lang.annotation.Annotation;
 
 /**
  *

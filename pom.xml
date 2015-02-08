@@ -70,7 +70,7 @@
 
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
-    <version.fest.assert>1.4</version.fest.assert>
+    <version.assertj.core>1.7.1</version.assertj.core>
     <version.mockito>1.10.19</version.mockito>
 
     <!-- Containers -->
@@ -83,7 +83,7 @@
     <version.surefire.plugin>2.18.1</version.surefire.plugin>
     <version.failsafe.plugin>2.18.1</version.failsafe.plugin>
     <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
-    <version.docker.plugin>0.10.3</version.docker.plugin>
+    <version.docker.plugin>0.11.0</version.docker.plugin>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
@@ -134,9 +134,9 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.easytesting</groupId>
-        <artifactId>fest-assert</artifactId>
-        <version>${version.fest.assert}</version>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${version.assertj.core}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

@@ -1,13 +1,7 @@
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.Map;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
 import org.dbunit.database.statement.StatementFactory;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
@@ -16,6 +10,10 @@ import org.dbunit.ext.netezza.NetezzaMetadataHandler;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class DBUnitConfigurationPropertyMapperComparedByTypeTest

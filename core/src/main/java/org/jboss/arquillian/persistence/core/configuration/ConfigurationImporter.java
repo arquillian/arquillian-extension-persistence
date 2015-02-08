@@ -17,6 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
+import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
+import org.jboss.shrinkwrap.descriptor.api.Descriptors;
+
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,11 +30,6 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
-import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
-import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 /**
  *

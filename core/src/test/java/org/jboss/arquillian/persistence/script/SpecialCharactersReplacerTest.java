@@ -19,12 +19,11 @@ package org.jboss.arquillian.persistence.script;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.fest.assertions.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junitparams.JUnitParamsRunner.$;
-import static org.fest.assertions.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class SpecialCharactersReplacerTest

@@ -17,13 +17,7 @@
  */
 package org.jboss.arquillian.persistence.jpa.cache;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-
+import net.jcip.annotations.NotThreadSafe;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
@@ -34,7 +28,12 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.jcip.annotations.NotThreadSafe;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>

@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.persistence.script.data.naming;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.jboss.arquillian.persistence.testutils.DummyClass;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScriptAppliedAfterTestFileNamingStrategyTest
 {

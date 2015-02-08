@@ -17,29 +17,19 @@
  */
 package org.jboss.arquillian.integration.persistence.testextension.event;
 
-import static org.jboss.arquillian.integration.persistence.testextension.event.EventHandlingVerifier.Builder.eventVerifier;
+import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.integration.persistence.testextension.event.annotation.*;
+import org.jboss.arquillian.persistence.core.event.*;
+import org.jboss.arquillian.test.spi.annotation.TestScoped;
+import org.jboss.arquillian.test.spi.event.suite.After;
+import org.jboss.arquillian.test.spi.event.suite.Before;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.arquillian.core.api.InstanceProducer;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldBeTriggered;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldNotBeTriggered;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldBeTriggered;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
-import org.jboss.arquillian.integration.persistence.testextension.event.annotation.ExecuteScriptsShouldNotBeTriggered;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
-import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
-import org.jboss.arquillian.test.spi.annotation.TestScoped;
-import org.jboss.arquillian.test.spi.event.suite.After;
-import org.jboss.arquillian.test.spi.event.suite.Before;
+import static org.jboss.arquillian.integration.persistence.testextension.event.EventHandlingVerifier.Builder.eventVerifier;
 
 public class EventObserver
 {

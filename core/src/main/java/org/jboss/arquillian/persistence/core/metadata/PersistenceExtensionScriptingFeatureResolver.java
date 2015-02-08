@@ -17,11 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-import java.lang.reflect.Method;
-
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+
+import java.lang.reflect.Method;
 
 /**
  *

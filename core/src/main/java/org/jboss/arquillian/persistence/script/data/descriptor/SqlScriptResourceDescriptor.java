@@ -19,8 +19,6 @@ package org.jboss.arquillian.persistence.script.data.descriptor;
 
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 
-import java.nio.charset.Charset;
-
 /**
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

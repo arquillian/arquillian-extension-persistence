@@ -17,15 +17,15 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class TestConfigurationLoader
 {

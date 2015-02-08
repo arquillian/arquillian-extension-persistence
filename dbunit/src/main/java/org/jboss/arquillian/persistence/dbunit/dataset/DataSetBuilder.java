@@ -17,9 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.IDataSet;
@@ -33,7 +30,8 @@ import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.yaml.snakeyaml.Yaml;
 
-import static org.jboss.arquillian.persistence.core.data.descriptor.Format.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *

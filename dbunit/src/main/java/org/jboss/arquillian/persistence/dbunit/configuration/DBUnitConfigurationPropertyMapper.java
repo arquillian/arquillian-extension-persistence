@@ -17,14 +17,14 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
+import org.jboss.arquillian.persistence.core.util.Strings;
+import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature;
+import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jboss.arquillian.persistence.core.util.Strings;
-import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature;
-import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
 
 
 public class DBUnitConfigurationPropertyMapper

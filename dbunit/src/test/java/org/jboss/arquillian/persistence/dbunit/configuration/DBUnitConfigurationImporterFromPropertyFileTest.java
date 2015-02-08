@@ -17,11 +17,11 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
+
+import java.io.IOException;
+import java.util.Properties;
 
 public class DBUnitConfigurationImporterFromPropertyFileTest extends DBUnitConfigurationImporterFromFileAbstractTestCase
 {

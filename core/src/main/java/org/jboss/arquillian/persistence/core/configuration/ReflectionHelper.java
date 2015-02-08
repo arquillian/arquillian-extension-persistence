@@ -18,14 +18,11 @@ package org.jboss.arquillian.persistence.core.configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.*;
+import static java.security.AccessController.doPrivileged;
 
 /**
  * SecurityActions

@@ -17,13 +17,13 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import org.jboss.arquillian.persistence.core.util.Strings;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import org.jboss.arquillian.persistence.core.util.Strings;
 
 /**
 *

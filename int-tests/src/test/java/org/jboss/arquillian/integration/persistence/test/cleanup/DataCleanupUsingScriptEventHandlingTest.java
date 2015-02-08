@@ -17,9 +17,6 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.testextension.event.annotation.CleanupShouldBeTriggered;
@@ -31,13 +28,15 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -54,7 +53,7 @@ public class DataCleanupUsingScriptEventHandlingTest
       return ShrinkWrap.create(WebArchive.class, "test.war")
                        .addPackage(UserAccount.class.getPackage())
                        // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }

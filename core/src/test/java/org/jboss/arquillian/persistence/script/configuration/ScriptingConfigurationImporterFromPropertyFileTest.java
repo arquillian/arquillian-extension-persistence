@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.persistence.script.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScriptingConfigurationImporterFromPropertyFileTest
 {

@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence.script.splitter.oracle;
 
-import static org.fest.assertions.Assertions.*;
-
 import org.jboss.arquillian.persistence.testutils.FileLoader;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OracleStatementSplitterTest
 {

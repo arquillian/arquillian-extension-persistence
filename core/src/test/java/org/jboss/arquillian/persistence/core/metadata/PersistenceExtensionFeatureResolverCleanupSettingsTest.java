@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -27,6 +25,8 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceExtensionFeatureResolverCleanupSettingsTest
 {

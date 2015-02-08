@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.naming;
 
-import java.lang.reflect.Method;
-
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
+
+import java.lang.reflect.Method;
 
 public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format>
 {

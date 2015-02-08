@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence.script.configuration;
 
-import static org.jboss.arquillian.persistence.util.Arrays.*;
-
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.Configuration;
 
 import java.nio.charset.Charset;
+
+import static org.jboss.arquillian.persistence.util.Arrays.copy;
 
 /**
  *

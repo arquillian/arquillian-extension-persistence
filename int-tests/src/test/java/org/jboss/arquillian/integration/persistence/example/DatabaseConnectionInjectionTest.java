@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.integration.persistence.example;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.util.Query;
@@ -31,6 +29,8 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -49,7 +49,7 @@ public class DatabaseConnectionInjectionTest
                        .addPackage(UserAccount.class.getPackage())
                        .addClass(Query.class)
                        // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }

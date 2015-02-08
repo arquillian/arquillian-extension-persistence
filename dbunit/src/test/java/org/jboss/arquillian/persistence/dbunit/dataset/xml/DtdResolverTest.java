@@ -17,9 +17,9 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.xml;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DtdResolverTest
 {

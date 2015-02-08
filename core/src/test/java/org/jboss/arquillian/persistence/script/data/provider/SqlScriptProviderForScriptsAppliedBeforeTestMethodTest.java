@@ -17,12 +17,6 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
@@ -31,6 +25,12 @@ import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResource
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest
 {

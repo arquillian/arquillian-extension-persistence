@@ -1,9 +1,5 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.io.InputStream;
-
 import org.jboss.arquillian.container.test.api.Testable;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -11,6 +7,10 @@ import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
+
+import java.io.InputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceDescriptorExtractorTest
 {
@@ -39,7 +39,7 @@ public class PersistenceDescriptorExtractorTest
    {
       // given
       final WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
-                                       .addPackages(true, "org.fest")
+                                       .addPackages(true, "org.assertj.core")
                                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                                        .addAsResource("persistence-non-jta.xml", "META-INF/persistence.xml");
       // when

@@ -17,22 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
+import org.jboss.arquillian.persistence.*;
+import org.jboss.arquillian.test.spi.TestClass;
+
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.Cleanup;
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.CreateSchema;
-import org.jboss.arquillian.persistence.DataSource;
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.PersistenceTest;
-import org.jboss.arquillian.persistence.SeedDataUsing;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.test.spi.TestClass;
 
 /**
 *

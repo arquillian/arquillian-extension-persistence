@@ -16,8 +16,8 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
-import org.fest.assertions.Assertions;
-import org.fest.assertions.GroupAssert;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 
@@ -26,12 +26,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert, Collection<DataSetResourceDescriptor>>
+public class DataSetDescriptorAssert extends IterableAssert<DataSetResourceDescriptor>
 {
 
-   protected DataSetDescriptorAssert(Collection<DataSetResourceDescriptor> actual)
+   protected DataSetDescriptorAssert(Iterable<DataSetResourceDescriptor> actual)
    {
-      super(DataSetDescriptorAssert.class, actual);
+      super(actual);
    }
 
    public static DataSetDescriptorAssert assertThat(DataSetResourceDescriptor ... dataSetDescriptors)
@@ -74,12 +74,6 @@ public class DataSetDescriptorAssert extends GroupAssert<DataSetDescriptorAssert
          fileNames.add(dataSetDescriptor.getLocation());
       }
       return fileNames;
-   }
-
-   @Override
-   protected int actualGroupSize()
-   {
-      return actual.size();
    }
 
 }

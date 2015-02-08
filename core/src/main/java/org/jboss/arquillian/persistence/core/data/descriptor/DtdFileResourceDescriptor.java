@@ -20,8 +20,6 @@ package org.jboss.arquillian.persistence.core.data.descriptor;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-
 /**
  *
  * Plain text file descriptor.

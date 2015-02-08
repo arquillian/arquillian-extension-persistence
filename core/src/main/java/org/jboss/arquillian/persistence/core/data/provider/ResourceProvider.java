@@ -17,16 +17,6 @@
  */
 package org.jboss.arquillian.persistence.core.data.provider;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
@@ -35,6 +25,12 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.MetadataProcessingException;
 import org.jboss.arquillian.persistence.core.util.Strings;
 import org.jboss.arquillian.test.spi.TestClass;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
 
 /**
  *

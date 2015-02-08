@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import static org.jboss.arquillian.persistence.util.Arrays.*;
-
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DefaultMetadataHandler;
 import org.dbunit.database.IMetadataHandler;

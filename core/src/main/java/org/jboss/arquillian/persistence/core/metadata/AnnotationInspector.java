@@ -17,11 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
+import org.jboss.arquillian.test.spi.TestClass;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
-
-import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  *

@@ -57,7 +57,7 @@ public class EmptyDataSetsTest
                        .addPackage(UserAccount.class.getPackage())
                        .addClasses(Query.class, UserPersistenceAssertion.class)
                        // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
    }

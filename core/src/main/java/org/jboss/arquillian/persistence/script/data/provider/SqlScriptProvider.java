@@ -16,20 +16,9 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.CreateSchema;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.jboss.arquillian.persistence.*;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
-import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.persistence.script.ScriptLoader;
@@ -39,6 +28,12 @@ import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptRe
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.persistence.script.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  *

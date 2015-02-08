@@ -17,9 +17,9 @@
  */
 package org.jboss.arquillian.persistence.script.data.naming;
 
-import java.lang.reflect.Method;
-
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
+
+import java.lang.reflect.Method;
 
 /**
  *

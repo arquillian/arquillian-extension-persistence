@@ -35,7 +35,7 @@ public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryA
                              Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
                                    PersistenceExtensionTester.class),
                              this.getClass().getPackage())
-                       .addPackages(true, "org.fest")
+                       .addPackages(true, "org.assertj.core")
                        .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
    }
 

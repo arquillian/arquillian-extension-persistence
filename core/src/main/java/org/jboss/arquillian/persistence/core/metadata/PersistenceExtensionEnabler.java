@@ -18,7 +18,6 @@
 package org.jboss.arquillian.persistence.core.metadata;
 
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
 *

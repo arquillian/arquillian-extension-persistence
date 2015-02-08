@@ -17,13 +17,14 @@
  */
 package org.jboss.arquillian.integration.persistence.datasource;
 
-import java.io.File;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+
+import java.io.File;
 
 public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppender
 {

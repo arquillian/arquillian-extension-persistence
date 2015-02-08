@@ -16,11 +16,11 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
-import org.fest.assertions.Assertions;
-import org.fest.assertions.GenericAssert;
 import org.jboss.arquillian.persistence.dbunit.dataset.Row;
 import org.yaml.snakeyaml.Yaml;
 
@@ -29,12 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TableAssert extends GenericAssert<TableAssert, ITable>
+public class TableAssert extends AbstractAssert<TableAssert, ITable>
 {
 
    protected TableAssert(ITable actual)
    {
-      super(TableAssert.class, actual);
+      super(actual, TableAssert.class);
    }
 
    public TableAssert hasColumns(String... expectedColumnNames)

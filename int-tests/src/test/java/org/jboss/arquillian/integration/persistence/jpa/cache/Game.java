@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.integration.persistence.jpa.cache;
 
-import java.io.Serializable;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>

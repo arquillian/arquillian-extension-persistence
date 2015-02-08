@@ -40,7 +40,7 @@ public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersisten
                                                 .addPackages(true, UserAccount.class.getPackage())
                                                 .addClass(Query.class)
                                                 // required for remote containers in order to run tests with FEST-Asserts
-                                                .addPackages(true, "org.fest")
+                                                .addPackages(true, "org.assertj.core")
                                                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                                                 .addAsManifestResource("test-persistence.xml", "persistence.xml");
 

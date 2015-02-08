@@ -16,17 +16,17 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.fest.assertions.Assertions;
-import org.fest.assertions.GenericAssert;
 
-public class DataSetAssert extends GenericAssert<DataSetAssert, IDataSet>
+public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet>
 {
 
    protected DataSetAssert(IDataSet actual)
    {
-      super(DataSetAssert.class, actual);
+      super(actual, DataSetAssert.class);
    }
 
    public DataSetAssert hasTables(String... tables)

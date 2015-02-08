@@ -17,10 +17,6 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Method;
-
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -40,6 +36,10 @@ import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.test.spi.TestClass;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.lang.reflect.Method;
 
 /**
  * Dumps database state during test method invocation, covering

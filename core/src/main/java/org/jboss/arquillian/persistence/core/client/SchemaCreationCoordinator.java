@@ -17,11 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.client;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.command.SchemaCreationControlCommand;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *

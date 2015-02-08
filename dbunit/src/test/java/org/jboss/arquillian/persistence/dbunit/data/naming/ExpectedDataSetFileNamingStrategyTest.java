@@ -17,10 +17,10 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.naming;
 
-import static org.fest.assertions.Assertions.*;
-
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExpectedDataSetFileNamingStrategyTest
 {

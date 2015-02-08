@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
 
 /**
  *

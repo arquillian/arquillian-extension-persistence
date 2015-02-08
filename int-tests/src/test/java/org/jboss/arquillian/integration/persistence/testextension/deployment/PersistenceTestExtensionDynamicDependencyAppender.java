@@ -16,10 +16,6 @@
  */
 package org.jboss.arquillian.integration.persistence.testextension.deployment;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -34,6 +30,10 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class PersistenceTestExtensionDynamicDependencyAppender implements ApplicationArchiveProcessor
 {

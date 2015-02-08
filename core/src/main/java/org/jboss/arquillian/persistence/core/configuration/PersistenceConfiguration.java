@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import java.io.Serializable;
-
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+
+import java.io.Serializable;
 
 /**
  *

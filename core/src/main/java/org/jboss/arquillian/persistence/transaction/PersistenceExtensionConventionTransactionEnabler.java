@@ -17,8 +17,6 @@
  */
 package org.jboss.arquillian.persistence.transaction;
 
-import java.lang.reflect.Method;
-
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
@@ -26,6 +24,8 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
+
+import java.lang.reflect.Method;
 
 public class PersistenceExtensionConventionTransactionEnabler implements TransactionEnabler
 {

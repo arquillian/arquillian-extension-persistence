@@ -1,27 +1,30 @@
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
-
-import java.util.Map;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+
 @RunWith(JUnitParamsRunner.class)
 public class DBUnitConfigurationPropertyMapperTest
 {
+
+   private static final String DBUNIT_FEATURES = "http://www.dbunit.org/features/";
+
+   private static final String DBUNIT_PROPERTIES = "http://www.dbunit.org/properties/";
+
    private final DBUnitConfiguration configuration = new DBUnitConfiguration();
 
    private final ConfigurationImporter<DBUnitConfiguration> configurationImporter = new ConfigurationImporter<DBUnitConfiguration>(configuration);
 
    @Test
-   @Parameters(method = "expectedDbunitProperties")
+   @Parameters(method = "expectedDBUnitProperties")
    public void should_convert_internal_configuration_representation_to_fully_qualified_dbunit_configuration_set(String expectedKey, Object expectedValue) throws Exception
    {
       // given
@@ -32,7 +35,7 @@ public class DBUnitConfigurationPropertyMapperTest
       Map<String, Object> dbunitProperties = dbUnitConfigurationPropertyMapper.map(configuration);
 
       // then
-      assertThat(dbunitProperties).includes(entry(expectedKey, expectedValue));
+      assertThat(dbunitProperties).contains(entry(expectedKey, expectedValue));
    }
 
    @Test
@@ -44,7 +47,7 @@ public class DBUnitConfigurationPropertyMapperTest
 
       // when
       Map<String, Object> dbunitProperties = dbUnitConfigurationPropertyMapper.map(configuration);
-      String[] actualTableType = (String[]) dbunitProperties.get("http://www.dbunit.org/properties/tableType");
+      String[] actualTableType = (String[]) dbunitProperties.get(DBUNIT_PROPERTIES + "tableType");
 
       // then
       assertThat(actualTableType).containsOnly("TABLE", "VIEW");
@@ -61,7 +64,7 @@ public class DBUnitConfigurationPropertyMapperTest
       Map<String, Object> dbunitProperties = dbUnitConfigurationPropertyMapper.map(configuration);
 
       // then
-      assertThat(dbunitProperties).includes(entry("http://www.dbunit.org/properties/batchSize", 200));
+      assertThat(dbunitProperties).contains(entry(DBUNIT_PROPERTIES + "batchSize", 200));
    }
 
    @Test
@@ -75,21 +78,21 @@ public class DBUnitConfigurationPropertyMapperTest
       Map<String, Object> dbunitProperties = dbUnitConfigurationPropertyMapper.map(configuration);
 
       // then
-      assertThat(dbunitProperties).includes(entry("http://www.dbunit.org/properties/fetchSize", 100));
+      assertThat(dbunitProperties).contains(entry(DBUNIT_PROPERTIES + "fetchSize", 100));
    }
 
    @SuppressWarnings("unused") // used by @Parameters
-   private Object[] expectedDbunitProperties()
+   private Object[] expectedDBUnitProperties()
    {
       return JUnitParamsRunner.$(
-            JUnitParamsRunner.$("http://www.dbunit.org/features/batchedStatements", true),
-            JUnitParamsRunner.$("http://www.dbunit.org/features/caseSensitiveTableNames", true),
-            JUnitParamsRunner.$("http://www.dbunit.org/features/qualifiedTableNames", true),
-            JUnitParamsRunner.$("http://www.dbunit.org/features/datatypeWarning", false),
-            JUnitParamsRunner.$("http://www.dbunit.org/features/skipOracleRecycleBinTables", true),
-            JUnitParamsRunner.$("http://www.dbunit.org/properties/escapePattern", "?"),
-            JUnitParamsRunner.$("http://www.dbunit.org/properties/batchSize", 200),
-            JUnitParamsRunner.$("http://www.dbunit.org/properties/fetchSize", 300)
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "batchedStatements", true),
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "caseSensitiveTableNames", true),
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "qualifiedTableNames", true),
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "datatypeWarning", false),
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "skipOracleRecycleBinTables", true),
+            JUnitParamsRunner.$(DBUNIT_PROPERTIES + "escapePattern", "?"),
+            JUnitParamsRunner.$(DBUNIT_PROPERTIES + "batchSize", 200),
+            JUnitParamsRunner.$(DBUNIT_PROPERTIES + "fetchSize", 300)
       );
    }
 

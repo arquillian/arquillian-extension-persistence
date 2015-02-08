@@ -17,13 +17,13 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.Properties;
-
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
+
+import java.util.Properties;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersistenceConfigurationImporterFromPropertyFileTest
 {
