@@ -16,36 +16,32 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
-import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.junit.After;
-import org.junit.Test;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class PersistenceConfigurationExporterToPropertyFilesTest
 {
 
-   private static final String ARQ_PROPERTY_FILE = "ike.properties";
+   private File tmpPropertyFile;
 
-   private File createdFile;
+   @Rule
+   public TemporaryFolder tmp = new TemporaryFolder();
 
-   @After
-   public void deleteTemporaryFile()
+   @Before
+   public void createTemporaryFile() throws IOException
    {
-      if (createdFile != null && createdFile.exists())
-      {
-         createdFile.delete();
-      }
+      this.tmpPropertyFile = tmp.newFile();
    }
 
    @Test
@@ -61,7 +57,7 @@ public class PersistenceConfigurationExporterToPropertyFilesTest
 
       // when
       Configuration.exportUsing(persistenceConfiguration)
-                   .toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
+                   .toProperties(new FileOutputStream(tmpPropertyFile));
 
       // then
       assertThat(createdProperties()).isEqualTo(expectedProperties);
@@ -76,7 +72,7 @@ public class PersistenceConfigurationExporterToPropertyFilesTest
 
       // when
       Configuration.exportUsing(persistenceConfiguration)
-                   .toProperties(new FileOutputStream(ARQ_PROPERTY_FILE));
+                   .toProperties(new FileOutputStream(tmpPropertyFile));
 
       // then
       assertThat(createdProperties()).isEqualTo(expectedProperties);
@@ -86,9 +82,8 @@ public class PersistenceConfigurationExporterToPropertyFilesTest
 
    private Properties createdProperties() throws IOException, FileNotFoundException
    {
-      createdFile = new File(ARQ_PROPERTY_FILE);
       final Properties actualProperties = new Properties();
-      actualProperties.load(new FileInputStream(createdFile));
+      actualProperties.load(new FileInputStream(tmpPropertyFile));
       return actualProperties;
    }
 
