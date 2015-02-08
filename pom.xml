@@ -61,11 +61,11 @@
   <!-- Properties -->
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.1.5.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.6.Final</version.arquillian_core>
     <version.arquillian_transaction>1.0.1.Final</version.arquillian_transaction>
     <version.fest.assert>1.4</version.fest.assert>
     <version.testng>5.14.6</version.testng>
-    <version.mockito>1.9.5</version.mockito>
+    <version.mockito>1.10.19</version.mockito>
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
@@ -73,8 +73,8 @@
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.0</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
-    <version.surefire.plugin>2.17</version.surefire.plugin>
-    <version.failsafe.plugin>2.17</version.failsafe.plugin>
+    <version.surefire.plugin>2.18.1</version.surefire.plugin>
+    <version.failsafe.plugin>2.18.1</version.failsafe.plugin>
     <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
     <version.docker.plugin>0.10.3</version.docker.plugin>
     <!-- override from parent -->
