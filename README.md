@@ -10,7 +10,7 @@ It comes with following features:
 
 * Wrapping each test in the seperated transaction (with **commit**(default) or **rollback** at the end).
 * Seeding database using:
-    * [DBUnit](http://dbunit.org) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
+    * [DBUnit](http://dbunit.sourceforge.net/) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
     * Custom SQL scripts.
 * Comparing database state at the end of the test using given data sets (with column exclusion).
 * Eviction JPA second level cache between test method invocation, see `@JpaCacheEviction`.
