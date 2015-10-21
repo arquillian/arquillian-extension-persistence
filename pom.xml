@@ -58,19 +58,17 @@
     <url>https://issues.jboss.org/browse/ARQ/component/12314864</url>
   </issueManagement>
 
-  <!-- Properties -->
   <properties>
-    <!-- Versioning -->
     <!-- Arquillian dependencies -->
-    <version.arquillian_core>1.1.6.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.1.Final</version.arquillian_transaction>
+    <version.arquillian_core>1.1.10.Final</version.arquillian_core>
+    <version.arquillian_transaction>1.0.2.Final</version.arquillian_transaction>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.0</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
 
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
-    <version.assertj.core>1.7.1</version.assertj.core>
+    <version.assertj.core>2.2.0</version.assertj.core>
     <version.mockito>1.10.19</version.mockito>
 
     <!-- Containers -->
@@ -82,7 +80,7 @@
     <!-- Maven pluings -->
     <version.surefire.plugin>2.18.1</version.surefire.plugin>
     <version.failsafe.plugin>2.18.1</version.failsafe.plugin>
-    <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
+    <version.shrinkwrap.resolver>2.2.0</version.shrinkwrap.resolver>
     <version.docker.plugin>0.11.0</version.docker.plugin>
 
     <!-- Overridden from parent -->
