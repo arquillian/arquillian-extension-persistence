@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>17</version>
+    <version>19</version>
     <relativePath />
   </parent>
 
@@ -21,6 +21,10 @@
   <name>Arquillian Persistence Extension Aggregator</name>
   <url>http://www.jboss.org</url>
   <description>Arquillian Persistence Extension Aggregator</description>
+
+  <prerequisites>
+    <maven>3.2.1</maven>
+  </prerequisites>
 
   <modules>
     <module>api</module>
@@ -81,7 +85,7 @@
     <version.surefire.plugin>2.18.1</version.surefire.plugin>
     <version.failsafe.plugin>2.18.1</version.failsafe.plugin>
     <version.shrinkwrap.resolver>2.2.0</version.shrinkwrap.resolver>
-    <version.docker.plugin>0.11.0</version.docker.plugin>
+    <version.docker.plugin>0.13.6</version.docker.plugin>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
