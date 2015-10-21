@@ -2,6 +2,7 @@ package org.jboss.arquillian.persistence.dbunit.configuration;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import net.jcip.annotations.NotThreadSafe;
 import org.dbunit.database.ForwardOnlyResultSetTableFactory;
 import org.dbunit.database.statement.StatementFactory;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@NotThreadSafe
 @RunWith(JUnitParamsRunner.class)
 public class DBUnitConfigurationPropertyMapperComparedByTypeTest
 {

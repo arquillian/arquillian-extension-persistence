@@ -2,6 +2,7 @@ package org.jboss.arquillian.persistence.dbunit.configuration;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import net.jcip.annotations.NotThreadSafe;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
+@NotThreadSafe
 @RunWith(JUnitParamsRunner.class)
 public class DBUnitConfigurationPropertyMapperTest
 {

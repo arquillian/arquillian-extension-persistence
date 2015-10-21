@@ -19,16 +19,18 @@ package org.jboss.arquillian.persistence.dbunit;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@NotThreadSafe
 @RunWith(JUnitParamsRunner.class)
 public class DataSetUtilsTest
 {
@@ -47,12 +49,11 @@ public class DataSetUtilsTest
    @SuppressWarnings("unused")
    private Object[] columns()
    {
-      return JUnitParamsRunner.$(
-            //   expected    ,   actual             , non existing in actual
-            $(Arrays.asList("id", "name"), Arrays.asList("name", "password"), Arrays.asList("id")),
-            $(Arrays.asList("id", "username", "password"), Arrays.asList("id", "username", "password"), Collections.emptyList()),
-            $(Collections.emptyList(), Arrays.asList("id", "name"), Collections.emptyList()),
-            $(Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
+      return $(//   expected    ,   actual             , non existing in actual
+              $(asList("id", "name"), asList("name", "password"), asList("id")),
+              $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
+              $(emptyList(), asList("id", "name"), emptyList()),
+              $(emptyList(), emptyList(), emptyList())
       );
    }
 

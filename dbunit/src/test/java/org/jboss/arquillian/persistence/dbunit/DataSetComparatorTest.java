@@ -29,9 +29,9 @@ import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Set;
 
+import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.*;
@@ -156,7 +156,7 @@ public class DataSetComparatorTest
 
    private Set<Class<? extends IColumnFilter>> noCustomFilters()
    {
-      return Collections.emptySet();
+      return emptySet();
    }
 
 }
