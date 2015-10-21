@@ -109,7 +109,6 @@ public class YamlDataSetProducer implements IDataSetProducer
             addImplicitResolver(Tag.MERGE, MERGE, "<");
             addImplicitResolver(Tag.NULL, NULL, "~nN\0");
             addImplicitResolver(Tag.NULL, EMPTY, null);
-            addImplicitResolver(Tag.VALUE, VALUE, "=");
             addImplicitResolver(Tag.YAML, YAML, "!&*");
          }
       });
@@ -134,7 +133,7 @@ public class YamlDataSetProducer implements IDataSetProducer
 
    private List<Table> createTables(Map<String, List<Map<String, String>>> yamlStructure)
    {
-      List<Table> tables = new ArrayList<Table>();
+      final List<Table> tables = new ArrayList<Table>();
       for (Map.Entry<String, List<Map<String, String>>> entry : yamlStructure.entrySet())
       {
          Table table = new Table(entry.getKey());

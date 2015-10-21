@@ -18,9 +18,9 @@
   <description>Extension for controlling data sources</description>
 
   <properties>
-    <version.snakeyaml>1.10</version.snakeyaml>
+    <version.snakeyaml>1.16</version.snakeyaml>
     <version.jackson>1.9.2</version.jackson>
-    <version.poi>3.2-FINAL</version.poi>
+    <version.poi>3.13</version.poi>
     <version.cdi>1.0-SP1</version.cdi>
     <version.jta>1.1</version.jta>
     <version.slf4j>1.7.2</version.slf4j>
