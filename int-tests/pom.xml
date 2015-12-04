@@ -109,7 +109,7 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>3.2-FINAL</version>
+      <version>3.13</version>
       <scope>test</scope>
     </dependency>
 
@@ -121,7 +121,6 @@
           when the tests fail -->
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.17</version>
         <configuration>
           <includes>
             <include>**/*Test.java</include>
@@ -720,6 +719,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
+            <version>${version.build.helper.plugin}</version>
             <executions>
               <execution>
                 <id>add-test-source</id>
