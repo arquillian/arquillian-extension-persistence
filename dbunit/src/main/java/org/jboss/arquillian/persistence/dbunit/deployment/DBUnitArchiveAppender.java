@@ -55,7 +55,10 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender
                                                                  // exclude client package
                                                                  Filters.exclude(DBUnitExtension.class.getPackage()),
                                                                  "org.jboss.arquillian.persistence.dbunit")
-                                                           .addPackages(true, requiredLibraries())
+                                                           .addPackages(true,
+                                                                   // Avoid slf4j implementation in case different impl is chosen in @Deployment
+                                                                   Filters.exclude(".*/org/slf4j/impl/.*"),
+                                                                   requiredLibraries())
                                                            .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class);
 
       return dbUnitExtensionArchive;
