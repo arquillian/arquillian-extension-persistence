@@ -27,10 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase
 {
 
-
    protected abstract DBUnitConfiguration loadFromFile() throws IOException;
-
-   // -- Test cases
 
    @Test
    public void should_extract_batched_statement_flag_from_external_property_file() throws Exception
@@ -75,6 +72,15 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase
 
       // then
       assertThat(dbunitConfiguration.isSkipOracleRecycleBinTables()).isTrue();
+   }
+
+   @Test
+   public void should_extract_allow_empty_fields_flag_from_external_property_file() throws Exception
+   {
+      DBUnitConfiguration dbunitConfiguration = loadFromFile();
+
+      // then
+      assertThat(dbunitConfiguration.isAllowEmptyFields()).isTrue();
    }
 
    @Test

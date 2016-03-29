@@ -10,6 +10,7 @@
     <property name="qualifiedTableNames">true</property>
     <property name="datatypeWarning">false</property>
     <property name="skipOracleRecycleBinTables">true</property>
+    <property name="allowEmptyFields">true</property>
     <property name="escapePattern">?</property>
     <property name="tableType">TABLE, VIEW</property>
     <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
