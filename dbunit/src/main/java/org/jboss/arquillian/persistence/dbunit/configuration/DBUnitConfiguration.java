@@ -40,8 +40,8 @@ import org.jboss.arquillian.persistence.util.Arrays;
  * descriptor in the element with qualifier <code>persistence-dbunit</code>.
  * <br><br>
  * Covers all features and properties described in
- * <a href="http://www.dbunit.org/properties.html">DBUnit documentation</a> as of
- * version 2.4.8
+ * <a href="http://dbunit.sourceforge.net/properties.html">DBUnit documentation</a> as of
+ * version 2.5.1
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
@@ -65,7 +65,10 @@ public class DBUnitConfiguration extends Configuration
 
    @Feature
    private boolean skipOracleRecycleBinTables = false;
-
+   
+   @Feature
+   private boolean allowEmptyFields = false;
+   
    @Property
    private String escapePattern;
 
@@ -194,6 +197,20 @@ public class DBUnitConfiguration extends Configuration
    public void setSkipOracleRecycleBinTables(boolean skipOracleRecycleBinTables)
    {
       this.skipOracleRecycleBinTables = skipOracleRecycleBinTables;
+   }
+
+   public boolean isAllowEmptyFields()
+   {
+      return allowEmptyFields;
+   }
+
+   /**
+    * @param allowEmptyFields Allow to call INSERT/UPDATE with empty strings ('').
+    * Default value is <code>false</code>.
+    */
+   public void setAllowEmptyFields(boolean allowEmptyFields)
+   {
+      this.allowEmptyFields = allowEmptyFields;
    }
 
    public String getEscapePattern()
