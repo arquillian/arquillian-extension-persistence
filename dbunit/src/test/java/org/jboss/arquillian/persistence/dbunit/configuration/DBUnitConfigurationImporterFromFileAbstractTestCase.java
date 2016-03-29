@@ -76,6 +76,15 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase
       // then
       assertThat(dbunitConfiguration.isSkipOracleRecycleBinTables()).isTrue();
    }
+   
+   @Test
+   public void should_extract_allow_empty_fields_flag_from_external_property_file() throws Exception
+   {
+      DBUnitConfiguration dbunitConfiguration = loadFromFile();
+
+      // then
+      assertThat(dbunitConfiguration.isAllowEmptyFields()).isTrue();
+   }
 
    @Test
    public void should_extract_escape_pattern_from_external_property_file() throws Exception
