@@ -92,6 +92,7 @@ public class DBUnitConfigurationPropertyMapperTest
             JUnitParamsRunner.$(DBUNIT_FEATURES + "qualifiedTableNames", true),
             JUnitParamsRunner.$(DBUNIT_FEATURES + "datatypeWarning", false),
             JUnitParamsRunner.$(DBUNIT_FEATURES + "skipOracleRecycleBinTables", true),
+            JUnitParamsRunner.$(DBUNIT_FEATURES + "allowEmptyFields", true),
             JUnitParamsRunner.$(DBUNIT_PROPERTIES + "escapePattern", "?"),
             JUnitParamsRunner.$(DBUNIT_PROPERTIES + "batchSize", 200),
             JUnitParamsRunner.$(DBUNIT_PROPERTIES + "fetchSize", 300)
