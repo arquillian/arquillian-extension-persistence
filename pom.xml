@@ -64,8 +64,8 @@
 
   <properties>
     <!-- Arquillian dependencies -->
-    <version.arquillian_core>1.1.10.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.2.Final</version.arquillian_transaction>
+    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+    <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
     <version.shrinkwrap.resolver>2.2.0</version.shrinkwrap.resolver>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.1</version.dbunit>
@@ -83,8 +83,8 @@
     <version.wildfly>8.1.0.Final</version.wildfly>
 
     <!-- Maven pluings -->
-    <version.surefire.plugin>2.19</version.surefire.plugin>
-    <version.failsafe.plugin>2.19</version.failsafe.plugin>
+    <version.surefire.plugin>2.19.1</version.surefire.plugin>
+    <version.failsafe.plugin>2.19.1</version.failsafe.plugin>
     <version.docker.plugin>0.13.6</version.docker.plugin>
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
@@ -197,7 +197,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.14</version>
+        <version>1.15</version>
         <executions>
           <execution>
             <id>signature-check</id>
