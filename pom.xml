@@ -73,7 +73,7 @@
 
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
-    <version.assertj.core>2.3.0</version.assertj.core>
+    <version.assertj.core>2.2.0</version.assertj.core>
     <version.mockito>1.10.19</version.mockito>
 
     <!-- Containers -->
