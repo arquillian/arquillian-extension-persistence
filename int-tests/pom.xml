@@ -23,7 +23,6 @@
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.poi>3.14</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
-    <version.maven-exec-plugin>1.3.2</version.maven-exec-plugin>
   </properties>
 
   <dependencies>
@@ -588,14 +587,23 @@
                   <alias>db</alias>
                   <name>alexeiled/docker-oracle-xe-11g</name>
                   <run>
+                    <privileged>true</privileged>
                     <ports>
                       <port>49160:22</port>
                       <port>49161:1521</port>
                       <port>49162:8080</port>
                     </ports>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/test/${additional.test.resources}/shell:/scripts</volume>
+                      </bind>
+                    </volumes>
                     <wait>
                       <url>http://localhost:49162/apex/</url>
-                      <time>120000</time>
+                      <time>60000</time>
+                      <exec>
+                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
+                      </exec>
                     </wait>
                   </run>
                 </image>
@@ -615,29 +623,6 @@
                 <goals>
                   <goal>stop</goal>
                 </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${version.maven-exec-plugin}</version>
-            <executions>
-              <execution>
-                <id>create-ape-schema</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>${project.basedir}/src/test/${additional.test.resources}/shell/run.sh
-                  </executable>
-                  <arguments>
-                    <argument>
-                      ${project.basedir}/src/test/${additional.test.resources}/shell/create-ape-schema.sh
-                    </argument>
-                  </arguments>
-                </configuration>
               </execution>
             </executions>
           </plugin>
