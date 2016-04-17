@@ -84,10 +84,10 @@
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.wildfly>8.1.0.Final</version.wildfly>
 
-    <!-- Maven pluings -->
+    <!-- Maven plugins -->
     <version.surefire.plugin>2.19.1</version.surefire.plugin>
     <version.failsafe.plugin>2.19.1</version.failsafe.plugin>
-    <version.docker.plugin>0.13.6</version.docker.plugin>
+    <version.docker.plugin>0.14.2</version.docker.plugin>
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
