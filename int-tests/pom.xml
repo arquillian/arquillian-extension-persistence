@@ -143,14 +143,22 @@
             </goals>
           </execution>
         </executions>
-
       </plugin>
-
 
       <!-- Tell surefire to skip test, we are using the failsafe plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <!-- This artifact shouldn't be deployed to maven repository -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
         <configuration>
           <skip>true</skip>
         </configuration>
