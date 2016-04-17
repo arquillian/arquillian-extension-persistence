@@ -29,9 +29,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Retention(RUNTIME)
 @Inherited
-public @interface CleanupUsingScriptShouldBeTriggered
-{
+public @interface CleanupUsingScriptShouldBeTriggered {
 
-   TestExecutionPhase value();
+    TestExecutionPhase value();
 
 }

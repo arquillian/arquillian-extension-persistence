@@ -626,9 +626,11 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${project.basedir}/src/test/${additional.test.resources}/shell/run.sh</executable>
+                  <executable>${project.basedir}/src/test/${additional.test.resources}/shell/run.sh
+                  </executable>
                   <arguments>
-                    <argument>${project.basedir}/src/test/${additional.test.resources}/shell/create-ape-schema.sh
+                    <argument>
+                      ${project.basedir}/src/test/${additional.test.resources}/shell/create-ape-schema.sh
                     </argument>
                   </arguments>
                 </configuration>
@@ -805,7 +807,9 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${project.basedir}/src/test/${additional.test.resources}/shell/prepare-db.sh</executable>
+                  <executable>
+                    ${project.basedir}/src/test/${additional.test.resources}/shell/prepare-db.sh
+                  </executable>
                 </configuration>
               </execution>
             </executions>
@@ -964,7 +968,9 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${project.basedir}/src/test/${additional.test.resources}/shell/prepare-db.sh</executable>
+                  <executable>
+                    ${project.basedir}/src/test/${additional.test.resources}/shell/prepare-db.sh
+                  </executable>
                 </configuration>
               </execution>
             </executions>

@@ -68,40 +68,38 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
-public @interface JpaCacheEviction
-{
+public @interface JpaCacheEviction {
 
-   /**
-    * Defines when during the test execution second level cache should be evicted.
-    */
-   TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
+    /**
+     * Defines when during the test execution second level cache should be evicted.
+     */
+    TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
-   /**
-    * Defines JNDI names of entity managers which second level caches should be evicted
-    * during test execution. Both full JNDI name as well as short form can be provided.
-    * In case of latter it will be prefixed with java:comp/env/.
-    */
-   String[] entityManager() default "";
+    /**
+     * Defines JNDI names of entity managers which second level caches should be evicted
+     * during test execution. Both full JNDI name as well as short form can be provided.
+     * In case of latter it will be prefixed with java:comp/env/.
+     */
+    String[] entityManager() default "";
 
-   /**
-    * Defines strategy how to evict cache.
-    */
-   Class<? extends JpaCacheEvictionStrategy> strategy() default DefaultJpaCacheEvictionStrategy.class;
+    /**
+     * Defines strategy how to evict cache.
+     */
+    Class<? extends JpaCacheEvictionStrategy> strategy() default DefaultJpaCacheEvictionStrategy.class;
 
-   /**
-    * Internal strategy class for representing default value.
-    * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
-    */
-   class DefaultJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy
-   {
-      /**
-       * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManager)
-       */
-      @Override
-      public void evictCache(EntityManager em)
-      {
-         throw new UnsupportedOperationException();
-      }
-   }
+    /**
+     * Internal strategy class for representing default value.
+     *
+     * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
+     */
+    class DefaultJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy {
+        /**
+         * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManager)
+         */
+        @Override
+        public void evictCache(EntityManager em) {
+            throw new UnsupportedOperationException();
+        }
+    }
 
 }

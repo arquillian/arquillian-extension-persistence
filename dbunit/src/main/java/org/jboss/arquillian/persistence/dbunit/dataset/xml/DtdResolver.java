@@ -29,60 +29,48 @@ import java.io.InputStream;
 import java.io.StringReader;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DtdResolver
-{
+public class DtdResolver {
 
-   /**
-    * @param xmlFile
-    * @return name of DTD file specified in the !DOCTYPE or null if not specified.
-    */
-   public String resolveDtdLocation(final String xmlFile)
-   {
-      final InputStream xmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFile);
-      try
-      {
-         final DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-         builder.setEntityResolver(new EntityResolver()
-         {
-            @Override
-            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
-            {
-               // Ignore schema validation at this point - we only need to know where DTD sits
-               return new InputSource(new StringReader(""));
+    /**
+     * @param xmlFile
+     * @return name of DTD file specified in the !DOCTYPE or null if not specified.
+     */
+    public String resolveDtdLocation(final String xmlFile) {
+        final InputStream xmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFile);
+        try {
+            final DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            builder.setEntityResolver(new EntityResolver() {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                    // Ignore schema validation at this point - we only need to know where DTD sits
+                    return new InputSource(new StringReader(""));
+                }
+            });
+            final Document document = builder.parse(xmlStream);
+            if (document.getDoctype() == null) {
+                return null;
             }
-         });
-         final Document document = builder.parse(xmlStream);
-         if (document.getDoctype() == null)
-         {
+            return document.getDoctype().getSystemId();
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to resolve dtd for " + xmlFile, e);
+        }
+
+    }
+
+    /**
+     * @param xmlFile
+     * @return name of DTD file specified in the !DOCTYPE with full path inferred from the file location
+     * or null if not specified.
+     */
+    public String resolveDtdLocationFullPath(final String xml) {
+        final String dtd = resolveDtdLocation(xml);
+        if (dtd == null) {
             return null;
-         }
-         return document.getDoctype().getSystemId();
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Unable to resolve dtd for " + xmlFile, e);
-      }
-
-   }
-
-   /**
-    * @param xmlFile
-    * @return name of DTD file specified in the !DOCTYPE with full path inferred from the file location
-    *         or null if not specified.
-    */
-   public String resolveDtdLocationFullPath(final String xml)
-   {
-      final String dtd = resolveDtdLocation(xml);
-      if (dtd == null)
-      {
-         return null;
-      }
-      final String path = xml.substring(0, xml.lastIndexOf('/'));
-      return path + '/' + dtd;
-   }
+        }
+        final String path = xml.substring(0, xml.lastIndexOf('/'));
+        return path + '/' + dtd;
+    }
 
 }

@@ -24,110 +24,102 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceConfigurationImporterFromXmlTest
-{
+public class PersistenceConfigurationImporterFromXmlTest {
 
-   @Test
-   public void should_extract_default_data_source_from_external_configuration_file() throws Exception
-   {
-      // given
-      String expectedDataSource = "Ike";
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_extract_default_data_source_from_external_configuration_file() throws Exception {
+        // given
+        String expectedDataSource = "Ike";
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
-   }
+        // then
+        assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
+    }
 
-   @Test
-   public void should_obtain_default_transaction_mode() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_obtain_default_transaction_mode() throws Exception {
+        // given
+        TransactionMode expectedMode = TransactionMode.ROLLBACK;
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
-   }
+        // then
+        assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
+    }
 
-   @Test
-   public void should_have_commit_as_default_transaction_mode_if_not_defined_in_configuration_file() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.COMMIT;
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_have_commit_as_default_transaction_mode_if_not_defined_in_configuration_file() throws Exception {
+        // given
+        TransactionMode expectedMode = TransactionMode.COMMIT;
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
-   }
+        // then
+        assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
+    }
 
-   @Test
-   public void should_be_able_to_turn_on_database_dumps() throws Exception
-   {
-      // given
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_be_able_to_turn_on_database_dumps() throws Exception {
+        // given
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.isDumpData()).isTrue();
-   }
+        // then
+        assertThat(configuration.isDumpData()).isTrue();
+    }
 
-   @Test
-   public void should_have_database_dumps_disabled_by_default() throws Exception
-   {
-      // given
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_have_database_dumps_disabled_by_default() throws Exception {
+        // given
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.isDumpData()).isFalse();
-   }
+        // then
+        assertThat(configuration.isDumpData()).isFalse();
+    }
 
-   @Test
-   public void should_have_system_temp_dir_defined_as_default_dump_directory() throws Exception
-   {
-      // given
-      String systemTmpDir = System.getProperty("java.io.tmpdir");
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_have_system_temp_dir_defined_as_default_dump_directory() throws Exception {
+        // given
+        String systemTmpDir = System.getProperty("java.io.tmpdir");
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
-   }
+        // then
+        assertThat(configuration.getDumpDirectory()).isEqualTo(systemTmpDir);
+    }
 
-   @Test
-   public void should_be_able_to_define_dump_directory() throws Exception
-   {
-      // given
-      String dumpDirectory = "/home/ike/dump";
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_be_able_to_define_dump_directory() throws Exception {
+        // given
+        String dumpDirectory = "/home/ike/dump";
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
+        // then
+        assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
+    }
 
 }

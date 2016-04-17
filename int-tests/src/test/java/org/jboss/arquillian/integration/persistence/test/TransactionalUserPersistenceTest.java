@@ -36,49 +36,44 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * All tests should be wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
 @PersistenceTest
-public class TransactionalUserPersistenceTest
-{
+public class TransactionalUserPersistenceTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   public void should_persist_users_within_transaction() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    public void should_persist_users_within_transaction() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).hasSize(2);
-   }
+        // then
+        @SuppressWarnings("unchecked")
+        List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        assertThat(savedUserAccounts).hasSize(2);
+    }
 
 }

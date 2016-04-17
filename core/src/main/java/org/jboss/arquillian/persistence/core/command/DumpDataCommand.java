@@ -21,26 +21,21 @@ import org.jboss.arquillian.container.test.impl.client.deployment.command.Abstra
 import org.jboss.arquillian.persistence.core.data.dump.DataDump;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class DumpDataCommand extends AbstractCommand<Boolean>
-{
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ */
+public class DumpDataCommand extends AbstractCommand<Boolean> {
 
-   private static final long serialVersionUID = -2902231315942649833L;
+    private static final long serialVersionUID = -2902231315942649833L;
 
-   private final DataDump dumpData;
+    private final DataDump dumpData;
 
-   public DumpDataCommand(DataDump dumpData)
-   {
-      super();
-      this.dumpData = dumpData;
-   }
+    public DumpDataCommand(DataDump dumpData) {
+        super();
+        this.dumpData = dumpData;
+    }
 
-   public DataDump getDumpData()
-   {
-      return dumpData;
-   }
+    public DataDump getDumpData() {
+        return dumpData;
+    }
 
 }

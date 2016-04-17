@@ -44,166 +44,137 @@ import java.util.logging.Logger;
  * Appends all data sets defined for the test class to the test archive.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceExtensionConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor
-{
+public class PersistenceExtensionConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor {
 
-   private static final Logger log = Logger.getLogger(PersistenceExtensionConfigurationTestArchiveEnricher.class.getName());
+    private static final Logger log = Logger.getLogger(PersistenceExtensionConfigurationTestArchiveEnricher.class.getName());
 
-   @Inject
-   Instance<PersistenceConfiguration> configurationInstance;
+    @Inject
+    Instance<PersistenceConfiguration> configurationInstance;
 
-   @Inject
-   Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+    @Inject
+    Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
-   @Inject
-   Instance<ArquillianDescriptor> arquillianDescriptorInstance;
+    @Inject
+    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
-   @Override
-   public void process(Archive<?> applicationArchive, TestClass testClass)
-   {
+    @Override
+    public void process(Archive<?> applicationArchive, TestClass testClass) {
 
-      final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
-      {
-         return;
-      }
-      obtainDataSourceFromPersistenceXml(applicationArchive);
-      final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core-additional-resources.jar");
-      merge(additionalPersistenceResources, sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
-                                            sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),
-                                            persistenceConfigurationSerializedAsProperties(),
-                                            scriptingConfigurationSerializedAsProperties(),
-                                            jpaCacheEvictionConfigurationSerializedAsProperties());
-      addResources(applicationArchive, additionalPersistenceResources);
-   }
+        final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
+        if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated()) {
+            return;
+        }
+        obtainDataSourceFromPersistenceXml(applicationArchive);
+        final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core-additional-resources.jar");
+        merge(additionalPersistenceResources, sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
+                sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),
+                persistenceConfigurationSerializedAsProperties(),
+                scriptingConfigurationSerializedAsProperties(),
+                jpaCacheEvictionConfigurationSerializedAsProperties());
+        addResources(applicationArchive, additionalPersistenceResources);
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private void obtainDataSourceFromPersistenceXml(final Archive<?> applicationArchive)
-   {
-      if (configurationInstance.get().isDefaultDataSourceDefined())
-      {
-         return; // if defined globally the only way to alter it is on test level using @DataSource annotation
-      }
+    private void obtainDataSourceFromPersistenceXml(final Archive<?> applicationArchive) {
+        if (configurationInstance.get().isDefaultDataSourceDefined()) {
+            return; // if defined globally the only way to alter it is on test level using @DataSource annotation
+        }
 
-      final PersistenceDescriptorExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorExtractor();
-      final InputStream persistenceXmlAsStream = persistenceDescriptorArchiveExtractor.getAsStream(applicationArchive);
-      if (persistenceXmlAsStream != null)
-      {
-         final PersistenceDescriptorParser parser = new PersistenceDescriptorParser();
-         try
-         {
-            final String dataSourceName = parser.obtainDataSourceName(persistenceXmlAsStream);
-            configurationInstance.get().setDefaultDataSource(dataSourceName);
+        final PersistenceDescriptorExtractor persistenceDescriptorArchiveExtractor = new PersistenceDescriptorExtractor();
+        final InputStream persistenceXmlAsStream = persistenceDescriptorArchiveExtractor.getAsStream(applicationArchive);
+        if (persistenceXmlAsStream != null) {
+            final PersistenceDescriptorParser parser = new PersistenceDescriptorParser();
+            try {
+                final String dataSourceName = parser.obtainDataSourceName(persistenceXmlAsStream);
+                configurationInstance.get().setDefaultDataSource(dataSourceName);
 
-         }
-         catch (MultiplePersistenceUnitsException e)
-         {
-            log.info("Unable to deduct data source from test's archive persistence.xml. " + e.getMessage());
-         }
-      }
+            } catch (MultiplePersistenceUnitsException e) {
+                log.info("Unable to deduct data source from test's archive persistence.xml. " + e.getMessage());
+            }
+        }
 
-   }
+    }
 
-   private void merge(final JavaArchive target, final JavaArchive ... archivesToMerge)
-   {
-      for (JavaArchive archiveToMerge : archivesToMerge)
-      {
-         target.merge(archiveToMerge);
-      }
-   }
+    private void merge(final JavaArchive target, final JavaArchive... archivesToMerge) {
+        for (JavaArchive archiveToMerge : archivesToMerge) {
+            target.merge(archiveToMerge);
+        }
+    }
 
-   private JavaArchive persistenceConfigurationSerializedAsProperties()
-   {
-      return ShrinkWrap.create(JavaArchive.class)
-                       .addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), configurationInstance.get().getPrefix() + "properties");
-   }
+    private JavaArchive persistenceConfigurationSerializedAsProperties() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), configurationInstance.get().getPrefix() + "properties");
+    }
 
-   private ByteArrayOutputStream exportPersistenceConfigurationAsProperties()
-   {
-      final ByteArrayOutputStream output = new ByteArrayOutputStream();
-      final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(configurationInstance.get());
-      exporter.toProperties(output);
-      return output;
-   }
+    private ByteArrayOutputStream exportPersistenceConfigurationAsProperties() {
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(configurationInstance.get());
+        exporter.toProperties(output);
+        return output;
+    }
 
-   private JavaArchive scriptingConfigurationSerializedAsProperties()
-   {
-      final ScriptingConfiguration scriptingConfigurationPrototype = new ScriptingConfiguration();
-      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), scriptingConfigurationPrototype.getQualifier());
-      final ByteArrayOutputStream properties = new PropertiesSerializer(scriptingConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
-      return ShrinkWrap.create(JavaArchive.class)
-                       .addAsResource(new ByteArrayAsset(properties.toByteArray()), new ScriptingConfiguration().getPrefix() + "properties");
-   }
+    private JavaArchive scriptingConfigurationSerializedAsProperties() {
+        final ScriptingConfiguration scriptingConfigurationPrototype = new ScriptingConfiguration();
+        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), scriptingConfigurationPrototype.getQualifier());
+        final ByteArrayOutputStream properties = new PropertiesSerializer(scriptingConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+        return ShrinkWrap.create(JavaArchive.class)
+                .addAsResource(new ByteArrayAsset(properties.toByteArray()), new ScriptingConfiguration().getPrefix() + "properties");
+    }
 
-   private JavaArchive jpaCacheEvictionConfigurationSerializedAsProperties()
-   {
-      final JpaCacheEvictionConfiguration config = new JpaCacheEvictionConfiguration();
-      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), config.getQualifier());
-      final ByteArrayOutputStream output = new PropertiesSerializer(config.getPrefix()).serializeToProperties(extensionProperties);
-      return ShrinkWrap.create(JavaArchive.class)
-            .addAsResource(new ByteArrayAsset(output.toByteArray()), new JpaCacheEvictionConfiguration().getPrefix() + "properties");
-   }
+    private JavaArchive jpaCacheEvictionConfigurationSerializedAsProperties() {
+        final JpaCacheEvictionConfiguration config = new JpaCacheEvictionConfiguration();
+        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), config.getQualifier());
+        final ByteArrayOutputStream output = new PropertiesSerializer(config.getPrefix()).serializeToProperties(extensionProperties);
+        return ShrinkWrap.create(JavaArchive.class)
+                .addAsResource(new ByteArrayAsset(output.toByteArray()), new JpaCacheEvictionConfiguration().getPrefix() + "properties");
+    }
 
-   private JavaArchive sqlScriptsAsResource(final String ... scripts)
-   {
-      if (scripts == null)
-      {
-         return ShrinkWrap.create(JavaArchive.class);
-      }
+    private JavaArchive sqlScriptsAsResource(final String... scripts) {
+        if (scripts == null) {
+            return ShrinkWrap.create(JavaArchive.class);
+        }
 
-      final JavaArchive sqlScriptsArchive = ShrinkWrap.create(JavaArchive.class);
+        final JavaArchive sqlScriptsArchive = ShrinkWrap.create(JavaArchive.class);
 
-      for (String script : scripts)
-      {
-         if (ScriptLoader.isSqlScriptFile(script))
-         {
-            sqlScriptsArchive.merge(createArchiveWithResources(script));
-         }
-      }
+        for (String script : scripts) {
+            if (ScriptLoader.isSqlScriptFile(script)) {
+                sqlScriptsArchive.merge(createArchiveWithResources(script));
+            }
+        }
 
-      return sqlScriptsArchive;
-   }
+        return sqlScriptsArchive;
+    }
 
-   private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier)
-   {
-      final Map<String, String> extensionProperties = new HashMap<String, String>();
-      for (ExtensionDef extension : descriptor.getExtensions())
-      {
-         if (extension.getExtensionName().equals(qualifier))
-         {
-            extensionProperties.putAll(extension.getExtensionProperties());
-            break;
-         }
-      }
-      return extensionProperties;
-   }
+    private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier) {
+        final Map<String, String> extensionProperties = new HashMap<String, String>();
+        for (ExtensionDef extension : descriptor.getExtensions()) {
+            if (extension.getExtensionName().equals(qualifier)) {
+                extensionProperties.putAll(extension.getExtensionProperties());
+                break;
+            }
+        }
+        return extensionProperties;
+    }
 
-   private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
-   {
-      if (JavaArchive.class.isInstance(applicationArchive))
-      {
-         applicationArchive.merge(dataArchive);
-      }
-      else
-      {
-         final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-         libraryContainer.addAsLibrary(dataArchive);
-      }
-   }
+    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
+        if (JavaArchive.class.isInstance(applicationArchive)) {
+            applicationArchive.merge(dataArchive);
+        } else {
+            final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
+            libraryContainer.addAsLibrary(dataArchive);
+        }
+    }
 
-   private JavaArchive createArchiveWithResources(String ... resourcePaths)
-   {
-      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+    private JavaArchive createArchiveWithResources(String... resourcePaths) {
+        final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
 
-      for (String path : resourcePaths)
-      {
-         dataSetsArchive.addAsResource(path);
-      }
+        for (String path : resourcePaths) {
+            dataSetsArchive.addAsResource(path);
+        }
 
-      return dataSetsArchive;
-   }
+        return dataSetsArchive;
+    }
 
 }

@@ -17,29 +17,24 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class UnsupportedDataFormatException extends RuntimeException
-{
+public class UnsupportedDataFormatException extends RuntimeException {
 
-   private static final long serialVersionUID = -6305020674826714723L;
+    private static final long serialVersionUID = -6305020674826714723L;
 
-   public UnsupportedDataFormatException()
-   {
-      super();
-   }
+    public UnsupportedDataFormatException() {
+        super();
+    }
 
-   public UnsupportedDataFormatException(String message)
-   {
-      super(message);
-   }
+    public UnsupportedDataFormatException(String message) {
+        super(message);
+    }
 
-   public UnsupportedDataFormatException(Throwable cause)
-   {
-      super(cause);
-   }
+    public UnsupportedDataFormatException(Throwable cause) {
+        super(cause);
+    }
 
-   public UnsupportedDataFormatException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public UnsupportedDataFormatException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

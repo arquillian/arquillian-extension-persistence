@@ -19,45 +19,38 @@ package org.jboss.arquillian.persistence.core.configuration;
 
 import java.io.Serializable;
 
-public abstract class Configuration implements Serializable
-{
+public abstract class Configuration implements Serializable {
 
-   private static final long serialVersionUID = 4526260174139911102L;
+    private static final long serialVersionUID = 4526260174139911102L;
 
-   private final String qualifier;
+    private final String qualifier;
 
-   private final String prefix;
+    private final String prefix;
 
-   public Configuration(String qualifier, String prefix)
-   {
-      this.qualifier = qualifier;
-      this.prefix = prefix;
-   }
+    public Configuration(String qualifier, String prefix) {
+        this.qualifier = qualifier;
+        this.prefix = prefix;
+    }
 
-   public String getQualifier()
-   {
-      return qualifier;
-   }
+    public String getQualifier() {
+        return qualifier;
+    }
 
-   public String getPrefix()
-   {
-      return prefix;
-   }
+    public String getPrefix() {
+        return prefix;
+    }
 
-   public static <K extends Configuration> ConfigurationImporter<K> importTo(K configuration)
-   {
-      return new ConfigurationImporter<K>(configuration);
-   }
+    public static <K extends Configuration> ConfigurationImporter<K> importTo(K configuration) {
+        return new ConfigurationImporter<K>(configuration);
+    }
 
-   public static <K extends Configuration> ConfigurationExporter<K> exportUsing(K configuration)
-   {
-      return new ConfigurationExporter<K>(configuration);
-   }
+    public static <K extends Configuration> ConfigurationExporter<K> exportUsing(K configuration) {
+        return new ConfigurationExporter<K>(configuration);
+    }
 
-   @Override
-   public String toString()
-   {
-      return super.toString() + "[qualifier=" + qualifier + "]";
-   }
+    @Override
+    public String toString() {
+        return super.toString() + "[qualifier=" + qualifier + "]";
+    }
 
 }

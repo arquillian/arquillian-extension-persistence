@@ -28,110 +28,105 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unused")
-public class PersistenceExtensionFeatureResolverDataSourceTest
-{
+public class PersistenceExtensionFeatureResolverDataSourceTest {
 
-   private static final String DATA_SOURCE_ON_CLASS_LEVEL = "dataSourceOnClassLevel";
+    private static final String DATA_SOURCE_ON_CLASS_LEVEL = "dataSourceOnClassLevel";
 
-   private static final String DATA_SOURCE_ON_METHOD_LEVEL = "dataSourceOnMethodLevel";
+    private static final String DATA_SOURCE_ON_METHOD_LEVEL = "dataSourceOnMethodLevel";
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
+    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
-   @Test(expected = DataSourceNotDefinedException.class)
-   public void should_thrown_exception_when_test_is_expecting_persistence_feature_but_does_not_have_data_source_defined() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+    @Test(expected = DataSourceNotDefinedException.class)
+    public void should_thrown_exception_when_test_is_expecting_persistence_feature_but_does_not_have_data_source_defined() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
+                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
 
-      // when
-      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
+        // when
+        String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
-      // then
-      // exception should be thrown
-   }
+        // then
+        // exception should be thrown
+    }
 
-   @Test
-   public void should_fetch_data_source_name_from_test() throws Exception
-   {
-      // given
-      String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
-      TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
-            DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_fetch_data_source_name_from_test() throws Exception {
+        // given
+        String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
+        TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
+                DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
+        // when
+        String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
-      // then
-      assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
-   }
+        // then
+        assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
+    }
 
-   @Test
-   public void should_fetch_data_source_name_from_class_level_if_not_defined_for_test() throws Exception
-   {
-      // given
-      String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
-      TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
-            DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_fetch_data_source_name_from_class_level_if_not_defined_for_test() throws Exception {
+        // given
+        String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
+        TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
+                DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
+        // when
+        String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
-      // then
-      assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
-   }
+        // then
+        assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
+    }
 
-   @Test
-   public void should_fetch_data_source_from_properties_when_not_define_on_test_or_class_level() throws Exception
-   {
-      // given
-      String expectedDataSourceName = "Ike";
-      TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_fetch_data_source_from_properties_when_not_define_on_test_or_class_level() throws Exception {
+        // given
+        String expectedDataSourceName = "Ike";
+        TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
+                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
+        // when
+        String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
-      // then
-      assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
-   }
+        // then
+        assertThat(dataSourceName).isEqualTo(expectedDataSourceName);
+    }
 
-   @Test(expected = DataSourceNotDefinedException.class)
-   public void should_throw_exception_when_data_source_is_not_defined_in_property_file_and_class_and_method() throws Exception
-   {
-      // given
-      String expectedDataSourceName = "Ike";
-      TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+    @Test(expected = DataSourceNotDefinedException.class)
+    public void should_throw_exception_when_data_source_is_not_defined_in_property_file_and_class_and_method() throws Exception {
+        // given
+        String expectedDataSourceName = "Ike";
+        TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
+                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
 
-      // when
-      String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
+        // when
+        String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
 
-      // then
-      // exception should be thrown
-   }
+        // then
+        // exception should be thrown
+    }
 
-   // ----------------------------------------------------------------------------------------
-   // Classes used for tests
+    // ----------------------------------------------------------------------------------------
+    // Classes used for tests
 
-   @DataSource(DATA_SOURCE_ON_CLASS_LEVEL)
-   private static class DataSourceAnnotated
-   {
-      public void shouldPassWithoutDataSourceDefinedOnMethodLevel() {}
+    @DataSource(DATA_SOURCE_ON_CLASS_LEVEL)
+    private static class DataSourceAnnotated {
+        public void shouldPassWithoutDataSourceDefinedOnMethodLevel() {
+        }
 
-      @DataSource(DATA_SOURCE_ON_METHOD_LEVEL)
-      public void shouldPassWithDataSourceDefinedOnMethodLevel() {}
-   }
+        @DataSource(DATA_SOURCE_ON_METHOD_LEVEL)
+        public void shouldPassWithDataSourceDefinedOnMethodLevel() {
+        }
+    }
 
-   @UsingDataSet
-   private static class DataSourceExpectedFromDefaultConfiguration
-   {
-      public void shouldPass() {}
-   }
+    @UsingDataSet
+    private static class DataSourceExpectedFromDefaultConfiguration {
+        public void shouldPass() {
+        }
+    }
 
 }

@@ -27,13 +27,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(FIELD)
 @Retention(RUNTIME)
 @Inherited
-public @interface Feature
-{
-   /**
-    * Prefix to be used while constructing fully qualified property key
-    * for DBUnit.
-    *
-    * @return
-    */
-   String value() default "";
+public @interface Feature {
+    /**
+     * Prefix to be used while constructing fully qualified property key
+     * for DBUnit.
+     *
+     * @return
+     */
+    String value() default "";
 }

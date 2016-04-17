@@ -33,56 +33,50 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * Creates <code>arquillian-persistence-dbunit.jar</code> archive
  * to run Persistence Extension with DBUnit. Includes all dependencies required
  * by the extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender
-{
-   @Inject
-   Instance<DBUnitConfiguration> dbunitConfigurationInstance;
+public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
+    @Inject
+    Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
 
-      final JavaArchive dbUnitExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit.jar")
-                                                           .addPackages(true,
-                                                                 // exclude client package
-                                                                 Filters.exclude(DBUnitExtension.class.getPackage()),
-                                                                 "org.jboss.arquillian.persistence.dbunit")
-                                                           .addPackages(true,
-                                                                   // Avoid slf4j implementation in case different impl is chosen in @Deployment
-                                                                   Filters.exclude(".*/org/slf4j/impl/.*"),
-                                                                   requiredLibraries())
-                                                           .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class);
+        final JavaArchive dbUnitExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit.jar")
+                .addPackages(true,
+                        // exclude client package
+                        Filters.exclude(DBUnitExtension.class.getPackage()),
+                        "org.jboss.arquillian.persistence.dbunit")
+                .addPackages(true,
+                        // Avoid slf4j implementation in case different impl is chosen in @Deployment
+                        Filters.exclude(".*/org/slf4j/impl/.*"),
+                        requiredLibraries())
+                .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class);
 
-      return dbUnitExtensionArchive;
-   }
+        return dbUnitExtensionArchive;
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private String[] requiredLibraries()
-   {
-      List<String> libraries = new ArrayList<String>(Arrays.asList(
-            "org.dbunit",
-            "org.apache.commons",
-            "org.apache.log4j",
-            "org.slf4j",
-            "org.yaml",
-            "org.codehaus.jackson"
-      ));
+    private String[] requiredLibraries() {
+        List<String> libraries = new ArrayList<String>(Arrays.asList(
+                "org.dbunit",
+                "org.apache.commons",
+                "org.apache.log4j",
+                "org.slf4j",
+                "org.yaml",
+                "org.codehaus.jackson"
+        ));
 
-      if (!dbunitConfigurationInstance.get().isExcludePoi())
-      {
-         libraries.add("org.apache.poi");
-      }
+        if (!dbunitConfigurationInstance.get().isExcludePoi()) {
+            libraries.add("org.apache.poi");
+        }
 
-      return libraries.toArray(new String[libraries.size()]);
-   }
+        return libraries.toArray(new String[libraries.size()]);
+    }
 
 }

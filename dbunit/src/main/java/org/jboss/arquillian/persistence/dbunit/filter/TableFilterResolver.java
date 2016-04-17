@@ -25,42 +25,35 @@ import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-public class TableFilterResolver
-{
+public class TableFilterResolver {
 
-   private static final Logger log = Logger.getLogger(TableFilterResolver.class.getName());
+    private static final Logger log = Logger.getLogger(TableFilterResolver.class.getName());
 
-   private final DBUnitConfiguration dbUnitConfiguration;
+    private final DBUnitConfiguration dbUnitConfiguration;
 
-   public TableFilterResolver(DBUnitConfiguration dbUnitConfiguration)
-   {
-      this.dbUnitConfiguration = dbUnitConfiguration;
-   }
+    public TableFilterResolver(DBUnitConfiguration dbUnitConfiguration) {
+        this.dbUnitConfiguration = dbUnitConfiguration;
+    }
 
-   public TableFilterProvider resolve()
-   {
-      if (Strings.isEmpty(dbUnitConfiguration.getCustomTableFilter()))
-      {
-         return new DefaultDatabaseSequenceFilterProvider();
-      }
+    public TableFilterProvider resolve() {
+        if (Strings.isEmpty(dbUnitConfiguration.getCustomTableFilter())) {
+            return new DefaultDatabaseSequenceFilterProvider();
+        }
 
-      TableFilterProvider resolved = null;
-      final Collection<TableFilterProvider> databaseSequenceFilterProviders = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), TableFilterProvider.class);
-      for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders)
-      {
-         if (databaseSequenceFilterProvider.getClass().getName().equals(dbUnitConfiguration.getCustomTableFilter()))
-         {
-            resolved = databaseSequenceFilterProvider;
-         }
-      }
+        TableFilterProvider resolved = null;
+        final Collection<TableFilterProvider> databaseSequenceFilterProviders = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), TableFilterProvider.class);
+        for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
+            if (databaseSequenceFilterProvider.getClass().getName().equals(dbUnitConfiguration.getCustomTableFilter())) {
+                resolved = databaseSequenceFilterProvider;
+            }
+        }
 
-      if (resolved == null)
-      {
-         log.warning("Unable to find sequence filter for " + dbUnitConfiguration.getCustomTableFilter() + ". Using default database sequence filter.");
-         return new DefaultDatabaseSequenceFilterProvider();
-      }
+        if (resolved == null) {
+            log.warning("Unable to find sequence filter for " + dbUnitConfiguration.getCustomTableFilter() + ". Using default database sequence filter.");
+            return new DefaultDatabaseSequenceFilterProvider();
+        }
 
-      return resolved;
-   }
+        return resolved;
+    }
 
 }

@@ -24,19 +24,17 @@ import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryArchiveAppender
-{
+public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryArchiveAppender {
 
-   @Override
-   protected Archive<?> buildArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-tester.jar")
-                       .addPackages(true,
-                             Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
-                                   PersistenceExtensionTester.class),
-                             this.getClass().getPackage())
-                       .addPackages(true, "org.assertj.core")
-                       .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
-   }
+    @Override
+    protected Archive<?> buildArchive() {
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-tester.jar")
+                .addPackages(true,
+                        Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
+                                PersistenceExtensionTester.class),
+                        this.getClass().getPackage())
+                .addPackages(true, "org.assertj.core")
+                .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
+    }
 
 }

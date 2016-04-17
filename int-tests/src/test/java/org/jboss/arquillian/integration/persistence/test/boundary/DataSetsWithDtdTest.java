@@ -35,45 +35,40 @@ import javax.persistence.PersistenceContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * All tests are wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
-public class DataSetsWithDtdTest
-{
+public class DataSetsWithDtdTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   @UsingDataSet("users-with-dtd.xml")
-   public void should_parse_dtd_with_xml_dataset() throws Exception
-   {
-      // given
-      String expectedPassword = "LexLuthor";
-      UserAccount user = em.find(UserAccount.class, 2L);
+    @Test
+    @UsingDataSet("users-with-dtd.xml")
+    public void should_parse_dtd_with_xml_dataset() throws Exception {
+        // given
+        String expectedPassword = "LexLuthor";
+        UserAccount user = em.find(UserAccount.class, 2L);
 
-      // when
-      user.setPassword("LexLuthor");
-      user = em.merge(user);
+        // when
+        user.setPassword("LexLuthor");
+        user = em.merge(user);
 
-      // then
-      assertThat(user.getPassword()).isEqualTo(expectedPassword);
-   }
+        // then
+        assertThat(user.getPassword()).isEqualTo(expectedPassword);
+    }
 
 }

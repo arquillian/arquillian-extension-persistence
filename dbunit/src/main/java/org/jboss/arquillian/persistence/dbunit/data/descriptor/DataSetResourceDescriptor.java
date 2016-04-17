@@ -24,60 +24,50 @@ import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 
 
 /**
- *
  * Contains information about the file - it's location and {@link Format format} inferred from it's name.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet>
-{
+public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet> {
 
-   private final Format format;
+    private final Format format;
 
-   public DataSetResourceDescriptor(String location, Format format)
-   {
-      super(location);
-      this.format = format;
-   }
+    public DataSetResourceDescriptor(String location, Format format) {
+        super(location);
+        this.format = format;
+    }
 
-   @Override
-   public Format getFormat()
-   {
-      return format;
-   }
+    @Override
+    public Format getFormat() {
+        return format;
+    }
 
-   @Override
-   public IDataSet getContent()
-   {
-      return DataSetBuilder.builderFor(format).build(location);
-   }
+    @Override
+    public IDataSet getContent() {
+        return DataSetBuilder.builderFor(format).build(location);
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof DataSetResourceDescriptor))
-      {
-         return false;
-      }
+        if (!(obj instanceof DataSetResourceDescriptor)) {
+            return false;
+        }
 
-      final DataSetResourceDescriptor other = (DataSetResourceDescriptor) obj;
-      return location.equals(other.location) && format.equals(other.format);
-   }
+        final DataSetResourceDescriptor other = (DataSetResourceDescriptor) obj;
+        return location.equals(other.location) && format.equals(other.format);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 17;
-      int result = 1;
-      result = prime * result + ((location == null) ? 0 : location.hashCode());
-      result = prime * result + ((format == null) ? 0 : format.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 17;
+        int result = 1;
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        result = prime * result + ((format == null) ? 0 : format.hashCode());
+        return result;
+    }
 
 }

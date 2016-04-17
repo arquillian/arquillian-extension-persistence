@@ -48,99 +48,94 @@ import javax.sql.DataSource;
  * test class.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceTestTrigger
-{
+public class PersistenceTestTrigger {
 
-   @Inject @ClassScoped
-   private InstanceProducer<MetadataExtractor> metadataExtractorProducer;
+    @Inject
+    @ClassScoped
+    private InstanceProducer<MetadataExtractor> metadataExtractorProducer;
 
-   @Inject @ClassScoped
-   private InstanceProducer<PersistenceExtensionEnabler> persistenceExtensionEnabler;
+    @Inject
+    @ClassScoped
+    private InstanceProducer<PersistenceExtensionEnabler> persistenceExtensionEnabler;
 
-   @Inject @TestScoped
-   private InstanceProducer<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverProvider;
+    @Inject
+    @TestScoped
+    private InstanceProducer<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverProvider;
 
-   @Inject @TestScoped
-   private InstanceProducer<PersistenceExtensionScriptingFeatureResolver> persistenceExtensionScriptingFeatureResolverProvider;
+    @Inject
+    @TestScoped
+    private InstanceProducer<PersistenceExtensionScriptingFeatureResolver> persistenceExtensionScriptingFeatureResolverProvider;
 
-   @Inject @TestScoped
-   private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
+    @Inject
+    @TestScoped
+    private InstanceProducer<javax.sql.DataSource> dataSourceProducer;
 
-   @Inject
-   private Instance<PersistenceConfiguration> configurationInstance;
+    @Inject
+    private Instance<PersistenceConfiguration> configurationInstance;
 
-   @Inject
-   private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+    @Inject
+    private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
-   @Inject
-   private Event<BeforePersistenceTest> beforePersistenceTestEvent;
+    @Inject
+    private Event<BeforePersistenceTest> beforePersistenceTestEvent;
 
-   @Inject
-   private Event<AfterPersistenceTest> afterPersistenceTestEvent;
+    @Inject
+    private Event<AfterPersistenceTest> afterPersistenceTestEvent;
 
-   @Inject
-   private Event<InitializeConfiguration> initializeConfigurationEvent;
+    @Inject
+    private Event<InitializeConfiguration> initializeConfigurationEvent;
 
-   @Inject
-   private Event<BeforePersistenceClass> beforePersistenceClassEvent;
+    @Inject
+    private Event<BeforePersistenceClass> beforePersistenceClassEvent;
 
-   @Inject
-   private Instance<ServiceLoader> serviceLoaderInstance;
+    @Inject
+    private Instance<ServiceLoader> serviceLoaderInstance;
 
-   public void beforeClass(@Observes BeforeClass beforeClass)
-   {
-      metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
-      persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
+    public void beforeClass(@Observes BeforeClass beforeClass) {
+        metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
+        persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
 
-      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
-      {
-         initializeConfigurationEvent.fire(new InitializeConfiguration());
-         beforePersistenceClassEvent.fire(new BeforePersistenceClass(beforeClass.getTestClass()));
-      }
-   }
+        if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated()) {
+            initializeConfigurationEvent.fire(new InitializeConfiguration());
+            beforePersistenceClassEvent.fire(new BeforePersistenceClass(beforeClass.getTestClass()));
+        }
+    }
 
-   public void beforeTest(@Observes(precedence = 25) Before beforeTestEvent)
-   {
-      PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
-      persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
-      persistenceExtensionScriptingFeatureResolverProvider.set(new PersistenceExtensionScriptingFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), scriptingConfigurationInstance.get()));
+    public void beforeTest(@Observes(precedence = 25) Before beforeTestEvent) {
+        PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
+        persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
+        persistenceExtensionScriptingFeatureResolverProvider.set(new PersistenceExtensionScriptingFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), scriptingConfigurationInstance.get()));
 
-      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
-      {
-         createDataSource();
-         beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
-      }
+        if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated()) {
+            createDataSource();
+            beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
+        }
 
-   }
+    }
 
-   public void afterTest(@Observes(precedence = -2) After afterTestEvent)
-   {
-      if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated())
-      {
-         afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
-      }
-   }
+    public void afterTest(@Observes(precedence = -2) After afterTestEvent) {
+        if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated()) {
+            afterPersistenceTestEvent.fire(new AfterPersistenceTest(afterTestEvent));
+        }
+    }
 
-   // Private methods
+    // Private methods
 
-   private void createDataSource()
-   {
-      String dataSourceName = persistenceExtensionFeatureResolverProvider.get().getDataSourceName();
-      dataSourceProducer.set(loadDataSource(dataSourceName));
-   }
+    private void createDataSource() {
+        String dataSourceName = persistenceExtensionFeatureResolverProvider.get().getDataSourceName();
+        dataSourceProducer.set(loadDataSource(dataSourceName));
+    }
 
-   /**
-    * @param dataSourceName
-    * @return
-    * @throws  IllegalStateException when more than one data source provider exists on the classpath
-    */
-   private DataSource loadDataSource(String dataSourceName)
-   {
-      final DataSourceProvider dataSourceProvider = serviceLoaderInstance.get()
-            .onlyOne(DataSourceProvider.class, JndiDataSourceProvider.class);
+    /**
+     * @param dataSourceName
+     * @return
+     * @throws IllegalStateException when more than one data source provider exists on the classpath
+     */
+    private DataSource loadDataSource(String dataSourceName) {
+        final DataSourceProvider dataSourceProvider = serviceLoaderInstance.get()
+                .onlyOne(DataSourceProvider.class, JndiDataSourceProvider.class);
 
-      return dataSourceProvider.lookupDataSource(dataSourceName);
-   }
+        return dataSourceProvider.lookupDataSource(dataSourceName);
+    }
 }

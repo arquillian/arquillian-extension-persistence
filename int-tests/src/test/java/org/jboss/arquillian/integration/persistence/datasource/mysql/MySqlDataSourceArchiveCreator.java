@@ -22,14 +22,12 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class MySqlDataSourceArchiveCreator implements AuxiliaryArchiveAppender
-{
+public class MySqlDataSourceArchiveCreator implements AuxiliaryArchiveAppender {
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
-                       .addClass(MySqlDataSource.class);
-   }
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
+                .addClass(MySqlDataSource.class);
+    }
 
 }

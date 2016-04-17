@@ -29,18 +29,16 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersistenceTest
-{
+public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersistenceTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       .addPackages(true, "org.assertj.core")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
 }

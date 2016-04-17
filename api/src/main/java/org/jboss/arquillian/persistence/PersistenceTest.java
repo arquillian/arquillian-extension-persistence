@@ -24,19 +24,16 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- *
  * Marker annotation which enables Arquillian Persistence Extension.
  * Might be used interchangeably with {@link UsingDataSet}, {@link ShouldMatchDataSet}
  * or {@link ApplyScriptBefore}. This annotation will enable transactions support
  * if the transaction extension is found.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @Target(TYPE)
 @Retention(RUNTIME)
 @Inherited
-public @interface PersistenceTest
-{
+public @interface PersistenceTest {
 
 }

@@ -22,59 +22,48 @@ import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.persistence.DataSeedStrategy.StrategyProvider;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class DBUnitDataSeedStrategyProvider implements StrategyProvider<DatabaseOperation>{
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ */
+public class DBUnitDataSeedStrategyProvider implements StrategyProvider<DatabaseOperation> {
 
-   private final boolean useIdentityInsert;
+    private final boolean useIdentityInsert;
 
-   public DBUnitDataSeedStrategyProvider(boolean useIdentityInsert)
-   {
-      this.useIdentityInsert = useIdentityInsert;
-   }
+    public DBUnitDataSeedStrategyProvider(boolean useIdentityInsert) {
+        this.useIdentityInsert = useIdentityInsert;
+    }
 
-   @Override
-   public DatabaseOperation insertStrategy()
-   {
-      if (useIdentityInsert)
-      {
-         return InsertIdentityOperation.INSERT;
-      }
-      return DatabaseOperation.INSERT;
-   }
+    @Override
+    public DatabaseOperation insertStrategy() {
+        if (useIdentityInsert) {
+            return InsertIdentityOperation.INSERT;
+        }
+        return DatabaseOperation.INSERT;
+    }
 
-   @Override
-   public DatabaseOperation cleanInsertStrategy()
-   {
-      if (useIdentityInsert)
-      {
-         return InsertIdentityOperation.CLEAN_INSERT;
-      }
-      return DatabaseOperation.CLEAN_INSERT;
-   }
+    @Override
+    public DatabaseOperation cleanInsertStrategy() {
+        if (useIdentityInsert) {
+            return InsertIdentityOperation.CLEAN_INSERT;
+        }
+        return DatabaseOperation.CLEAN_INSERT;
+    }
 
-   @Override
-   public DatabaseOperation refreshStrategy()
-   {
-      if (useIdentityInsert)
-      {
-         return InsertIdentityOperation.REFRESH;
-      }
-      return DatabaseOperation.REFRESH;
-   }
+    @Override
+    public DatabaseOperation refreshStrategy() {
+        if (useIdentityInsert) {
+            return InsertIdentityOperation.REFRESH;
+        }
+        return DatabaseOperation.REFRESH;
+    }
 
-   @Override
-   public DatabaseOperation updateStrategy()
-   {
-      return DatabaseOperation.UPDATE;
-   }
+    @Override
+    public DatabaseOperation updateStrategy() {
+        return DatabaseOperation.UPDATE;
+    }
 
-   @Override
-   public DatabaseOperation defaultStrategy()
-   {
-      return DatabaseOperation.INSERT;
-   }
+    @Override
+    public DatabaseOperation defaultStrategy() {
+        return DatabaseOperation.INSERT;
+    }
 
 }

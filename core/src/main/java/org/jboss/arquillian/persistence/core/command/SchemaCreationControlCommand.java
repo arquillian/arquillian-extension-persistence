@@ -24,32 +24,27 @@ import org.jboss.arquillian.persistence.core.client.SchemaCreationCoordinator;
  * Command used to communicate between local test executor and remote
  * container to obtain information if schema has been already created
  * before the first test execution.
- *
+ * <p>
  * Such a construct exists due to the lack of BeforeClass hooks
  * while executing tests in the container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @see SchemaCreationScriptsExecutor
  * @see SchemaCreationCoordinator
- *
  */
-public class SchemaCreationControlCommand extends AbstractCommand<Boolean>
-{
+public class SchemaCreationControlCommand extends AbstractCommand<Boolean> {
 
-   private static final long serialVersionUID = 804375658347055929L;
+    private static final long serialVersionUID = 804375658347055929L;
 
-   private final String key;
+    private final String key;
 
-   public SchemaCreationControlCommand(String key)
-   {
-      super();
-      this.key = key;
-   }
+    public SchemaCreationControlCommand(String key) {
+        super();
+        this.key = key;
+    }
 
-   public String getKey()
-   {
-      return key;
-   }
+    public String getKey() {
+        return key;
+    }
 
 }

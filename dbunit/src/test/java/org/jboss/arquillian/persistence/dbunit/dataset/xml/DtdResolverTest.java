@@ -21,46 +21,42 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DtdResolverTest
-{
+public class DtdResolverTest {
 
-   @Test
-   public void should_resolve_dtd_from_xml_file() throws Exception
-   {
-      // given
-      DtdResolver dtdResolver = new DtdResolver();
+    @Test
+    public void should_resolve_dtd_from_xml_file() throws Exception {
+        // given
+        DtdResolver dtdResolver = new DtdResolver();
 
-      // when
-      String dtdFile = dtdResolver.resolveDtdLocation("datasets/xml/users-with-dtd.xml");
+        // when
+        String dtdFile = dtdResolver.resolveDtdLocation("datasets/xml/users-with-dtd.xml");
 
-      // then
-      assertThat(dtdFile).isEqualTo("users.dtd");
-   }
+        // then
+        assertThat(dtdFile).isEqualTo("users.dtd");
+    }
 
-   @Test
-   public void should_resolve_dtd_full_path_from_xml_file() throws Exception
-   {
-      // given
-      DtdResolver dtdResolver = new DtdResolver();
+    @Test
+    public void should_resolve_dtd_full_path_from_xml_file() throws Exception {
+        // given
+        DtdResolver dtdResolver = new DtdResolver();
 
-      // when
-      String dtdFile = dtdResolver.resolveDtdLocationFullPath("datasets/xml/users-with-dtd.xml");
+        // when
+        String dtdFile = dtdResolver.resolveDtdLocationFullPath("datasets/xml/users-with-dtd.xml");
 
-      // then
-      assertThat(dtdFile).isEqualTo("datasets/xml/users.dtd");
-   }
+        // then
+        assertThat(dtdFile).isEqualTo("datasets/xml/users.dtd");
+    }
 
-   @Test
-   public void should_return_null_when_dtd_not_specified() throws Exception
-   {
-      // given
-      DtdResolver dtdResolver = new DtdResolver();
+    @Test
+    public void should_return_null_when_dtd_not_specified() throws Exception {
+        // given
+        DtdResolver dtdResolver = new DtdResolver();
 
-      // when
-      String dtdFile = dtdResolver.resolveDtdLocation("datasets/xml/users-without-dtd.xml");
+        // when
+        String dtdFile = dtdResolver.resolveDtdLocation("datasets/xml/users-without-dtd.xml");
 
-      // then
-      assertThat(dtdFile).isNull();
-   }
+        // then
+        assertThat(dtdFile).isNull();
+    }
 
 }

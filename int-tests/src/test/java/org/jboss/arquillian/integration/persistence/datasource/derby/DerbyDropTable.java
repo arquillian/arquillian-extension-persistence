@@ -23,56 +23,39 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- *
  * Registered as stored procedure for Apache Derby database.
  * It's a workaround for missing "DROP IF EXISTS" feature.
- *
+ * <p>
  * The main rationale is to have repeatable tests where you can create drop/create tables safely.
- *
  */
-public class DerbyDropTable
-{
+public class DerbyDropTable {
 
-   public static void dropTable(String schema, String table)
-   {
-      Connection conn = null;
-      PreparedStatement preparedStatement = null;
-      try
-      {
-         conn = DriverManager.getConnection("jdbc:derby:target/db/derby");
-         preparedStatement = conn.prepareStatement("drop table " + schema + "." + table);
-         preparedStatement.executeUpdate();
-         conn.commit();
-      }
-      catch (SQLException e)
-      {
-         // IGNORE - it fails when you try to drop non-existing table, but we want to continue
-      }
-      finally
-      {
-         if (preparedStatement !=null)
-         {
-            try
-            {
-               preparedStatement.close();
+    public static void dropTable(String schema, String table) {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:derby:target/db/derby");
+            preparedStatement = conn.prepareStatement("drop table " + schema + "." + table);
+            preparedStatement.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            // IGNORE - it fails when you try to drop non-existing table, but we want to continue
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException("Failed closing prepared statement", e);
+                }
             }
-            catch (SQLException e)
-            {
-               throw new RuntimeException("Failed closing prepared statement", e);
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException("Failed closing connection", e);
+                }
             }
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-               throw new RuntimeException("Failed closing connection", e);
-            }
-         }
-      }
-   }
+        }
+    }
 
 }

@@ -21,9 +21,7 @@ package org.jboss.arquillian.persistence.core.event;
  * Marker interface indicating that event is part of Persistence Extension lifecycle.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public interface PersistenceEvent
-{
+public interface PersistenceEvent {
 
 }

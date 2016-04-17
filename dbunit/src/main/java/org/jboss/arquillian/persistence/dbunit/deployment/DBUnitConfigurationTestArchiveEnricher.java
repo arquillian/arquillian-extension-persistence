@@ -40,73 +40,59 @@ import java.util.logging.Logger;
  * Appends all data sets defined for the test class to the test archive.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor
-{
+public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor {
 
-   private static final Logger log = Logger.getLogger(DBUnitConfigurationTestArchiveEnricher.class.getName());
+    private static final Logger log = Logger.getLogger(DBUnitConfigurationTestArchiveEnricher.class.getName());
 
-   @Inject
-   Instance<ArquillianDescriptor> arquillianDescriptorInstance;
+    @Inject
+    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
-   @Override
-   public void process(Archive<?> applicationArchive, TestClass testClass)
-   {
+    @Override
+    public void process(Archive<?> applicationArchive, TestClass testClass) {
 
-      final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
-      {
-         return;
-      }
-      final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
-      merge(additionalPersistenceResources, dbUnitConfigurationSerializedAsProperties());
-      addResources(applicationArchive, additionalPersistenceResources);
-   }
+        final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
+        if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated()) {
+            return;
+        }
+        final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
+        merge(additionalPersistenceResources, dbUnitConfigurationSerializedAsProperties());
+        addResources(applicationArchive, additionalPersistenceResources);
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private void merge(final JavaArchive target, final JavaArchive ... archivesToMerge)
-   {
-      for (JavaArchive archiveToMerge : archivesToMerge)
-      {
-         target.merge(archiveToMerge);
-      }
-   }
+    private void merge(final JavaArchive target, final JavaArchive... archivesToMerge) {
+        for (JavaArchive archiveToMerge : archivesToMerge) {
+            target.merge(archiveToMerge);
+        }
+    }
 
-   private JavaArchive dbUnitConfigurationSerializedAsProperties()
-   {
-      final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
-      final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
-      final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
-      return ShrinkWrap.create(JavaArchive.class).addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
-   }
+    private JavaArchive dbUnitConfigurationSerializedAsProperties() {
+        final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
+        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
+        final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+        return ShrinkWrap.create(JavaArchive.class).addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
+    }
 
-   private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier)
-   {
-      final Map<String, String> extensionProperties = new HashMap<String, String>();
-      for (ExtensionDef extension : descriptor.getExtensions())
-      {
-         if (extension.getExtensionName().equals(qualifier))
-         {
-            extensionProperties.putAll(extension.getExtensionProperties());
-            break;
-         }
-      }
-      return extensionProperties;
-   }
+    private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier) {
+        final Map<String, String> extensionProperties = new HashMap<String, String>();
+        for (ExtensionDef extension : descriptor.getExtensions()) {
+            if (extension.getExtensionName().equals(qualifier)) {
+                extensionProperties.putAll(extension.getExtensionProperties());
+                break;
+            }
+        }
+        return extensionProperties;
+    }
 
-   private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
-   {
-      if (JavaArchive.class.isInstance(applicationArchive))
-      {
-         applicationArchive.merge(dataArchive);
-      }
-      else
-      {
-         final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-         libraryContainer.addAsLibrary(dataArchive);
-      }
-   }
+    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
+        if (JavaArchive.class.isInstance(applicationArchive)) {
+            applicationArchive.merge(dataArchive);
+        } else {
+            final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
+            libraryContainer.addAsLibrary(dataArchive);
+        }
+    }
 
 }

@@ -26,28 +26,24 @@ import org.jboss.arquillian.persistence.core.configuration.ConfigurationProducer
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 
 /**
- *
  * Triggers configuration creation on the client side.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceConfigurationClientSideProducer extends ConfigurationProducer<PersistenceConfiguration>
-{
+public class PersistenceConfigurationClientSideProducer extends ConfigurationProducer<PersistenceConfiguration> {
 
-   @Inject @ApplicationScoped
-   InstanceProducer<PersistenceConfiguration> configurationProducer;
+    @Inject
+    @ApplicationScoped
+    InstanceProducer<PersistenceConfiguration> configurationProducer;
 
-   @Override
-   protected PersistenceConfiguration create()
-   {
-      return new PersistenceConfiguration();
-   }
+    @Override
+    protected PersistenceConfiguration create() {
+        return new PersistenceConfiguration();
+    }
 
-   @Override
-   public void observe(@Observes ArquillianDescriptor descriptorCreated)
-   {
-      configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
-   }
+    @Override
+    public void observe(@Observes ArquillianDescriptor descriptorCreated) {
+        configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
+    }
 
 }

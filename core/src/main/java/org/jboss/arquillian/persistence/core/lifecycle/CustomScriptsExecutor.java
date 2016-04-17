@@ -37,69 +37,56 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class CustomScriptsExecutor
-{
-   @Inject
-   private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+public class CustomScriptsExecutor {
+    @Inject
+    private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
-   @Inject
-   private Event<ApplyScriptsBeforeTest> applyScriptsBeforeTestEvent;
+    @Inject
+    private Event<ApplyScriptsBeforeTest> applyScriptsBeforeTestEvent;
 
-   @Inject
-   private Event<ApplyScriptsAfterTest> applyScriptsAfterTestEvent;
+    @Inject
+    private Event<ApplyScriptsAfterTest> applyScriptsAfterTestEvent;
 
-   public void executeBeforeTest(@Observes(precedence = 50) BeforePersistenceTest beforePersistenceTest)
-   {
-      executeScriptsBeforeTest(beforePersistenceTest);
-   }
+    public void executeBeforeTest(@Observes(precedence = 50) BeforePersistenceTest beforePersistenceTest) {
+        executeScriptsBeforeTest(beforePersistenceTest);
+    }
 
-   public void executeAfterTest(@Observes(precedence = 10) AfterPersistenceTest afterPersistenceTest)
-   {
-      executeScriptsAfterTest(afterPersistenceTest);
-   }
+    public void executeAfterTest(@Observes(precedence = 10) AfterPersistenceTest afterPersistenceTest) {
+        executeScriptsAfterTest(afterPersistenceTest);
+    }
 
-   // Private methods
+    // Private methods
 
-   private void executeScriptsBeforeTest(BeforePersistenceTest beforePersistenceTest)
-   {
-      final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
-      String[] scriptsToExecuteBeforeTest = configuration.getScriptsToExecuteBeforeTest();
-      final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteBeforeTest);
-      applyScriptsBeforeTestEvent.fire(new ApplyScriptsBeforeTest(beforePersistenceTest, scripts));
-   }
+    private void executeScriptsBeforeTest(BeforePersistenceTest beforePersistenceTest) {
+        final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
+        String[] scriptsToExecuteBeforeTest = configuration.getScriptsToExecuteBeforeTest();
+        final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteBeforeTest);
+        applyScriptsBeforeTestEvent.fire(new ApplyScriptsBeforeTest(beforePersistenceTest, scripts));
+    }
 
-   private void executeScriptsAfterTest(AfterPersistenceTest afterPersistenceTest)
-   {
-      final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
-      String[] scriptsToExecuteAfterTest = configuration.getScriptsToExecuteAfterTest();
-      final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteAfterTest);
-      applyScriptsAfterTestEvent.fire(new ApplyScriptsAfterTest(afterPersistenceTest, scripts));
-   }
+    private void executeScriptsAfterTest(AfterPersistenceTest afterPersistenceTest) {
+        final ScriptingConfiguration configuration = scriptingConfigurationInstance.get();
+        String[] scriptsToExecuteAfterTest = configuration.getScriptsToExecuteAfterTest();
+        final List<SqlScriptResourceDescriptor> scripts = processScripts(scriptsToExecuteAfterTest);
+        applyScriptsAfterTestEvent.fire(new ApplyScriptsAfterTest(afterPersistenceTest, scripts));
+    }
 
-   private List<SqlScriptResourceDescriptor> processScripts(String[] scripts)
-   {
-      if (scripts == null)
-      {
-         return Collections.emptyList();
-      }
+    private List<SqlScriptResourceDescriptor> processScripts(String[] scripts) {
+        if (scripts == null) {
+            return Collections.emptyList();
+        }
 
-      final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
-      for (String script : scripts)
-      {
-         if (ScriptLoader.isSqlScriptFile(script))
-         {
-            processedScripts.add(new FileSqlScriptResourceDescriptor(script, scriptingConfigurationInstance.get().getCharset()));
-         }
-         else if (!Strings.isEmpty(script))
-         {
-            processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
-         }
-      }
-      return processedScripts;
-   }
+        final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
+        for (String script : scripts) {
+            if (ScriptLoader.isSqlScriptFile(script)) {
+                processedScripts.add(new FileSqlScriptResourceDescriptor(script, scriptingConfigurationInstance.get().getCharset()));
+            } else if (!Strings.isEmpty(script)) {
+                processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
+            }
+        }
+        return processedScripts;
+    }
 
 }

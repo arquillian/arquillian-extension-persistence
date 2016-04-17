@@ -23,18 +23,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataEvent<T extends ResourceDescriptor<?>> implements PersistenceEvent
-{
+public class DataEvent<T extends ResourceDescriptor<?>> implements PersistenceEvent {
 
-   private final List<T> descriptors;
+    private final List<T> descriptors;
 
-   public DataEvent(Collection<T> descriptors)
-   {
-      this.descriptors = new ArrayList<T>(descriptors);
-   }
+    public DataEvent(Collection<T> descriptors) {
+        this.descriptors = new ArrayList<T>(descriptors);
+    }
 
-   public List<T> getDescriptors()
-   {
-      return descriptors;
-   }
+    public List<T> getDescriptors() {
+        return descriptors;
+    }
 }

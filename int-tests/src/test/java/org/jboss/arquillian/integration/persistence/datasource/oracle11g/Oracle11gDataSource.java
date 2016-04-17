@@ -22,13 +22,12 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @DataSourceDefinition(name = "java:app/datasources/oracle_ds",
-   className = "oracle.jdbc.pool.OracleDataSource",
-   user = "ape",
-   password = "letmein",
-   properties={"driverType=thin", "URL=jdbc:oracle:thin:@localhost:49161:xe"})
+        className = "oracle.jdbc.pool.OracleDataSource",
+        user = "ape",
+        password = "letmein",
+        properties = {"driverType=thin", "URL=jdbc:oracle:thin:@localhost:49161:xe"})
 @Singleton
 @Startup
-public class Oracle11gDataSource
-{
+public class Oracle11gDataSource {
 
 }

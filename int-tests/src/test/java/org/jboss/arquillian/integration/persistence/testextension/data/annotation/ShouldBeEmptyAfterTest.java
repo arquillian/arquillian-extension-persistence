@@ -27,7 +27,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Retention(RUNTIME)
 @Inherited
-public @interface ShouldBeEmptyAfterTest
-{
-   String[] value();
+public @interface ShouldBeEmptyAfterTest {
+    String[] value();
 }

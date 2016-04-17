@@ -26,96 +26,88 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest
-{
+public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest {
 
-   private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
+    private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
-   @Test
-   public void should_have_default_data_seeding_strategy() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new DefaultDataSeedSettings(),
-            DefaultDataSeedSettings.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_have_default_data_seeding_strategy() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new DefaultDataSeedSettings(),
+                DefaultDataSeedSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
+        // when
+        DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
 
-      // then
-      assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.INSERT);
-   }
+        // then
+        assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.INSERT);
+    }
 
-   @Test
-   public void should_obtain_data_seeding_strategy_from_class_level_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new ClassLevelDataSeedCleanInsertSettings(),
-            ClassLevelDataSeedCleanInsertSettings.class.getMethod("shouldPass"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_obtain_data_seeding_strategy_from_class_level_annotation() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new ClassLevelDataSeedCleanInsertSettings(),
+                ClassLevelDataSeedCleanInsertSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
+        // when
+        DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
 
-      // then
-      assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.REFRESH);
-   }
+        // then
+        assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.REFRESH);
+    }
 
-   @Test
-   public void should_obtain_test_phase_from_method_level() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
-            MethodLevelDataSeedSettings.class.getMethod("shouldPassUpdateStrategy"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_obtain_test_phase_from_method_level() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
+                MethodLevelDataSeedSettings.class.getMethod("shouldPassUpdateStrategy"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
+        // when
+        DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
 
-      // then
-      assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.UPDATE);
-   }
+        // then
+        assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.UPDATE);
+    }
 
-   public void should_use_class_level_defined_strategy_when_not_defined_for_given_method() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
-            MethodLevelDataSeedSettings.class.getMethod("shouldPassUsingClassLevelDefinition"));
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    public void should_use_class_level_defined_strategy_when_not_defined_for_given_method() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
+                MethodLevelDataSeedSettings.class.getMethod("shouldPassUsingClassLevelDefinition"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
+        // when
+        DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
 
-      // then
-      assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.INSERT);
-   }
+        // then
+        assertThat(dataSeedStrategy).isEqualTo(DataSeedStrategy.INSERT);
+    }
 
-   // ----------------------------------------------------------------------------------------
-   // Classes used for tests
+    // ----------------------------------------------------------------------------------------
+    // Classes used for tests
 
-   @SeedDataUsing(DataSeedStrategy.REFRESH)
-   private static class ClassLevelDataSeedCleanInsertSettings
-   {
-      public void shouldPass()
-      {}
-   }
+    @SeedDataUsing(DataSeedStrategy.REFRESH)
+    private static class ClassLevelDataSeedCleanInsertSettings {
+        public void shouldPass() {
+        }
+    }
 
-   private static class DefaultDataSeedSettings
-   {
-      public void shouldPass()
-      {}
-   }
+    private static class DefaultDataSeedSettings {
+        public void shouldPass() {
+        }
+    }
 
-   @SeedDataUsing(DataSeedStrategy.INSERT)
-   private static class MethodLevelDataSeedSettings
-   {
-      @SeedDataUsing(DataSeedStrategy.UPDATE)
-      public void shouldPassUpdateStrategy()
-      {}
+    @SeedDataUsing(DataSeedStrategy.INSERT)
+    private static class MethodLevelDataSeedSettings {
+        @SeedDataUsing(DataSeedStrategy.UPDATE)
+        public void shouldPassUpdateStrategy() {
+        }
 
-      public void shouldPassUsingClassLevelDefinition()
-      {}
+        public void shouldPassUsingClassLevelDefinition() {
+        }
 
-   }
+    }
 
 }

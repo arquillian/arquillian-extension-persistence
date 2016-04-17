@@ -18,88 +18,83 @@
 package org.jboss.arquillian.persistence;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public enum DataSeedStrategy
-{
+public enum DataSeedStrategy {
 
-   /**
-    * Performs insert of the data defined in provided data sets.
-    * Default strategy.
-    */
-   INSERT {
-      @Override
-      public <T> T provide(StrategyProvider<T> provider)
-      {
-         return provider.insertStrategy();
-      }
-   },
+    /**
+     * Performs insert of the data defined in provided data sets.
+     * Default strategy.
+     */
+    INSERT {
+        @Override
+        public <T> T provide(StrategyProvider<T> provider) {
+            return provider.insertStrategy();
+        }
+    },
 
-   /**
-    *  Performs insert of the data defined in provided data sets,
-    *  after removal of all data present in the tables referred
-    *  in provided files.
-    */
-   CLEAN_INSERT {
-      @Override
-      public <T> T provide(StrategyProvider<T> provider)
-      {
-         return provider.cleanInsertStrategy();
-      }
-   },
+    /**
+     * Performs insert of the data defined in provided data sets,
+     * after removal of all data present in the tables referred
+     * in provided files.
+     */
+    CLEAN_INSERT {
+        @Override
+        public <T> T provide(StrategyProvider<T> provider) {
+            return provider.cleanInsertStrategy();
+        }
+    },
 
-   /**
-    * During this operation existing rows are updated and new ones are inserted.
-    * Entries already existing in the database which are not defined in the provided
-    * dataset are not affected.
-    */
-   REFRESH {
-      @Override
-      public <T> T provide(StrategyProvider<T> provider)
-      {
-         return provider.refreshStrategy();
-      }
-   },
+    /**
+     * During this operation existing rows are updated and new ones are inserted.
+     * Entries already existing in the database which are not defined in the provided
+     * dataset are not affected.
+     */
+    REFRESH {
+        @Override
+        public <T> T provide(StrategyProvider<T> provider) {
+            return provider.refreshStrategy();
+        }
+    },
 
-   /**
-    * This strategy updates existing rows using data provided
-    * in the datasets. If dataset contain a row which is not
-    * present in the database (identified by its primary key)
-    * then exception is thrown.
-    */
-   UPDATE {
-      @Override
-      public <T> T provide(StrategyProvider<T> provider)
-      {
-         return provider.updateStrategy();
-      }
-   },
+    /**
+     * This strategy updates existing rows using data provided
+     * in the datasets. If dataset contain a row which is not
+     * present in the database (identified by its primary key)
+     * then exception is thrown.
+     */
+    UPDATE {
+        @Override
+        public <T> T provide(StrategyProvider<T> provider) {
+            return provider.updateStrategy();
+        }
+    },
 
-   /**
-    * This is guarding enum instance used to indicate
-    * that use has not defined seeding strategy explicitly.
-    * Therefore one defined globally in <code>arquillian.xml</code>
-    * should be used.
-    */
-   DEFAULT {
-      @Override
-      public <T> T provide(StrategyProvider<T> provider)
-      {
-         return provider.defaultStrategy();
-      }
-   };
+    /**
+     * This is guarding enum instance used to indicate
+     * that use has not defined seeding strategy explicitly.
+     * Therefore one defined globally in <code>arquillian.xml</code>
+     * should be used.
+     */
+    DEFAULT {
+        @Override
+        public <T> T provide(StrategyProvider<T> provider) {
+            return provider.defaultStrategy();
+        }
+    };
 
-   public abstract <T> T provide(StrategyProvider<T> provider);
+    public abstract <T> T provide(StrategyProvider<T> provider);
 
-   public interface StrategyProvider<T>
-   {
-      T insertStrategy();
-      T cleanInsertStrategy();
-      T refreshStrategy();
-      T updateStrategy();
-      T defaultStrategy();
-   }
+    public interface StrategyProvider<T> {
+        T insertStrategy();
+
+        T cleanInsertStrategy();
+
+        T refreshStrategy();
+
+        T updateStrategy();
+
+        T defaultStrategy();
+    }
 
 }

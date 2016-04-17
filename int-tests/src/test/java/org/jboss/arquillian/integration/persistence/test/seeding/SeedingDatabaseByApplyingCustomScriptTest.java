@@ -32,23 +32,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class SeedingDatabaseByApplyingCustomScriptTest
-{
+public class SeedingDatabaseByApplyingCustomScriptTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
-   @Test
-   @ApplyScriptBefore("users.sql")
-   @ShouldMatchDataSet("two-users.yml")
-   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_seed_database_using_custom_script() throws Exception
-   {
-   }
+    @Test
+    @ApplyScriptBefore("users.sql")
+    @ShouldMatchDataSet("two-users.yml")
+    @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
+    public void should_seed_database_using_custom_script() throws Exception {
+    }
 }

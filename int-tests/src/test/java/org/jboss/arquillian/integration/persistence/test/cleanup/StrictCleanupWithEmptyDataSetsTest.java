@@ -38,54 +38,47 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * All tests are wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
-@CreateSchema( {"schema/create.sql", "schema/additional-audit-useraccount.sql",
-      "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
+@CreateSchema({"schema/create.sql", "schema/additional-audit-useraccount.sql",
+        "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
 @Cleanup(phase = TestExecutionPhase.BEFORE)
-public class StrictCleanupWithEmptyDataSetsTest
-{
+public class StrictCleanupWithEmptyDataSetsTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   public void should_not_have_any_user_in_database() throws Exception
-   {
-      assertNoUserAccountAuditStored();
-      assertNoUserAccountsStored();
-   }
+    @Test
+    public void should_not_have_any_user_in_database() throws Exception {
+        assertNoUserAccountAuditStored();
+        assertNoUserAccountsStored();
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private void assertNoUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isEmpty();
-   }
+    private void assertNoUserAccountsStored() {
+        @SuppressWarnings("unchecked")
+        List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        assertThat(savedUserAccounts).isEmpty();
+    }
 
-   private void assertNoUserAccountAuditStored()
-   {
-      final Long amount = Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
-      assertThat(amount).isZero();
-   }
+    private void assertNoUserAccountAuditStored() {
+        final Long amount = Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
+        assertThat(amount).isZero();
+    }
 
 }

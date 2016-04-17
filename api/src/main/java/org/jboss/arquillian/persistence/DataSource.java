@@ -28,16 +28,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Defines data source to be used for test. Takes precedence over default
  * data source defined in the configuration (<code>arquillian.xml</code>).
- * 
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface DataSource 
-{
+public @interface DataSource {
 
-   String value() default "";
+    String value() default "";
 
 }

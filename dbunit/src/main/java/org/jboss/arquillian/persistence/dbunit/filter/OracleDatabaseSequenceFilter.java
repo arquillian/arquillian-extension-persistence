@@ -24,16 +24,13 @@ import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
 
 import java.sql.SQLException;
 
-public class OracleDatabaseSequenceFilter extends DatabaseSequenceFilter
-{
+public class OracleDatabaseSequenceFilter extends DatabaseSequenceFilter {
 
-   public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames) throws DataSetException, SQLException
-   {
-      super(connection, DataSetUtils.tableNamesInUpperCase(tableNames));
-   }
+    public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames) throws DataSetException, SQLException {
+        super(connection, DataSetUtils.tableNamesInUpperCase(tableNames));
+    }
 
-   public OracleDatabaseSequenceFilter(IDatabaseConnection connection) throws DataSetException, SQLException
-   {
-      super(connection);
-   }
+    public OracleDatabaseSequenceFilter(IDatabaseConnection connection) throws DataSetException, SQLException {
+        super(connection);
+    }
 }

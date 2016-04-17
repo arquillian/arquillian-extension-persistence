@@ -30,60 +30,52 @@ import org.jboss.arquillian.persistence.core.configuration.Configuration;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  * @see JpaCacheEviction
  */
-public class JpaCacheEvictionConfiguration extends Configuration
-{
+public class JpaCacheEvictionConfiguration extends Configuration {
 
-   private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-   private TestExecutionPhase defaultPhase = TestExecutionPhase.BEFORE;
+    private TestExecutionPhase defaultPhase = TestExecutionPhase.BEFORE;
 
-   private String defaultEntityManager;
+    private String defaultEntityManager;
 
-   private Class<? extends JpaCacheEvictionStrategy> defaultStrategy = FullCacheEvictionStrategy.class;
+    private Class<? extends JpaCacheEvictionStrategy> defaultStrategy = FullCacheEvictionStrategy.class;
 
-   public JpaCacheEvictionConfiguration()
-   {
-      super("persistence-jpacacheeviction",
-            "arquillian.extension.persistence.jpacacheeviction.");
-   }
+    public JpaCacheEvictionConfiguration() {
+        super("persistence-jpacacheeviction",
+                "arquillian.extension.persistence.jpacacheeviction.");
+    }
 
-   public TestExecutionPhase getDefaultPhase()
-   {
-      return defaultPhase;
-   }
+    public TestExecutionPhase getDefaultPhase() {
+        return defaultPhase;
+    }
 
-   /**
-    * @param defaultPhase Default cache eviction phase.
-    */
-   public void setDefaultPhase(TestExecutionPhase defaultPhase)
-   {
-      this.defaultPhase = defaultPhase;
-   }
+    /**
+     * @param defaultPhase Default cache eviction phase.
+     */
+    public void setDefaultPhase(TestExecutionPhase defaultPhase) {
+        this.defaultPhase = defaultPhase;
+    }
 
-   public String getDefaultEntityManager()
-   {
-      return defaultEntityManager;
-   }
+    public String getDefaultEntityManager() {
+        return defaultEntityManager;
+    }
 
-   /**
-    * @param defaultEntityManager Default JNDI name of entity manager.
-    */
-   public void setDefaultEntityManager(String defaultEntityManager)
-   {
-      this.defaultEntityManager = defaultEntityManager;
-   }
+    /**
+     * @param defaultEntityManager Default JNDI name of entity manager.
+     */
+    public void setDefaultEntityManager(String defaultEntityManager) {
+        this.defaultEntityManager = defaultEntityManager;
+    }
 
-   public Class<? extends JpaCacheEvictionStrategy> getDefaultStrategy()
-   {
-      return defaultStrategy;
-   }
+    public Class<? extends JpaCacheEvictionStrategy> getDefaultStrategy() {
+        return defaultStrategy;
+    }
 
-   /**
-    * @param defaultStrategy Strategy how to evict cache.
-    */
-   public void setDefaultStrategy(Class<? extends JpaCacheEvictionStrategy> defaultStrategy)
-   {
-      this.defaultStrategy = defaultStrategy;
-   }
+    /**
+     * @param defaultStrategy Strategy how to evict cache.
+     */
+    public void setDefaultStrategy(Class<? extends JpaCacheEvictionStrategy> defaultStrategy) {
+        this.defaultStrategy = defaultStrategy;
+    }
 
 }

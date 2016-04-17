@@ -24,50 +24,47 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OracleStatementSplitterTest
-{
+public class OracleStatementSplitterTest {
 
-   @Test
-   public void should_split_create_tables_if_exists() throws Exception
-   {
-      // given
-      final OracleStatementSplitter statementSplitter = new OracleStatementSplitter();
-      final String sqlScript = FileLoader.loadAsString("scripts/oracle-create-table-if-exists.sql");
+    @Test
+    public void should_split_create_tables_if_exists() throws Exception {
+        // given
+        final OracleStatementSplitter statementSplitter = new OracleStatementSplitter();
+        final String sqlScript = FileLoader.loadAsString("scripts/oracle-create-table-if-exists.sql");
 
-      // when
-      final List<String> statements = statementSplitter.splitStatements(sqlScript);
+        // when
+        final List<String> statements = statementSplitter.splitStatements(sqlScript);
 
-      // then
-      assertThat(statements).hasSize(4);
-   }
+        // then
+        assertThat(statements).hasSize(4);
+    }
 
-   @Test
-   public void should_handle_nested_blocks_as_single_statement() throws Exception
-   {
-      // given
-      final OracleStatementSplitter splitter = new OracleStatementSplitter();
+    @Test
+    public void should_handle_nested_blocks_as_single_statement() throws Exception {
+        // given
+        final OracleStatementSplitter splitter = new OracleStatementSplitter();
 
-      // when
-      final List<String> statements = splitter.splitStatements("DECLARE\n" +
-                                                               "  l_message  \n" +
-                                                               "  VARCHAR2 (100) := 'Hello';\n" +
-                                                               "BEGIN\n" +
-                                                               "  DECLARE\n" +
-                                                               "    l_message2     VARCHAR2 (100) := \n" +
-                                                               "      l_message || ' World!'; \n" +
-                                                               "  BEGIN\n" +
-                                                               "    DBMS_OUTPUT.put_line (l_message2);\n" +
-                                                               "  END;\n" +
-                                                               "EXCEPTION\n" +
-                                                               "  WHEN OTHERS\n" +
-                                                               "  THEN\n" +
-                                                               "    DBMS_OUTPUT.put_line \n" +
-                                                               "   (DBMS_UTILITY.format_error_stack);\n" +
-                                                               "END;");
+        // when
+        final List<String> statements = splitter.splitStatements("DECLARE\n" +
+                "  l_message  \n" +
+                "  VARCHAR2 (100) := 'Hello';\n" +
+                "BEGIN\n" +
+                "  DECLARE\n" +
+                "    l_message2     VARCHAR2 (100) := \n" +
+                "      l_message || ' World!'; \n" +
+                "  BEGIN\n" +
+                "    DBMS_OUTPUT.put_line (l_message2);\n" +
+                "  END;\n" +
+                "EXCEPTION\n" +
+                "  WHEN OTHERS\n" +
+                "  THEN\n" +
+                "    DBMS_OUTPUT.put_line \n" +
+                "   (DBMS_UTILITY.format_error_stack);\n" +
+                "END;");
 
-      // then
-      assertThat(statements).hasSize(1);
-   }
+        // then
+        assertThat(statements).hasSize(1);
+    }
 
 
 }

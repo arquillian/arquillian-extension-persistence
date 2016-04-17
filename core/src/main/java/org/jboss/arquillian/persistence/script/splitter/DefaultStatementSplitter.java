@@ -44,175 +44,141 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- *
  * Splits SQL script into executable sql parts.
- *
+ * <p>
  * To some extent based on <a href="http://code.google.com/p/mybatis/source/browse/trunk/src/main/java/org/apache/ibatis/jdbc/ScriptRunner.java?spec=svn5175&r=5175">ScriptRunner</a>
  * from MyBatis project, hence license attribution in the header.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DefaultStatementSplitter implements StatementSplitter
-{
+public class DefaultStatementSplitter implements StatementSplitter {
 
-   private static final String CHAR_SEQUENCE_PATTERN = "(?m)'([^']*)'|\"([^\"]*)\"";
+    private static final String CHAR_SEQUENCE_PATTERN = "(?m)'([^']*)'|\"([^\"]*)\"";
 
-   private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
+    private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
 
-   private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
-   private String statementDelimiter;
+    private String statementDelimiter;
 
-   public DefaultStatementSplitter()
-   {
-      this.statementDelimiter = ";";
-   }
+    public DefaultStatementSplitter() {
+        this.statementDelimiter = ";";
+    }
 
-   public DefaultStatementSplitter(String statementDelimiter)
-   {
-      this.statementDelimiter = statementDelimiter;
-   }
+    public DefaultStatementSplitter(String statementDelimiter) {
+        this.statementDelimiter = statementDelimiter;
+    }
 
-   @Override
-   public void setStatementDelimiter(String statementDelimiter)
-   {
-      this.statementDelimiter = statementDelimiter;
-   }
+    @Override
+    public void setStatementDelimiter(String statementDelimiter) {
+        this.statementDelimiter = statementDelimiter;
+    }
 
-   @Override
-   public String supports()
-   {
-      return "default";
-   }
+    @Override
+    public String supports() {
+        return "default";
+    }
 
-   @Override
-   public List<String> splitStatements(String script)
-   {
-      script = removeComments(new SpecialCharactersReplacer().escape(script));
-      return splitStatements(new StringReader(script));
-   }
+    @Override
+    public List<String> splitStatements(String script) {
+        script = removeComments(new SpecialCharactersReplacer().escape(script));
+        return splitStatements(new StringReader(script));
+    }
 
-   @Override
-   public List<String> splitStatements(Reader reader)
-   {
-      final BufferedReader lineReader = new BufferedReader(reader);
-      final List<String> statements = new ArrayList<String>();
-      try
-      {
-         final StringBuilder readSqlStatement = new StringBuilder();
-         String line;
-         while ((line = lineReader.readLine()) != null)
-         {
-            boolean isFullCommand = parseLine(line, readSqlStatement);
-            if (isFullCommand)
-            {
-               if(multipleInlineStatements(line))
-               {
-                  statements.addAll(splitInlineStatements(line));
-               }
-               else
-               {
-                  String trimmed = new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim());
-                  if (trimmed.length() > 0)
-                  {
-                     statements.add(trimmed);
-                  }
-               }
-               readSqlStatement.setLength(0);
+    @Override
+    public List<String> splitStatements(Reader reader) {
+        final BufferedReader lineReader = new BufferedReader(reader);
+        final List<String> statements = new ArrayList<String>();
+        try {
+            final StringBuilder readSqlStatement = new StringBuilder();
+            String line;
+            while ((line = lineReader.readLine()) != null) {
+                boolean isFullCommand = parseLine(line, readSqlStatement);
+                if (isFullCommand) {
+                    if (multipleInlineStatements(line)) {
+                        statements.addAll(splitInlineStatements(line));
+                    } else {
+                        String trimmed = new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim());
+                        if (trimmed.length() > 0) {
+                            statements.add(trimmed);
+                        }
+                    }
+                    readSqlStatement.setLength(0);
+                }
             }
-         }
-         if (shouldExecuteRemainingStatements(readSqlStatement))
-         {
-            statements.add(new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim()));
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Failed parsing file.", e);
-      }
+            if (shouldExecuteRemainingStatements(readSqlStatement)) {
+                statements.add(new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim()));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed parsing file.", e);
+        }
 
-      return statements;
-   }
+        return statements;
+    }
 
-   private String removeComments(String script)
-   {
-      return script.replaceAll(ANSI_SQL_COMMENTS_PATTERN, "");
-   }
+    private String removeComments(String script) {
+        return script.replaceAll(ANSI_SQL_COMMENTS_PATTERN, "");
+    }
 
-   // -- Private methods
+    // -- Private methods
 
-   private boolean parseLine(final String line, final StringBuilder sql)
-   {
-      String trimmedLine = trimLine(line);
-      sql.append(trimmedLine).append(LINE_SEPARATOR);
+    private boolean parseLine(final String line, final StringBuilder sql) {
+        String trimmedLine = trimLine(line);
+        sql.append(trimmedLine).append(LINE_SEPARATOR);
 
-      return isFullCommand(trimmedLine);
-   }
+        return isFullCommand(trimmedLine);
+    }
 
-   private String trimLine(final String line)
-   {
-      return line.trim() + (isNewLineStatementDelimiter() ? LINE_SEPARATOR : "");
-   }
+    private String trimLine(final String line) {
+        return line.trim() + (isNewLineStatementDelimiter() ? LINE_SEPARATOR : "");
+    }
 
-   private boolean shouldExecuteRemainingStatements(final StringBuilder sql)
-   {
-      return sql.toString().trim().length() > 0;
-   }
+    private boolean shouldExecuteRemainingStatements(final StringBuilder sql) {
+        return sql.toString().trim().length() > 0;
+    }
 
-   private boolean isNewLineStatementDelimiter()
-   {
-      return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(statementDelimiter);
-   }
+    private boolean isNewLineStatementDelimiter() {
+        return ScriptingConfiguration.NEW_LINE_SYMBOL.equals(statementDelimiter);
+    }
 
-   private List<String> splitInlineStatements(String line)
-   {
-      final List<String> statements = new ArrayList<String>();
-      final StringTokenizer sqlStatements = new StringTokenizer(line, statementDelimiter);
-      while (sqlStatements.hasMoreElements())
-      {
-         final String token = sqlStatements.nextToken();
-         statements.add(new SpecialCharactersReplacer().unescape(token.trim()));
-      }
-      return statements;
-   }
+    private List<String> splitInlineStatements(String line) {
+        final List<String> statements = new ArrayList<String>();
+        final StringTokenizer sqlStatements = new StringTokenizer(line, statementDelimiter);
+        while (sqlStatements.hasMoreElements()) {
+            final String token = sqlStatements.nextToken();
+            statements.add(new SpecialCharactersReplacer().unescape(token.trim()));
+        }
+        return statements;
+    }
 
-   private boolean multipleInlineStatements(String line)
-   {
-      if (isNewLineStatementDelimiter())
-      {
-         return false;
-      }
-      return new StringTokenizer(markCharSequences(line), statementDelimiter).countTokens() > 1;
-   }
+    private boolean multipleInlineStatements(String line) {
+        if (isNewLineStatementDelimiter()) {
+            return false;
+        }
+        return new StringTokenizer(markCharSequences(line), statementDelimiter).countTokens() > 1;
+    }
 
-   private String markCharSequences(String line)
-   {
-      return line.replaceAll(CHAR_SEQUENCE_PATTERN, "char_seq");
-   }
+    private String markCharSequences(String line) {
+        return line.replaceAll(CHAR_SEQUENCE_PATTERN, "char_seq");
+    }
 
-   private boolean isFullCommand(String line)
-   {
-      return lineEndsWithStatementDelimiter(line) || lineIsStatementDelimiter(line);
-   }
+    private boolean isFullCommand(String line) {
+        return lineEndsWithStatementDelimiter(line) || lineIsStatementDelimiter(line);
+    }
 
-   private boolean lineIsStatementDelimiter(String line)
-   {
-      boolean isStatementDelimiter = line.equals(statementDelimiter);
-      if (!isStatementDelimiter && isNewLineStatementDelimiter())
-      {
-         isStatementDelimiter = line.matches("^\\r?\\n$|^\\r$");
-      }
-      return isStatementDelimiter;
-   }
+    private boolean lineIsStatementDelimiter(String line) {
+        boolean isStatementDelimiter = line.equals(statementDelimiter);
+        if (!isStatementDelimiter && isNewLineStatementDelimiter()) {
+            isStatementDelimiter = line.matches("^\\r?\\n$|^\\r$");
+        }
+        return isStatementDelimiter;
+    }
 
-   private boolean lineEndsWithStatementDelimiter(String line)
-   {
-      boolean ends = line.endsWith(statementDelimiter);
-      if (!ends && isNewLineStatementDelimiter())
-      {
-         ends = line.matches("^.+?\\r?\\n$|^.+?\\r$");
-      }
-      return ends;
-   }
+    private boolean lineEndsWithStatementDelimiter(String line) {
+        boolean ends = line.endsWith(statementDelimiter);
+        if (!ends && isNewLineStatementDelimiter()) {
+            ends = line.matches("^.+?\\r?\\n$|^.+?\\r$");
+        }
+        return ends;
+    }
 }

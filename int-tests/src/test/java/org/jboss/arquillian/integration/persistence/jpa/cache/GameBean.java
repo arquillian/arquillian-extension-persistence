@@ -27,28 +27,24 @@ import javax.persistence.PersistenceContext;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
 @Stateless
-public class GameBean
-{
+public class GameBean {
 
-   @PersistenceContext(name="jpacacheeviction", unitName="jpacacheeviction")
-   private EntityManager em;
+    @PersistenceContext(name = "jpacacheeviction", unitName = "jpacacheeviction")
+    private EntityManager em;
 
-   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-   public void init()
-   {
-      em.createNativeQuery("insert into Game(id, title) values (1, 'Pac Man')").executeUpdate();
-      em.createNativeQuery("insert into Game(id, title) values (2, 'Super Mario')").executeUpdate();
-      em.createNativeQuery("insert into Game(id, title) values (3, 'Sonic')").executeUpdate();
-   }
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void init() {
+        em.createNativeQuery("insert into Game(id, title) values (1, 'Pac Man')").executeUpdate();
+        em.createNativeQuery("insert into Game(id, title) values (2, 'Super Mario')").executeUpdate();
+        em.createNativeQuery("insert into Game(id, title) values (3, 'Sonic')").executeUpdate();
+    }
 
-   public Game findById(long gameId)
-   {
-      return em.find(Game.class, gameId);
-   }
+    public Game findById(long gameId) {
+        return em.find(Game.class, gameId);
+    }
 
-   public boolean isCached(long id)
-   {
-      return em.getEntityManagerFactory().getCache().contains(Game.class, id);
-   }
+    public boolean isCached(long id) {
+        return em.getEntityManagerFactory().getCache().contains(Game.class, id);
+    }
 
 }

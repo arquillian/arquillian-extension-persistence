@@ -25,95 +25,76 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-*
-* @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
-*
-*/
-public class MetadataExtractor
-{
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ */
+public class MetadataExtractor {
 
-   private final TestClass testClass;
+    private final TestClass testClass;
 
-   private final Map<Class<?>, AnnotationInspector<?>> inspectors = new HashMap<Class<?>, AnnotationInspector<?>>();
+    private final Map<Class<?>, AnnotationInspector<?>> inspectors = new HashMap<Class<?>, AnnotationInspector<?>>();
 
-   public MetadataExtractor(TestClass testClass)
-   {
-      this.testClass = testClass;
-   }
+    public MetadataExtractor(TestClass testClass) {
+        this.testClass = testClass;
+    }
 
-   public <K extends Annotation> void register(final TestClass testClass, final Class<K> annotation)
-   {
-      inspectors.put(annotation, new AnnotationInspector<K>(testClass, annotation));
-   }
+    public <K extends Annotation> void register(final TestClass testClass, final Class<K> annotation) {
+        inspectors.put(annotation, new AnnotationInspector<K>(testClass, annotation));
+    }
 
-   @SuppressWarnings("unchecked")
-   public <K extends Annotation> AnnotationInspector<K> using(final Class<K> annotation)
-   {
-      if (inspectors.get(annotation) == null)
-      {
-         register(testClass, annotation);
-      }
-      return (AnnotationInspector<K>) inspectors.get(annotation);
-   }
+    @SuppressWarnings("unchecked")
+    public <K extends Annotation> AnnotationInspector<K> using(final Class<K> annotation) {
+        if (inspectors.get(annotation) == null) {
+            register(testClass, annotation);
+        }
+        return (AnnotationInspector<K>) inspectors.get(annotation);
+    }
 
-   public AnnotationInspector<DataSource> dataSource()
-   {
-      return using(DataSource.class);
-   }
+    public AnnotationInspector<DataSource> dataSource() {
+        return using(DataSource.class);
+    }
 
-   public AnnotationInspector<SeedDataUsing> dataSeedStrategy()
-   {
-      return using(SeedDataUsing.class);
-   }
+    public AnnotationInspector<SeedDataUsing> dataSeedStrategy() {
+        return using(SeedDataUsing.class);
+    }
 
-   public AnnotationInspector<UsingDataSet> usingDataSet()
-   {
-      return using(UsingDataSet.class);
-   }
+    public AnnotationInspector<UsingDataSet> usingDataSet() {
+        return using(UsingDataSet.class);
+    }
 
-   public AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSet()
-   {
-      return using(ShouldMatchDataSet.class);
-   }
+    public AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSet() {
+        return using(ShouldMatchDataSet.class);
+    }
 
-   public AnnotationInspector<ApplyScriptBefore> applyScriptBefore()
-   {
-      return using(ApplyScriptBefore.class);
-   }
+    public AnnotationInspector<ApplyScriptBefore> applyScriptBefore() {
+        return using(ApplyScriptBefore.class);
+    }
 
-   public AnnotationInspector<ApplyScriptAfter> applyScriptAfter()
-   {
-      return using(ApplyScriptAfter.class);
-   }
+    public AnnotationInspector<ApplyScriptAfter> applyScriptAfter() {
+        return using(ApplyScriptAfter.class);
+    }
 
-   public AnnotationInspector<Cleanup> cleanup()
-   {
-      return using(Cleanup.class);
-   }
+    public AnnotationInspector<Cleanup> cleanup() {
+        return using(Cleanup.class);
+    }
 
-   public AnnotationInspector<CleanupUsingScript> cleanupUsingScript()
-   {
-      return using(CleanupUsingScript.class);
-   }
+    public AnnotationInspector<CleanupUsingScript> cleanupUsingScript() {
+        return using(CleanupUsingScript.class);
+    }
 
-   public AnnotationInspector<JpaCacheEviction> jpaCacheEviction()
-   {
-      return using(JpaCacheEviction.class);
-   }
+    public AnnotationInspector<JpaCacheEviction> jpaCacheEviction() {
+        return using(JpaCacheEviction.class);
+    }
 
-   public AnnotationInspector<CreateSchema> createSchema()
-   {
-      return using(CreateSchema.class);
-   }
+    public AnnotationInspector<CreateSchema> createSchema() {
+        return using(CreateSchema.class);
+    }
 
-   public boolean hasPersistenceTestAnnotation()
-   {
-      return testClass.getAnnotation(PersistenceTest.class) != null;
-   }
+    public boolean hasPersistenceTestAnnotation() {
+        return testClass.getAnnotation(PersistenceTest.class) != null;
+    }
 
-   public Class<?> getJavaClass()
-   {
-      return testClass.getJavaClass();
-   }
+    public Class<?> getJavaClass() {
+        return testClass.getJavaClass();
+    }
 
 }

@@ -40,150 +40,125 @@ import java.util.*;
 /**
  * Produces YAML data set from the given file.
  *
- * @see YamlDataSet
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
+ * @see YamlDataSet
  */
-public class YamlDataSetProducer implements IDataSetProducer
-{
+public class YamlDataSetProducer implements IDataSetProducer {
 
-   private boolean caseSensitiveTableNames;
+    private boolean caseSensitiveTableNames;
 
-   private IDataSetConsumer consumer = new DefaultConsumer();
+    private IDataSetConsumer consumer = new DefaultConsumer();
 
-   private final InputStream input;
+    private final InputStream input;
 
-   public YamlDataSetProducer(InputStream inputStream)
-   {
-      input = inputStream;
-   }
+    public YamlDataSetProducer(InputStream inputStream) {
+        input = inputStream;
+    }
 
-   @Override
-   public void setConsumer(IDataSetConsumer consumer)
-   {
-      this.consumer = consumer;
-   }
+    @Override
+    public void setConsumer(IDataSetConsumer consumer) {
+        this.consumer = consumer;
+    }
 
-   @Override
-   public void produce() throws DataSetException
-   {
-      consumer.startDataSet();
+    @Override
+    public void produce() throws DataSetException {
+        consumer.startDataSet();
 
-      @SuppressWarnings("unchecked")
-      final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
+        @SuppressWarnings("unchecked")
+        final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
 
-      for (Table table : tables)
-      {
-         ITableMetaData tableMetaData = createTableMetaData(table);
-         consumer.startTable(tableMetaData);
-         for (Row row : table.getRows())
-         {
-            List<String> values = new ArrayList<String>();
-            for (Column column : tableMetaData.getColumns())
-            {
-               values.add(row.valueOf(column.getColumnName()));
+        for (Table table : tables) {
+            ITableMetaData tableMetaData = createTableMetaData(table);
+            consumer.startTable(tableMetaData);
+            for (Row row : table.getRows()) {
+                List<String> values = new ArrayList<String>();
+                for (Column column : tableMetaData.getColumns()) {
+                    values.add(row.valueOf(column.getColumnName()));
+                }
+                consumer.row(values.toArray());
             }
-            consumer.row(values.toArray());
-         }
 
-         consumer.endTable();
-      }
+            consumer.endTable();
+        }
 
-      consumer.endDataSet();
+        consumer.endDataSet();
 
-   }
+    }
 
-   public Yaml createYamlReader()
-   {
-      final Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions(),
-            new Resolver()
-      {
-         @Override
-         protected void addImplicitResolvers()
-         {
-            // Intentionally left TIMESTAMP as string to let DBUnit deal with the conversion
-            addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
-            addImplicitResolver(Tag.INT, INT, "-+0123456789");
-            addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
-            addImplicitResolver(Tag.MERGE, MERGE, "<");
-            addImplicitResolver(Tag.NULL, NULL, "~nN\0");
-            addImplicitResolver(Tag.NULL, EMPTY, null);
-            addImplicitResolver(Tag.YAML, YAML, "!&*");
-         }
-      });
-      return yaml;
-   }
+    public Yaml createYamlReader() {
+        final Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions(),
+                new Resolver() {
+                    @Override
+                    protected void addImplicitResolvers() {
+                        // Intentionally left TIMESTAMP as string to let DBUnit deal with the conversion
+                        addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
+                        addImplicitResolver(Tag.INT, INT, "-+0123456789");
+                        addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
+                        addImplicitResolver(Tag.MERGE, MERGE, "<");
+                        addImplicitResolver(Tag.NULL, NULL, "~nN\0");
+                        addImplicitResolver(Tag.NULL, EMPTY, null);
+                        addImplicitResolver(Tag.YAML, YAML, "!&*");
+                    }
+                });
+        return yaml;
+    }
 
-   private ITableMetaData createTableMetaData(Table table)
-   {
-      return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
-   }
+    private ITableMetaData createTableMetaData(Table table) {
+        return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
+    }
 
-   private Column[] createColumns(Collection<String> columnNames)
-   {
-      final List<Column> columns = new ArrayList<Column>();
-      for (String columnName : columnNames)
-      {
-         Column column = new Column(columnName, DataType.UNKNOWN);
-         columns.add(column);
-      }
-      return columns.toArray(new Column[columns.size()]);
-   }
+    private Column[] createColumns(Collection<String> columnNames) {
+        final List<Column> columns = new ArrayList<Column>();
+        for (String columnName : columnNames) {
+            Column column = new Column(columnName, DataType.UNKNOWN);
+            columns.add(column);
+        }
+        return columns.toArray(new Column[columns.size()]);
+    }
 
-   private List<Table> createTables(Map<String, List<Map<String, String>>> yamlStructure)
-   {
-      final List<Table> tables = new ArrayList<Table>();
-      for (Map.Entry<String, List<Map<String, String>>> entry : yamlStructure.entrySet())
-      {
-         Table table = new Table(entry.getKey());
-         table.addColumns(extractColumns(entry.getValue()));
-         table.addRows(extractRows(entry.getValue()));
-         tables.add(table);
-      }
-      return tables;
-   }
+    private List<Table> createTables(Map<String, List<Map<String, String>>> yamlStructure) {
+        final List<Table> tables = new ArrayList<Table>();
+        for (Map.Entry<String, List<Map<String, String>>> entry : yamlStructure.entrySet()) {
+            Table table = new Table(entry.getKey());
+            table.addColumns(extractColumns(entry.getValue()));
+            table.addRows(extractRows(entry.getValue()));
+            tables.add(table);
+        }
+        return tables;
+    }
 
-   private Collection<Row> extractRows(List<Map<String, String>> rows)
-   {
-      final Collection<Row> extractedRows = new ArrayList<Row>();
-      if (rows == null || rows.isEmpty())
-      {
-         return extractedRows;
-      }
+    private Collection<Row> extractRows(List<Map<String, String>> rows) {
+        final Collection<Row> extractedRows = new ArrayList<Row>();
+        if (rows == null || rows.isEmpty()) {
+            return extractedRows;
+        }
 
-      for (Map<String, String> row : rows)
-      {
-         extractedRows.add(new Row(row));
-      }
-      return extractedRows;
-   }
+        for (Map<String, String> row : rows) {
+            extractedRows.add(new Row(row));
+        }
+        return extractedRows;
+    }
 
-   private Collection<String> extractColumns(List<Map<String, String>> rows)
-   {
-      final Collection<String> columns = new HashSet<String>();
-      if (rows == null || rows.isEmpty())
-      {
-         return columns;
-      }
+    private Collection<String> extractColumns(List<Map<String, String>> rows) {
+        final Collection<String> columns = new HashSet<String>();
+        if (rows == null || rows.isEmpty()) {
+            return columns;
+        }
 
-      for (Map<String, String> row : rows)
-      {
-         columns.addAll(row.keySet());
-      }
-      return columns;
-   }
+        for (Map<String, String> row : rows) {
+            columns.addAll(row.keySet());
+        }
+        return columns;
+    }
 
-   // Getters & Setters
+    // Getters & Setters
 
-   public boolean isCaseSensitiveTableNames()
-   {
-      return caseSensitiveTableNames;
-   }
+    public boolean isCaseSensitiveTableNames() {
+        return caseSensitiveTableNames;
+    }
 
-   public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames)
-   {
-      this.caseSensitiveTableNames = caseSensitiveTableNames;
-   }
+    public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames) {
+        this.caseSensitiveTableNames = caseSensitiveTableNames;
+    }
 
 }

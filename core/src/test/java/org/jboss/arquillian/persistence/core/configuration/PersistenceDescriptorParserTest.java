@@ -25,48 +25,44 @@ import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceDescriptorParserTest
-{
+public class PersistenceDescriptorParserTest {
 
-   PersistenceDescriptorParser parser = new PersistenceDescriptorParser();
+    PersistenceDescriptorParser parser = new PersistenceDescriptorParser();
 
-   @Test
-   public void should_read_jta_datasource_name_from_xml_file() throws Exception
-   {
-      // given
-      final InputStream singleJtaDataSourceDescriptor = FileLoader.load("persistence-jta.xml");
+    @Test
+    public void should_read_jta_datasource_name_from_xml_file() throws Exception {
+        // given
+        final InputStream singleJtaDataSourceDescriptor = FileLoader.load("persistence-jta.xml");
 
-      // when
-      String dataSourceName = parser.obtainDataSourceName(singleJtaDataSourceDescriptor);
+        // when
+        String dataSourceName = parser.obtainDataSourceName(singleJtaDataSourceDescriptor);
 
-      // then
-      assertThat(dataSourceName).isEqualTo("java:app/datasources/postgresql_ds");
-   }
+        // then
+        assertThat(dataSourceName).isEqualTo("java:app/datasources/postgresql_ds");
+    }
 
-   @Test
-   public void should_read_non_jta_datasource_name_from_xml_file() throws Exception
-   {
-      // given
-      String singleNonJtaDataSourceDescriptor = FileLoader.loadAsString("persistence-non-jta.xml");
+    @Test
+    public void should_read_non_jta_datasource_name_from_xml_file() throws Exception {
+        // given
+        String singleNonJtaDataSourceDescriptor = FileLoader.loadAsString("persistence-non-jta.xml");
 
-      // when
-      String dataSourceName = parser.obtainDataSourceName(singleNonJtaDataSourceDescriptor);
+        // when
+        String dataSourceName = parser.obtainDataSourceName(singleNonJtaDataSourceDescriptor);
 
-      // then
-      assertThat(dataSourceName).isEqualTo("java:app/datasources/postgresql_ds_non_jta");
-   }
+        // then
+        assertThat(dataSourceName).isEqualTo("java:app/datasources/postgresql_ds_non_jta");
+    }
 
-   @Test(expected = MultiplePersistenceUnitsException.class)
-   public void should_throw_exception_when_multiple_persistence_units_defined() throws Exception
-   {
-      // given
-      String multiplePersistenceUnitsDescriptor = FileLoader.loadAsString("persistence-double.xml");
+    @Test(expected = MultiplePersistenceUnitsException.class)
+    public void should_throw_exception_when_multiple_persistence_units_defined() throws Exception {
+        // given
+        String multiplePersistenceUnitsDescriptor = FileLoader.loadAsString("persistence-double.xml");
 
-      // when
-      String dataSourceName = parser.obtainDataSourceName(multiplePersistenceUnitsDescriptor);
+        // when
+        String dataSourceName = parser.obtainDataSourceName(multiplePersistenceUnitsDescriptor);
 
-      // then
-      // exception should be thrown
-   }
+        // then
+        // exception should be thrown
+    }
 
 }

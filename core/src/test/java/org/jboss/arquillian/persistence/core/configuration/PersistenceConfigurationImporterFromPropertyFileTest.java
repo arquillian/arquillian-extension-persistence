@@ -25,95 +25,88 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceConfigurationImporterFromPropertyFileTest
-{
+public class PersistenceConfigurationImporterFromPropertyFileTest {
 
-   @Test
-   public void should_extract_default_data_source_from_external_configuration_file() throws Exception
-   {
-      // given
-      String expectedDataSource = "Ike";
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_extract_default_data_source_from_external_configuration_file() throws Exception {
+        // given
+        String expectedDataSource = "Ike";
+        Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
-   }
+        // then
+        assertThat(configuration.getDefaultDataSource()).isEqualTo(expectedDataSource);
+    }
 
-   @Test
-   public void should_obtain_default_transaction_mode() throws Exception
-   {
-      // given
-      TransactionMode expectedMode = TransactionMode.ROLLBACK;
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+    @Test
+    public void should_obtain_default_transaction_mode() throws Exception {
+        // given
+        TransactionMode expectedMode = TransactionMode.ROLLBACK;
+        Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
 
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
-   }
+        // then
+        assertThat(configuration.getDefaultTransactionMode()).isEqualTo(expectedMode);
+    }
 
-   @Test
-   public void should_be_able_to_turn_on_database_dumps() throws Exception
-   {
-      // given
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_be_able_to_turn_on_database_dumps() throws Exception {
+        // given
+        Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.isDumpData()).isTrue();
-   }
+        // then
+        assertThat(configuration.isDumpData()).isTrue();
+    }
 
-   @Test
-   public void should_be_able_to_define_dump_directory() throws Exception
-   {
-      // given
-      String dumpDirectory = "/home/ike/dump";
-      Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_be_able_to_define_dump_directory() throws Exception {
+        // given
+        String dumpDirectory = "/home/ike/dump";
+        Properties properties = TestConfigurationLoader.createPropertiesFromCustomConfigurationFile();
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
+        // then
+        assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
+    }
 
-   @Test
-   public void should_be_able_to_define_dump_directory_windows() throws Exception
-   {
-      // given
-      String dumpDirectory = "C:\\Users\\Arq\\AppData\\Local\\Temp";
-      Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/custom.arquillian.persistence.windows.dump.properties");
-      PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_be_able_to_define_dump_directory_windows() throws Exception {
+        // given
+        String dumpDirectory = "C:\\Users\\Arq\\AppData\\Local\\Temp";
+        Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/custom.arquillian.persistence.windows.dump.properties");
+        PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
-   }
+        // then
+        assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
+    }
 
-   @Test
-   public void should_ignore_unknown_property() throws Exception
-   {
-      // given
-      final Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/arquillian.persistence.with.unhandled.entries.properties");
-      final PersistenceConfiguration configuration = new PersistenceConfiguration();
+    @Test
+    public void should_ignore_unknown_property() throws Exception {
+        // given
+        final Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/arquillian.persistence.with.unhandled.entries.properties");
+        final PersistenceConfiguration configuration = new PersistenceConfiguration();
 
-      // when
-      Configuration.importTo(configuration).from(properties);
+        // when
+        Configuration.importTo(configuration).from(properties);
 
-      // then
-      assertThat(configuration.isDumpData()).isFalse();
-   }
+        // then
+        assertThat(configuration.isDumpData()).isFalse();
+    }
 }

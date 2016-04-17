@@ -26,113 +26,107 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceExtensionEnablerTest
-{
+public class PersistenceExtensionEnablerTest {
 
-   @Test
-   public void should_not_accept_class_without_data_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
-            NonPersistenceTest.class.getMethod("shouldPass"));
-      PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
+    @Test
+    public void should_not_accept_class_without_data_annotation() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
+                NonPersistenceTest.class.getMethod("shouldPass"));
+        PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
-      // when
-      boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
+        // when
+        boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
 
-      // then
-      assertThat(persistenceFeatureEnabled).isFalse();
-   }
+        // then
+        assertThat(persistenceFeatureEnabled).isFalse();
+    }
 
-   @Test
-   public void should_accept_class_with_persistence_test_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
-            PersistenceTestClass.class.getMethod("shouldPass"));
-      PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
+    @Test
+    public void should_accept_class_with_persistence_test_annotation() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
+                PersistenceTestClass.class.getMethod("shouldPass"));
+        PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
-      // when
-      boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
+        // when
+        boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
 
-      // then
-      assertThat(persistenceFeatureEnabled).isTrue();
-   }
+        // then
+        assertThat(persistenceFeatureEnabled).isTrue();
+    }
 
-   @Test
-   public void should_accept_class_with_script_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new PersistenceTestWithScriptAnnotation(),
-            PersistenceTestWithScriptAnnotation.class.getMethod("shouldPass"));
-      PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
+    @Test
+    public void should_accept_class_with_script_annotation() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new PersistenceTestWithScriptAnnotation(),
+                PersistenceTestWithScriptAnnotation.class.getMethod("shouldPass"));
+        PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
-      // when
-      boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
+        // when
+        boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
 
-      // then
-      assertThat(persistenceFeatureEnabled).isTrue();
-   }
+        // then
+        assertThat(persistenceFeatureEnabled).isTrue();
+    }
 
-   @Test
-   public void should_accept_class_with_expected_annotation() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
-            PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
-      PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
+    @Test
+    public void should_accept_class_with_expected_annotation() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
+                PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
+        PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
-      // when
-      boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
+        // when
+        boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
 
-      // then
-      assertThat(persistenceFeatureEnabled).isTrue();
-   }
+        // then
+        assertThat(persistenceFeatureEnabled).isTrue();
+    }
 
-   @Test
-   public void shoul_accept_class_without_data_source_annotation_but_defined_in_properties() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-      PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
+    @Test
+    public void shoul_accept_class_without_data_source_annotation_but_defined_in_properties() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
+                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
-      // when
-      boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
+        // when
+        boolean persistenceFeatureEnabled = metadataProvider.shouldPersistenceExtensionBeActivated();
 
-      // then
-      assertThat(persistenceFeatureEnabled).isTrue();
-   }
+        // then
+        assertThat(persistenceFeatureEnabled).isTrue();
+    }
 
-   // ----------------------------------------------------------------------------------------
-   // Classes used for tests
+    // ----------------------------------------------------------------------------------------
+    // Classes used for tests
 
-   @UsingDataSet
-   private static class DataSourceExpectedFromDefaultConfiguration
-   {
-      public void shouldPass() {}
-   }
+    @UsingDataSet
+    private static class DataSourceExpectedFromDefaultConfiguration {
+        public void shouldPass() {
+        }
+    }
 
-   @PersistenceTest
-   private static class PersistenceTestClass
-   {
-      public void shouldPass() {}
-   }
+    @PersistenceTest
+    private static class PersistenceTestClass {
+        public void shouldPass() {
+        }
+    }
 
-   private static class PersistenceTestWithExpectedAnnotation
-   {
-      @ShouldMatchDataSet
-      public void shouldPass() {}
-   }
+    private static class PersistenceTestWithExpectedAnnotation {
+        @ShouldMatchDataSet
+        public void shouldPass() {
+        }
+    }
 
-   private static class PersistenceTestWithScriptAnnotation
-   {
-      @ApplyScriptBefore
-      public void shouldPass() {}
-   }
+    private static class PersistenceTestWithScriptAnnotation {
+        @ApplyScriptBefore
+        public void shouldPass() {
+        }
+    }
 
-   private static class NonPersistenceTest
-   {
-      public void shouldPass() {}
-   }
+    private static class NonPersistenceTest {
+        public void shouldPass() {
+        }
+    }
 }

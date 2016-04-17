@@ -20,13 +20,12 @@ package org.jboss.arquillian.persistence.core.data;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.DataEvent;
 
-public interface DataHandler<P extends DataEvent, C extends DataEvent>
-{
+public interface DataHandler<P extends DataEvent, C extends DataEvent> {
 
-   void prepare(P prepareDataEvent);
+    void prepare(P prepareDataEvent);
 
-   void compare(C compareDataEvent);
+    void compare(C compareDataEvent);
 
-   void cleanup(CleanupData cleanupDataEvent);
+    void cleanup(CleanupData cleanupDataEvent);
 
 }

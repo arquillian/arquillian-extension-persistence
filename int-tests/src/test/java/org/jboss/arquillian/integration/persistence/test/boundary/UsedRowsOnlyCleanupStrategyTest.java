@@ -36,38 +36,36 @@ import javax.persistence.PersistenceContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class UsedRowsOnlyCleanupStrategyTest
-{
+public class UsedRowsOnlyCleanupStrategyTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test @InSequence(1)
-   @ApplyScriptBefore({ "clark-kent-without-nickname.sql", "john-smith.sql" })
-   @Cleanup(phase = TestExecutionPhase.NONE)
-   public void insert_data_for_test()
-   {
-   }
+    @Test
+    @InSequence(1)
+    @ApplyScriptBefore({"clark-kent-without-nickname.sql", "john-smith.sql"})
+    @Cleanup(phase = TestExecutionPhase.NONE)
+    public void insert_data_for_test() {
+    }
 
-   @Test @InSequence(2)
-   @UsingDataSet("users.yml") // both users are without nicknames
-   @Cleanup(phase = TestExecutionPhase.BEFORE, strategy = CleanupStrategy.USED_ROWS_ONLY)
-   public void should_cleanup_database_content_matching_users_from_dataset()
-   {
-      UserAccount clarkKent = em.find(UserAccount.class, 2L);
-      assertThat(clarkKent.getNickname()).isNullOrEmpty();
-   }
+    @Test
+    @InSequence(2)
+    @UsingDataSet("users.yml") // both users are without nicknames
+    @Cleanup(phase = TestExecutionPhase.BEFORE, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    public void should_cleanup_database_content_matching_users_from_dataset() {
+        UserAccount clarkKent = em.find(UserAccount.class, 2L);
+        assertThat(clarkKent.getNickname()).isNullOrEmpty();
+    }
 
 }

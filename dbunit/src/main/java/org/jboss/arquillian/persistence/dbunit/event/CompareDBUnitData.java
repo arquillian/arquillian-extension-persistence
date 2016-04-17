@@ -27,45 +27,38 @@ import java.util.Set;
 
 import static org.jboss.arquillian.persistence.util.Arrays.copy;
 
-public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor>
-{
+public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
-   private final String[] columnsToExclude;
+    private final String[] columnsToExclude;
 
-   private final String[] sortByColumns;
+    private final String[] sortByColumns;
 
-   private final Set<Class<? extends IColumnFilter>> customColumnFilters = new HashSet<Class<? extends IColumnFilter>>();
+    private final Set<Class<? extends IColumnFilter>> customColumnFilters = new HashSet<Class<? extends IColumnFilter>>();
 
-   public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns, String[] columnsToExclude)
-   {
-      super(dataSetDescriptors);
-      this.columnsToExclude = columnsToExclude;
-      this.sortByColumns = sortByColumns;
-   }
+    public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns, String[] columnsToExclude) {
+        super(dataSetDescriptors);
+        this.columnsToExclude = columnsToExclude;
+        this.sortByColumns = sortByColumns;
+    }
 
-   public boolean hasFilters()
-   {
-      return !customColumnFilters.isEmpty();
-   }
+    public boolean hasFilters() {
+        return !customColumnFilters.isEmpty();
+    }
 
-   public void add(Class<? extends IColumnFilter> ... filters)
-   {
-      customColumnFilters.addAll(Arrays.asList(filters));
-   }
+    public void add(Class<? extends IColumnFilter>... filters) {
+        customColumnFilters.addAll(Arrays.asList(filters));
+    }
 
-   public String[] getColumnsToExclude()
-   {
-      return copy(columnsToExclude);
-   }
+    public String[] getColumnsToExclude() {
+        return copy(columnsToExclude);
+    }
 
-   public String[] getSortByColumns()
-   {
-      return copy(sortByColumns);
-   }
+    public String[] getSortByColumns() {
+        return copy(sortByColumns);
+    }
 
-   public Set<Class<? extends IColumnFilter>> getCustomColumnFilters()
-   {
-      return customColumnFilters;
-   }
+    public Set<Class<? extends IColumnFilter>> getCustomColumnFilters() {
+        return customColumnFilters;
+    }
 
 }

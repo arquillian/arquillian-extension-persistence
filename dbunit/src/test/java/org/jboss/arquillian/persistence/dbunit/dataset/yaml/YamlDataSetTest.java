@@ -25,82 +25,75 @@ import org.junit.Test;
 
 import java.io.InputStream;
 
-public class YamlDataSetTest
-{
+public class YamlDataSetTest {
 
-   InputStream input;
+    InputStream input;
 
-   @After
-   public void closeStream()
-   {
-      FileLoader.close(input);
-   }
+    @After
+    public void closeStream() {
+        FileLoader.close(input);
+    }
 
-   @Test
-   public void should_load_table_from_yaml_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.yml");
+    @Test
+    public void should_load_table_from_yaml_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.yml");
 
-      // when
-      YamlDataSet yamlDataSet = new YamlDataSet(input);
+        // when
+        YamlDataSet yamlDataSet = new YamlDataSet(input);
 
-      // then
-      DataSetAssert.assertThat(yamlDataSet).hasTables("useraccount");
-   }
+        // then
+        DataSetAssert.assertThat(yamlDataSet).hasTables("useraccount");
+    }
 
-   @Test
-   public void should_load_all_columns_for_table_from_yaml_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.yml");
+    @Test
+    public void should_load_all_columns_for_table_from_yaml_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.yml");
 
-      // when
-      YamlDataSet yamlDataSet = new YamlDataSet(input);
+        // when
+        YamlDataSet yamlDataSet = new YamlDataSet(input);
 
-      // then
-      TableAssert.assertThat(yamlDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
-   }
+        // then
+        TableAssert.assertThat(yamlDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
+    }
 
-   @Test
-   public void should_load_all_rows_for_table_from_yaml_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.yml");
+    @Test
+    public void should_load_all_rows_for_table_from_yaml_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.yml");
 
-      // when
-      YamlDataSet yamlDataSet = new YamlDataSet(input);
+        // when
+        YamlDataSet yamlDataSet = new YamlDataSet(input);
 
-      // then
-      TableAssert.assertThat(yamlDataSet.getTable("useraccount")).hasRows(2);
-   }
+        // then
+        TableAssert.assertThat(yamlDataSet.getTable("useraccount")).hasRows(2);
+    }
 
-   @Test
-   public void should_load_all_rows_with_content_for_table_from_yaml_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.yml");
+    @Test
+    public void should_load_all_rows_with_content_for_table_from_yaml_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.yml");
 
-      // when
-      YamlDataSet yamlDataSet = new YamlDataSet(input);
+        // when
+        YamlDataSet yamlDataSet = new YamlDataSet(input);
 
-      // then
-      TableAssert.assertThat(yamlDataSet.getTable("useraccount"))
-                 .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
-                 .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
-   }
+        // then
+        TableAssert.assertThat(yamlDataSet.getTable("useraccount"))
+                .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
+                .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
+    }
 
-   @Test
-   public void should_load_two_tables_from_yaml_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("tables.yml");
+    @Test
+    public void should_load_two_tables_from_yaml_file() throws Exception {
+        // given
+        input = FileLoader.load("tables.yml");
 
-      // when
-      YamlDataSet yamlDataSet = new YamlDataSet(input);
+        // when
+        YamlDataSet yamlDataSet = new YamlDataSet(input);
 
-      // then
-      DataSetAssert.assertThat(yamlDataSet).hasTables("useraccount", "testtable");
-   }
+        // then
+        DataSetAssert.assertThat(yamlDataSet).hasTables("useraccount", "testtable");
+    }
 
 }

@@ -22,14 +22,12 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class PostgreSqlDataSourceArchiveCreator implements AuxiliaryArchiveAppender
-{
+public class PostgreSqlDataSourceArchiveCreator implements AuxiliaryArchiveAppender {
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
-                       .addClass(PostgreSqlDataSource.class);
-   }
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
+                .addClass(PostgreSqlDataSource.class);
+    }
 
 }

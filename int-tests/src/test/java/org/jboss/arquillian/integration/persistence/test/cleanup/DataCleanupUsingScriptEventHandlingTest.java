@@ -39,88 +39,84 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
-public class DataCleanupUsingScriptEventHandlingTest
-{
+public class DataCleanupUsingScriptEventHandlingTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
 
-   @Test @InSequence(1)
-   @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
-   @CleanupShouldNotBeTriggered
-   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_cleanup_data_using_custom_sql_script_before_test() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(1)
+    @CleanupUsingScript(value = "delete-users.sql", phase = TestExecutionPhase.BEFORE)
+    @CleanupShouldNotBeTriggered
+    @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.BEFORE)
+    public void should_cleanup_data_using_custom_sql_script_before_test() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data cleanup should be called before the test
-   }
+        // then
+        // data cleanup should be called before the test
+    }
 
-   @Test @InSequence(2)
-   @CleanupUsingScript("delete-users.sql")
-   @CleanupShouldNotBeTriggered
-   @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.AFTER)
-   public void should_cleanup_data_using_custom_sql_script_after_test_when_not_specified() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(2)
+    @CleanupUsingScript("delete-users.sql")
+    @CleanupShouldNotBeTriggered
+    @CleanupUsingScriptShouldBeTriggered(TestExecutionPhase.AFTER)
+    public void should_cleanup_data_using_custom_sql_script_after_test_when_not_specified() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data cleanup should be called before the test
-   }
+        // then
+        // data cleanup should be called before the test
+    }
 
-   @Test @InSequence(3)
-   @CleanupUsingScript(phase = TestExecutionPhase.NONE)
-   @ShouldMatchDataSet("expected-users.json")
-   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
-   @CleanupUsingScriptShouldNotBeTriggered
-   public void should_not_infer_filename_when_cleanup_using_custom_sql_script_is_disabled() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(3)
+    @CleanupUsingScript(phase = TestExecutionPhase.NONE)
+    @ShouldMatchDataSet("expected-users.json")
+    @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+    @CleanupUsingScriptShouldNotBeTriggered
+    public void should_not_infer_filename_when_cleanup_using_custom_sql_script_is_disabled() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data cleanup should be called after the test
-   }
+        // then
+        // data cleanup should be called after the test
+    }
 
 }

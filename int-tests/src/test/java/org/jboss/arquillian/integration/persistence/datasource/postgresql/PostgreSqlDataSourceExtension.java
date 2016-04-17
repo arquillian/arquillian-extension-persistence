@@ -20,14 +20,12 @@ package org.jboss.arquillian.integration.persistence.datasource.postgresql;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
-public class PostgreSqlDataSourceExtension implements LoadableExtension
-{
+public class PostgreSqlDataSourceExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDataSourceArchiveCreator.class);
-      builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDriverArchiveAppender.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDataSourceArchiveCreator.class);
+        builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDriverArchiveAppender.class);
+    }
 
 }

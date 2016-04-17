@@ -22,44 +22,38 @@ import org.jboss.arquillian.persistence.CleanupStrategy.StrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 
-public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategyExecutor>
-{
+public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategyExecutor> {
 
-   private final DatabaseConnection connection;
+    private final DatabaseConnection connection;
 
-   private final DataSetRegister register;
+    private final DataSetRegister register;
 
-   private final DBUnitConfiguration dbUnitConfiguration;
+    private final DBUnitConfiguration dbUnitConfiguration;
 
-   public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register, DBUnitConfiguration dbUnitConfiguration)
-   {
-      this.connection = connection;
-      this.register = (register != null) ? register : new DataSetRegister();
-      this.dbUnitConfiguration = dbUnitConfiguration;
-   }
+    public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register, DBUnitConfiguration dbUnitConfiguration) {
+        this.connection = connection;
+        this.register = (register != null) ? register : new DataSetRegister();
+        this.dbUnitConfiguration = dbUnitConfiguration;
+    }
 
-   @Override
-   public CleanupStrategyExecutor strictStrategy()
-   {
-      return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
-   }
+    @Override
+    public CleanupStrategyExecutor strictStrategy() {
+        return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
+    }
 
-   @Override
-   public CleanupStrategyExecutor usedTablesOnlyStrategy()
-   {
-      return new UsedTablesOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
-   }
+    @Override
+    public CleanupStrategyExecutor usedTablesOnlyStrategy() {
+        return new UsedTablesOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
+    }
 
-   @Override
-   public CleanupStrategyExecutor usedRowsOnlyStrategy()
-   {
-      return new SeededDataOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
-   }
+    @Override
+    public CleanupStrategyExecutor usedRowsOnlyStrategy() {
+        return new SeededDataOnlyCleanupStrategyExecutor(connection, register, dbUnitConfiguration);
+    }
 
-   @Override
-   public CleanupStrategyExecutor defaultStrategy()
-   {
-      return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
-   }
+    @Override
+    public CleanupStrategyExecutor defaultStrategy() {
+        return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
+    }
 
 }

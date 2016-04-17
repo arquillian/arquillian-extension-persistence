@@ -34,136 +34,108 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DataSetBuilder
-{
+public class DataSetBuilder {
 
-   private final Format format;
+    private final Format format;
 
-   private DataSetBuilder(Format format)
-   {
-      this.format = format;
-   }
+    private DataSetBuilder(Format format) {
+        this.format = format;
+    }
 
-   public IDataSet build(final String file)
-   {
-      IDataSet dataSet;
-      try
-      {
-         switch (format)
-         {
-            case XML:
-               dataSet = loadXmlDataSet(file);
-               break;
-            case EXCEL:
-               dataSet = loadExcelDataSet(file);
-               break;
-            case YAML:
-               dataSet = loadYamlDataSet(file);
-               break;
-            case JSON:
-               dataSet = loadJsonDataSet(file);
-               break;
-            default:
-               throw new DBUnitInitializationException("Unsupported data type " + format);
-         }
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitInitializationException("Unable to load data set from given file: " + file, e);
-      }
+    public IDataSet build(final String file) {
+        IDataSet dataSet;
+        try {
+            switch (format) {
+                case XML:
+                    dataSet = loadXmlDataSet(file);
+                    break;
+                case EXCEL:
+                    dataSet = loadExcelDataSet(file);
+                    break;
+                case YAML:
+                    dataSet = loadYamlDataSet(file);
+                    break;
+                case JSON:
+                    dataSet = loadJsonDataSet(file);
+                    break;
+                default:
+                    throw new DBUnitInitializationException("Unsupported data type " + format);
+            }
+        } catch (Exception e) {
+            throw new DBUnitInitializationException("Unable to load data set from given file: " + file, e);
+        }
 
-      return defineReplaceableExpressions(dataSet);
-   }
+        return defineReplaceableExpressions(dataSet);
+    }
 
-   public static DataSetBuilder builderFor(final Format format)
-   {
-      return new DataSetBuilder(format);
-   }
+    public static DataSetBuilder builderFor(final Format format) {
+        return new DataSetBuilder(format);
+    }
 
-   // Private methods
+    // Private methods
 
-   private IDataSet loadXmlDataSet(final String xmlFile) throws DataSetException
-   {
-      final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
-      flatXmlDataSetBuilder.setColumnSensing(true);
-      addDtdIfDefined(flatXmlDataSetBuilder, xmlFile);
-      return flatXmlDataSetBuilder.build(Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFile));
-   }
+    private IDataSet loadXmlDataSet(final String xmlFile) throws DataSetException {
+        final FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
+        flatXmlDataSetBuilder.setColumnSensing(true);
+        addDtdIfDefined(flatXmlDataSetBuilder, xmlFile);
+        return flatXmlDataSetBuilder.build(Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFile));
+    }
 
-   private void addDtdIfDefined(final FlatXmlDataSetBuilder flatXmlDataSetBuilder, final String xmlFile)
-   {
-      String dtd = new DtdResolver().resolveDtdLocationFullPath(xmlFile);
-      if (dtd != null)
-      {
-         try
-         {
-            flatXmlDataSetBuilder.setMetaDataSetFromDtd(Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
-         }
-         catch (DataSetException e)
-         {
-            throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
-         }
-         catch (IOException e)
-         {
-            throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
-         }
-      }
-   }
+    private void addDtdIfDefined(final FlatXmlDataSetBuilder flatXmlDataSetBuilder, final String xmlFile) {
+        String dtd = new DtdResolver().resolveDtdLocationFullPath(xmlFile);
+        if (dtd != null) {
+            try {
+                flatXmlDataSetBuilder.setMetaDataSetFromDtd(Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
+            } catch (DataSetException e) {
+                throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
+            } catch (IOException e) {
+                throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
+            }
+        }
+    }
 
-   private XlsDataSet loadExcelDataSet(final String file) throws IOException, DataSetException
-   {
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-      return new XlsDataSet(inputStream);
-   }
+    private XlsDataSet loadExcelDataSet(final String file) throws IOException, DataSetException {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+        return new XlsDataSet(inputStream);
+    }
 
-   private JsonDataSet loadJsonDataSet(final String file) throws DataSetException
-   {
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-      return new JsonDataSet(inputStream);
-   }
+    private JsonDataSet loadJsonDataSet(final String file) throws DataSetException {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+        return new JsonDataSet(inputStream);
+    }
 
-   private IDataSet loadYamlDataSet(final String file) throws IOException,
-         DataSetException
-   {
-      IDataSet dataSet;
-      if (isYamlEmpty(file))
-      {
-         dataSet = new DefaultDataSet();
-      }
-      else
-      {
-         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-         dataSet = new YamlDataSet(inputStream);
-         if (inputStream != null)
-         {
+    private IDataSet loadYamlDataSet(final String file) throws IOException,
+            DataSetException {
+        IDataSet dataSet;
+        if (isYamlEmpty(file)) {
+            dataSet = new DefaultDataSet();
+        } else {
+            final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+            dataSet = new YamlDataSet(inputStream);
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+        return dataSet;
+    }
+
+
+    private boolean isYamlEmpty(final String yamlFile) throws IOException {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
+        final boolean isEmpty = new Yaml().load(inputStream) == null;
+        if (inputStream != null) {
             inputStream.close();
-         }
-      }
-      return dataSet;
-   }
+        }
+        return isEmpty;
+    }
 
-
-   private boolean isYamlEmpty(final String yamlFile) throws IOException
-   {
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
-      final boolean isEmpty = new Yaml().load(inputStream) == null;
-      if (inputStream != null)
-      {
-         inputStream.close();
-      }
-      return isEmpty;
-   }
-
-   private IDataSet defineReplaceableExpressions(IDataSet dataSet)
-   {
-      final ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
-      replacementDataSet.addReplacementObject("[null]", null);
-      replacementDataSet.addReplacementObject("[NULL]", null);
-      return replacementDataSet;
-   }
+    private IDataSet defineReplaceableExpressions(IDataSet dataSet) {
+        final ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
+        replacementDataSet.addReplacementObject("[null]", null);
+        replacementDataSet.addReplacementObject("[NULL]", null);
+        return replacementDataSet;
+    }
 
 }

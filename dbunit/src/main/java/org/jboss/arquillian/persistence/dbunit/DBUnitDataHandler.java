@@ -56,132 +56,107 @@ import java.sql.SQLException;
 import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.mergeDataSets;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, CompareDBUnitData>
-{
+public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, CompareDBUnitData> {
 
-   @Inject
-   private Instance<DatabaseConnection> databaseConnection;
+    @Inject
+    private Instance<DatabaseConnection> databaseConnection;
 
-   @Inject
-   private Instance<DataSetRegister> dataSetRegister;
+    @Inject
+    private Instance<DataSetRegister> dataSetRegister;
 
-   @Inject
-   private Instance<AssertionErrorCollector> assertionErrorCollector;
+    @Inject
+    private Instance<AssertionErrorCollector> assertionErrorCollector;
 
-   @Inject
-   private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
+    @Inject
+    private Instance<DBUnitConfiguration> dbunitConfigurationInstance;
 
-   @Inject
-   private Instance<ScriptingConfiguration> scriptConfigurationInstance;
+    @Inject
+    private Instance<ScriptingConfiguration> scriptConfigurationInstance;
 
-   @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
+    @Inject
+    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
-   @Override
-   public void prepare(@Observes PrepareDBUnitData prepareDataEvent)
-   {
-      try
-      {
-         seedDatabase();
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException("Failed while seeding database.", e);
-      }
-   }
+    @Override
+    public void prepare(@Observes PrepareDBUnitData prepareDataEvent) {
+        try {
+            seedDatabase();
+        } catch (Exception e) {
+            throw new DBUnitDataSetHandlingException("Failed while seeding database.", e);
+        }
+    }
 
-   @Override
-   public void compare(@Observes CompareDBUnitData compareDataEvent)
-   {
-      try
-      {
-         IDataSet currentDataSet = databaseConnection.get().createDataSet();
-         final String[] excludeTables = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
-         if (excludeTables.length != 0)
-         {
-            currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
-         }
-         final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
-         final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
-               compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
-         dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException("Failed while comparing database state with provided data sets.", e);
-      }
-   }
+    @Override
+    public void compare(@Observes CompareDBUnitData compareDataEvent) {
+        try {
+            IDataSet currentDataSet = databaseConnection.get().createDataSet();
+            final String[] excludeTables = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
+            if (excludeTables.length != 0) {
+                currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
+            }
+            final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
+            final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
+                    compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
+            dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
+        } catch (Exception e) {
+            throw new DBUnitDataSetHandlingException("Failed while comparing database state with provided data sets.", e);
+        }
+    }
 
-   @Override
-   public void cleanup(@Observes CleanupData cleanupDataEvent)
-   {
-      cleanDatabase(cleanupDataEvent.cleanupStrategy);
-   }
+    @Override
+    public void cleanup(@Observes CleanupData cleanupDataEvent) {
+        cleanDatabase(cleanupDataEvent.cleanupStrategy);
+    }
 
-   public void cleanupUsingScript(@Observes CleanupDataUsingScript cleanupDataUsingScriptEvent)
-   {
-      for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors())
-      {
-         final String script = scriptDescriptor.getContent();
-         executeScript(script);
-      }
-   }
+    public void cleanupUsingScript(@Observes CleanupDataUsingScript cleanupDataUsingScriptEvent) {
+        for (SqlScriptResourceDescriptor scriptDescriptor : cleanupDataUsingScriptEvent.getDescriptors()) {
+            final String script = scriptDescriptor.getContent();
+            executeScript(script);
+        }
+    }
 
-   public void executeScripts(@Observes ExecuteScripts executeScriptsEvent)
-   {
-      for (SqlScriptResourceDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors())
-      {
-         final String script = scriptDescriptor.getContent();
-         executeScript(script);
-      }
-   }
+    public void executeScripts(@Observes ExecuteScripts executeScriptsEvent) {
+        for (SqlScriptResourceDescriptor scriptDescriptor : executeScriptsEvent.getDescriptors()) {
+            final String script = scriptDescriptor.getContent();
+            executeScript(script);
+        }
+    }
 
-   // -- Private methods
+    // -- Private methods
 
-   private void executeScript(String script)
-   {
-      try
-      {
-         final StatementSplitter statementSplitter = new StatementSplitterResolver(scriptConfigurationInstance.get()).resolve();
-         final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(), statementSplitter);
-         scriptExecutor.execute(script);
-      }
-      catch (SQLException e)
-      {
-         throw new DBUnitConnectionException("Unable to execute script.", e);
-      }
-   }
+    private void executeScript(String script) {
+        try {
+            final StatementSplitter statementSplitter = new StatementSplitterResolver(scriptConfigurationInstance.get()).resolve();
+            final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(), statementSplitter);
+            scriptExecutor.execute(script);
+        } catch (SQLException e) {
+            throw new DBUnitConnectionException("Unable to execute script.", e);
+        }
+    }
 
-   private void seedDatabase() throws Exception
-   {
-      final DatabaseConnection connection = databaseConnection.get();
-      IDataSet initialDataSet = mergeDataSets(dataSetRegister.get().getInitial());
-      if (dbunitConfigurationInstance.get().isFilterTables())
-      {
-         final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
-         final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
-         initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
-      }
-      seedingStrategy().execute(connection, initialDataSet);
-   }
+    private void seedDatabase() throws Exception {
+        final DatabaseConnection connection = databaseConnection.get();
+        IDataSet initialDataSet = mergeDataSets(dataSetRegister.get().getInitial());
+        if (dbunitConfigurationInstance.get().isFilterTables()) {
+            final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
+            final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
+            initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
+        }
+        seedingStrategy().execute(connection, initialDataSet);
+    }
 
-   private DatabaseOperation seedingStrategy()
-   {
-      final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
-      final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
-      final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
-      return dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
-   }
+    private DatabaseOperation seedingStrategy() {
+        final DBUnitConfiguration dbUnitConfiguration = dbunitConfigurationInstance.get();
+        final DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolverInstance.get().getDataSeedStrategy();
+        final boolean useIdentityInsert = dbUnitConfiguration.isUseIdentityInsert();
+        return dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
+    }
 
-   private void cleanDatabase(CleanupStrategy cleanupStrategy)
-   {
-      final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
-            databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
-      cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
-   }
+    private void cleanDatabase(CleanupStrategy cleanupStrategy) {
+        final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
+                databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
+        cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
+    }
 
 }

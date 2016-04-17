@@ -21,13 +21,11 @@ import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 
 import java.io.IOException;
 
-public class DBUnitConfigurationImporterFromXmlFileTest extends DBUnitConfigurationImporterFromFileAbstractTestCase
-{
+public class DBUnitConfigurationImporterFromXmlFileTest extends DBUnitConfigurationImporterFromFileAbstractTestCase {
 
-   @Override
-   protected DBUnitConfiguration loadFromFile() throws IOException
-   {
-      return TestConfigurationLoader.createDefaultDBUnitConfiguration();
-   }
+    @Override
+    protected DBUnitConfiguration loadFromFile() throws IOException {
+        return TestConfigurationLoader.createDefaultDBUnitConfiguration();
+    }
 
 }

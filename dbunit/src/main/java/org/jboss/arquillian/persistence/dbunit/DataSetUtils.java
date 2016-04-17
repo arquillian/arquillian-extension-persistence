@@ -23,70 +23,57 @@ import org.dbunit.dataset.filter.ExcludeTableFilter;
 import java.util.*;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DataSetUtils
-{
+public class DataSetUtils {
 
-   public static IDataSet mergeDataSets(final List<IDataSet> dataSets) throws DataSetException
-   {
-      return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));
-   }
+    public static IDataSet mergeDataSets(final List<IDataSet> dataSets) throws DataSetException {
+        return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));
+    }
 
-   public static List<String> extractColumnsNotSpecifiedInExpectedDataSet(final ITable expectedTableState, final ITable currentTableState) throws DataSetException
-   {
-      final Set<String> allColumns = new HashSet<String>(extractColumnNames(currentTableState.getTableMetaData().getColumns()));
-      final Set<String> expectedColumnNames = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
-      return extractNonExistingColumns(allColumns, expectedColumnNames);
-   }
+    public static List<String> extractColumnsNotSpecifiedInExpectedDataSet(final ITable expectedTableState, final ITable currentTableState) throws DataSetException {
+        final Set<String> allColumns = new HashSet<String>(extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+        final Set<String> expectedColumnNames = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
+        return extractNonExistingColumns(allColumns, expectedColumnNames);
+    }
 
-   /**
-    * Provides list of columns defined in expectedColumns, but not listed in actualColumns.
-    *
-    * @param expectedColumns
-    * @param actualColumns
-    * @return
-    */
-   public static List<String> extractNonExistingColumns(final Collection<String> expectedColumns,
-         final Collection<String> actualColumns)
-   {
-      final List<String> columnsNotSpecifiedInExpectedDataSet = new ArrayList<String>();
+    /**
+     * Provides list of columns defined in expectedColumns, but not listed in actualColumns.
+     *
+     * @param expectedColumns
+     * @param actualColumns
+     * @return
+     */
+    public static List<String> extractNonExistingColumns(final Collection<String> expectedColumns,
+                                                         final Collection<String> actualColumns) {
+        final List<String> columnsNotSpecifiedInExpectedDataSet = new ArrayList<String>();
 
-      for (String column : expectedColumns)
-      {
-         if (!actualColumns.contains(column.toLowerCase()))
-         {
-            columnsNotSpecifiedInExpectedDataSet.add(column.toLowerCase());
-         }
-      }
+        for (String column : expectedColumns) {
+            if (!actualColumns.contains(column.toLowerCase())) {
+                columnsNotSpecifiedInExpectedDataSet.add(column.toLowerCase());
+            }
+        }
 
-      return columnsNotSpecifiedInExpectedDataSet;
-   }
+        return columnsNotSpecifiedInExpectedDataSet;
+    }
 
-   public static Collection<String> extractColumnNames(final Column[] columns)
-   {
-      final List<String> names = new ArrayList<String>(columns.length);
-      for (Column column : columns)
-      {
-         names.add(column.getColumnName().toLowerCase());
-      }
-      return names;
-   }
+    public static Collection<String> extractColumnNames(final Column[] columns) {
+        final List<String> names = new ArrayList<String>(columns.length);
+        for (Column column : columns) {
+            names.add(column.getColumnName().toLowerCase());
+        }
+        return names;
+    }
 
-   public static IDataSet excludeTables(IDataSet dataSet, String ... tablesToExclude)
-   {
-      return new FilteredDataSet(new ExcludeTableFilter(tablesToExclude), dataSet);
-   }
+    public static IDataSet excludeTables(IDataSet dataSet, String... tablesToExclude) {
+        return new FilteredDataSet(new ExcludeTableFilter(tablesToExclude), dataSet);
+    }
 
-   public static String[] tableNamesInUpperCase(String ... tableNamesOriginal) throws DataSetException
-   {
-      final List<String> tableNamesUpperCased = new ArrayList<String>(tableNamesOriginal.length);
-      for (String tableName : tableNamesOriginal)
-      {
-         tableNamesUpperCased.add(tableName.toUpperCase());
-      }
-      return tableNamesUpperCased.toArray(new String[tableNamesUpperCased.size()]);
-   }
+    public static String[] tableNamesInUpperCase(String... tableNamesOriginal) throws DataSetException {
+        final List<String> tableNamesUpperCased = new ArrayList<String>(tableNamesOriginal.length);
+        for (String tableName : tableNamesOriginal) {
+            tableNamesUpperCased.add(tableName.toUpperCase());
+        }
+        return tableNamesUpperCased.toArray(new String[tableNamesUpperCased.size()]);
+    }
 }

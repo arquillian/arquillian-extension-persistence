@@ -23,58 +23,48 @@ import org.jboss.arquillian.persistence.script.ScriptLoader;
 import java.nio.charset.Charset;
 
 /**
- *
  * SQL script file descriptor.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
-{
-   private final Charset charset;
+public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor {
+    private final Charset charset;
 
-   public FileSqlScriptResourceDescriptor(String location, Charset charset)
-   {
-      super(location);
-      this.charset = charset;
-   }
+    public FileSqlScriptResourceDescriptor(String location, Charset charset) {
+        super(location);
+        this.charset = charset;
+    }
 
-   @Override
-   public Format getFormat()
-   {
-      return Format.SQL_SCRIPT;
-   }
+    @Override
+    public Format getFormat() {
+        return Format.SQL_SCRIPT;
+    }
 
-   @Override
-   public String getContent()
-   {
-      return ScriptLoader.loadScript(getLocation(), charset);
-   }
+    @Override
+    public String getContent() {
+        return ScriptLoader.loadScript(getLocation(), charset);
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof FileSqlScriptResourceDescriptor))
-      {
-         return false;
-      }
+        if (!(obj instanceof FileSqlScriptResourceDescriptor)) {
+            return false;
+        }
 
-      final FileSqlScriptResourceDescriptor other = (FileSqlScriptResourceDescriptor) obj;
-      return location.equals(other.location);
-   }
+        final FileSqlScriptResourceDescriptor other = (FileSqlScriptResourceDescriptor) obj;
+        return location.equals(other.location);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 13;
-      int result = 1;
-      result = prime * result + ((location == null) ? 0 : location.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 13;
+        int result = 1;
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        return result;
+    }
 
 }

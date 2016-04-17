@@ -17,9 +17,8 @@
  */
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
-public interface CleanupStrategyExecutor
-{
+public interface CleanupStrategyExecutor {
 
-   void cleanupDatabase(String ... tablesToExclude);
+    void cleanupDatabase(String... tablesToExclude);
 
 }

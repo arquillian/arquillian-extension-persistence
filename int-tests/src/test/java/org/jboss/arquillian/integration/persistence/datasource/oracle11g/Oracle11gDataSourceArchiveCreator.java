@@ -22,14 +22,12 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class Oracle11gDataSourceArchiveCreator implements AuxiliaryArchiveAppender
-{
+public class Oracle11gDataSourceArchiveCreator implements AuxiliaryArchiveAppender {
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-oracle-datasource.jar")
-                       .addClass(Oracle11gDataSource.class);
-   }
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-oracle-datasource.jar")
+                .addClass(Oracle11gDataSource.class);
+    }
 
 }

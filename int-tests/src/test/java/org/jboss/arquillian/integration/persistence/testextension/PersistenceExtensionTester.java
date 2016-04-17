@@ -22,14 +22,12 @@ import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiv
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.integration.persistence.testextension.deployment.PersistenceTestExtensionDynamicDependencyAppender;
 
-public class PersistenceExtensionTester implements LoadableExtension
-{
+public class PersistenceExtensionTester implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class)
-             .service(ApplicationArchiveProcessor.class, PersistenceTestExtensionDynamicDependencyAppender.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class)
+                .service(ApplicationArchiveProcessor.class, PersistenceTestExtensionDynamicDependencyAppender.class);
+    }
 
 }

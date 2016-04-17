@@ -26,12 +26,11 @@ import javax.persistence.EntityManager;
  * @see Cache
  * @see JpaCacheEviction
  */
-public interface JpaCacheEvictionStrategy
-{
+public interface JpaCacheEvictionStrategy {
 
-   /**
-    * Evict JPA second level cache.
-    */
-   void evictCache(EntityManager em);
+    /**
+     * Evict JPA second level cache.
+     */
+    void evictCache(EntityManager em);
 
 }

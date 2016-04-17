@@ -20,18 +20,15 @@ package org.jboss.arquillian.persistence.dbunit.data.naming;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 
-public class DataSetFileNamingStrategy extends FileNamingStrategy<Format>
-{
+public class DataSetFileNamingStrategy extends FileNamingStrategy<Format> {
 
-   public DataSetFileNamingStrategy(Format format)
-   {
-      super(format);
-   }
+    public DataSetFileNamingStrategy(Format format) {
+        super(format);
+    }
 
-   @Override
-   public String getFileExtension()
-   {
-      return extension.extension();
-   }
+    @Override
+    public String getFileExtension() {
+        return extension.extension();
+    }
 
 }

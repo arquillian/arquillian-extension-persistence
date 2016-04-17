@@ -28,37 +28,30 @@ import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingEx
 import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
 import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
-public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor
-{
+public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor {
 
-   private final DatabaseConnection connection;
+    private final DatabaseConnection connection;
 
-   private final DBUnitConfiguration dbUnitConfiguration;
+    private final DBUnitConfiguration dbUnitConfiguration;
 
-   public StrictCleanupStrategyExecutor(DatabaseConnection connection, DBUnitConfiguration dbUnitConfiguration)
-   {
-      this.connection = connection;
-      this.dbUnitConfiguration = dbUnitConfiguration;
-   }
+    public StrictCleanupStrategyExecutor(DatabaseConnection connection, DBUnitConfiguration dbUnitConfiguration) {
+        this.connection = connection;
+        this.dbUnitConfiguration = dbUnitConfiguration;
+    }
 
-   @Override
-   public void cleanupDatabase(String ... tablesToExclude)
-   {
-      try
-      {
-         IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
-         if (dbUnitConfiguration.isFilterTables())
-         {
-            final TableFilterProvider tableFilterProvider = new TableFilterResolver(dbUnitConfiguration).resolve();
-            final ITableFilter tableFilter = tableFilterProvider.provide(connection, dataSet.getTableNames());
-            dataSet = new FilteredDataSet(tableFilter, dataSet);
-         }
-         DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
-      }
-   }
+    @Override
+    public void cleanupDatabase(String... tablesToExclude) {
+        try {
+            IDataSet dataSet = DataSetUtils.excludeTables(connection.createDataSet(), tablesToExclude);
+            if (dbUnitConfiguration.isFilterTables()) {
+                final TableFilterProvider tableFilterProvider = new TableFilterResolver(dbUnitConfiguration).resolve();
+                final ITableFilter tableFilter = tableFilterProvider.provide(connection, dataSet.getTableNames());
+                dataSet = new FilteredDataSet(tableFilter, dataSet);
+            }
+            DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
+        } catch (Exception e) {
+            throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
+        }
+    }
 
 }

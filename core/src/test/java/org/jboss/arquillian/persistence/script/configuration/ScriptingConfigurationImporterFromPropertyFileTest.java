@@ -22,21 +22,19 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ScriptingConfigurationImporterFromPropertyFileTest
-{
+public class ScriptingConfigurationImporterFromPropertyFileTest {
 
-   @Test
-   public void should_extract_scripts_to_execute_before_test_from_external_configuration_file() throws Exception
-   {
-      // given
-      String expectedInitScript = "init.sql";
-      ScriptingConfiguration configuration = new ScriptingConfiguration();
+    @Test
+    public void should_extract_scripts_to_execute_before_test_from_external_configuration_file() throws Exception {
+        // given
+        String expectedInitScript = "init.sql";
+        ScriptingConfiguration configuration = new ScriptingConfiguration();
 
-      // when
-      Configuration.importTo(configuration).loadFromPropertyFile("properties/script.arquillian.persistence.properties");
+        // when
+        Configuration.importTo(configuration).loadFromPropertyFile("properties/script.arquillian.persistence.properties");
 
-      // then
-      assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitScript);
-   }
+        // then
+        assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitScript);
+    }
 
 }

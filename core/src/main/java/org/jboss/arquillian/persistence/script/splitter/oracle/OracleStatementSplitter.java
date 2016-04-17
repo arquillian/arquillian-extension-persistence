@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * Original code source available under Apache 2.0 License:
  * <a href="https://github.com/gxa/gxa/blob/master/atlas-updates/src/main/java/uk/ac/ebi/gxa/db/OracleScriptSplitter.java">https://github.com/gxa/gxa/blob/master/atlas-updates/src/main/java/uk/ac/ebi/gxa/db/OracleScriptSplitter.java</a>
- *
+ * <p>
  * Hugely based on the code from {@link com.carbonfive.db.jdbc.ScriptRunner#doExecute}
  * - the only significant difference is that we support Oracle's dirty hack with slash, <tt>/</tt>,
  * meaning literally "now just send to the database whatever you've got in your
@@ -45,105 +45,88 @@ import java.util.regex.Pattern;
  *
  * @author alf
  */
-public class OracleStatementSplitter implements StatementSplitter
-{
-   private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+public class OracleStatementSplitter implements StatementSplitter {
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
-   private static final String S_N = "(\\s|\\n)+";
+    private static final String S_N = "(\\s|\\n)+";
 
-   private static final String IDENTIFIER = "(\\S+|\"[^\"]+\")";
+    private static final String IDENTIFIER = "(\\S+|\"[^\"]+\")";
 
-   private static final String BLOCK_START = "(^|" + S_N + ")" +
-         "create" + S_N +
-         "(or" + S_N + "replace" + S_N + ")?" +
-         "(function|library|package(" + S_N + "body)?|procedure|trigger|type)" + S_N +
-         IDENTIFIER + S_N +
-         ".*";
+    private static final String BLOCK_START = "(^|" + S_N + ")" +
+            "create" + S_N +
+            "(or" + S_N + "replace" + S_N + ")?" +
+            "(function|library|package(" + S_N + "body)?|procedure|trigger|type)" + S_N +
+            IDENTIFIER + S_N +
+            ".*";
 
-   private final static Pattern BLOCK_START_PATTERN = Pattern.compile(BLOCK_START, Pattern.CASE_INSENSITIVE);
+    private final static Pattern BLOCK_START_PATTERN = Pattern.compile(BLOCK_START, Pattern.CASE_INSENSITIVE);
 
-   private String statementDelimiter;
+    private String statementDelimiter;
 
-   @Override
-   public void setStatementDelimiter(String statementDelimiter)
-   {
-      this.statementDelimiter = statementDelimiter;
-   }
+    @Override
+    public void setStatementDelimiter(String statementDelimiter) {
+        this.statementDelimiter = statementDelimiter;
+    }
 
-   @Override
-   public String supports()
-   {
-      return "oracle";
-   }
+    @Override
+    public String supports() {
+        return "oracle";
+    }
 
-   @Override
-   public List<String> splitStatements(String script)
-   {
-      return splitStatements(new StringReader(script));
-   }
+    @Override
+    public List<String> splitStatements(String script) {
+        return splitStatements(new StringReader(script));
+    }
 
-   @Override
-   public List<String> splitStatements(Reader reader)
-   {
-      LineNumberReader lineReader = new LineNumberReader(reader);
-      StringBuilder sqlBuffer = new StringBuilder();;
-      final ArrayList<String> statements = new ArrayList<String>();
-      try
-      {
-         boolean plSqlMode = false;
-         String line;
-         while ((line = lineReader.readLine()) != null)
-         {
-            line = line.trim();
-            if (line.length() == 0)
-            {
-               continue;
-            }
+    @Override
+    public List<String> splitStatements(Reader reader) {
+        LineNumberReader lineReader = new LineNumberReader(reader);
+        StringBuilder sqlBuffer = new StringBuilder();
+        ;
+        final ArrayList<String> statements = new ArrayList<String>();
+        try {
+            boolean plSqlMode = false;
+            String line;
+            while ((line = lineReader.readLine()) != null) {
+                line = line.trim();
+                if (line.length() == 0) {
+                    continue;
+                }
 
-            if (line.matches("[/.]"))
-            {
+                if (line.matches("[/.]")) {
                /*
                http://download.oracle.com/docs/cd/B19306_01/server.102/b14357/ch4.htm#i1039663
                Terminate PL/SQL subprograms by entering a period (.) by itself on a new line.
                You can also terminate and execute a PL/SQL subprogram by entering a slash (/)
                by itself on a new line.
                */
-               statements.add(sqlBuffer.toString());
-               plSqlMode = false;
-               sqlBuffer.setLength(0);
+                    statements.add(sqlBuffer.toString());
+                    plSqlMode = false;
+                    sqlBuffer.setLength(0);
+                } else if (!plSqlMode && (BLOCK_START_PATTERN.matcher(sqlBuffer).find() ||
+                        "begin".equalsIgnoreCase(line) ||
+                        "declare".equalsIgnoreCase(line))) {
+                    plSqlMode = true;
+                    sqlBuffer.append(line);
+                    sqlBuffer.append(LINE_SEPARATOR);
+                } else if (!plSqlMode && line.endsWith(";")) {
+                    sqlBuffer.append(line.substring(0, line.lastIndexOf(";")));
+                    statements.add(sqlBuffer.toString());
+                    sqlBuffer.setLength(0);
+                } else {
+                    sqlBuffer.append(line);
+                    sqlBuffer.append(LINE_SEPARATOR);
+                }
             }
-            else if (!plSqlMode && (BLOCK_START_PATTERN.matcher(sqlBuffer).find() ||
-                  "begin".equalsIgnoreCase(line) ||
-                  "declare".equalsIgnoreCase(line)))
-            {
-               plSqlMode = true;
-               sqlBuffer.append(line);
-               sqlBuffer.append(LINE_SEPARATOR);
-            }
-            else if (!plSqlMode && line.endsWith(";"))
-            {
-               sqlBuffer.append(line.substring(0, line.lastIndexOf(";")));
-               statements.add(sqlBuffer.toString());
-               sqlBuffer.setLength(0);
-            }
-            else
-            {
-               sqlBuffer.append(line);
-               sqlBuffer.append(LINE_SEPARATOR);
-            }
-         }
 
-         if (sqlBuffer != null && sqlBuffer.length() > 0)
-         {
-            statements.add(sqlBuffer.toString());
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Error splitting script.  Cause: " + e, e);
-      }
+            if (sqlBuffer != null && sqlBuffer.length() > 0) {
+                statements.add(sqlBuffer.toString());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error splitting script.  Cause: " + e, e);
+        }
 
-      return statements;
-   }
+        return statements;
+    }
 
 }

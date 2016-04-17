@@ -25,54 +25,43 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PropertiesSerializer
-{
+public class PropertiesSerializer {
 
-   private final String prefix;
+    private final String prefix;
 
-   public PropertiesSerializer()
-   {
-      this("");
-   }
+    public PropertiesSerializer() {
+        this("");
+    }
 
-   public PropertiesSerializer(String prefix)
-   {
-      this.prefix = prefix;
-   }
+    public PropertiesSerializer(String prefix) {
+        this.prefix = prefix;
+    }
 
-   public ByteArrayOutputStream serializeToProperties(final Map<String, String> properties)
-   {
-      final ByteArrayOutputStream output = new ByteArrayOutputStream();
-      try
-      {
-         for (Entry<String, String> entry : properties.entrySet())
-         {
-            output.write(serializeAsProperty(entry).getBytes());
-         }
-      }
-      catch (IOException e)
-      {
-         throw new PersistenceExtensionInitializationException("Unable to serialize dbunit properties", e);
-      }
-      return output;
-   }
+    public ByteArrayOutputStream serializeToProperties(final Map<String, String> properties) {
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            for (Entry<String, String> entry : properties.entrySet()) {
+                output.write(serializeAsProperty(entry).getBytes());
+            }
+        } catch (IOException e) {
+            throw new PersistenceExtensionInitializationException("Unable to serialize dbunit properties", e);
+        }
+        return output;
+    }
 
-   private String serializeAsProperty(Entry<String, String> entry)
-   {
-      String serializedAsProperty;
-      final StringBuilder sb = new StringBuilder();
-      sb.append(prefix)
-        .append(entry.getKey())
-        .append("=")
-        .append(entry.getValue().replace("\\", "\\\\"))
-        .append('\n');
-      serializedAsProperty = sb.toString();
-      return serializedAsProperty;
-   }
+    private String serializeAsProperty(Entry<String, String> entry) {
+        String serializedAsProperty;
+        final StringBuilder sb = new StringBuilder();
+        sb.append(prefix)
+                .append(entry.getKey())
+                .append("=")
+                .append(entry.getValue().replace("\\", "\\\\"))
+                .append('\n');
+        serializedAsProperty = sb.toString();
+        return serializedAsProperty;
+    }
 
 
 }

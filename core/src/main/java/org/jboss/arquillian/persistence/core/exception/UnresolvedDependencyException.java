@@ -16,28 +16,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class UnresolvedDependencyException extends RuntimeException
-{
+public class UnresolvedDependencyException extends RuntimeException {
 
-   private static final long serialVersionUID = -7322777077061838423L;
+    private static final long serialVersionUID = -7322777077061838423L;
 
-   public UnresolvedDependencyException()
-   {
-   }
+    public UnresolvedDependencyException() {
+    }
 
-   public UnresolvedDependencyException(String message)
-   {
-      super(message);
-   }
+    public UnresolvedDependencyException(String message) {
+        super(message);
+    }
 
-   public UnresolvedDependencyException(Throwable cause)
-   {
-      super(cause);
-   }
+    public UnresolvedDependencyException(Throwable cause) {
+        super(cause);
+    }
 
-   public UnresolvedDependencyException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public UnresolvedDependencyException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

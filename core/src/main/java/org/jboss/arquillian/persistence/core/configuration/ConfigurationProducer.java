@@ -19,18 +19,16 @@ package org.jboss.arquillian.persistence.core.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 
-public abstract class ConfigurationProducer<T extends Configuration>
-{
+public abstract class ConfigurationProducer<T extends Configuration> {
 
-   public abstract void observe(ArquillianDescriptor descriptorCreated);
+    public abstract void observe(ArquillianDescriptor descriptorCreated);
 
-   protected abstract T create();
+    protected abstract T create();
 
-   public T configureFromArquillianDescriptor(ArquillianDescriptor descriptor)
-   {
-      final T configuration = create();
-      Configuration.importTo(configuration).from(descriptor);
-      return configuration;
-   }
+    public T configureFromArquillianDescriptor(ArquillianDescriptor descriptor) {
+        final T configuration = create();
+        Configuration.importTo(configuration).from(descriptor);
+        return configuration;
+    }
 
 }

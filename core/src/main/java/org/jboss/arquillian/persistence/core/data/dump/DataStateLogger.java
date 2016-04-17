@@ -23,17 +23,14 @@ import org.jboss.arquillian.persistence.core.event.CleanupData;
 import org.jboss.arquillian.persistence.core.event.DataEvent;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public interface DataStateLogger<P extends DataEvent>
-{
+public interface DataStateLogger<P extends DataEvent> {
 
-   void aroundDataSeeding(EventContext<P> context);
+    void aroundDataSeeding(EventContext<P> context);
 
-   void aroundCleanup(EventContext<CleanupData> context);
+    void aroundCleanup(EventContext<CleanupData> context);
 
-   void beforePersistenceTest(EventContext<BeforePersistenceTest> context);
+    void beforePersistenceTest(EventContext<BeforePersistenceTest> context);
 
 }

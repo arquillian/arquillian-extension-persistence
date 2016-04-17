@@ -35,76 +35,62 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PersistenceTestExtensionDynamicDependencyAppender implements ApplicationArchiveProcessor
-{
+public class PersistenceTestExtensionDynamicDependencyAppender implements ApplicationArchiveProcessor {
 
-   @Inject
-   Instance<DBUnitConfiguration> configuration;
+    @Inject
+    Instance<DBUnitConfiguration> configuration;
 
-   @Override
-   public void process(Archive<?> applicationArchive, TestClass testClass)
-   {
-      final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
-      {
-         return;
-      }
+    @Override
+    public void process(Archive<?> applicationArchive, TestClass testClass) {
+        final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
+        if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated()) {
+            return;
+        }
 
-      final CleanupVerificationDataSetProvider dataSetProvider = new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
-      final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
-      if (!dataSets.isEmpty())
-      {
-         addResources(applicationArchive, toJavaArchive(dataSets));
-      }
-   }
+        final CleanupVerificationDataSetProvider dataSetProvider = new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
+        final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
+        if (!dataSets.isEmpty()) {
+            addResources(applicationArchive, toJavaArchive(dataSets));
+        }
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive)
-   {
-      if (JavaArchive.class.isInstance(applicationArchive))
-      {
-         addAsResource(applicationArchive, dataArchive);
-      }
-      else
-      {
-         addAsLibrary(applicationArchive, dataArchive);
-      }
-   }
+    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
+        if (JavaArchive.class.isInstance(applicationArchive)) {
+            addAsResource(applicationArchive, dataArchive);
+        } else {
+            addAsLibrary(applicationArchive, dataArchive);
+        }
+    }
 
-   private void addAsResource(Archive<?> applicationArchive, JavaArchive dataArchive)
-   {
-      applicationArchive.merge(dataArchive);
-   }
+    private void addAsResource(Archive<?> applicationArchive, JavaArchive dataArchive) {
+        applicationArchive.merge(dataArchive);
+    }
 
-   private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataArchive)
-   {
-      final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-      libraryContainer.addAsLibrary(dataArchive);
-   }
+    private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataArchive) {
+        final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
+        libraryContainer.addAsLibrary(dataArchive);
+    }
 
-   private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors)
-   {
-      final List<String> paths = new ArrayList<String>(descriptors.size());
+    private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors) {
+        final List<String> paths = new ArrayList<String>(descriptors.size());
 
-      for (ResourceDescriptor<?> descriptor : descriptors)
-      {
-         paths.add(descriptor.getLocation());
-      }
+        for (ResourceDescriptor<?> descriptor : descriptors) {
+            paths.add(descriptor.getLocation());
+        }
 
-      return createArchiveWithResources(paths.toArray(new String[descriptors.size()]));
-   }
+        return createArchiveWithResources(paths.toArray(new String[descriptors.size()]));
+    }
 
-   private JavaArchive createArchiveWithResources(String ... resourcePaths)
-   {
-      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
+    private JavaArchive createArchiveWithResources(String... resourcePaths) {
+        final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class);
 
-      for (String path : resourcePaths)
-      {
-         dataSetsArchive.addAsResource(path);
-      }
+        for (String path : resourcePaths) {
+            dataSetsArchive.addAsResource(path);
+        }
 
-      return dataSetsArchive;
-   }
+        return dataSetsArchive;
+    }
 
 }

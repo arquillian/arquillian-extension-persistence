@@ -30,33 +30,28 @@ import org.dbunit.dataset.ITableMetaData;
  *
  * @author <a href="mailto:kunii.masao@gmail.com">Masao Kunii</a>
  */
-public class TableWrapper extends AbstractTable
-{
+public class TableWrapper extends AbstractTable {
 
-   private ITable table;
-   private ITableMetaData metaData;
+    private ITable table;
+    private ITableMetaData metaData;
 
-   public TableWrapper(ITable table, ITableMetaData metaData)
-   {
-      this.table = table;
-      this.metaData = metaData;
-   }
+    public TableWrapper(ITable table, ITableMetaData metaData) {
+        this.table = table;
+        this.metaData = metaData;
+    }
 
-   @Override
-   public ITableMetaData getTableMetaData()
-   {
-      return metaData;
-   }
+    @Override
+    public ITableMetaData getTableMetaData() {
+        return metaData;
+    }
 
-   @Override
-   public int getRowCount()
-   {
-      return table.getRowCount();
-   }
+    @Override
+    public int getRowCount() {
+        return table.getRowCount();
+    }
 
-   @Override
-   public Object getValue(int row, String column) throws DataSetException
-   {
-      return table.getValue(row, column);
-   }
+    @Override
+    public Object getValue(int row, String column) throws DataSetException {
+        return table.getValue(row, column);
+    }
 }

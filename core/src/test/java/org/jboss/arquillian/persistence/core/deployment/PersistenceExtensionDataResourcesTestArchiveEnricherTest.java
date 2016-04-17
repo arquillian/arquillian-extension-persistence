@@ -34,78 +34,67 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
-public class PersistenceExtensionDataResourcesTestArchiveEnricherTest
-{
+public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
 
-   private PersistenceExtensionDataResourcesTestArchiveEnricher enricher = new PersistenceExtensionDataResourcesTestArchiveEnricher();
+    private PersistenceExtensionDataResourcesTestArchiveEnricher enricher = new PersistenceExtensionDataResourcesTestArchiveEnricher();
 
-   @Before
-   public void initializeEnricher()
-   {
-      enricher.scriptingConfigurationInstance = new Instance<ScriptingConfiguration>()
-      {
-         @Override
-         public ScriptingConfiguration get()
-         {
-            return new ScriptingConfiguration();
-         }
-      };
-   }
+    @Before
+    public void initializeEnricher() {
+        enricher.scriptingConfigurationInstance = new Instance<ScriptingConfiguration>() {
+            @Override
+            public ScriptingConfiguration get() {
+                return new ScriptingConfiguration();
+            }
+        };
+    }
 
-   @Test
-   public void should_bundle_resources_directly_in_java_archive() throws Exception
-   {
-      // given
-      final JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar");
-      final String scriptPath = "/scripts/two-inserts.sql";
+    @Test
+    public void should_bundle_resources_directly_in_java_archive() throws Exception {
+        // given
+        final JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar");
+        final String scriptPath = "/scripts/two-inserts.sql";
 
-      // when
-      enricher.process(archive, new TestClass(ScriptOnMethodLevel.class));
+        // when
+        enricher.process(archive, new TestClass(ScriptOnMethodLevel.class));
 
-      // then
-      assertThatContainsOnly(archive, scriptPath);
-   }
+        // then
+        assertThatContainsOnly(archive, scriptPath);
+    }
 
-   @Test
-   public void should_bundle_resources_directly_in_web_archive() throws Exception
-   {
-      // given
-      final WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war");
-      final String scriptPath = "/WEB-INF/classes/scripts/two-inserts.sql";
+    @Test
+    public void should_bundle_resources_directly_in_web_archive() throws Exception {
+        // given
+        final WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war");
+        final String scriptPath = "/WEB-INF/classes/scripts/two-inserts.sql";
 
-      // when
-      enricher.process(archive, new TestClass(ScriptOnMethodLevel.class));
+        // when
+        enricher.process(archive, new TestClass(ScriptOnMethodLevel.class));
 
-      // then
-      assertThatContainsOnly(archive, scriptPath);
-   }
+        // then
+        assertThatContainsOnly(archive, scriptPath);
+    }
 
-   //
+    //
 
-   private static void assertThatContainsOnly(Archive<?> archive, String path)
-   {
-      final Map<ArchivePath,Node> content = archive.getContent(Filters.include(path));
-      assertThat(content).hasSize(1)
-                         .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
-   }
+    private static void assertThatContainsOnly(Archive<?> archive, String path) {
+        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
+        assertThat(content).hasSize(1)
+                .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+    }
 
-   private static class ScriptOnMethodLevel
-   {
+    private static class ScriptOnMethodLevel {
 
-      @ApplyScriptAfter("two-inserts.sql")
-      public void should_work() throws Exception
-      {
-      }
+        @ApplyScriptAfter("two-inserts.sql")
+        public void should_work() throws Exception {
+        }
 
-   }
+    }
 
-   private static class DatasetOnMethodLevel
-   {
+    private static class DatasetOnMethodLevel {
 
-      @ShouldMatchDataSet("users.json")
-      public void should_work() throws Exception
-      {
-      }
+        @ShouldMatchDataSet("users.json")
+        public void should_work() throws Exception {
+        }
 
-   }
+    }
 }

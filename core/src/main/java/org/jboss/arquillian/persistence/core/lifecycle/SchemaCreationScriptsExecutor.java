@@ -35,42 +35,35 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import java.util.Collection;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class SchemaCreationScriptsExecutor
-{
-   @Inject
-   private Instance<ScriptingConfiguration> configuration;
+public class SchemaCreationScriptsExecutor {
+    @Inject
+    private Instance<ScriptingConfiguration> configuration;
 
-   @Inject
-   private Event<ExecuteScripts> executeScriptsEvent;
+    @Inject
+    private Event<ExecuteScripts> executeScriptsEvent;
 
-   @Inject
-   private Instance<CommandService> commandService;
+    @Inject
+    private Instance<CommandService> commandService;
 
-   @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
+    @Inject
+    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
 
-   public void createSchema(@Observes(precedence = 10) EventContext<BeforePersistenceTest> context)
-   {
-      final BeforePersistenceTest beforePersistenceTest = context.getEvent();
-      if (persistenceExtensionFeatureResolver.get().shouldCreateSchema() && !schemaCreated(beforePersistenceTest))
-      {
-         final Collection<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
-         if (!schemaDescriptors.isEmpty())
-         {
-            executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, schemaDescriptors));
-         }
-      }
-      context.proceed();
-   }
+    public void createSchema(@Observes(precedence = 10) EventContext<BeforePersistenceTest> context) {
+        final BeforePersistenceTest beforePersistenceTest = context.getEvent();
+        if (persistenceExtensionFeatureResolver.get().shouldCreateSchema() && !schemaCreated(beforePersistenceTest)) {
+            final Collection<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
+            if (!schemaDescriptors.isEmpty()) {
+                executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, schemaDescriptors));
+            }
+        }
+        context.proceed();
+    }
 
-   // Private methods
+    // Private methods
 
-   private boolean schemaCreated(final TestEvent beforePersistenceTest)
-   {
-      return commandService.get().execute(new SchemaCreationControlCommand(beforePersistenceTest.getTestInstance().getClass().getSimpleName()));
-   }
+    private boolean schemaCreated(final TestEvent beforePersistenceTest) {
+        return commandService.get().execute(new SchemaCreationControlCommand(beforePersistenceTest.getTestInstance().getClass().getSimpleName()));
+    }
 }

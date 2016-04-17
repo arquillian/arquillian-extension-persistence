@@ -23,41 +23,34 @@ import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.util.Collection;
 
-public class StatementSplitterResolver
-{
+public class StatementSplitterResolver {
 
-   private final ScriptingConfiguration scriptingConfiguration;
+    private final ScriptingConfiguration scriptingConfiguration;
 
-   public StatementSplitterResolver(ScriptingConfiguration scriptingConfiguration)
-   {
-      this.scriptingConfiguration = scriptingConfiguration;
-   }
+    public StatementSplitterResolver(ScriptingConfiguration scriptingConfiguration) {
+        this.scriptingConfiguration = scriptingConfiguration;
+    }
 
-   public StatementSplitter resolve()
-   {
-      final String sqlDialect = scriptingConfiguration.getSqlDialect();
-      StatementSplitter resolved = null;
-      final Collection<StatementSplitter> statementSplitters = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
-      for (StatementSplitter statementSplitter : statementSplitters)
-      {
-         if (statementSplitter.supports().equalsIgnoreCase(sqlDialect))
-         {
-            if (resolved != null)
-            {
-               throw new IllegalStateException("Found multiple implementations of " + StatementSplitter.class.getName()
-                     + " for specified dialect " + sqlDialect);
+    public StatementSplitter resolve() {
+        final String sqlDialect = scriptingConfiguration.getSqlDialect();
+        StatementSplitter resolved = null;
+        final Collection<StatementSplitter> statementSplitters = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
+        for (StatementSplitter statementSplitter : statementSplitters) {
+            if (statementSplitter.supports().equalsIgnoreCase(sqlDialect)) {
+                if (resolved != null) {
+                    throw new IllegalStateException("Found multiple implementations of " + StatementSplitter.class.getName()
+                            + " for specified dialect " + sqlDialect);
+                }
+                resolved = statementSplitter;
+                resolved.setStatementDelimiter(scriptingConfiguration.getSqlStatementDelimiter());
             }
-            resolved = statementSplitter;
-            resolved.setStatementDelimiter(scriptingConfiguration.getSqlStatementDelimiter());
-         }
-      }
+        }
 
-      if (resolved == null)
-      {
-         throw new IllegalStateException("Unresolvable implementation of " + StatementSplitter.class.getName() + " for specified dialect " + sqlDialect);
-      }
+        if (resolved == null) {
+            throw new IllegalStateException("Unresolvable implementation of " + StatementSplitter.class.getName() + " for specified dialect " + sqlDialect);
+        }
 
-      return resolved;
-   }
+        return resolved;
+    }
 
 }

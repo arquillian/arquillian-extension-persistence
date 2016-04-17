@@ -31,76 +31,64 @@ import java.util.Map;
 
 import static org.jboss.arquillian.integration.persistence.testextension.event.EventHandlingVerifier.Builder.eventVerifier;
 
-public class EventObserver
-{
-   @Inject @TestScoped
-   InstanceProducer<Map<Class<? extends PersistenceEvent>, EventHandlingVerifier>> eventTriggersInstance;
+public class EventObserver {
+    @Inject
+    @TestScoped
+    InstanceProducer<Map<Class<? extends PersistenceEvent>, EventHandlingVerifier>> eventTriggersInstance;
 
-   public void create(@Observes(precedence = 1000000) Before before)
-   {
-      eventTriggersInstance.set(new HashMap<Class<? extends PersistenceEvent>, EventHandlingVerifier>());
+    public void create(@Observes(precedence = 1000000) Before before) {
+        eventTriggersInstance.set(new HashMap<Class<? extends PersistenceEvent>, EventHandlingVerifier>());
 
-      eventVerifier()
-         .definedFor(CleanupData.class)
-         .expectedWhen(CleanupShouldBeTriggered.class)
-         .notExpectedWhen(CleanupShouldNotBeTriggered.class)
-         .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
+        eventVerifier()
+                .definedFor(CleanupData.class)
+                .expectedWhen(CleanupShouldBeTriggered.class)
+                .notExpectedWhen(CleanupShouldNotBeTriggered.class)
+                .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
 
-      eventVerifier()
-         .definedFor(CleanupDataUsingScript.class)
-         .expectedWhen(CleanupUsingScriptShouldBeTriggered.class)
-         .notExpectedWhen(CleanupUsingScriptShouldNotBeTriggered.class)
-         .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
+        eventVerifier()
+                .definedFor(CleanupDataUsingScript.class)
+                .expectedWhen(CleanupUsingScriptShouldBeTriggered.class)
+                .notExpectedWhen(CleanupUsingScriptShouldNotBeTriggered.class)
+                .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
 
-      eventVerifier()
-         .definedFor(ExecuteScripts.class)
-         .expectedWhen(ExecuteScriptsShouldBeTriggered.class)
-         .notExpectedWhen(ExecuteScriptsShouldNotBeTriggered.class)
-         .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
-   }
+        eventVerifier()
+                .definedFor(ExecuteScripts.class)
+                .expectedWhen(ExecuteScriptsShouldBeTriggered.class)
+                .notExpectedWhen(ExecuteScriptsShouldNotBeTriggered.class)
+                .registerIfPresent(eventTriggersInstance.get(), before.getTestMethod());
+    }
 
-   public void observeCalls(@Observes PersistenceEvent persistenceEvent)
-   {
-      if (eventTriggersInstance.get() == null)
-      {
-         return;
-      }
-      EventHandlingVerifier verifier = eventTriggersInstance.get().get(persistenceEvent.getClass());
-      if (verifier != null)
-      {
-         verifier.called();
-      }
-   }
+    public void observeCalls(@Observes PersistenceEvent persistenceEvent) {
+        if (eventTriggersInstance.get() == null) {
+            return;
+        }
+        EventHandlingVerifier verifier = eventTriggersInstance.get().get(persistenceEvent.getClass());
+        if (verifier != null) {
+            verifier.called();
+        }
+    }
 
-   public void verify(@Observes(precedence = -1000000) After after)
-   {
-      for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values())
-      {
-         eventVerifier.verifyPhaseWhenEventWasTriggered();
-      }
-   }
+    public void verify(@Observes(precedence = -1000000) After after) {
+        for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values()) {
+            eventVerifier.verifyPhaseWhenEventWasTriggered();
+        }
+    }
 
 
-   public void beforeTest(@Observes(precedence = -100000) BeforePersistenceTest beforePersistenceTest)
-   {
-      for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values())
-      {
-         if (eventVerifier.alreadyTriggered())
-         {
-            eventVerifier.triggeredBefore();
-         }
-      }
-   }
+    public void beforeTest(@Observes(precedence = -100000) BeforePersistenceTest beforePersistenceTest) {
+        for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values()) {
+            if (eventVerifier.alreadyTriggered()) {
+                eventVerifier.triggeredBefore();
+            }
+        }
+    }
 
-   public void afterTest(@Observes(precedence = -100000) AfterPersistenceTest afterPersistenceTest)
-   {
-      for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values())
-      {
-         if (eventVerifier.alreadyTriggered() && !eventVerifier.wasTriggeredBefore())
-         {
-            eventVerifier.triggeredAfter();
-         }
-      }
-   }
+    public void afterTest(@Observes(precedence = -100000) AfterPersistenceTest afterPersistenceTest) {
+        for (EventHandlingVerifier eventVerifier : eventTriggersInstance.get().values()) {
+            if (eventVerifier.alreadyTriggered() && !eventVerifier.wasTriggeredBefore()) {
+                eventVerifier.triggeredAfter();
+            }
+        }
+    }
 
 }

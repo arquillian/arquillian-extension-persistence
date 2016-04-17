@@ -19,13 +19,11 @@ package org.jboss.arquillian.integration.persistence.datasource.mssql;
 
 import org.jboss.arquillian.integration.persistence.datasource.JdbcDriverArchiveAppender;
 
-public class MsSqlDriverArchiveAppender extends JdbcDriverArchiveAppender
-{
-   @Override
-   public String getDriverCoordinates()
-   {
-      return "com.microsoft.sqlserver:sqljdbc4:4.0";
-   }
+public class MsSqlDriverArchiveAppender extends JdbcDriverArchiveAppender {
+    @Override
+    public String getDriverCoordinates() {
+        return "com.microsoft.sqlserver:sqljdbc4:4.0";
+    }
 
 
 }

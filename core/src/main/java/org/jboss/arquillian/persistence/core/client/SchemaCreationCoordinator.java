@@ -24,30 +24,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * Observer responsible for determining if schema has been already
  * created for the given test class. It helps to mimic before class event.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @see SchemaCreationScriptsExecutor
  */
-public class SchemaCreationCoordinator
-{
-   private final static  Map<String, Boolean> createdSchemas = new ConcurrentHashMap<String, Boolean>();
+public class SchemaCreationCoordinator {
+    private final static Map<String, Boolean> createdSchemas = new ConcurrentHashMap<String, Boolean>();
 
-   public void controlSchemaCreation(@Observes SchemaCreationControlCommand command)
-   {
-      final String key = command.getKey();
-      if (!createdSchemas.containsKey(key))
-      {
-         command.setResult(Boolean.FALSE);
-         createdSchemas.put(key, Boolean.TRUE);
-      }
-      else
-      {
-         command.setResult(createdSchemas.get(key));
-      }
-   }
+    public void controlSchemaCreation(@Observes SchemaCreationControlCommand command) {
+        final String key = command.getKey();
+        if (!createdSchemas.containsKey(key)) {
+            command.setResult(Boolean.FALSE);
+            createdSchemas.put(key, Boolean.TRUE);
+        } else {
+            command.setResult(createdSchemas.get(key));
+        }
+    }
 
 }

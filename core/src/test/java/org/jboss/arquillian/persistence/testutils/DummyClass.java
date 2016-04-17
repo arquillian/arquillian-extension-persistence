@@ -17,9 +17,9 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
-public class DummyClass
-{
+public class DummyClass {
 
-   public void shouldPass() {}
+    public void shouldPass() {
+    }
 
 }

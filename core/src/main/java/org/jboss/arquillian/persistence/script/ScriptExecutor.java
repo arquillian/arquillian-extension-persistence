@@ -28,69 +28,52 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class ScriptExecutor
-{
+public class ScriptExecutor {
 
-   private static final Logger log = Logger.getLogger(ScriptExecutor.class.getName());
+    private static final Logger log = Logger.getLogger(ScriptExecutor.class.getName());
 
-   private final Connection connection;
+    private final Connection connection;
 
-   private final ScriptingConfiguration scriptingConfiguration;
+    private final ScriptingConfiguration scriptingConfiguration;
 
-   private final StatementSplitter statementSplitter;
+    private final StatementSplitter statementSplitter;
 
-   public ScriptExecutor(final Connection connection, final ScriptingConfiguration scriptingConfiguration, final StatementSplitter statementSplitter)
-   {
-      this.connection = connection;
-      this.scriptingConfiguration = scriptingConfiguration;
-      this.statementSplitter = statementSplitter;
-   }
+    public ScriptExecutor(final Connection connection, final ScriptingConfiguration scriptingConfiguration, final StatementSplitter statementSplitter) {
+        this.connection = connection;
+        this.scriptingConfiguration = scriptingConfiguration;
+        this.statementSplitter = statementSplitter;
+    }
 
-   public void execute(String script)
-   {
-      final List<String> statements = statementSplitter.splitStatements(script);
+    public void execute(String script) {
+        final List<String> statements = statementSplitter.splitStatements(script);
 
-      for (String statement : statements)
-      {
-         executeStatement(statement);
-      }
-   }
+        for (String statement : statements) {
+            executeStatement(statement);
+        }
+    }
 
-   void executeStatement(String sqlStatement)
-   {
-      if (scriptingConfiguration.isShowSql())
-      {
-         log.info("Executing SQL statement: " + sqlStatement);
-      }
+    void executeStatement(String sqlStatement) {
+        if (scriptingConfiguration.isShowSql()) {
+            log.info("Executing SQL statement: " + sqlStatement);
+        }
 
-      Statement statement = null;
-      try
-      {
-         statement = connection.createStatement();
-         statement.execute(sqlStatement);
-      }
-      catch (Exception e)
-      {
-         throw new ScriptExecutionException("Unable to execute statement: " + sqlStatement, e);
-      }
-      finally
-      {
-         if (statement != null)
-         {
-            try
-            {
-               statement.close();
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            statement.execute(sqlStatement);
+        } catch (Exception e) {
+            throw new ScriptExecutionException("Unable to execute statement: " + sqlStatement, e);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    throw new ScriptExecutionException("Unable to close statement after script execution.", e);
+                }
             }
-            catch (SQLException e)
-            {
-               throw new ScriptExecutionException("Unable to close statement after script execution.", e);
-            }
-         }
-      }
-   }
+        }
+    }
 
 }

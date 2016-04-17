@@ -17,28 +17,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class PersistenceExtensionInitializationException extends RuntimeException
-{
+public class PersistenceExtensionInitializationException extends RuntimeException {
 
-   private static final long serialVersionUID = 8080951789216347586L;
+    private static final long serialVersionUID = 8080951789216347586L;
 
-   public PersistenceExtensionInitializationException()
-   {
-   }
+    public PersistenceExtensionInitializationException() {
+    }
 
-   public PersistenceExtensionInitializationException(String message)
-   {
-      super(message);
-   }
+    public PersistenceExtensionInitializationException(String message) {
+        super(message);
+    }
 
-   public PersistenceExtensionInitializationException(Throwable cause)
-   {
-      super(cause);
-   }
+    public PersistenceExtensionInitializationException(Throwable cause) {
+        super(cause);
+    }
 
-   public PersistenceExtensionInitializationException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public PersistenceExtensionInitializationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

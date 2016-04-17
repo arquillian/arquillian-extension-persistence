@@ -8,11 +8,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "simple")
-public class SimpleEntry implements Serializable
-{
+public class SimpleEntry implements Serializable {
 
-   @Id
-   @GeneratedValue
-   private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
 }

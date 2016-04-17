@@ -19,14 +19,12 @@ package org.jboss.arquillian.integration.persistence.datasource.mysql;
 
 import org.jboss.arquillian.integration.persistence.datasource.JdbcDriverArchiveAppender;
 
-public class MySqlDriverArchiveAppender extends JdbcDriverArchiveAppender
-{
+public class MySqlDriverArchiveAppender extends JdbcDriverArchiveAppender {
 
-   @Override
-   public String getDriverCoordinates()
-   {
-      // Version needs to be specified explicitly because the artifact is defined for the profile
-      return "mysql:mysql-connector-java:5.1.21";
-   }
+    @Override
+    public String getDriverCoordinates() {
+        // Version needs to be specified explicitly because the artifact is defined for the profile
+        return "mysql:mysql-connector-java:5.1.21";
+    }
 
 }

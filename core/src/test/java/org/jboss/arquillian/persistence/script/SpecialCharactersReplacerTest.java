@@ -28,40 +28,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @NotThreadSafe
 @RunWith(JUnitParamsRunner.class)
-public class SpecialCharactersReplacerTest
-{
+public class SpecialCharactersReplacerTest {
 
-   @Test
-   @Parameters(method = "specialCharacters")
-   public void should_escape_special_characters(String specialCharacters, String expectedEscaped) throws Exception
-   {
-      // when
-      final String escaped = new SpecialCharactersReplacer().escape(specialCharacters);
+    @Test
+    @Parameters(method = "specialCharacters")
+    public void should_escape_special_characters(String specialCharacters, String expectedEscaped) throws Exception {
+        // when
+        final String escaped = new SpecialCharactersReplacer().escape(specialCharacters);
 
-      // then
-      assertThat(escaped).isEqualTo(expectedEscaped);
-   }
+        // then
+        assertThat(escaped).isEqualTo(expectedEscaped);
+    }
 
-   @Test
-   @Parameters(method = "specialCharacters")
-   public void should_unescape_special_characters(String specialCharacters, String expectedEscaped) throws Exception
-   {
-      // when
-      final String unescaped = new SpecialCharactersReplacer().unescape(expectedEscaped);
+    @Test
+    @Parameters(method = "specialCharacters")
+    public void should_unescape_special_characters(String specialCharacters, String expectedEscaped) throws Exception {
+        // when
+        final String unescaped = new SpecialCharactersReplacer().unescape(expectedEscaped);
 
-      // then
-      assertThat(unescaped).isEqualTo(specialCharacters);
-   }
+        // then
+        assertThat(unescaped).isEqualTo(specialCharacters);
+    }
 
-   private Object[] specialCharacters()
-   {
-      return $(
-            $("&amp; & &nbsp;;;; &123asdBDS;", "ape_special[amp] & ape_special[nbsp];;; ape_special[123asdBDS]"),
-            $("", ""),
-            $("normal text", "normal text"),
-            $("&amp", "&amp"),
-            $("&test;", "ape_special[test]"),
-            $("    ", "    ")
-      );
-   }
+    private Object[] specialCharacters() {
+        return $(
+                $("&amp; & &nbsp;;;; &123asdBDS;", "ape_special[amp] & ape_special[nbsp];;; ape_special[123asdBDS]"),
+                $("", ""),
+                $("normal text", "normal text"),
+                $("&amp", "&amp"),
+                $("&test;", "ape_special[test]"),
+                $("    ", "    ")
+        );
+    }
 }

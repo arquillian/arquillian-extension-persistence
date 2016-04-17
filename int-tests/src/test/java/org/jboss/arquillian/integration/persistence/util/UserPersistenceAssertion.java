@@ -7,29 +7,25 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserPersistenceAssertion
-{
+public class UserPersistenceAssertion {
 
-   private final EntityManager em;
+    private final EntityManager em;
 
-   public UserPersistenceAssertion(EntityManager em)
-   {
-      this.em = em;
-      this.em.clear();
-   }
+    public UserPersistenceAssertion(EntityManager em) {
+        this.em = em;
+        this.em.clear();
+    }
 
-   public void assertUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isNotEmpty();
-   }
+    public void assertUserAccountsStored() {
+        @SuppressWarnings("unchecked")
+        List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        assertThat(savedUserAccounts).isNotEmpty();
+    }
 
-   public void assertNoUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isEmpty();
-   }
+    public void assertNoUserAccountsStored() {
+        @SuppressWarnings("unchecked")
+        List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        assertThat(savedUserAccounts).isEmpty();
+    }
 
 }

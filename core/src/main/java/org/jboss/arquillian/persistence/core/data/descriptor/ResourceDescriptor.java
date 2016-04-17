@@ -21,33 +21,28 @@ package org.jboss.arquillian.persistence.core.data.descriptor;
  * Describes resource attributes such as it's location in classpath
  * and format.
  *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @param <T> parametrized resource type class.
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public abstract class ResourceDescriptor<T>
-{
+public abstract class ResourceDescriptor<T> {
 
-   protected final String location;
+    protected final String location;
 
-   public ResourceDescriptor(String location)
-   {
-      this.location = location;
-   }
+    public ResourceDescriptor(String location) {
+        this.location = location;
+    }
 
-   public abstract T getContent();
+    public abstract T getContent();
 
-   public abstract Format getFormat();
+    public abstract Format getFormat();
 
-   public String getLocation()
-   {
-      return location;
-   }
+    public String getLocation() {
+        return location;
+    }
 
-   @Override
-   public String toString()
-   {
-      return this.getClass().getName() + "|" + hashCode()
-            + "@[location = " + getLocation() + ", format = " + getFormat() + "]";
-   }
+    @Override
+    public String toString() {
+        return this.getClass().getName() + "|" + hashCode()
+                + "@[location = " + getLocation() + ", format = " + getFormat() + "]";
+    }
 }

@@ -20,15 +20,13 @@ package org.jboss.arquillian.persistence.core.event;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class CleanupData extends TestEvent implements PersistenceEvent
-{
+public class CleanupData extends TestEvent implements PersistenceEvent {
 
-   public final CleanupStrategy cleanupStrategy;
+    public final CleanupStrategy cleanupStrategy;
 
-   public CleanupData(TestEvent testEvent, CleanupStrategy cleanupStrategy)
-   {
-      super(testEvent.getTestInstance(), testEvent.getTestMethod());
-      this.cleanupStrategy = cleanupStrategy;
-   }
+    public CleanupData(TestEvent testEvent, CleanupStrategy cleanupStrategy) {
+        super(testEvent.getTestInstance(), testEvent.getTestMethod());
+        this.cleanupStrategy = cleanupStrategy;
+    }
 
 }

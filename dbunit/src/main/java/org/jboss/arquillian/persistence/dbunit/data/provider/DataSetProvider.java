@@ -32,89 +32,73 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
-{
+public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor> {
 
-   private final DBUnitConfiguration configuration;
+    private final DBUnitConfiguration configuration;
 
-   public DataSetProvider(MetadataExtractor metadataExtractor, DBUnitConfiguration configuration)
-   {
-      super(UsingDataSet.class, metadataExtractor);
-      this.configuration = configuration;
-   }
+    public DataSetProvider(MetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
+        super(UsingDataSet.class, metadataExtractor);
+        this.configuration = configuration;
+    }
 
-   @Override
-   protected DataSetResourceDescriptor createDescriptor(String resource)
-   {
-      return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
-   }
+    @Override
+    protected DataSetResourceDescriptor createDescriptor(String resource) {
+        return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
+    }
 
-   @Override
-   protected String defaultLocation()
-   {
-      return configuration.getDefaultDataSetLocation();
-   }
+    @Override
+    protected String defaultLocation() {
+        return configuration.getDefaultDataSetLocation();
+    }
 
-   @Override
-   protected String defaultFileName()
-   {
-      Format format = configuration.getDefaultDataSetFormat();
-      return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-   }
+    @Override
+    protected String defaultFileName() {
+        Format format = configuration.getDefaultDataSetFormat();
+        return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+    }
 
-   @Override
-   public Collection<String> getResourceFileNames(Method testMethod)
-   {
-      UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
-      String[] specifiedFileNames = dataAnnotation.value();
-      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
-      {
-         return Arrays.asList(getDefaultFileName(testMethod));
-      }
-      return Arrays.asList(specifiedFileNames);
-   }
+    @Override
+    public Collection<String> getResourceFileNames(Method testMethod) {
+        UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
+        String[] specifiedFileNames = dataAnnotation.value();
+        if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim())) {
+            return Arrays.asList(getDefaultFileName(testMethod));
+        }
+        return Arrays.asList(specifiedFileNames);
+    }
 
-   // Private methods
+    // Private methods
 
-   private Format inferFormat(String dataFileName)
-   {
-      Format format = Format.inferFromFile(dataFileName);
-      if (Format.UNSUPPORTED.equals(format))
-      {
-         throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
-      }
-      return format;
-   }
+    private Format inferFormat(String dataFileName) {
+        Format format = Format.inferFromFile(dataFileName);
+        if (Format.UNSUPPORTED.equals(format)) {
+            throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
+        }
+        return format;
+    }
 
-   Collection<Format> getDataFormats(Method testMethod)
-   {
-      final List<Format> formats = new ArrayList<Format>();
-      for (String dataFileName : getResourceFileNames(testMethod))
-      {
-         formats.add(inferFormat(dataFileName));
-      }
-      return formats;
-   }
+    Collection<Format> getDataFormats(Method testMethod) {
+        final List<Format> formats = new ArrayList<Format>();
+        for (String dataFileName : getResourceFileNames(testMethod)) {
+            formats.add(inferFormat(dataFileName));
+        }
+        return formats;
+    }
 
-   private UsingDataSet getResourceAnnotation(Method testMethod)
-   {
-      return metadataExtractor.usingDataSet().fetchUsingFirst(testMethod);
-   }
+    private UsingDataSet getResourceAnnotation(Method testMethod) {
+        return metadataExtractor.usingDataSet().fetchUsingFirst(testMethod);
+    }
 
-   private String getDefaultFileName(Method testMethod)
-   {
-      Format format = configuration.getDefaultDataSetFormat();
+    private String getDefaultFileName(Method testMethod) {
+        Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.usingDataSet().isDefinedOn(testMethod))
-      {
-         return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
-      }
+        if (metadataExtractor.usingDataSet().isDefinedOn(testMethod)) {
+            return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+        }
 
-      return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-   }
+        return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+    }
 
 }

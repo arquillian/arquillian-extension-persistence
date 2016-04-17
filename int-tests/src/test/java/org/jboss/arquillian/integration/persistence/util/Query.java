@@ -17,12 +17,10 @@
  */
 package org.jboss.arquillian.integration.persistence.util;
 
-public class Query
-{
+public class Query {
 
-   public static String selectAllInJPQL(final Class<?> c)
-   {
-      return "SELECT entity FROM " + c.getSimpleName() + " entity";
-   }
+    public static String selectAllInJPQL(final Class<?> c) {
+        return "SELECT entity FROM " + c.getSimpleName() + " entity";
+    }
 
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>19</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <!-- Model Version -->
@@ -52,7 +53,8 @@
 
   <scm>
     <connection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</connection>
-    <developerConnection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:arquillian/arquillian-extension-persistence.git
+    </developerConnection>
     <url>https://github.com/arquillian/arquillian-extension-persistence</url>
     <tag>HEAD</tag>
   </scm>

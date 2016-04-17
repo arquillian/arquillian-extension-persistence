@@ -32,34 +32,28 @@ import javax.sql.DataSource;
  *
  * @author <a href="mailto:jmnarloch@gmail.com">Jakub Narloch</a>
  */
-public class JndiDataSourceProvider implements DataSourceProvider
-{
+public class JndiDataSourceProvider implements DataSourceProvider {
 
-   /**
-    * The JNDI context.
-    */
-   @Inject
-   private Instance<Context> contextInstance;
+    /**
+     * The JNDI context.
+     */
+    @Inject
+    private Instance<Context> contextInstance;
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public DataSource lookupDataSource(String dataSourceName)
-   {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataSource lookupDataSource(String dataSourceName) {
 
-      try
-      {
-         final Context context = contextInstance.get();
-         if (context == null)
-         {
-            throw new ContextNotAvailableException("No Naming Context available.");
-         }
-         return (DataSource) context.lookup(dataSourceName);
-      }
-      catch (NamingException e)
-      {
-         throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
-      }
-   }
+        try {
+            final Context context = contextInstance.get();
+            if (context == null) {
+                throw new ContextNotAvailableException("No Naming Context available.");
+            }
+            return (DataSource) context.lookup(dataSourceName);
+        } catch (NamingException e) {
+            throw new DataSourceNotFoundException("Unable to find data source for given name: " + dataSourceName, e);
+        }
+    }
 }

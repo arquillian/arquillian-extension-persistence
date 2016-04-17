@@ -27,57 +27,52 @@ import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ScriptingConfigurationImporterFromXmlTest
-{
+public class ScriptingConfigurationImporterFromXmlTest {
 
-   private ScriptingConfiguration configuration;
+    private ScriptingConfiguration configuration;
 
-   @Before
-   public void initialize()
-   {
-      configuration = new ScriptingConfiguration();
-   }
+    @Before
+    public void initialize() {
+        configuration = new ScriptingConfiguration();
+    }
 
-   @Test
-   public void should_extract_init_statement_from_external_configuration_file() throws Exception
-   {
-      // given
-      String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
+    @Test
+    public void should_extract_init_statement_from_external_configuration_file() throws Exception {
+        // given
+        String expectedInitStatement = "SELECT * FROM ARQUILLIAN_TESTS";
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
-   }
+        // then
+        assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitStatement);
+    }
 
-   @Test
-   public void should_extract_script_charset_from_external_configuration_file() throws Exception
-   {
-      // given
-      Charset expectedCharset  = Charset.forName("ISO-8859-1");
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
+    @Test
+    public void should_extract_script_charset_from_external_configuration_file() throws Exception {
+        // given
+        Charset expectedCharset = Charset.forName("ISO-8859-1");
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-script.xml");
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getCharset()).isEqualTo(expectedCharset);
-   }
+        // then
+        assertThat(configuration.getCharset()).isEqualTo(expectedCharset);
+    }
 
-   @Test
-   public void should_use_default_charset_if_not_specified_in_the_configuration() throws Exception
-   {
-      // given
-      Charset utf8  = Charset.forName("UTF-8");
-      ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
+    @Test
+    public void should_use_default_charset_if_not_specified_in_the_configuration() throws Exception {
+        // given
+        Charset utf8 = Charset.forName("UTF-8");
+        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian.xml");
 
-      // when
-      Configuration.importTo(configuration).from(descriptor);
+        // when
+        Configuration.importTo(configuration).from(descriptor);
 
-      // then
-      assertThat(configuration.getCharset()).isEqualTo(utf8);
-   }
+        // then
+        assertThat(configuration.getCharset()).isEqualTo(utf8);
+    }
 
 }

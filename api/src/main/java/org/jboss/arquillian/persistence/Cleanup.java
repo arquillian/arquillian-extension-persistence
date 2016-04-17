@@ -28,21 +28,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Determines when database cleanup should be triggered. Default test phase when
  * is {@link TestExecutionPhase#AFTER}. You can set it also globally in <code>arquillian.xml</code>.
- *
+ * <p>
  * If not specified otherwise the whole database is erased.
  * You can change this behaviour by setting up {@link #strategy()} field.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @see {@link TestExecutionPhase}, {@link CleanupStrategy}
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface Cleanup
-{
+public @interface Cleanup {
 
-   TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
+    TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
-   CleanupStrategy strategy() default CleanupStrategy.DEFAULT;
+    CleanupStrategy strategy() default CleanupStrategy.DEFAULT;
 }

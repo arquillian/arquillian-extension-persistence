@@ -29,20 +29,17 @@ import javax.persistence.EntityManager;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  * @see JpaCacheEviction
  */
-public class FullCacheEvictionStrategy implements JpaCacheEvictionStrategy
-{
+public class FullCacheEvictionStrategy implements JpaCacheEvictionStrategy {
 
-   /**
-    * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
-    */
-   @Override
-   public final void evictCache(EntityManager em)
-   {
-      final Cache cache = em.getEntityManagerFactory().getCache();
-      if (cache != null)
-      {
-         cache.evictAll();
-      }
-   }
+    /**
+     * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
+     */
+    @Override
+    public final void evictCache(EntityManager em) {
+        final Cache cache = em.getEntityManagerFactory().getCache();
+        if (cache != null) {
+            cache.evictAll();
+        }
+    }
 
 }

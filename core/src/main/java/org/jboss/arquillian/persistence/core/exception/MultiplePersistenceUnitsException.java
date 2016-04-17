@@ -16,28 +16,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class MultiplePersistenceUnitsException extends RuntimeException
-{
+public class MultiplePersistenceUnitsException extends RuntimeException {
 
-   private static final long serialVersionUID = 503952426379885672L;
+    private static final long serialVersionUID = 503952426379885672L;
 
-   public MultiplePersistenceUnitsException()
-   {
-   }
+    public MultiplePersistenceUnitsException() {
+    }
 
-   public MultiplePersistenceUnitsException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public MultiplePersistenceUnitsException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-   public MultiplePersistenceUnitsException(String message)
-   {
-      super(message);
-   }
+    public MultiplePersistenceUnitsException(String message) {
+        super(message);
+    }
 
-   public MultiplePersistenceUnitsException(Throwable cause)
-   {
-      super(cause);
-   }
+    public MultiplePersistenceUnitsException(Throwable cause) {
+        super(cause);
+    }
 
 }

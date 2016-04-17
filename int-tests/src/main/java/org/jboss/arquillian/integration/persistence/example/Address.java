@@ -23,103 +23,89 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "address")
-public class Address
-{
+public class Address {
 
-   @Id
-   @GeneratedValue
-   private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-   @Version
-   private Long version;
+    @Version
+    private Long version;
 
-   @Basic
-   @NotNull @Size(min = 4)
-   private String streetName;
+    @Basic
+    @NotNull
+    @Size(min = 4)
+    private String streetName;
 
-   @Basic
-   private Integer houseNumber;
+    @Basic
+    private Integer houseNumber;
 
-   @Basic
-   @NotNull
-   private String city;
+    @Basic
+    @NotNull
+    private String city;
 
-   @Basic
-   @NotNull
-   private Integer zipCode;
+    @Basic
+    @NotNull
+    private Integer zipCode;
 
-   protected Address()
-   {
-      // To satisfy JPA
-   }
+    protected Address() {
+        // To satisfy JPA
+    }
 
-   public Address(String streetName, Integer houseNumber, String city, Integer zipCode)
-   {
-      this.streetName = streetName;
-      this.houseNumber = houseNumber;
-      this.city = city;
-      this.zipCode = zipCode;
-   }
+    public Address(String streetName, Integer houseNumber, String city, Integer zipCode) {
+        this.streetName = streetName;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
 
-   // Getters and setters
+    // Getters and setters
 
-   public Long getId()
-   {
-      return id;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   void setId(Long id)
-   {
-      this.id = id;
-   }
+    void setId(Long id) {
+        this.id = id;
+    }
 
-   public String getStreetName()
-   {
-      return streetName;
-   }
+    public String getStreetName() {
+        return streetName;
+    }
 
-   public void setStreetName(String streetName)
-   {
-      this.streetName = streetName;
-   }
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
 
-   public Integer getHouseNumber()
-   {
-      return houseNumber;
-   }
+    public Integer getHouseNumber() {
+        return houseNumber;
+    }
 
-   public void setHouseNumber(Integer houseNumber)
-   {
-      this.houseNumber = houseNumber;
-   }
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
+    }
 
-   public String getCity()
-   {
-      return city;
-   }
+    public String getCity() {
+        return city;
+    }
 
-   public void setCity(String city)
-   {
-      this.city = city;
-   }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-   public Integer getZipCode()
-   {
-      return zipCode;
-   }
+    public Integer getZipCode() {
+        return zipCode;
+    }
 
-   public void setZipCode(Integer zipCode)
-   {
-      this.zipCode = zipCode;
-   }
+    public void setZipCode(Integer zipCode) {
+        this.zipCode = zipCode;
+    }
 
-   public void setVersion(Long version)
-   {
-      this.version = version;
-   }
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
-   public Long getVersion()
-   {
-      return version;
-   }
+    public Long getVersion() {
+        return version;
+    }
 }

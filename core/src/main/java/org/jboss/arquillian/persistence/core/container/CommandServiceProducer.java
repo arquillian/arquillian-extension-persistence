@@ -27,34 +27,29 @@ import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class CommandServiceProducer
-{
+public class CommandServiceProducer {
 
-   @Inject
-   private Instance<ServiceLoader> serviceLoaderInstance;
+    @Inject
+    private Instance<ServiceLoader> serviceLoaderInstance;
 
-   @Inject @SuiteScoped
-   InstanceProducer<CommandService> commandServiceProducer;
+    @Inject
+    @SuiteScoped
+    InstanceProducer<CommandService> commandServiceProducer;
 
-   public void createCommandService(@Observes(precedence = 100) BeforeSuite beforeSuite)
-   {
-      final ServiceLoader serviceLoader = serviceLoaderInstance.get();
-      if (serviceLoader == null)
-      {
-         throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
-      }
+    public void createCommandService(@Observes(precedence = 100) BeforeSuite beforeSuite) {
+        final ServiceLoader serviceLoader = serviceLoaderInstance.get();
+        if (serviceLoader == null) {
+            throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
+        }
 
-      final CommandService commandService = serviceLoader.onlyOne(CommandService.class);
-      if (commandService == null)
-      {
-         throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
-      }
+        final CommandService commandService = serviceLoader.onlyOne(CommandService.class);
+        if (commandService == null) {
+            throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
+        }
 
-      commandServiceProducer.set(commandService);
-   }
+        commandServiceProducer.set(commandService);
+    }
 
 }

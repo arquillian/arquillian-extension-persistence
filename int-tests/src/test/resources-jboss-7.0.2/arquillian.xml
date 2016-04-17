@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://jboss.org/schema/arquillian"
-  xsi:schemaLocation="http://jboss.org/schema/arquillian
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
     http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
   <!-- Servlet protocol required for EAR packaging. See : http://community.jboss.org/message/622917
     https://issues.jboss.org/browse/AS7-1696 -->
-  <defaultProtocol type="Servlet 3.0" />
+  <defaultProtocol type="Servlet 3.0"/>
 
   <engine>
     <property name="deploymentExportPath">target/deployment</property>
@@ -15,7 +15,9 @@
   <container qualifier="jboss7" default="true">
     <configuration>
       <property name="jbossHome">target/jboss-as-7.0.2.Final</property>
-      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n</property>
+      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m
+        -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n
+      </property>
     </configuration>
   </container>
 

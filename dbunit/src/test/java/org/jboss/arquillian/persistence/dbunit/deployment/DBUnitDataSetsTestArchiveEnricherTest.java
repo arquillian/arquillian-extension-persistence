@@ -35,73 +35,63 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
-public class DBUnitDataSetsTestArchiveEnricherTest
-{
+public class DBUnitDataSetsTestArchiveEnricherTest {
 
-   private DBUnitDataSetsTestArchiveEnricher enricher = new DBUnitDataSetsTestArchiveEnricher();
+    private DBUnitDataSetsTestArchiveEnricher enricher = new DBUnitDataSetsTestArchiveEnricher();
 
-   @Before
-   public void initializeEnricher()
-   {
-      enricher.dbunitConfigurationInstance = new Instance<DBUnitConfiguration>()
-      {
-         @Override
-         public DBUnitConfiguration get()
-         {
-            return new DBUnitConfiguration();
-         }
-      };
-   }
+    @Before
+    public void initializeEnricher() {
+        enricher.dbunitConfigurationInstance = new Instance<DBUnitConfiguration>() {
+            @Override
+            public DBUnitConfiguration get() {
+                return new DBUnitConfiguration();
+            }
+        };
+    }
 
-   @Test
-   public void should_bundle_resources_as_library_jar_in_enterprise_archive() throws Exception
-   {
-      // given
-      final EnterpriseArchive archive = ShrinkWrap.create(EnterpriseArchive.class, "test.ear");
-      final String scriptPath = "/lib/arquillian-persistence-datasets.jar";
+    @Test
+    public void should_bundle_resources_as_library_jar_in_enterprise_archive() throws Exception {
+        // given
+        final EnterpriseArchive archive = ShrinkWrap.create(EnterpriseArchive.class, "test.ear");
+        final String scriptPath = "/lib/arquillian-persistence-datasets.jar";
 
-      // when
-      enricher.process(archive, new TestClass(DatasetOnMethodLevel.class));
+        // when
+        enricher.process(archive, new TestClass(DatasetOnMethodLevel.class));
 
-      // then
-      final Node datasetArchive = archive.getContent(Filters.include(scriptPath)).values().iterator().next();
-      final Archive<?> library = ((ArchiveAsset) datasetArchive.getAsset()).getArchive();
+        // then
+        final Node datasetArchive = archive.getContent(Filters.include(scriptPath)).values().iterator().next();
+        final Archive<?> library = ((ArchiveAsset) datasetArchive.getAsset()).getArchive();
 
-      assertThatContainsOnly(archive, scriptPath);
-      assertThatContainsOnly(library, "/datasets/users.json");
-   }
+        assertThatContainsOnly(archive, scriptPath);
+        assertThatContainsOnly(library, "/datasets/users.json");
+    }
 
-   //
+    //
 
-   private static void assertThatContainsOnly(Archive<?> archive, String path)
-   {
-      final Map<ArchivePath,Node> content = archive.getContent(Filters.include(path));
-      assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
-   }
+    private static void assertThatContainsOnly(Archive<?> archive, String path) {
+        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
+        assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+    }
 
-   private static class ScriptOnMethodLevel
-   {
+    private static class ScriptOnMethodLevel {
 
-      @ApplyScriptAfter("two-inserts.sql")
-      public void should_work() throws Exception
-      {
-         // given
-         // when
-         // then
-      }
+        @ApplyScriptAfter("two-inserts.sql")
+        public void should_work() throws Exception {
+            // given
+            // when
+            // then
+        }
 
-   }
+    }
 
-   private static class DatasetOnMethodLevel
-   {
+    private static class DatasetOnMethodLevel {
 
-      @ShouldMatchDataSet("users.json")
-      public void should_work() throws Exception
-      {
-         // given
-         // when
-         // then
-      }
+        @ShouldMatchDataSet("users.json")
+        public void should_work() throws Exception {
+            // given
+            // when
+            // then
+        }
 
-   }
+    }
 }

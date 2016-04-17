@@ -22,12 +22,10 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 import java.util.Collection;
 
-public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor>
-{
+public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor> {
 
-   public ExecuteScripts(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors)
-   {
-      super(dataSetDescriptors);
-   }
+    public ExecuteScripts(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors) {
+        super(dataSetDescriptors);
+    }
 
 }

@@ -22,20 +22,18 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DataSetFileNamingStrategyTest
-{
+public class DataSetFileNamingStrategyTest {
 
-   @Test
-   public void should_produce_default_file_name_of_data_set_for_test_using_full_class_name_and_method_name() throws Exception
-   {
-      // given
-      DataSetFileNamingStrategy defaultFileNamingStrategy = new DataSetFileNamingStrategy(Format.XML);
+    @Test
+    public void should_produce_default_file_name_of_data_set_for_test_using_full_class_name_and_method_name() throws Exception {
+        // given
+        DataSetFileNamingStrategy defaultFileNamingStrategy = new DataSetFileNamingStrategy(Format.XML);
 
-      // when
-      String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        // when
+        String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
-      // then
-      assertThat(fileName).isEqualTo("org.jboss.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
-   }
+        // then
+        assertThat(fileName).isEqualTo("org.jboss.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
+    }
 
 }

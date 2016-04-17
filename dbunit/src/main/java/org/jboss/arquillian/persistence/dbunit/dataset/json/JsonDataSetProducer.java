@@ -30,40 +30,28 @@ import java.util.Map;
 /**
  * Produces JSON data set from the given file.
  *
- * @see JsonDataSet
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
+ * @see JsonDataSet
  */
-public class JsonDataSetProducer extends DataSetProducer
-{
+public class JsonDataSetProducer extends DataSetProducer {
 
-   public JsonDataSetProducer(InputStream input)
-   {
-      super(input);
-   }
+    public JsonDataSetProducer(InputStream input) {
+        super(input);
+    }
 
-   @Override
-   Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException
-   {
-      Map<String, List<Map<String, String>>> dataset;
-      try
-      {
-         dataset = new ObjectMapper().readValue(input, Map.class);
-      }
-      catch (JsonParseException e)
-      {
-         throw new DataSetException("Error parsing json data set", e);
-      }
-      catch (JsonMappingException e)
-      {
-         throw new DataSetException("Error mapping json data set", e);
-      }
-      catch (IOException e)
-      {
-         throw new DataSetException("Error opening json data set", e);
-      }
-      return dataset;
-   }
+    @Override
+    Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException {
+        Map<String, List<Map<String, String>>> dataset;
+        try {
+            dataset = new ObjectMapper().readValue(input, Map.class);
+        } catch (JsonParseException e) {
+            throw new DataSetException("Error parsing json data set", e);
+        } catch (JsonMappingException e) {
+            throw new DataSetException("Error mapping json data set", e);
+        } catch (IOException e) {
+            throw new DataSetException("Error opening json data set", e);
+        }
+        return dataset;
+    }
 
 }

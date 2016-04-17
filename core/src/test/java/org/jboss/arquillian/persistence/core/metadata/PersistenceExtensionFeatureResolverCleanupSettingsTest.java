@@ -28,67 +28,61 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceExtensionFeatureResolverCleanupSettingsTest
-{
+public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
 
-   private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+    private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
 
-   @Test
-   public void should_cleanup_using_script_when_defined_on_method_level() throws Exception
-   {
-      // given
-      TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
-            CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
-      PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+    @Test
+    public void should_cleanup_using_script_when_defined_on_method_level() throws Exception {
+        // given
+        TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
+                CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
+        PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
-      // when
-      boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();
+        // when
+        boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();
 
-      // then
-      assertThat(shouldCleanupUsingScriptAfter).isTrue();
-   }
+        // then
+        assertThat(shouldCleanupUsingScriptAfter).isTrue();
+    }
 
-   // ----------------------------------------------------------------------------------------
-   // Classes used for tests
+    // ----------------------------------------------------------------------------------------
+    // Classes used for tests
 
-   @Cleanup(phase = TestExecutionPhase.AFTER)
-   private static class ClassLevelCleanupAfterSettings
-   {
-      public void shouldPass()
-      {}
-   }
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    private static class ClassLevelCleanupAfterSettings {
+        public void shouldPass() {
+        }
+    }
 
-   private static class DefaultCleanupSettings
-   {
-      public void shouldPass()
-      {}
-   }
+    private static class DefaultCleanupSettings {
+        public void shouldPass() {
+        }
+    }
 
-   @Cleanup
-   private static class CleanupUsingScriptOnMethodLevelSettings
-   {
-      @CleanupUsingScript(value = "clean.sql", phase = TestExecutionPhase.AFTER)
-      public void shouldPassWhenCleanupUsingScriptDefined()
-      {}
-   }
+    @Cleanup
+    private static class CleanupUsingScriptOnMethodLevelSettings {
+        @CleanupUsingScript(value = "clean.sql", phase = TestExecutionPhase.AFTER)
+        public void shouldPassWhenCleanupUsingScriptDefined() {
+        }
+    }
 
-   private static class MethodLevelCleanupSettings
-   {
-      @Cleanup(phase = TestExecutionPhase.AFTER)
-      public void shouldPassCleanupAndAfterPhaseDefined()
-      {}
+    private static class MethodLevelCleanupSettings {
+        @Cleanup(phase = TestExecutionPhase.AFTER)
+        public void shouldPassCleanupAndAfterPhaseDefined() {
+        }
 
-      @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
-      public void shouldPassStrategyOnly()
-      {}
+        @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+        public void shouldPassStrategyOnly() {
+        }
 
-      @Cleanup(phase = TestExecutionPhase.NONE)
-      public void shouldPassPhaseOnly()
-      {}
+        @Cleanup(phase = TestExecutionPhase.NONE)
+        public void shouldPassPhaseOnly() {
+        }
 
-      public void shouldPassUsingDefaults()
-      {}
+        public void shouldPassUsingDefaults() {
+        }
 
-   }
+    }
 
 }

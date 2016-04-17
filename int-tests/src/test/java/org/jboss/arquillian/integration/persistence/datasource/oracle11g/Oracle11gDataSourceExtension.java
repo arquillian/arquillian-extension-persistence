@@ -20,14 +20,12 @@ package org.jboss.arquillian.integration.persistence.datasource.oracle11g;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
-public class Oracle11gDataSourceExtension implements LoadableExtension
-{
+public class Oracle11gDataSourceExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, Oracle11gDataSourceArchiveCreator.class);
-      builder.service(AuxiliaryArchiveAppender.class, Oracle11gDriverArchiveAppender.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, Oracle11gDataSourceArchiveCreator.class);
+        builder.service(AuxiliaryArchiveAppender.class, Oracle11gDriverArchiveAppender.class);
+    }
 
 }

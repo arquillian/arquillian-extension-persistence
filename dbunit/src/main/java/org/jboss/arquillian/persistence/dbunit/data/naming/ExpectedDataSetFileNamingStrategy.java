@@ -22,33 +22,28 @@ import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 
 import java.lang.reflect.Method;
 
-public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format>
-{
+public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format> {
 
-   private final DataSetFileNamingStrategy dataSetFileNamingStrategy;
+    private final DataSetFileNamingStrategy dataSetFileNamingStrategy;
 
-   public ExpectedDataSetFileNamingStrategy(Format format)
-   {
-      super(format);
-      this.dataSetFileNamingStrategy = new DataSetFileNamingStrategy(format);
-   }
+    public ExpectedDataSetFileNamingStrategy(Format format) {
+        super(format);
+        this.dataSetFileNamingStrategy = new DataSetFileNamingStrategy(format);
+    }
 
-   @Override
-   public String createFileName(Class<?> testClass, Method testMethod)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass, testMethod);
-   }
+    @Override
+    public String createFileName(Class<?> testClass, Method testMethod) {
+        return "expected-" + dataSetFileNamingStrategy.createFileName(testClass, testMethod);
+    }
 
-   @Override
-   public String createFileName(Class<?> testClass)
-   {
-      return "expected-" + dataSetFileNamingStrategy.createFileName(testClass);
-   }
+    @Override
+    public String createFileName(Class<?> testClass) {
+        return "expected-" + dataSetFileNamingStrategy.createFileName(testClass);
+    }
 
-   @Override
-   public String getFileExtension()
-   {
-      return dataSetFileNamingStrategy.getFileExtension();
-   }
+    @Override
+    public String getFileExtension() {
+        return dataSetFileNamingStrategy.getFileExtension();
+    }
 
 }

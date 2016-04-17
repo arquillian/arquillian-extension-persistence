@@ -26,181 +26,151 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EventHandlingVerifier
-{
+public class EventHandlingVerifier {
 
-   private boolean triggeredBefore;
+    private boolean triggeredBefore;
 
-   private boolean triggeredAfter;
+    private boolean triggeredAfter;
 
-   private boolean triggered;
+    private boolean triggered;
 
-   private TestExecutionPhase phase = TestExecutionPhase.NONE;
+    private TestExecutionPhase phase = TestExecutionPhase.NONE;
 
-   private TestExecutionPhase expectedPhase;
+    private TestExecutionPhase expectedPhase;
 
-   private boolean verificationRequested;
+    private boolean verificationRequested;
 
-   public final Class<? extends PersistenceEvent> event;
+    public final Class<? extends PersistenceEvent> event;
 
-   private EventHandlingVerifier(Class<? extends PersistenceEvent> event)
-   {
-      this.event = event;
-   }
+    private EventHandlingVerifier(Class<? extends PersistenceEvent> event) {
+        this.event = event;
+    }
 
-   public boolean wasCalledAfter()
-   {
-      return triggeredAfter;
-   }
+    public boolean wasCalledAfter() {
+        return triggeredAfter;
+    }
 
-   public void triggeredAfter()
-   {
-      phase = TestExecutionPhase.AFTER;
-      this.triggeredAfter = true;
-   }
+    public void triggeredAfter() {
+        phase = TestExecutionPhase.AFTER;
+        this.triggeredAfter = true;
+    }
 
-   public boolean alreadyTriggered()
-   {
-      return triggered;
-   }
+    public boolean alreadyTriggered() {
+        return triggered;
+    }
 
-   public void called()
-   {
-      this.triggered = true;
-   }
+    public void called() {
+        this.triggered = true;
+    }
 
-   public boolean wasTriggeredBefore()
-   {
-      return triggeredBefore;
-   }
+    public boolean wasTriggeredBefore() {
+        return triggeredBefore;
+    }
 
-   public void triggeredBefore()
-   {
-      phase = TestExecutionPhase.BEFORE;
-      this.triggeredBefore = true;
-   }
+    public void triggeredBefore() {
+        phase = TestExecutionPhase.BEFORE;
+        this.triggeredBefore = true;
+    }
 
-   public void shouldBePerformedBeforeTest()
-   {
-      verificationRequested = true;
-      expectedPhase = TestExecutionPhase.BEFORE;
-   }
+    public void shouldBePerformedBeforeTest() {
+        verificationRequested = true;
+        expectedPhase = TestExecutionPhase.BEFORE;
+    }
 
-   public void shouldBePerformedAfterTest()
-   {
-      verificationRequested = true;
-      expectedPhase = TestExecutionPhase.AFTER;
-   }
+    public void shouldBePerformedAfterTest() {
+        verificationRequested = true;
+        expectedPhase = TestExecutionPhase.AFTER;
+    }
 
-   public void shouldNotBePerformed()
-   {
-      verificationRequested = true;
-      expectedPhase = TestExecutionPhase.NONE;
-   }
+    public void shouldNotBePerformed() {
+        verificationRequested = true;
+        expectedPhase = TestExecutionPhase.NONE;
+    }
 
-   public void verifyPhaseWhenEventWasTriggered()
-   {
-      if (verificationRequested)
-      {
-         assertThat(phase).describedAs("Verifying event test phase of [" + event.getCanonicalName() + "]")
-                          .isEqualTo(expectedPhase);
-      }
-   }
+    public void verifyPhaseWhenEventWasTriggered() {
+        if (verificationRequested) {
+            assertThat(phase).describedAs("Verifying event test phase of [" + event.getCanonicalName() + "]")
+                    .isEqualTo(expectedPhase);
+        }
+    }
 
-   public static class Builder
-   {
-      private Class<? extends Annotation> eventExpectedToBeTriggeredAnnotation;
-      private Class<? extends Annotation> eventNotExpectedToBeTriggeredAnnotation;
-      private Class<? extends PersistenceEvent> event;
+    public static class Builder {
+        private Class<? extends Annotation> eventExpectedToBeTriggeredAnnotation;
+        private Class<? extends Annotation> eventNotExpectedToBeTriggeredAnnotation;
+        private Class<? extends PersistenceEvent> event;
 
-      public static Builder eventVerifier()
-      {
-         return new Builder();
-      }
+        public static Builder eventVerifier() {
+            return new Builder();
+        }
 
-      public Builder definedFor(Class<? extends PersistenceEvent> event)
-      {
-         this.event = event;
-         return this;
-      }
+        public Builder definedFor(Class<? extends PersistenceEvent> event) {
+            this.event = event;
+            return this;
+        }
 
-      public Builder expectedWhen(Class<? extends Annotation> eventVerificationAnnotationTrigger)
-      {
-         this.eventExpectedToBeTriggeredAnnotation = eventVerificationAnnotationTrigger;
-         return this;
-      }
+        public Builder expectedWhen(Class<? extends Annotation> eventVerificationAnnotationTrigger) {
+            this.eventExpectedToBeTriggeredAnnotation = eventVerificationAnnotationTrigger;
+            return this;
+        }
 
-      public Builder notExpectedWhen(Class<? extends Annotation> eventNotTriggeredAnnotation)
-      {
-         this.eventNotExpectedToBeTriggeredAnnotation = eventNotTriggeredAnnotation;
-         return this;
-      }
+        public Builder notExpectedWhen(Class<? extends Annotation> eventNotTriggeredAnnotation) {
+            this.eventNotExpectedToBeTriggeredAnnotation = eventNotTriggeredAnnotation;
+            return this;
+        }
 
-      public void registerIfPresent(Map<Class<? extends PersistenceEvent>, EventHandlingVerifier> map, Method method)
-      {
-         EventHandlingVerifier verifier = new EventHandlingVerifier(event);
-         if (expectedToBeCalled(method))
-         {
-            registerEventTriggedExpectation(verifier, method);
-            map.put(event, verifier);
-         }
+        public void registerIfPresent(Map<Class<? extends PersistenceEvent>, EventHandlingVerifier> map, Method method) {
+            EventHandlingVerifier verifier = new EventHandlingVerifier(event);
+            if (expectedToBeCalled(method)) {
+                registerEventTriggedExpectation(verifier, method);
+                map.put(event, verifier);
+            }
 
-         if (notExpectedToBeCalled(method))
-         {
-            registerEventNotTriggedExpectation(verifier);
-            map.put(event, verifier);
-         }
+            if (notExpectedToBeCalled(method)) {
+                registerEventNotTriggedExpectation(verifier);
+                map.put(event, verifier);
+            }
 
-      }
+        }
 
-      private void registerEventNotTriggedExpectation(EventHandlingVerifier verifier)
-      {
-         verifier.shouldNotBePerformed();
-      }
+        private void registerEventNotTriggedExpectation(EventHandlingVerifier verifier) {
+            verifier.shouldNotBePerformed();
+        }
 
-      private void registerEventTriggedExpectation(EventHandlingVerifier verifier, Method method)
-      {
+        private void registerEventTriggedExpectation(EventHandlingVerifier verifier, Method method) {
 
-         TestExecutionPhase phase = extractPhase(method);
-         switch (phase)
-         {
-            case AFTER :
-               verifier.shouldBePerformedAfterTest();
-               break;
-            case BEFORE :
-               verifier.shouldBePerformedBeforeTest();
-               break;
-            default :
-               throw new IllegalArgumentException("Unsupported test phase " + phase);
-         }
+            TestExecutionPhase phase = extractPhase(method);
+            switch (phase) {
+                case AFTER:
+                    verifier.shouldBePerformedAfterTest();
+                    break;
+                case BEFORE:
+                    verifier.shouldBePerformedBeforeTest();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported test phase " + phase);
+            }
 
-      }
+        }
 
-      private TestExecutionPhase extractPhase(Method method)
-      {
-         final Annotation annotation = method.getAnnotation(eventExpectedToBeTriggeredAnnotation);
-         try
-         {
-            return (TestExecutionPhase) annotation.annotationType().getMethod("value").invoke(annotation);
-         }
-         catch (Exception e)
-         {
-            throw new RuntimeException("Unable to fetch test execution phase for " + annotation, e);
-         }
+        private TestExecutionPhase extractPhase(Method method) {
+            final Annotation annotation = method.getAnnotation(eventExpectedToBeTriggeredAnnotation);
+            try {
+                return (TestExecutionPhase) annotation.annotationType().getMethod("value").invoke(annotation);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to fetch test execution phase for " + annotation, e);
+            }
 
-      }
+        }
 
-      private boolean expectedToBeCalled(Method method)
-      {
-         return method.getAnnotation(eventExpectedToBeTriggeredAnnotation) != null;
-      }
+        private boolean expectedToBeCalled(Method method) {
+            return method.getAnnotation(eventExpectedToBeTriggeredAnnotation) != null;
+        }
 
-      public boolean notExpectedToBeCalled(Method method)
-      {
-         return method.getAnnotation(eventNotExpectedToBeTriggeredAnnotation) != null;
-      }
+        public boolean notExpectedToBeCalled(Method method) {
+            return method.getAnnotation(eventNotExpectedToBeTriggeredAnnotation) != null;
+        }
 
-   }
+    }
 
 
 }

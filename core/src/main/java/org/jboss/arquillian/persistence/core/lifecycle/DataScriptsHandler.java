@@ -30,51 +30,44 @@ import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatur
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
 
-public class DataScriptsHandler
-{
+public class DataScriptsHandler {
 
-   @Inject
-   private Instance<ScriptingConfiguration> configuration;
+    @Inject
+    private Instance<ScriptingConfiguration> configuration;
 
-   @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
+    @Inject
+    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolver;
 
-   @Inject
-   private Event<ExecuteScripts> executeScriptsEvent;
+    @Inject
+    private Event<ExecuteScripts> executeScriptsEvent;
 
-   public void executeBeforeTest(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest)
-   {
-      executeCustomScriptsBefore(beforePersistenceTest);
-   }
+    public void executeBeforeTest(@Observes(precedence = 30) BeforePersistenceTest beforePersistenceTest) {
+        executeCustomScriptsBefore(beforePersistenceTest);
+    }
 
-   public void executeAfterTest(@Observes(precedence = 40) AfterPersistenceTest afterPersistenceTest)
-   {
-      executeCustomScriptsAfter(afterPersistenceTest);
-   }
+    public void executeAfterTest(@Observes(precedence = 40) AfterPersistenceTest afterPersistenceTest) {
+        executeCustomScriptsAfter(afterPersistenceTest);
+    }
 
-   // Private methods
+    // Private methods
 
-   private void executeCustomScriptsBefore(BeforePersistenceTest beforePersistenceTest)
-   {
-      if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedBeforeTestRequested())
-      {
-         return;
-      }
+    private void executeCustomScriptsBefore(BeforePersistenceTest beforePersistenceTest) {
+        if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedBeforeTestRequested()) {
+            return;
+        }
 
-      SqlScriptProvider<ApplyScriptBefore> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(beforePersistenceTest.getTestClass(), configuration.get());
+        SqlScriptProvider<ApplyScriptBefore> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(beforePersistenceTest.getTestClass(), configuration.get());
 
-      executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
-   }
+        executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
+    }
 
-   private void executeCustomScriptsAfter(AfterPersistenceTest afterPersistenceTest)
-   {
-      if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedAfterTestRequested())
-      {
-         return;
-      }
+    private void executeCustomScriptsAfter(AfterPersistenceTest afterPersistenceTest) {
+        if (!persistenceExtensionFeatureResolver.get().shouldCustomScriptBeAppliedAfterTestRequested()) {
+            return;
+        }
 
-      SqlScriptProvider<ApplyScriptAfter> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(afterPersistenceTest.getTestClass(), configuration.get());
+        SqlScriptProvider<ApplyScriptAfter> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(afterPersistenceTest.getTestClass(), configuration.get());
 
-      executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
-   }
+        executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
+    }
 }

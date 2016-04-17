@@ -26,7 +26,6 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- *
  * Defines strategy used for seeding database.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -35,9 +34,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface SeedDataUsing
-{
+public @interface SeedDataUsing {
 
-   DataSeedStrategy value() default DataSeedStrategy.DEFAULT;
+    DataSeedStrategy value() default DataSeedStrategy.DEFAULT;
 
 }

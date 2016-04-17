@@ -33,27 +33,24 @@ import javax.persistence.PersistenceContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class NonPersistenceExtensionTest
-{
+public class NonPersistenceExtensionTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   public void should_inject_entity_manager() throws Exception
-   {
-      assertThat(em).isNotNull();
-   }
+    @Test
+    public void should_inject_entity_manager() throws Exception {
+        assertThat(em).isNotNull();
+    }
 
 }

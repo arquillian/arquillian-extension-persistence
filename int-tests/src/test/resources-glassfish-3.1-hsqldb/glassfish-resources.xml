@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
+    "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
 
   <jdbc-connection-pool
-    is-isolation-level-guaranteed="false" driver-classname="org.hsqldb.jdbcDriver"
-    res-type="java.sql.Driver" name="arquillian-hsql-inmemory-pool">
-    <property name="PortNumber" value="9001" />
-    <property name="serverName" value="localhost" />
-    <property name="URL" value="jdbc:hsqldb:mem:arquillian" />
-    <property name="user" value="sa" />
-    <property name="password" value="" />
+      is-isolation-level-guaranteed="false" driver-classname="org.hsqldb.jdbcDriver"
+      res-type="java.sql.Driver" name="arquillian-hsql-inmemory-pool">
+    <property name="PortNumber" value="9001"/>
+    <property name="serverName" value="localhost"/>
+    <property name="URL" value="jdbc:hsqldb:mem:arquillian"/>
+    <property name="user" value="sa"/>
+    <property name="password" value=""/>
   </jdbc-connection-pool>
 
-  <jdbc-resource jndi-name="arq/hsql" pool-name="arquillian-hsql-inmemory-pool" />
+  <jdbc-resource jndi-name="arq/hsql" pool-name="arquillian-hsql-inmemory-pool"/>
 
 </resources>
 

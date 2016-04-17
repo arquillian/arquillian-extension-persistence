@@ -27,73 +27,57 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DBUnitConfigurationPropertyMapper
-{
+public class DBUnitConfigurationPropertyMapper {
 
-   private static final String FEATURE_PREFIX = "http://www.dbunit.org/features/";
+    private static final String FEATURE_PREFIX = "http://www.dbunit.org/features/";
 
-   private static final String PROPERTY_PREFIX = "http://www.dbunit.org/properties/";
+    private static final String PROPERTY_PREFIX = "http://www.dbunit.org/properties/";
 
-   public Map<String, Object> map(DBUnitConfiguration configuration)
-   {
-      final Map<String, Object> convertedProperties = new HashMap<String, Object>();
-      mapProperties(configuration, convertedProperties);
-      mapFeatures(configuration, convertedProperties);
-      return convertedProperties ;
-   }
+    public Map<String, Object> map(DBUnitConfiguration configuration) {
+        final Map<String, Object> convertedProperties = new HashMap<String, Object>();
+        mapProperties(configuration, convertedProperties);
+        mapFeatures(configuration, convertedProperties);
+        return convertedProperties;
+    }
 
-   private void mapFeatures(DBUnitConfiguration configuration, final Map<String, Object> convertedProperties)
-   {
-      final List<Field> features = ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Feature.class);
-      try
-      {
-         for (Field feature : features)
-         {
-            String featurePrefix = FEATURE_PREFIX;
-            final Feature featureAnnotation = feature.getAnnotation(Feature.class);
-            if (!Strings.isEmpty(featureAnnotation.value()))
-            {
-               featurePrefix += featureAnnotation.value() + "/";
+    private void mapFeatures(DBUnitConfiguration configuration, final Map<String, Object> convertedProperties) {
+        final List<Field> features = ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Feature.class);
+        try {
+            for (Field feature : features) {
+                String featurePrefix = FEATURE_PREFIX;
+                final Feature featureAnnotation = feature.getAnnotation(Feature.class);
+                if (!Strings.isEmpty(featureAnnotation.value())) {
+                    featurePrefix += featureAnnotation.value() + "/";
+                }
+                final String key = featurePrefix + feature.getName();
+                final Object value = feature.get(configuration);
+                if (value != null) {
+                    convertedProperties.put(key, value);
+                }
             }
-            final String key = featurePrefix + feature.getName();
-            final Object value = feature.get(configuration);
-            if (value != null)
-            {
-               convertedProperties.put(key, value);
-            }
-         }
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
-      }
-   }
+        } catch (Exception e) {
+            throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
+        }
+    }
 
-   private void mapProperties(DBUnitConfiguration configuration, final Map<String, Object> convertedProperties)
-   {
-      final List<Field> properties = ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Property.class);
-      try
-      {
-         for (Field property : properties)
-         {
-            String propertyPrefix = PROPERTY_PREFIX;
-            final Property propertyAnnotation = property.getAnnotation(Property.class);
-            if (!Strings.isEmpty(propertyAnnotation.value()))
-            {
-               propertyPrefix += propertyAnnotation.value() + "/";
+    private void mapProperties(DBUnitConfiguration configuration, final Map<String, Object> convertedProperties) {
+        final List<Field> properties = ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Property.class);
+        try {
+            for (Field property : properties) {
+                String propertyPrefix = PROPERTY_PREFIX;
+                final Property propertyAnnotation = property.getAnnotation(Property.class);
+                if (!Strings.isEmpty(propertyAnnotation.value())) {
+                    propertyPrefix += propertyAnnotation.value() + "/";
+                }
+                final String key = propertyPrefix + property.getName();
+                final Object value = property.get(configuration);
+                if (value != null) {
+                    convertedProperties.put(key, value);
+                }
             }
-            final String key = propertyPrefix + property.getName();
-            final Object value = property.get(configuration);
-            if (value != null)
-            {
-               convertedProperties.put(key, value);
-            }
-         }
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
-      }
-   }
+        } catch (Exception e) {
+            throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
+        }
+    }
 
 }

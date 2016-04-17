@@ -5,12 +5,10 @@ import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 import java.util.Collection;
 
-public class ApplyScriptsBeforeTest extends ExecuteScripts
-{
+public class ApplyScriptsBeforeTest extends ExecuteScripts {
 
-   public ApplyScriptsBeforeTest(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors)
-   {
-      super(testEvent, dataSetDescriptors);
-   }
+    public ApplyScriptsBeforeTest(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors) {
+        super(testEvent, dataSetDescriptors);
+    }
 
 }

@@ -26,17 +26,16 @@ import java.sql.SQLException;
 /**
  * Extension point to define custom implementation of {@link org.dbunit.database.DatabaseSequenceFilter}
  * which is used to seed and clean database by DBUnit.
- *
+ * <p>
  * Custom implementation can be bundled with the test class (for example as separated JAR) and should have
  * proper SPI entry in META-INF/services.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public interface TableFilterProvider
-{
+public interface TableFilterProvider {
 
-   ITableFilter provide(IDatabaseConnection connection) throws SQLException, DataSetException;
+    ITableFilter provide(IDatabaseConnection connection) throws SQLException, DataSetException;
 
-   ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException;
+    ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException;
 
 }

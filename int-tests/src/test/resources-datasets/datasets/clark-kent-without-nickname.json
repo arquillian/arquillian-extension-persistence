@@ -1,13 +1,12 @@
 {
-	"useraccount":
-	[
-		{
-			"id": "2",
-			"firstname" : "Clark",
-			"lastname" : "Kent",
-			"username" : "ckent",
-			"password" : "LexLuthor123",
-		    "nickname" : "[NULL]"
-		}
-	]
+  "useraccount": [
+    {
+      "id": "2",
+      "firstname": "Clark",
+      "lastname": "Kent",
+      "username": "ckent",
+      "password": "LexLuthor123",
+      "nickname": "[NULL]"
+    }
+  ]
 }

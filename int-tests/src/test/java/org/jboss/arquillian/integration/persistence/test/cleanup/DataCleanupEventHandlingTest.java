@@ -38,85 +38,81 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
 @PersistenceTest
-public class DataCleanupEventHandlingTest
-{
+public class DataCleanupEventHandlingTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test @InSequence(1)
-   @Cleanup(phase = TestExecutionPhase.BEFORE)
-   @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
-   @CleanupUsingScriptShouldNotBeTriggered
-   public void should_cleanup_data_before_test() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(1)
+    @Cleanup(phase = TestExecutionPhase.BEFORE)
+    @CleanupShouldBeTriggered(TestExecutionPhase.BEFORE)
+    @CleanupUsingScriptShouldNotBeTriggered
+    public void should_cleanup_data_before_test() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data cleanup should be called after the test
-   }
+        // then
+        // data cleanup should be called after the test
+    }
 
-   @Test @InSequence(2)
-   @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
-   @CleanupUsingScriptShouldNotBeTriggered
-   public void should_cleanup_data_after_test_when_not_specified() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(2)
+    @CleanupShouldBeTriggered(TestExecutionPhase.AFTER)
+    @CleanupUsingScriptShouldNotBeTriggered
+    public void should_cleanup_data_after_test_when_not_specified() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data cleanup should be called before the test
-   }
+        // then
+        // data cleanup should be called before the test
+    }
 
-   @Test @InSequence(3)
-   @Cleanup(phase = TestExecutionPhase.NONE)
-   @CleanupShouldNotBeTriggered
-   public void should_not_cleanup_data() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
-      UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
+    @Test
+    @InSequence(3)
+    @Cleanup(phase = TestExecutionPhase.NONE)
+    @CleanupShouldNotBeTriggered
+    public void should_not_cleanup_data() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+        UserAccount clarkKent = new UserAccount("Clark", "Kent", "superman", "LexLuthor");
 
-      // when
-      em.persist(johnSmith);
-      em.persist(clarkKent);
-      em.flush();
-      em.clear();
+        // when
+        em.persist(johnSmith);
+        em.persist(clarkKent);
+        em.flush();
+        em.clear();
 
-      // then
-      // data clean up should not be performed
-   }
+        // then
+        // data clean up should not be performed
+    }
 
 }

@@ -16,28 +16,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class ConfigurationExportException extends RuntimeException
-{
+public class ConfigurationExportException extends RuntimeException {
 
-   private static final long serialVersionUID = 4448860606695749612L;
+    private static final long serialVersionUID = 4448860606695749612L;
 
-   public ConfigurationExportException()
-   {
-   }
+    public ConfigurationExportException() {
+    }
 
-   public ConfigurationExportException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public ConfigurationExportException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-   public ConfigurationExportException(String message)
-   {
-      super(message);
-   }
+    public ConfigurationExportException(String message) {
+        super(message);
+    }
 
-   public ConfigurationExportException(Throwable cause)
-   {
-      super(cause);
-   }
+    public ConfigurationExportException(Throwable cause) {
+        super(cause);
+    }
 
 }

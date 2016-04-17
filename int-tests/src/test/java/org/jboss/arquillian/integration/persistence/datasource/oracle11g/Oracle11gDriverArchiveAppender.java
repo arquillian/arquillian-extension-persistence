@@ -19,13 +19,11 @@ package org.jboss.arquillian.integration.persistence.datasource.oracle11g;
 
 import org.jboss.arquillian.integration.persistence.datasource.JdbcDriverArchiveAppender;
 
-public class Oracle11gDriverArchiveAppender extends JdbcDriverArchiveAppender
-{
-   @Override
-   public String getDriverCoordinates()
-   {
-      return "com.oracle:ojdbc6:11.2.0.2.0";
-   }
+public class Oracle11gDriverArchiveAppender extends JdbcDriverArchiveAppender {
+    @Override
+    public String getDriverCoordinates() {
+        return "com.oracle:ojdbc6:11.2.0.2.0";
+    }
 
 
 }

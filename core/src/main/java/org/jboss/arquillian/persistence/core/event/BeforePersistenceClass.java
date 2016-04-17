@@ -20,12 +20,10 @@ package org.jboss.arquillian.persistence.core.event;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.event.suite.ClassEvent;
 
-public class BeforePersistenceClass extends ClassEvent
-{
+public class BeforePersistenceClass extends ClassEvent {
 
-   public BeforePersistenceClass(TestClass testClass)
-   {
-      super(testClass);
-   }
+    public BeforePersistenceClass(TestClass testClass) {
+        super(testClass);
+    }
 
 }

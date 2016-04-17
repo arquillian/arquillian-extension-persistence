@@ -29,17 +29,15 @@ import org.jboss.arquillian.persistence.dbunit.deployment.DBUnitDataSetsTestArch
  * packages used in container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 public class DBUnitExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, DBUnitArchiveAppender.class)
-             .service(ApplicationArchiveProcessor.class, DBUnitConfigurationTestArchiveEnricher.class)
-             .service(ApplicationArchiveProcessor.class, DBUnitDataSetsTestArchiveEnricher.class)
-             .observer(DBUnitConfigurationClientSideProducer.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, DBUnitArchiveAppender.class)
+                .service(ApplicationArchiveProcessor.class, DBUnitConfigurationTestArchiveEnricher.class)
+                .service(ApplicationArchiveProcessor.class, DBUnitDataSetsTestArchiveEnricher.class)
+                .observer(DBUnitConfigurationClientSideProducer.class);
+    }
 
 }

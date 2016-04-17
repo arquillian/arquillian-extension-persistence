@@ -22,12 +22,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @DataSourceDefinition(name = "java:app/datasources/mysql_ds",
-   className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
-   url = "jdbc:mysql://localhost:33306/ape",
-   user = "ape",
-   password = "letmein")
+        className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
+        url = "jdbc:mysql://localhost:33306/ape",
+        user = "ape",
+        password = "letmein")
 @Singleton
 @Startup
-public class MySqlDataSource
-{
+public class MySqlDataSource {
 }

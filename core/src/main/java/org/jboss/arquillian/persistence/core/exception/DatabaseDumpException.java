@@ -17,28 +17,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class DatabaseDumpException extends RuntimeException
-{
+public class DatabaseDumpException extends RuntimeException {
 
-   private static final long serialVersionUID = 1530509676042166133L;
+    private static final long serialVersionUID = 1530509676042166133L;
 
-   public DatabaseDumpException()
-   {
-   }
+    public DatabaseDumpException() {
+    }
 
-   public DatabaseDumpException(String message)
-   {
-      super(message);
-   }
+    public DatabaseDumpException(String message) {
+        super(message);
+    }
 
-   public DatabaseDumpException(Throwable cause)
-   {
-      super(cause);
-   }
+    public DatabaseDumpException(Throwable cause) {
+        super(cause);
+    }
 
-   public DatabaseDumpException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public DatabaseDumpException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

@@ -27,87 +27,71 @@ import java.io.Serializable;
  */
 @Entity
 @Cacheable
-public class Platform implements Serializable
-{
+public class Platform implements Serializable {
 
-   private static final long serialVersionUID = -2063897924329618264L;
+    private static final long serialVersionUID = -2063897924329618264L;
 
-   @Id
-   private Long id;
+    @Id
+    private Long id;
 
-   private String title;
+    private String title;
 
-   protected Platform()
-   {
-   }
+    protected Platform() {
+    }
 
-   public Platform(Long id, String title)
-   {
-      this.id = id;
-      this.title = title;
-   }
+    public Platform(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 
-   public Long getId()
-   {
-      return id;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   public void setId(Long id)
-   {
-      this.id = id;
-   }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-   public String getTitle()
-   {
-      return title;
-   }
+    public String getTitle() {
+        return title;
+    }
 
-   public void setTitle(String title)
-   {
-      this.title = title;
-   }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 37;
-      int result = 1;
-      result = prime * result + ((title == null) ? 0 : title.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int result = 1;
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        return result;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof Platform))
-      {
-         return false;
-      }
-
-      final Platform other = (Platform) obj;
-      if (title == null)
-      {
-         if (other.getTitle() != null)
-         {
+        if (!(obj instanceof Platform)) {
             return false;
-         }
-      }
-      else if (!title.equals(other.getTitle()))
-      {
-         return false;
-      }
-      return true;
-   }
+        }
 
-   @Override
-   public String toString()
-   {
-      return "Platform@" + hashCode() + "[id = " + id + "; title = " + title + "]";
-   }
+        final Platform other = (Platform) obj;
+        if (title == null) {
+            if (other.getTitle() != null) {
+                return false;
+            }
+        } else if (!title.equals(other.getTitle())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform@" + hashCode() + "[id = " + id + "; title = " + title + "]";
+    }
 
 }

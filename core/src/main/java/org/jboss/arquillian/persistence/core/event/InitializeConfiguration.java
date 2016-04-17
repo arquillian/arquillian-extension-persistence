@@ -17,7 +17,6 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
-public class InitializeConfiguration implements PersistenceEvent
-{
+public class InitializeConfiguration implements PersistenceEvent {
 
 }

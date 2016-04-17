@@ -36,117 +36,98 @@ import java.util.*;
  * set in the given format.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public abstract class DataSetProducer implements IDataSetProducer
-{
+public abstract class DataSetProducer implements IDataSetProducer {
 
-   private boolean caseSensitiveTableNames;
+    private boolean caseSensitiveTableNames;
 
-   private IDataSetConsumer consumer = new DefaultConsumer();
+    private IDataSetConsumer consumer = new DefaultConsumer();
 
-   protected final InputStream input;
+    protected final InputStream input;
 
-   public DataSetProducer(InputStream input)
-   {
-      this.input = input;
-   }
+    public DataSetProducer(InputStream input) {
+        this.input = input;
+    }
 
-   abstract Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException;
+    abstract Map<String, List<Map<String, String>>> loadDataSet() throws DataSetException;
 
-   @Override
-   public void setConsumer(IDataSetConsumer consumer)
-   {
-      this.consumer = consumer;
-   }
+    @Override
+    public void setConsumer(IDataSetConsumer consumer) {
+        this.consumer = consumer;
+    }
 
-   @Override
-   public void produce() throws DataSetException
-   {
-      consumer.startDataSet();
+    @Override
+    public void produce() throws DataSetException {
+        consumer.startDataSet();
 
-      Map<String, List<Map<String, String>>> dataset = loadDataSet();
+        Map<String, List<Map<String, String>>> dataset = loadDataSet();
 
-      final List<Table> tables = createTables(dataset);
+        final List<Table> tables = createTables(dataset);
 
-      for (Table table : tables)
-      {
-         ITableMetaData tableMetaData = createTableMetaData(table);
-         consumer.startTable(tableMetaData);
-         for (Row row : table.getRows())
-         {
-            List<String> values = new ArrayList<String>();
-            for (Column column : tableMetaData.getColumns())
-            {
-               values.add(row.valueOf(column.getColumnName()));
+        for (Table table : tables) {
+            ITableMetaData tableMetaData = createTableMetaData(table);
+            consumer.startTable(tableMetaData);
+            for (Row row : table.getRows()) {
+                List<String> values = new ArrayList<String>();
+                for (Column column : tableMetaData.getColumns()) {
+                    values.add(row.valueOf(column.getColumnName()));
+                }
+                consumer.row(values.toArray());
             }
-            consumer.row(values.toArray());
-         }
 
-         consumer.endTable();
-      }
+            consumer.endTable();
+        }
 
-      consumer.endDataSet();
+        consumer.endDataSet();
 
-   }
+    }
 
-   private ITableMetaData createTableMetaData(Table table)
-   {
-      return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
-   }
+    private ITableMetaData createTableMetaData(Table table) {
+        return new DefaultTableMetaData(table.getTableName(), createColumns(table.getColumns()));
+    }
 
-   private Column[] createColumns(Collection<String> columnNames)
-   {
-      final List<Column> columns = new ArrayList<Column>();
-      for (String columnName : columnNames)
-      {
-         Column column = new Column(columnName, DataType.UNKNOWN);
-         columns.add(column);
-      }
-      return columns.toArray(new Column[columns.size()]);
-   }
+    private Column[] createColumns(Collection<String> columnNames) {
+        final List<Column> columns = new ArrayList<Column>();
+        for (String columnName : columnNames) {
+            Column column = new Column(columnName, DataType.UNKNOWN);
+            columns.add(column);
+        }
+        return columns.toArray(new Column[columns.size()]);
+    }
 
-   private List<Table> createTables(Map<String, List<Map<String, String>>> jsonStructure)
-   {
-      List<Table> tables = new ArrayList<Table>();
-      for (Map.Entry<String, List<Map<String, String>>> entry : jsonStructure.entrySet())
-      {
-         Table table = new Table(entry.getKey());
-         table.addColumns(extractColumns(entry.getValue()));
-         table.addRows(extractRows(entry.getValue()));
-         tables.add(table);
-      }
-      return tables;
-   }
+    private List<Table> createTables(Map<String, List<Map<String, String>>> jsonStructure) {
+        List<Table> tables = new ArrayList<Table>();
+        for (Map.Entry<String, List<Map<String, String>>> entry : jsonStructure.entrySet()) {
+            Table table = new Table(entry.getKey());
+            table.addColumns(extractColumns(entry.getValue()));
+            table.addRows(extractRows(entry.getValue()));
+            tables.add(table);
+        }
+        return tables;
+    }
 
-   private Collection<Row> extractRows(List<Map<String, String>> rows)
-   {
-      final List<Row> extractedRows = new ArrayList<Row>();
-      for (Map<String, String> row : rows)
-      {
-         extractedRows.add(new Row(row));
-      }
-      return extractedRows;
-   }
+    private Collection<Row> extractRows(List<Map<String, String>> rows) {
+        final List<Row> extractedRows = new ArrayList<Row>();
+        for (Map<String, String> row : rows) {
+            extractedRows.add(new Row(row));
+        }
+        return extractedRows;
+    }
 
-   private Collection<String> extractColumns(List<Map<String, String>> rows)
-   {
-      final Set<String> columns = new HashSet<String>();
-      for (Map<String, String> row : rows)
-      {
-         columns.addAll(row.keySet());
-      }
-      return columns;
-   }
+    private Collection<String> extractColumns(List<Map<String, String>> rows) {
+        final Set<String> columns = new HashSet<String>();
+        for (Map<String, String> row : rows) {
+            columns.addAll(row.keySet());
+        }
+        return columns;
+    }
 
-   public boolean isCaseSensitiveTableNames()
-   {
-      return caseSensitiveTableNames;
-   }
+    public boolean isCaseSensitiveTableNames() {
+        return caseSensitiveTableNames;
+    }
 
-   public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames)
-   {
-      this.caseSensitiveTableNames = caseSensitiveTableNames;
-   }
+    public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames) {
+        this.caseSensitiveTableNames = caseSensitiveTableNames;
+    }
 
 }

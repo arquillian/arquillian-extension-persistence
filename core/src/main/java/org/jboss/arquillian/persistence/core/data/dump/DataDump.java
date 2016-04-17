@@ -19,33 +19,27 @@ package org.jboss.arquillian.persistence.core.data.dump;
 import java.io.Serializable;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DataDump implements Serializable
-{
+public class DataDump implements Serializable {
 
-   private static final long serialVersionUID = 796037130134103796L;
+    private static final long serialVersionUID = 796037130134103796L;
 
-   private final String dataSet;
+    private final String dataSet;
 
-   private final String path;
+    private final String path;
 
-   public DataDump(String dataSet, String path)
-   {
-      this.dataSet = dataSet;
-      this.path = path;
-   }
+    public DataDump(String dataSet, String path) {
+        this.dataSet = dataSet;
+        this.path = path;
+    }
 
-   public String getDataSet()
-   {
-      return dataSet;
-   }
+    public String getDataSet() {
+        return dataSet;
+    }
 
-   public String getPath()
-   {
-      return path;
-   }
+    public String getPath() {
+        return path;
+    }
 
 }

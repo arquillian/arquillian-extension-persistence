@@ -20,14 +20,12 @@ package org.jboss.arquillian.integration.persistence.datasource.mssql;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
-public class MsSql2008DataSourceExtension implements LoadableExtension
-{
+public class MsSql2008DataSourceExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, MsSql2008DataSourceArchiveCreator.class);
-      builder.service(AuxiliaryArchiveAppender.class, MsSqlDriverArchiveAppender.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, MsSql2008DataSourceArchiveCreator.class);
+        builder.service(AuxiliaryArchiveAppender.class, MsSqlDriverArchiveAppender.class);
+    }
 
 }

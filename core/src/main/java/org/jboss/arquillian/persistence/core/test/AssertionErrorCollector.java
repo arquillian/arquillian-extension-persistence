@@ -29,63 +29,51 @@ import java.util.List;
  * persistence test) - so called soft assertion.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class AssertionErrorCollector
-{
-   private final List<Throwable> assertionErrors = new ArrayList<Throwable>();
+public class AssertionErrorCollector {
+    private final List<Throwable> assertionErrors = new ArrayList<Throwable>();
 
-   public void collect(Throwable error)
-   {
-      assertionErrors.add(error);
-   }
+    public void collect(Throwable error) {
+        assertionErrors.add(error);
+    }
 
-   public void report()
-   {
-      if (assertionErrors.isEmpty())
-      {
-         return;
-      }
+    public void report() {
+        if (assertionErrors.isEmpty()) {
+            return;
+        }
 
-      throw new AssertionError(createErrorMessage());
-   }
+        throw new AssertionError(createErrorMessage());
+    }
 
-   public String showAllErrors() {
-      return Arrays.toString(assertionErrors.toArray());
-   }
+    public String showAllErrors() {
+        return Arrays.toString(assertionErrors.toArray());
+    }
 
-   public boolean contains(Class<? extends Throwable> throwable)
-   {
-      for (Throwable error : assertionErrors)
-      {
-         if (error.getClass().equals(throwable))
-         {
-            return true;
-         }
-      }
-      return false;
-   }
+    public boolean contains(Class<? extends Throwable> throwable) {
+        for (Throwable error : assertionErrors) {
+            if (error.getClass().equals(throwable)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-   public void clear()
-   {
-      assertionErrors.clear();
-   }
+    public void clear() {
+        assertionErrors.clear();
+    }
 
-   public int amountOfErrors()
-   {
-      return assertionErrors.size();
-   }
+    public int amountOfErrors() {
+        return assertionErrors.size();
+    }
 
-   private String createErrorMessage()
-   {
-      final StringBuilder builder = new StringBuilder();
+    private String createErrorMessage() {
+        final StringBuilder builder = new StringBuilder();
 
-      builder.append("Test failed in ").append(amountOfErrors()).append(" case").append(amountOfErrors() > 1 ? "s" : "").append(". \n");
-      for (Throwable error : assertionErrors)
-      {
-         builder.append(error.getMessage()).append('\n');
-      }
-      return builder.toString();
-   }
+        builder.append("Test failed in ").append(amountOfErrors()).append(" case").append(amountOfErrors() > 1 ? "s" : "").append(". \n");
+        for (Throwable error : assertionErrors) {
+            builder.append(error.getMessage()).append('\n');
+        }
+        return builder.toString();
+    }
 
 }

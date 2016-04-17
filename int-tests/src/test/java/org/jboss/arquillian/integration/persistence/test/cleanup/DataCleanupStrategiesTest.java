@@ -41,77 +41,75 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class DataCleanupStrategiesTest
-{
+public class DataCleanupStrategiesTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test @InSequence(1)
-   @UsingDataSet("users.yml")
-   @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.STRICT)
-   @DatabaseShouldBeEmptyAfterTest
-   public void should_cleanup_whole_database_content_when_using_strict_mode()
-   {
-      em.persist(new Address("Kryptonite", 1, "Metropolis", 7272));
-   }
+    @Test
+    @InSequence(1)
+    @UsingDataSet("users.yml")
+    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.STRICT)
+    @DatabaseShouldBeEmptyAfterTest
+    public void should_cleanup_whole_database_content_when_using_strict_mode() {
+        em.persist(new Address("Kryptonite", 1, "Metropolis", 7272));
+    }
 
-   @Test @InSequence(2)
-   @UsingDataSet("users.yml")
-   @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
-   @DatabaseShouldContainAfterTest("expected-address.yml")
-   public void should_cleanup_entries_added_using_data_set()
-   {
-      em.persist(new Address("Testing Street", 7, "JavaPolis", 1234));
-   }
+    @Test
+    @InSequence(2)
+    @UsingDataSet("users.yml")
+    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @DatabaseShouldContainAfterTest("expected-address.yml")
+    public void should_cleanup_entries_added_using_data_set() {
+        em.persist(new Address("Testing Street", 7, "JavaPolis", 1234));
+    }
 
-   @Test @InSequence(3)
-   @ApplyScriptBefore({"delete-all.sql", "one-address.sql"})
-   @UsingDataSet("users.yml")
-   @ShouldMatchDataSet(value = {"users.yml", "lex-luthor.yml", "expected-address.yml"}, excludeColumns = { "id" })
-   @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
-   @DatabaseShouldContainAfterTest({"expected-address.yml", "lex-luthor.yml"})
-   public void should_cleanup_entries_added_using_data_set_but_not_by_script()
-   {
-      em.persist(new UserAccount("Lex", "Luthor", "LexCorp", "Injustice Gang"));
-   }
+    @Test
+    @InSequence(3)
+    @ApplyScriptBefore({"delete-all.sql", "one-address.sql"})
+    @UsingDataSet("users.yml")
+    @ShouldMatchDataSet(value = {"users.yml", "lex-luthor.yml", "expected-address.yml"}, excludeColumns = {"id"})
+    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @DatabaseShouldContainAfterTest({"expected-address.yml", "lex-luthor.yml"})
+    public void should_cleanup_entries_added_using_data_set_but_not_by_script() {
+        em.persist(new UserAccount("Lex", "Luthor", "LexCorp", "Injustice Gang"));
+    }
 
-   @Test @InSequence(4)
-   @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
-   @UsingDataSet("users.yml")
-   @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
-   @DatabaseShouldContainAfterTest({"expected-address.yml"})
-   @ShouldBeEmptyAfterTest("useraccount")
-   public void should_cleanup_all_tables_defined_in_data_set()
-   {
-      em.persist(new UserAccount("Bartosz", "Majsak", "fonejacker", "doovdePUK"));
-   }
+    @Test
+    @InSequence(4)
+    @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
+    @UsingDataSet("users.yml")
+    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @DatabaseShouldContainAfterTest({"expected-address.yml"})
+    @ShouldBeEmptyAfterTest("useraccount")
+    public void should_cleanup_all_tables_defined_in_data_set() {
+        em.persist(new UserAccount("Bartosz", "Majsak", "fonejacker", "doovdePUK"));
+    }
 
-   @Test @InSequence(5)
-   @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
-   @UsingDataSet("users.yml")
-   @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
-   @DatabaseShouldContainAfterTest({"expected-address.yml"})
-   @ShouldBeEmptyAfterTest("useraccount")
-   public void should_seed_using_both_custom_scripts_and_datasets_and_cleanup_all_tables_defined_in_data_set()
-   {
-      final List<UserAccount> users = (List<UserAccount>) em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      final List<Address> addresses = em.createQuery(Query.selectAllInJPQL(Address.class)).getResultList();
+    @Test
+    @InSequence(5)
+    @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
+    @UsingDataSet("users.yml")
+    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @DatabaseShouldContainAfterTest({"expected-address.yml"})
+    @ShouldBeEmptyAfterTest("useraccount")
+    public void should_seed_using_both_custom_scripts_and_datasets_and_cleanup_all_tables_defined_in_data_set() {
+        final List<UserAccount> users = (List<UserAccount>) em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        final List<Address> addresses = em.createQuery(Query.selectAllInJPQL(Address.class)).getResultList();
 
-      assertThat(users).hasSize(3);
-      assertThat(addresses).hasSize(1);
-   }
+        assertThat(users).hasSize(3);
+        assertThat(addresses).hasSize(1);
+    }
 
 }

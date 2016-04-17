@@ -1,32 +1,29 @@
 {
-	"useraccount":
-	[
-		{
-			"id" : 1,
-			"firstname" : "John",
-			"lastname" : "Smith",
-			"username" : "doovde",
-			"password" : "password"
-		},
-		{
-			"id" : 2,
-			"firstname" : "Clark",
-			"lastname" : "Kent",
-			"username" : "superman",
-			"password" : "kryptonite",
-			"email" : "arquillian@jboss.org"
-		}
-	],
-
-	"testtable":
-	[
-		{
-			"id" : 1,
-			"value" : "doovde"
-		},
-		{
-			"id" : 2,
-			"value" : "kryptonite"
-		}
-	]
+  "useraccount": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "lastname": "Smith",
+      "username": "doovde",
+      "password": "password"
+    },
+    {
+      "id": 2,
+      "firstname": "Clark",
+      "lastname": "Kent",
+      "username": "superman",
+      "password": "kryptonite",
+      "email": "arquillian@jboss.org"
+    }
+  ],
+  "testtable": [
+    {
+      "id": 1,
+      "value": "doovde"
+    },
+    {
+      "id": 2,
+      "value": "kryptonite"
+    }
+  ]
 }

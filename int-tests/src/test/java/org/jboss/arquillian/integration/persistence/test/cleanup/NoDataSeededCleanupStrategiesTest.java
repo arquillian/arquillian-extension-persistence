@@ -39,59 +39,51 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * All tests are wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
 @CreateSchema("schema/create.sql")
-public class NoDataSeededCleanupStrategiesTest
-{
+public class NoDataSeededCleanupStrategiesTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war").addPackage(UserAccount.class.getPackage())
-                        .addClass(Query.class)
-                        // required for remote containers in order to run tests with FEST-Asserts
-                        .addPackages(true, "org.assertj.core")
-                        .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                        .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war").addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   @Cleanup(phase =  TestExecutionPhase.BEFORE)
-   public void should_not_have_any_user_in_database_default_strategy() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
+    @Test
+    @Cleanup(phase = TestExecutionPhase.BEFORE)
+    public void should_not_have_any_user_in_database_default_strategy() throws Exception {
+        assertNoUserAccountsStored();
+    }
 
-   @Test
-   @Cleanup(strategy =  CleanupStrategy.USED_TABLES_ONLY)
-   public void should_not_have_any_user_in_database_used_tables_only_strategy() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
+    @Test
+    @Cleanup(strategy = CleanupStrategy.USED_TABLES_ONLY)
+    public void should_not_have_any_user_in_database_used_tables_only_strategy() throws Exception {
+        assertNoUserAccountsStored();
+    }
 
-   @Test
-   @Cleanup(strategy =  CleanupStrategy.USED_ROWS_ONLY)
-   public void should_not_have_any_user_in_database_used_rows_only_strategy() throws Exception
-   {
-      assertNoUserAccountsStored();
-   }
+    @Test
+    @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+    public void should_not_have_any_user_in_database_used_rows_only_strategy() throws Exception {
+        assertNoUserAccountsStored();
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private void assertNoUserAccountsStored()
-   {
-      @SuppressWarnings("unchecked")
-      List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-      assertThat(savedUserAccounts).isEmpty();
-   }
+    private void assertNoUserAccountsStored() {
+        @SuppressWarnings("unchecked")
+        List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        assertThat(savedUserAccounts).isEmpty();
+    }
 
 }

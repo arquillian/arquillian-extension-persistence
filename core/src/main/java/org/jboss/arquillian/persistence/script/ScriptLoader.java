@@ -26,60 +26,44 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public final class ScriptLoader
-{
+public final class ScriptLoader {
 
-   public static String loadScript(String location, Charset charset)
-   {
-      final StringBuilder builder = new StringBuilder();
+    public static String loadScript(String location, Charset charset) {
+        final StringBuilder builder = new StringBuilder();
 
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
 
-      BufferedReader reader = null;
-      String line;
+        BufferedReader reader = null;
+        String line;
 
-      try
-      {
-         reader = new BufferedReader(new InputStreamReader(inputStream, charset));
-         while ((line  = reader.readLine()) != null)
-         {
-            builder.append(line)
-                   .append("\r\n");
-         }
-      }
-      catch (Exception e)
-      {
-         throw new ScriptLoadingException("Failed loading script " + location, e);
-      }
-      finally
-      {
-         if (reader != null)
-         {
-            try
-            {
-               reader.close();
+        try {
+            reader = new BufferedReader(new InputStreamReader(inputStream, charset));
+            while ((line = reader.readLine()) != null) {
+                builder.append(line)
+                        .append("\r\n");
             }
-            catch (IOException e)
-            {
-               throw new ScriptLoadingException("Unable to close script.", e);
+        } catch (Exception e) {
+            throw new ScriptLoadingException("Failed loading script " + location, e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new ScriptLoadingException("Unable to close script.", e);
+                }
             }
-         }
-      }
+        }
 
-      return builder.toString();
-   }
+        return builder.toString();
+    }
 
-   public static boolean isSqlScriptFile(String script)
-   {
-      if (script == null)
-      {
-         return false;
-      }
-      return script.endsWith(".sql");
-   }
+    public static boolean isSqlScriptFile(String script) {
+        if (script == null) {
+            return false;
+        }
+        return script.endsWith(".sql");
+    }
 
 }

@@ -39,12 +39,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
-public @interface CustomColumnFilter
-{
-   /**
-    * Custom column filters to be applied in the specified order. Each concrete implementation
-    * is expected to have default non-argument constructor which will be used when creating an instance of
-    * the filter.
-    */
-   Class<? extends IColumnFilter>[] value();
+public @interface CustomColumnFilter {
+    /**
+     * Custom column filters to be applied in the specified order. Each concrete implementation
+     * is expected to have default non-argument constructor which will be used when creating an instance of
+     * the filter.
+     */
+    Class<? extends IColumnFilter>[] value();
 }

@@ -25,28 +25,24 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.persistence.core.configuration.ConfigurationProducer;
 
 /**
- *
  * Triggers DBUnit configuration creation on the client side.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class ScriptingConfigurationClientSideProducer extends ConfigurationProducer<ScriptingConfiguration>
-{
+public class ScriptingConfigurationClientSideProducer extends ConfigurationProducer<ScriptingConfiguration> {
 
-   @Inject @ApplicationScoped
-   InstanceProducer<ScriptingConfiguration> configurationProducer;
+    @Inject
+    @ApplicationScoped
+    InstanceProducer<ScriptingConfiguration> configurationProducer;
 
-   @Override
-   protected ScriptingConfiguration create()
-   {
-      return new ScriptingConfiguration();
-   }
+    @Override
+    protected ScriptingConfiguration create() {
+        return new ScriptingConfiguration();
+    }
 
-   @Override
-   public void observe(@Observes ArquillianDescriptor descriptorCreated)
-   {
-      configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
-   }
+    @Override
+    public void observe(@Observes ArquillianDescriptor descriptorCreated) {
+        configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
+    }
 
 }

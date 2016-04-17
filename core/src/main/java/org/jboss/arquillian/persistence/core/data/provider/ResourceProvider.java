@@ -33,163 +33,136 @@ import java.net.URL;
 import java.util.*;
 
 /**
- *
  * Handles metadata extraction from given test class or test method and provides
  * {@link ResourceDescriptor descriptors} for resources defined in given annotation type
  * (such as {@link UsingDataSet} or {@link ApplyScriptBefore}).
  *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @param <T> Concrete implementation of {@link ResourceDescriptor} providing necessary information for given resource type.
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public abstract class ResourceProvider<T extends ResourceDescriptor<?>>
-{
+public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
 
-   protected final MetadataExtractor metadataExtractor;
+    protected final MetadataExtractor metadataExtractor;
 
-   protected final Class<? extends Annotation> resourceAnnotation;
+    protected final Class<? extends Annotation> resourceAnnotation;
 
-   public ResourceProvider(Class<? extends Annotation> resourceAnnotation, MetadataExtractor metadataExtractor)
-   {
-      this.resourceAnnotation = resourceAnnotation;
-      this.metadataExtractor = metadataExtractor;
-   }
+    public ResourceProvider(Class<? extends Annotation> resourceAnnotation, MetadataExtractor metadataExtractor) {
+        this.resourceAnnotation = resourceAnnotation;
+        this.metadataExtractor = metadataExtractor;
+    }
 
-   /**
-    * Returns all resources defined for this test class
-    * including those defined on the test method level.
-    *
-    * @param testClass
-    * @return
-    */
-   public Collection<T> getDescriptors(TestClass testClass)
-   {
-      final List<T> descriptors = new ArrayList<T>();
-      for (Method testMethod : testClass.getMethods(resourceAnnotation))
-      {
-         descriptors.addAll(getDescriptorsDefinedFor(testMethod));
-      }
-      descriptors.addAll(obtainClassLevelDescriptor(testClass.getAnnotation(resourceAnnotation)));
-      return descriptors ;
-   }
+    /**
+     * Returns all resources defined for this test class
+     * including those defined on the test method level.
+     *
+     * @param testClass
+     * @return
+     */
+    public Collection<T> getDescriptors(TestClass testClass) {
+        final List<T> descriptors = new ArrayList<T>();
+        for (Method testMethod : testClass.getMethods(resourceAnnotation)) {
+            descriptors.addAll(getDescriptorsDefinedFor(testMethod));
+        }
+        descriptors.addAll(obtainClassLevelDescriptor(testClass.getAnnotation(resourceAnnotation)));
+        return descriptors;
+    }
 
-   public Collection<T> getDescriptorsDefinedFor(Method testMethod)
-   {
-      final List<T> descriptors = new ArrayList<T>();
-      for (String dataFileName : getResourceFileNames(testMethod))
-      {
-         T descriptor = createDescriptor(dataFileName);
-         descriptors.add(descriptor);
-      }
+    public Collection<T> getDescriptorsDefinedFor(Method testMethod) {
+        final List<T> descriptors = new ArrayList<T>();
+        for (String dataFileName : getResourceFileNames(testMethod)) {
+            T descriptor = createDescriptor(dataFileName);
+            descriptors.add(descriptor);
+        }
 
-      return descriptors;
-   }
+        return descriptors;
+    }
 
-   public abstract Collection<String> getResourceFileNames(Method testMethod);
+    public abstract Collection<String> getResourceFileNames(Method testMethod);
 
-   protected abstract T createDescriptor(String resource);
+    protected abstract T createDescriptor(String resource);
 
-   protected abstract String defaultLocation();
+    protected abstract String defaultLocation();
 
-   protected abstract String defaultFileName();
+    protected abstract String defaultFileName();
 
-   protected List<T> obtainClassLevelDescriptor(Annotation classLevelAnnotation)
-   {
-      if (classLevelAnnotation == null)
-      {
-         return Collections.emptyList();
-      }
+    protected List<T> obtainClassLevelDescriptor(Annotation classLevelAnnotation) {
+        if (classLevelAnnotation == null) {
+            return Collections.emptyList();
+        }
 
-      final List<T> descriptors = new ArrayList<T>();
+        final List<T> descriptors = new ArrayList<T>();
 
-      try
-      {
-         final String[] values = (String[]) classLevelAnnotation.annotationType()
-                                                                .getMethod("value")
-                                                                .invoke(classLevelAnnotation);
+        try {
+            final String[] values = (String[]) classLevelAnnotation.annotationType()
+                    .getMethod("value")
+                    .invoke(classLevelAnnotation);
 
-         final List<String> resources = new ArrayList<String>(Arrays.asList(values));
+            final List<String> resources = new ArrayList<String>(Arrays.asList(values));
 
-         if (resources.isEmpty() || Strings.isEmpty(resources.get(0)))
-         {
-            String defaultFileName = defaultFileName();
-            resources.clear();
-            resources.add(defaultFileName);
-         }
+            if (resources.isEmpty() || Strings.isEmpty(resources.get(0))) {
+                String defaultFileName = defaultFileName();
+                resources.clear();
+                resources.add(defaultFileName);
+            }
 
-         for (String dataFileName : resources)
-         {
-            descriptors.add(createDescriptor(dataFileName));
-         }
+            for (String dataFileName : resources) {
+                descriptors.add(createDescriptor(dataFileName));
+            }
 
-      }
-      catch (Exception e)
-      {
-         throw new MetadataProcessingException("Unable to evaluate annotation value", e);
-      }
+        } catch (Exception e) {
+            throw new MetadataProcessingException("Unable to evaluate annotation value", e);
+        }
 
-      return descriptors;
-   }
+        return descriptors;
+    }
 
-   protected String defaultFolder()
-   {
-      String defaultLocation = defaultLocation();
-      if (!defaultLocation.endsWith("/"))
-      {
-         defaultLocation += "/";
-      }
-      return defaultLocation;
-   }
+    protected String defaultFolder() {
+        String defaultLocation = defaultLocation();
+        if (!defaultLocation.endsWith("/")) {
+            defaultLocation += "/";
+        }
+        return defaultLocation;
+    }
 
-   /**
-    * Checks if file exists in the default location.
-    * If that's not the case, file is looked up starting from the root.
-    *
-    * @return determined file location
-    */
-   protected String determineLocation(String location)
-   {
-      if (existsInDefaultLocation(location))
-      {
-         return defaultFolder() + location;
-      }
+    /**
+     * Checks if file exists in the default location.
+     * If that's not the case, file is looked up starting from the root.
+     *
+     * @return determined file location
+     */
+    protected String determineLocation(String location) {
+        if (existsInDefaultLocation(location)) {
+            return defaultFolder() + location;
+        }
 
-      if (!existsInGivenLocation(location))
-      {
-         throw new InvalidResourceLocation("Unable to locate " + location + ". " +
-               "File does not exist also in default location " + defaultLocation());
-      }
+        if (!existsInGivenLocation(location)) {
+            throw new InvalidResourceLocation("Unable to locate " + location + ". " +
+                    "File does not exist also in default location " + defaultLocation());
+        }
 
-      return location;
-   }
+        return location;
+    }
 
-   protected boolean existsInGivenLocation(String location)
-   {
-      try
-      {
-         final URL url = load(location);
-         if (url == null)
-         {
-            return false;
-         }
-      }
-      catch (URISyntaxException e)
-      {
-         throw new InvalidResourceLocation("Unable to open resource file in " + location, e);
-      }
+    protected boolean existsInGivenLocation(String location) {
+        try {
+            final URL url = load(location);
+            if (url == null) {
+                return false;
+            }
+        } catch (URISyntaxException e) {
+            throw new InvalidResourceLocation("Unable to open resource file in " + location, e);
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   protected boolean existsInDefaultLocation(String location)
-   {
-      final String defaultLocation = defaultFolder() + location;
-      return existsInGivenLocation(defaultLocation);
-   }
+    protected boolean existsInDefaultLocation(String location) {
+        final String defaultLocation = defaultFolder() + location;
+        return existsInGivenLocation(defaultLocation);
+    }
 
-   private URL load(String resourceLocation) throws URISyntaxException
-   {
-      return Thread.currentThread().getContextClassLoader().getResource(resourceLocation);
-   }
+    private URL load(String resourceLocation) throws URISyntaxException {
+        return Thread.currentThread().getContextClassLoader().getResource(resourceLocation);
+    }
 
 }

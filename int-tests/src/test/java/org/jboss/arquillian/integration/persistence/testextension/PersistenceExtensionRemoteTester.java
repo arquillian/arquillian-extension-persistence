@@ -22,14 +22,12 @@ import org.jboss.arquillian.integration.persistence.testextension.data.DataConte
 import org.jboss.arquillian.integration.persistence.testextension.event.EventObserver;
 import org.jboss.arquillian.integration.persistence.testextension.exception.ErrorObserver;
 
-public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
-{
+public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension {
 
-   public void register(ExtensionBuilder builder)
-   {
-      builder.observer(EventObserver.class)
-             .observer(ErrorObserver.class)
-             .observer(DataContentVerifier.class);
-   }
+    public void register(ExtensionBuilder builder) {
+        builder.observer(EventObserver.class)
+                .observer(ErrorObserver.class)
+                .observer(DataContentVerifier.class);
+    }
 
 }

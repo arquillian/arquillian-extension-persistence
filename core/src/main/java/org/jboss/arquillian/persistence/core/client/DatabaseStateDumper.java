@@ -31,39 +31,27 @@ import java.io.Writer;
  * Writes database state dumped during in-container test execution
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DatabaseStateDumper
-{
-   public void dump(@Observes DumpDataCommand dumpDataCommand)
-   {
-      final DataDump dataDump = dumpDataCommand.getDumpData();
-      Writer writer = null;
+public class DatabaseStateDumper {
+    public void dump(@Observes DumpDataCommand dumpDataCommand) {
+        final DataDump dataDump = dumpDataCommand.getDumpData();
+        Writer writer = null;
 
-      try
-      {
-         writer = new BufferedWriter(new FileWriter(dataDump.getPath()));
-         writer.write(dataDump.getDataSet());
-      }
-      catch (Exception e)
-      {
-         throw new DatabaseDumpException("Unable to dump database state to " + dataDump.getPath(), e);
-      }
-      finally
-      {
-         dumpDataCommand.setResult(true);
-         if (writer != null)
-         {
-            try
-            {
-               writer.close();
+        try {
+            writer = new BufferedWriter(new FileWriter(dataDump.getPath()));
+            writer.write(dataDump.getDataSet());
+        } catch (Exception e) {
+            throw new DatabaseDumpException("Unable to dump database state to " + dataDump.getPath(), e);
+        } finally {
+            dumpDataCommand.setResult(true);
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new DatabaseDumpException("Unable to close writer.", e);
+                }
             }
-            catch (IOException e)
-            {
-               throw new DatabaseDumpException("Unable to close writer.", e);
-            }
-         }
-      }
-   }
+        }
+    }
 
 }

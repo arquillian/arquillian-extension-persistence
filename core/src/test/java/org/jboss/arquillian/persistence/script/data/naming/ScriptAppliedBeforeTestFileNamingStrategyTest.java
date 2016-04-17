@@ -22,33 +22,30 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ScriptAppliedBeforeTestFileNamingStrategyTest
-{
+public class ScriptAppliedBeforeTestFileNamingStrategyTest {
 
-   @Test
-   public void should_create_default_file_name_for_script_applied_before_test_using_full_class_name_and_method_name() throws Exception
-   {
-      // given
-      PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("before-", "sql");
+    @Test
+    public void should_create_default_file_name_for_script_applied_before_test_using_full_class_name_and_method_name() throws Exception {
+        // given
+        PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("before-", "sql");
 
-      // when
-      String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        // when
+        String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
-      // then
-      assertThat(fileName).isEqualTo("before-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
-   }
+        // then
+        assertThat(fileName).isEqualTo("before-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+    }
 
-   @Test
-   public void should_produce_default_file_name_for_script_applied_before_test_using_full_class_name_and_method_name() throws Exception
-   {
-      // given
-      PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("before-", "sql");
+    @Test
+    public void should_produce_default_file_name_for_script_applied_before_test_using_full_class_name_and_method_name() throws Exception {
+        // given
+        PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("before-", "sql");
 
-      // when
-      String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        // when
+        String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
-      // then
-      assertThat(fileName).isEqualTo("before-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
-   }
+        // then
+        assertThat(fileName).isEqualTo("before-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+    }
 
 }

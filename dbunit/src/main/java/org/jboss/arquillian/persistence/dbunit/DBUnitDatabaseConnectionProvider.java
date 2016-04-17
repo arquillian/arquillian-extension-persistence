@@ -31,36 +31,32 @@ import java.lang.annotation.Annotation;
  * Injects DBUnit database connection through {@link ArquillianResource} annotation to the test class instance.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DBUnitDatabaseConnectionProvider implements ResourceProvider
-{
+public class DBUnitDatabaseConnectionProvider implements ResourceProvider {
 
-   @Inject
-   private Instance<DataSource> dataSourceInstance;
+    @Inject
+    private Instance<DataSource> dataSourceInstance;
 
-   @Inject
-   private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
+    @Inject
+    private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
-   @Inject
-   private Instance<DatabaseConnection> databaseConnectionInstance;
+    @Inject
+    private Instance<DatabaseConnection> databaseConnectionInstance;
 
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider#canProvide(java.lang.Class)
-    */
-   @Override
-   public boolean canProvide(Class<?> type)
-   {
-      return DatabaseConnection.class.isAssignableFrom(type);
-   }
+    /* (non-Javadoc)
+     * @see org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider#canProvide(java.lang.Class)
+     */
+    @Override
+    public boolean canProvide(Class<?> type) {
+        return DatabaseConnection.class.isAssignableFrom(type);
+    }
 
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider#lookup(org.jboss.arquillian.test.api.ArquillianResource, java.lang.annotation.Annotation[])
-    */
-   @Override
-   public Object lookup(ArquillianResource resource, Annotation... qualifiers)
-   {
-      return databaseConnectionInstance.get();
-   }
+    /* (non-Javadoc)
+     * @see org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider#lookup(org.jboss.arquillian.test.api.ArquillianResource, java.lang.annotation.Annotation[])
+     */
+    @Override
+    public Object lookup(ArquillianResource resource, Annotation... qualifiers) {
+        return databaseConnectionInstance.get();
+    }
 
 }

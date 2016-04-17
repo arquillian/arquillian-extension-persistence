@@ -26,23 +26,20 @@ import org.jboss.arquillian.persistence.core.configuration.PersistenceConfigurat
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 
 /**
- *
  * Triggers persistence configuration creation on the container side.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceConfigurationRemoteProducer
-{
+public class PersistenceConfigurationRemoteProducer {
 
-   @Inject @ApplicationScoped
-   InstanceProducer<PersistenceConfiguration> configurationProducer;
+    @Inject
+    @ApplicationScoped
+    InstanceProducer<PersistenceConfiguration> configurationProducer;
 
-   public void configure(@Observes InitializeConfiguration event)
-   {
-      final PersistenceConfiguration configuration = new PersistenceConfiguration();
-      Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
-      configurationProducer.set(configuration);
-   }
+    public void configure(@Observes InitializeConfiguration event) {
+        final PersistenceConfiguration configuration = new PersistenceConfiguration();
+        Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
+        configurationProducer.set(configuration);
+    }
 
 }

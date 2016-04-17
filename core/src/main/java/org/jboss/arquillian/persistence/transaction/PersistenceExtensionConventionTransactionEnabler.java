@@ -27,122 +27,103 @@ import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 import java.lang.reflect.Method;
 
-public class PersistenceExtensionConventionTransactionEnabler implements TransactionEnabler
-{
+public class PersistenceExtensionConventionTransactionEnabler implements TransactionEnabler {
 
-   @Inject
-   Instance<PersistenceConfiguration> persistenceConfiguration;
+    @Inject
+    Instance<PersistenceConfiguration> persistenceConfiguration;
 
-   @Inject
-   Instance<MetadataExtractor> metadataExtractor;
+    @Inject
+    Instance<MetadataExtractor> metadataExtractor;
 
-   @Override
-   public boolean isTransactionHandlingDefinedOnClassLevel(TestEvent testEvent)
-   {
-      return hasTransactionMetadataDefinedOnClassLevel();
-   }
+    @Override
+    public boolean isTransactionHandlingDefinedOnClassLevel(TestEvent testEvent) {
+        return hasTransactionMetadataDefinedOnClassLevel();
+    }
 
-   @Override
-   public boolean isTransactionHandlingDefinedOnMethodLevel(TestEvent testEvent)
-   {
-      return shouldWrapTestMethodInTransaction(testEvent.getTestMethod());
-   }
+    @Override
+    public boolean isTransactionHandlingDefinedOnMethodLevel(TestEvent testEvent) {
+        return shouldWrapTestMethodInTransaction(testEvent.getTestMethod());
+    }
 
-   @Override
-   public TransactionMode getTransactionModeFromClassLevel(TestEvent testEvent)
-   {
-      return persistenceConfiguration.get().getDefaultTransactionMode();
-   }
+    @Override
+    public TransactionMode getTransactionModeFromClassLevel(TestEvent testEvent) {
+        return persistenceConfiguration.get().getDefaultTransactionMode();
+    }
 
-   @Override
-   public TransactionMode getTransactionModeFromMethodLevel(TestEvent testEvent)
-   {
-      return persistenceConfiguration.get().getDefaultTransactionMode();
-   }
+    @Override
+    public TransactionMode getTransactionModeFromMethodLevel(TestEvent testEvent) {
+        return persistenceConfiguration.get().getDefaultTransactionMode();
+    }
 
-   // ---------------------------------------------------------------------------------------------------
-   // Internal methods
-   // ---------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------
+    // Internal methods
+    // ---------------------------------------------------------------------------------------------------
 
-   private boolean shouldWrapTestMethodInTransaction(final Method method)
-   {
-      return (hasDataSetAnnotation(method) || hasApplyScriptAnnotation(method)
-            || hasJpaCacheEvictionAnnotation(method)
-            || hasCleanupAnnotation(method)
-            || hasCleanupUsingScriptAnnotation(method));
-   }
+    private boolean shouldWrapTestMethodInTransaction(final Method method) {
+        return (hasDataSetAnnotation(method) || hasApplyScriptAnnotation(method)
+                || hasJpaCacheEvictionAnnotation(method)
+                || hasCleanupAnnotation(method)
+                || hasCleanupUsingScriptAnnotation(method));
+    }
 
-   private boolean hasTransactionMetadataDefinedOnClassLevel()
-   {
-      return (hasDataSetAnnotationOnClass() || hasApplyScriptAnnotationOnClass()
-            || hasPersistenceTestAnnotationOnClass() || hasJpaCacheEvictionAnnotationOnClass()
-            || hasCreateSchemaAnnotationOnClass() || hasCleanupAnnotationOnClass()
-            || hasCleanupUsingScriptAnnotationOnClass());
-   }
+    private boolean hasTransactionMetadataDefinedOnClassLevel() {
+        return (hasDataSetAnnotationOnClass() || hasApplyScriptAnnotationOnClass()
+                || hasPersistenceTestAnnotationOnClass() || hasJpaCacheEvictionAnnotationOnClass()
+                || hasCreateSchemaAnnotationOnClass() || hasCleanupAnnotationOnClass()
+                || hasCleanupUsingScriptAnnotationOnClass());
+    }
 
-   private boolean hasDataSetAnnotationOnClass()
-   {
-      return metadataExtractor.get().usingDataSet().isDefinedOnClassLevel()
-            || metadataExtractor.get().shouldMatchDataSet().isDefinedOnClassLevel();
-   }
+    private boolean hasDataSetAnnotationOnClass() {
+        return metadataExtractor.get().usingDataSet().isDefinedOnClassLevel()
+                || metadataExtractor.get().shouldMatchDataSet().isDefinedOnClassLevel();
+    }
 
-   private boolean hasDataSetAnnotation(final Method method)
-   {
-      return metadataExtractor.get().usingDataSet().isDefinedOn(method)
-            || metadataExtractor.get().shouldMatchDataSet().isDefinedOn(method);
-   }
+    private boolean hasDataSetAnnotation(final Method method) {
+        return metadataExtractor.get().usingDataSet().isDefinedOn(method)
+                || metadataExtractor.get().shouldMatchDataSet().isDefinedOn(method);
+    }
 
-   private boolean hasApplyScriptAnnotation(final Method method)
-   {
-      return metadataExtractor.get().applyScriptBefore().isDefinedOn(method)
-            || metadataExtractor.get().applyScriptAfter().isDefinedOn(method);
-   }
+    private boolean hasApplyScriptAnnotation(final Method method) {
+        return metadataExtractor.get().applyScriptBefore().isDefinedOn(method)
+                || metadataExtractor.get().applyScriptAfter().isDefinedOn(method);
+    }
 
-   private boolean hasApplyScriptAnnotationOnClass()
-   {
-      return metadataExtractor.get().applyScriptBefore().isDefinedOnClassLevel()
-            || metadataExtractor.get().applyScriptAfter().isDefinedOnClassLevel();
-   }
+    private boolean hasApplyScriptAnnotationOnClass() {
+        return metadataExtractor.get().applyScriptBefore().isDefinedOnClassLevel()
+                || metadataExtractor.get().applyScriptAfter().isDefinedOnClassLevel();
+    }
 
-   private boolean hasPersistenceTestAnnotationOnClass()
-   {
-      return metadataExtractor.get().hasPersistenceTestAnnotation();
-   }
+    private boolean hasPersistenceTestAnnotationOnClass() {
+        return metadataExtractor.get().hasPersistenceTestAnnotation();
+    }
 
-   private boolean hasJpaCacheEvictionAnnotationOnClass()
-   {
-      return metadataExtractor.get().jpaCacheEviction().isDefinedOnClassLevel();
-   }
+    private boolean hasJpaCacheEvictionAnnotationOnClass() {
+        return metadataExtractor.get().jpaCacheEviction().isDefinedOnClassLevel();
+    }
 
-   private boolean hasJpaCacheEvictionAnnotation(final Method method)
-   {
-      return metadataExtractor.get().jpaCacheEviction().isDefinedOn(method);
-   }
+    private boolean hasJpaCacheEvictionAnnotation(final Method method) {
+        return metadataExtractor.get().jpaCacheEviction().isDefinedOn(method);
+    }
 
-   private boolean hasCreateSchemaAnnotationOnClass()
-   {
-      return metadataExtractor.get().createSchema().isDefinedOnClassLevel();
-   }
+    private boolean hasCreateSchemaAnnotationOnClass() {
+        return metadataExtractor.get().createSchema().isDefinedOnClassLevel();
+    }
 
-   private boolean hasCleanupAnnotationOnClass()
-   {
-      return metadataExtractor.get().cleanup().isDefinedOnClassLevel();
-   }
+    private boolean hasCleanupAnnotationOnClass() {
+        return metadataExtractor.get().cleanup().isDefinedOnClassLevel();
+    }
 
-   private boolean hasCleanupAnnotation(final Method method)
-   {
-      return metadataExtractor.get().cleanup().isDefinedOn(method);
-   }
+    private boolean hasCleanupAnnotation(final Method method) {
+        return metadataExtractor.get().cleanup().isDefinedOn(method);
+    }
 
-   private boolean hasCleanupUsingScriptAnnotationOnClass()
-   {
-      return metadataExtractor.get().cleanupUsingScript().isDefinedOnClassLevel();
-   }
+    private boolean hasCleanupUsingScriptAnnotationOnClass() {
+        return metadataExtractor.get().cleanupUsingScript().isDefinedOnClassLevel();
+    }
 
-   private boolean hasCleanupUsingScriptAnnotation(final Method method)
-   {
-      return metadataExtractor.get().cleanupUsingScript().isDefinedOn(method);
-   }
+    private boolean hasCleanupUsingScriptAnnotation(final Method method) {
+        return metadataExtractor.get().cleanupUsingScript().isDefinedOn(method);
+    }
 
 
 }

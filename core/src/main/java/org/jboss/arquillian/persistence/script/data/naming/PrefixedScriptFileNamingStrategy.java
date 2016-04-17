@@ -22,38 +22,32 @@ import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import java.lang.reflect.Method;
 
 /**
- *
  * Strategy for naming sql scripts used before the test.
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public class PrefixedScriptFileNamingStrategy extends FileNamingStrategy<String>
-{
+public class PrefixedScriptFileNamingStrategy extends FileNamingStrategy<String> {
 
-   private final String prefix;
+    private final String prefix;
 
-   public PrefixedScriptFileNamingStrategy(String prefix, String extension)
-   {
-      super(extension);
-      this.prefix = prefix;
-   }
+    public PrefixedScriptFileNamingStrategy(String prefix, String extension) {
+        super(extension);
+        this.prefix = prefix;
+    }
 
-   @Override
-   public String getFileExtension()
-   {
-      return extension;
-   }
+    @Override
+    public String getFileExtension() {
+        return extension;
+    }
 
-   @Override
-   public String createFileName(Class<?> testClass)
-   {
-      return prefix + super.createFileName(testClass);
-   }
+    @Override
+    public String createFileName(Class<?> testClass) {
+        return prefix + super.createFileName(testClass);
+    }
 
-   @Override
-   public String createFileName(Class<?> testClass, Method testMethod)
-   {
-      return prefix + super.createFileName(testClass, testMethod);
-   }
+    @Override
+    public String createFileName(Class<?> testClass, Method testMethod) {
+        return prefix + super.createFileName(testClass, testMethod);
+    }
 
 }

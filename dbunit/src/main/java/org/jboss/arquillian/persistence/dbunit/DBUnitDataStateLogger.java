@@ -45,10 +45,10 @@ import java.lang.reflect.Method;
  * Dumps database state during test method invocation, covering
  * following phases:
  * <ul>
- *      <li>before seeding database using provided data sets</li>
- *      <li>after seeding database</li>
- *      <li>after test execution</li>
- *      <li>after cleaning database state</li>
+ * <li>before seeding database using provided data sets</li>
+ * <li>after seeding database</li>
+ * <li>after test execution</li>
+ * <li>after cleaning database state</li>
  * </ul>
  * <br />
  * If not configured otherwise it will create following files in the
@@ -56,127 +56,111 @@ import java.lang.reflect.Method;
  * <code>[full class name]#[test name]-[phase suffix].xml</code>,
  * where phase suffix is one of the following:
  * <ul>
- *      <li>before-seed</li>
- *      <li>after-seed</li>
- *      <li>after-test</li>
- *      <li>after-clean</li>
+ * <li>before-seed</li>
+ * <li>after-seed</li>
+ * <li>after-test</li>
+ * <li>after-clean</li>
  * </ul>
- *
+ * <p>
  * Created files are in DBUnit {@link FlatXmlDataSet} format.
  * <br /><br />
- *
+ * <p>
  * This feature might be useful for test failures diagnostic / debugging.
  * <br />
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 
-public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData>
-{
+public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData> {
 
-   private static final String FILENAME_PATTERN = "[%s]-%s#%s-%s.xml";
+    private static final String FILENAME_PATTERN = "[%s]-%s#%s-%s.xml";
 
-   @Inject
-   private Instance<DatabaseConnection> databaseConnection;
+    @Inject
+    private Instance<DatabaseConnection> databaseConnection;
 
-   @Inject
-   private Instance<PersistenceConfiguration> configuration;
+    @Inject
+    private Instance<PersistenceConfiguration> configuration;
 
-   @Inject
-   private Instance<CommandService> commandService;
+    @Inject
+    private Instance<CommandService> commandService;
 
-   private TestClass testClass;
+    private TestClass testClass;
 
-   private Method testMethod;
+    private Method testMethod;
 
-   @Override
-   public void beforePersistenceTest(@Observes EventContext<BeforePersistenceTest> context)
-   {
-      this.testClass = context.getEvent().getTestClass();
-      this.testMethod = context.getEvent().getTestMethod();
-      context.proceed();
-   }
+    @Override
+    public void beforePersistenceTest(@Observes EventContext<BeforePersistenceTest> context) {
+        this.testClass = context.getEvent().getTestClass();
+        this.testMethod = context.getEvent().getTestMethod();
+        context.proceed();
+    }
 
-   @Override
-   public void aroundDataSeeding(@Observes EventContext<PrepareDBUnitData> context)
-   {
-      if (!configuration.get().isDumpData())
-      {
-         context.proceed();
-         return;
-      }
+    @Override
+    public void aroundDataSeeding(@Observes EventContext<PrepareDBUnitData> context) {
+        if (!configuration.get().isDumpData()) {
+            context.proceed();
+            return;
+        }
 
-      PrepareDBUnitData event = context.getEvent();
-      dumpDatabaseState(event, Phase.BEFORE_SEED);
-      context.proceed();
-      dumpDatabaseState(event, Phase.AFTER_SEED);
-   }
+        PrepareDBUnitData event = context.getEvent();
+        dumpDatabaseState(event, Phase.BEFORE_SEED);
+        context.proceed();
+        dumpDatabaseState(event, Phase.AFTER_SEED);
+    }
 
-   @Override
-   public void aroundCleanup(@Observes EventContext<CleanupData> context)
-   {
-      if (!configuration.get().isDumpData())
-      {
-         context.proceed();
-         return;
-      }
-      CleanupData event = context.getEvent();
-      dumpDatabaseState(event, Phase.BEFORE_CLEAN);
-      context.proceed();
-      dumpDatabaseState(event, Phase.AFTER_CLEAN);
-   }
+    @Override
+    public void aroundCleanup(@Observes EventContext<CleanupData> context) {
+        if (!configuration.get().isDumpData()) {
+            context.proceed();
+            return;
+        }
+        CleanupData event = context.getEvent();
+        dumpDatabaseState(event, Phase.BEFORE_CLEAN);
+        context.proceed();
+        dumpDatabaseState(event, Phase.AFTER_CLEAN);
+    }
 
-   // Private
+    // Private
 
-   private String createFileName(String phaseSuffix)
-   {
-      return String.format(FILENAME_PATTERN, System.currentTimeMillis(), this.testClass.getName(), this.testMethod.getName(), phaseSuffix);
-   }
+    private String createFileName(String phaseSuffix) {
+        return String.format(FILENAME_PATTERN, System.currentTimeMillis(), this.testClass.getName(), this.testMethod.getName(), phaseSuffix);
+    }
 
-   private void dumpDatabaseState(PersistenceEvent event, Phase phase)
-   {
-      final String path = configuration.get().getDumpDirectory() + "/" + createFileName(phase.getName());
-      try
-      {
-         final IDataSet dbContent = databaseConnection.get().createDataSet();
-         DataDump dumpData = createDataDump(path, dbContent);
-         commandService.get().execute(new DumpDataCommand(dumpData));
-      }
-      catch (Exception e)
-      {
-         throw new DBUnitDataSetHandlingException("Unable to dump database state to folder " + path, e);
-      }
-   }
+    private void dumpDatabaseState(PersistenceEvent event, Phase phase) {
+        final String path = configuration.get().getDumpDirectory() + "/" + createFileName(phase.getName());
+        try {
+            final IDataSet dbContent = databaseConnection.get().createDataSet();
+            DataDump dumpData = createDataDump(path, dbContent);
+            commandService.get().execute(new DumpDataCommand(dumpData));
+        } catch (Exception e) {
+            throw new DBUnitDataSetHandlingException("Unable to dump database state to folder " + path, e);
+        }
+    }
 
-   private DataDump createDataDump(final String path, final IDataSet dbContent) throws IOException, DataSetException
-   {
-      StringWriter stringWriter = new StringWriter();
-      FlatXmlDataSet.write(dbContent, stringWriter);
-      DataDump dumpData = new DataDump(stringWriter.toString(), path);
-      stringWriter.close();
-      return dumpData;
-   }
+    private DataDump createDataDump(final String path, final IDataSet dbContent) throws IOException, DataSetException {
+        StringWriter stringWriter = new StringWriter();
+        FlatXmlDataSet.write(dbContent, stringWriter);
+        DataDump dumpData = new DataDump(stringWriter.toString(), path);
+        stringWriter.close();
+        return dumpData;
+    }
 
-   private static enum Phase
-   {
-      BEFORE_SEED("before-seed"),
-      AFTER_SEED("after-seed"),
-      BEFORE_CLEAN("before-clean"),
-      AFTER_CLEAN("after-clean");
+    private static enum Phase {
+        BEFORE_SEED("before-seed"),
+        AFTER_SEED("after-seed"),
+        BEFORE_CLEAN("before-clean"),
+        AFTER_CLEAN("after-clean");
 
-      private final String name;
+        private final String name;
 
-      private Phase(String name)
-      {
-         this.name = name;
-      }
+        private Phase(String name) {
+            this.name = name;
+        }
 
-      public String getName()
-      {
-         return name;
-      }
+        public String getName() {
+            return name;
+        }
 
-   }
+    }
 
 }

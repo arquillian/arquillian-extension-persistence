@@ -16,27 +16,23 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class ScriptExecutionException extends RuntimeException
-{
+public class ScriptExecutionException extends RuntimeException {
 
-   private static final long serialVersionUID = 1249879056127836662L;
+    private static final long serialVersionUID = 1249879056127836662L;
 
-   public ScriptExecutionException()
-   {}
+    public ScriptExecutionException() {
+    }
 
-   public ScriptExecutionException(String message)
-   {
-      super(message);
-   }
+    public ScriptExecutionException(String message) {
+        super(message);
+    }
 
-   public ScriptExecutionException(Throwable cause)
-   {
-      super(cause);
-   }
+    public ScriptExecutionException(Throwable cause) {
+        super(cause);
+    }
 
-   public ScriptExecutionException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public ScriptExecutionException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

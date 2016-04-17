@@ -39,139 +39,129 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
 @NotThreadSafe
-public class JpaCacheEvictionHandlerTest
-{
-   private static boolean tmpCacheEvicted;
-   private static String tmpLookupName;
-   private JpaCacheEvictionHandler jpaCacheEvictionHandler;
-   private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
+public class JpaCacheEvictionHandlerTest {
+    private static boolean tmpCacheEvicted;
+    private static String tmpLookupName;
+    private JpaCacheEvictionHandler jpaCacheEvictionHandler;
+    private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
 
-   @Before
-   public void init() throws Exception {
-      tmpCacheEvicted = false;
-      tmpLookupName = null;
+    @Before
+    public void init() throws Exception {
+        tmpCacheEvicted = false;
+        tmpLookupName = null;
 
-      StubContext stubContext = new StubContext();
-      StubContextInstance stubContextInstance = new StubContextInstance(stubContext);
+        StubContext stubContext = new StubContext();
+        StubContextInstance stubContextInstance = new StubContextInstance(stubContext);
 
-      jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
-      jpaCacheEvictionConfiguration.setDefaultEntityManager("defaultEntityManager");
-      jpaCacheEvictionConfiguration.setDefaultStrategy(StubJpaCacheEvictionStrategy.class);
+        jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
+        jpaCacheEvictionConfiguration.setDefaultEntityManager("defaultEntityManager");
+        jpaCacheEvictionConfiguration.setDefaultStrategy(StubJpaCacheEvictionStrategy.class);
 
-      jpaCacheEvictionHandler = new JpaCacheEvictionHandler(stubContextInstance, jpaCacheEvictionConfiguration);
-   }
+        jpaCacheEvictionHandler = new JpaCacheEvictionHandler(stubContextInstance, jpaCacheEvictionConfiguration);
+    }
 
-   @Test
-   public void should_do_nothing() throws Exception
-   {
-      jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseNoAnnotation()));
-      assertThat(tmpLookupName).isNull();
-      assertThat(tmpCacheEvicted).isFalse();
+    @Test
+    public void should_do_nothing() throws Exception {
+        jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseNoAnnotation()));
+        assertThat(tmpLookupName).isNull();
+        assertThat(tmpCacheEvicted).isFalse();
 
-      jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseNoAnnotation()));
-      assertThat(tmpLookupName).isNull();
-      assertThat(tmpCacheEvicted).isFalse();
+        jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseNoAnnotation()));
+        assertThat(tmpLookupName).isNull();
+        assertThat(tmpCacheEvicted).isFalse();
 
-      jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithAnnotation()));
-      assertThat(tmpLookupName).isNull();
-      assertThat(tmpCacheEvicted).isFalse();
+        jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithAnnotation()));
+        assertThat(tmpLookupName).isNull();
+        assertThat(tmpCacheEvicted).isFalse();
 
-      jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithInheritedAnnotation()));
-      assertThat(tmpLookupName).isNull();
-      assertThat(tmpCacheEvicted).isFalse();
+        jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithInheritedAnnotation()));
+        assertThat(tmpLookupName).isNull();
+        assertThat(tmpCacheEvicted).isFalse();
 
-      jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithModifiedAnnotation()));
-      assertThat(tmpLookupName).isNull();
-      assertThat(tmpCacheEvicted).isFalse();
-   }
+        jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithModifiedAnnotation()));
+        assertThat(tmpLookupName).isNull();
+        assertThat(tmpCacheEvicted).isFalse();
+    }
 
-   @Test
-   public void should_evict_cache_before_test_method() throws Exception
-   {
-      jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithAnnotation()));
-      assertThat(tmpLookupName).isEqualTo("defaultEntityManager");
-      assertThat(tmpCacheEvicted).isTrue();
+    @Test
+    public void should_evict_cache_before_test_method() throws Exception {
+        jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithAnnotation()));
+        assertThat(tmpLookupName).isEqualTo("defaultEntityManager");
+        assertThat(tmpCacheEvicted).isTrue();
 
-      tmpLookupName = null;
-      tmpCacheEvicted = false;
+        tmpLookupName = null;
+        tmpCacheEvicted = false;
 
-      jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithInheritedAnnotation()));
-      assertThat(tmpLookupName).isEqualTo("defaultEntityManager");
-      assertThat(tmpCacheEvicted).isTrue();
-   }
+        jpaCacheEvictionHandler.onBeforeTestMethod(createBeforeEvent(new StubTestCaseWithInheritedAnnotation()));
+        assertThat(tmpLookupName).isEqualTo("defaultEntityManager");
+        assertThat(tmpCacheEvicted).isTrue();
+    }
 
-   @Test
-   public void should_evict_cache_after_test_method() throws Exception
-   {
-      jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithModifiedAnnotation()));
-      assertThat(tmpLookupName).isEqualTo("customEntityManager");
-      assertThat(tmpCacheEvicted).isTrue();
-   }
+    @Test
+    public void should_evict_cache_after_test_method() throws Exception {
+        jpaCacheEvictionHandler.onAfterTestMethod(createAfterEvent(new StubTestCaseWithModifiedAnnotation()));
+        assertThat(tmpLookupName).isEqualTo("customEntityManager");
+        assertThat(tmpCacheEvicted).isTrue();
+    }
 
-   private BeforePersistenceTest createBeforeEvent(Object testInstance) throws Exception
-   {
-      return new BeforePersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
-   }
+    private BeforePersistenceTest createBeforeEvent(Object testInstance) throws Exception {
+        return new BeforePersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
+    }
 
-   private AfterPersistenceTest createAfterEvent(Object testInstance) throws Exception
-   {
-      return new AfterPersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
-   }
+    private AfterPersistenceTest createAfterEvent(Object testInstance) throws Exception {
+        return new AfterPersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
+    }
 
 
-   public static class StubContext extends InitialContext
-   {
+    public static class StubContext extends InitialContext {
 
-      public StubContext() throws NamingException
-      {
-         super(true);
-      }
+        public StubContext() throws NamingException {
+            super(true);
+        }
 
-      @Override
-      public Object lookup(String name) throws NamingException
-      {
-         tmpLookupName = name;
-         return null;
-      }
+        @Override
+        public Object lookup(String name) throws NamingException {
+            tmpLookupName = name;
+            return null;
+        }
 
-   }
+    }
 
-   public static class StubContextInstance implements Instance<Context> {
+    public static class StubContextInstance implements Instance<Context> {
 
-      private Context instance;
+        private Context instance;
 
-      public StubContextInstance(Context instance)
-      {
-         this.instance = instance;
-      }
+        public StubContextInstance(Context instance) {
+            this.instance = instance;
+        }
 
-      @Override
-      public Context get()
-      {
-         return instance;
-      }
+        @Override
+        public Context get() {
+            return instance;
+        }
 
-   }
+    }
 
-   public static class StubJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy
-   {
-      @Override
-      public void evictCache(EntityManager em)
-      {
-         tmpCacheEvicted = true;
-      }
-   }
+    public static class StubJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy {
+        @Override
+        public void evictCache(EntityManager em) {
+            tmpCacheEvicted = true;
+        }
+    }
 
-   public static class StubTestCaseNoAnnotation
-   {
-      public void stubTestMethod() {}
-   }
+    public static class StubTestCaseNoAnnotation {
+        public void stubTestMethod() {
+        }
+    }
 
-   @JpaCacheEviction
-   public static class StubTestCaseWithAnnotation extends StubTestCaseNoAnnotation {}
+    @JpaCacheEviction
+    public static class StubTestCaseWithAnnotation extends StubTestCaseNoAnnotation {
+    }
 
-   @JpaCacheEviction(phase = TestExecutionPhase.AFTER, entityManager = "customEntityManager")
-   public static class StubTestCaseWithModifiedAnnotation extends StubTestCaseNoAnnotation {}
+    @JpaCacheEviction(phase = TestExecutionPhase.AFTER, entityManager = "customEntityManager")
+    public static class StubTestCaseWithModifiedAnnotation extends StubTestCaseNoAnnotation {
+    }
 
-   public static class StubTestCaseWithInheritedAnnotation extends StubTestCaseWithAnnotation {}
+    public static class StubTestCaseWithInheritedAnnotation extends StubTestCaseWithAnnotation {
+    }
 }

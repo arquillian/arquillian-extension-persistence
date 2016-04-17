@@ -17,29 +17,24 @@
  */
 package org.jboss.arquillian.persistence.core.exception;
 
-public class DataSourceNotDefinedException extends RuntimeException
-{
+public class DataSourceNotDefinedException extends RuntimeException {
 
-   private static final long serialVersionUID = 6993144495744705278L;
+    private static final long serialVersionUID = 6993144495744705278L;
 
-   public DataSourceNotDefinedException()
-   {
-      super();
-   }
+    public DataSourceNotDefinedException() {
+        super();
+    }
 
-   public DataSourceNotDefinedException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public DataSourceNotDefinedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-   public DataSourceNotDefinedException(String message)
-   {
-      super(message);
-   }
+    public DataSourceNotDefinedException(String message) {
+        super(message);
+    }
 
-   public DataSourceNotDefinedException(Throwable cause)
-   {
-      super(cause);
-   }
+    public DataSourceNotDefinedException(Throwable cause) {
+        super(cause);
+    }
 
 }

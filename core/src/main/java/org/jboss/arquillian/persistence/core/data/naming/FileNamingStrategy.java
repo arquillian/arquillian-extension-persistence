@@ -21,41 +21,36 @@ import java.lang.reflect.Method;
 
 /**
  * Creates file name for test class or test method
- *
+ * <p>
  * <ul>
- *   <li>
- *       If used for method, file name has following format:
- *       <i>[fully qualified class name]#[test method name].[provided file extension]</i>.
- *   </li>
- *   <li>
- *       If used for class, file name has following format:
- *       <i>[fully qualified class name].[provided file extension]</i></li>.
+ * <li>
+ * If used for method, file name has following format:
+ * <i>[fully qualified class name]#[test method name].[provided file extension]</i>.
+ * </li>
+ * <li>
+ * If used for class, file name has following format:
+ * <i>[fully qualified class name].[provided file extension]</i></li>.
  * </ul>
  *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @param <T>
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public abstract class FileNamingStrategy<T>
-{
+public abstract class FileNamingStrategy<T> {
 
-   protected final T extension;
+    protected final T extension;
 
-   public FileNamingStrategy(T extension)
-   {
-      this.extension = extension;
-   }
+    public FileNamingStrategy(T extension) {
+        this.extension = extension;
+    }
 
-   public abstract String getFileExtension();
+    public abstract String getFileExtension();
 
-   public String createFileName(Class<?> testClass, Method testMethod)
-   {
-      return testClass.getName() + "#" + testMethod.getName() + "." + getFileExtension();
-   }
+    public String createFileName(Class<?> testClass, Method testMethod) {
+        return testClass.getName() + "#" + testMethod.getName() + "." + getFileExtension();
+    }
 
-   public String createFileName(Class<?> testClass)
-   {
-      return testClass.getName() + "." + getFileExtension();
-   }
+    public String createFileName(Class<?> testClass) {
+        return testClass.getName() + "." + getFileExtension();
+    }
 
 }

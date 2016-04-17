@@ -19,12 +19,10 @@ package org.jboss.arquillian.persistence.core.event;
 
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-public class AfterPersistenceTest extends TestEvent
-{
+public class AfterPersistenceTest extends TestEvent {
 
-   public AfterPersistenceTest(TestEvent testEvent)
-   {
-      super(testEvent.getTestInstance(), testEvent.getTestMethod());
-   }
+    public AfterPersistenceTest(TestEvent testEvent) {
+        super(testEvent.getTestInstance(), testEvent.getTestMethod());
+    }
 
 }

@@ -25,82 +25,75 @@ import org.junit.Test;
 
 import java.io.InputStream;
 
-public class JsonDataSetTest
-{
+public class JsonDataSetTest {
 
-   private InputStream input;
+    private InputStream input;
 
-   @After
-   public void closeStream()
-   {
-      FileLoader.close(input);
-   }
+    @After
+    public void closeStream() {
+        FileLoader.close(input);
+    }
 
-   @Test
-   public void should_load_table_from_json_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.json");
+    @Test
+    public void should_load_table_from_json_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.json");
 
-      // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+        // when
+        JsonDataSet jsonDataSet = new JsonDataSet(input);
 
-      // then
-      DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount");
-   }
+        // then
+        DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount");
+    }
 
-   @Test
-   public void should_load_all_columns_for_table_from_json_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.json");
+    @Test
+    public void should_load_all_columns_for_table_from_json_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.json");
 
-      // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+        // when
+        JsonDataSet jsonDataSet = new JsonDataSet(input);
 
-      // then
-      TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
-   }
+        // then
+        TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
+    }
 
-   @Test
-   public void should_load_all_rows_for_table_from_json_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.json");
+    @Test
+    public void should_load_all_rows_for_table_from_json_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.json");
 
-      // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+        // when
+        JsonDataSet jsonDataSet = new JsonDataSet(input);
 
-      // then
-      TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasRows(2);
-   }
+        // then
+        TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasRows(2);
+    }
 
-   @Test
-   public void should_load_all_rows_with_content_for_table_from_json_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("one-table.json");
+    @Test
+    public void should_load_all_rows_with_content_for_table_from_json_file() throws Exception {
+        // given
+        input = FileLoader.load("one-table.json");
 
-      // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+        // when
+        JsonDataSet jsonDataSet = new JsonDataSet(input);
 
-      // then
-      TableAssert.assertThat(jsonDataSet.getTable("useraccount"))
-                 .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
-                 .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
-   }
+        // then
+        TableAssert.assertThat(jsonDataSet.getTable("useraccount"))
+                .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
+                .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
+    }
 
-   @Test
-   public void should_load_two_tables_from_json_file() throws Exception
-   {
-      // given
-      input = FileLoader.load("tables.json");
+    @Test
+    public void should_load_two_tables_from_json_file() throws Exception {
+        // given
+        input = FileLoader.load("tables.json");
 
-      // when
-      JsonDataSet jsonDataSet = new JsonDataSet(input);
+        // when
+        JsonDataSet jsonDataSet = new JsonDataSet(input);
 
-      // then
-      DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount", "testtable");
-   }
+        // then
+        DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount", "testtable");
+    }
 
 }

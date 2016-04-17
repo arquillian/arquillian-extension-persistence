@@ -22,13 +22,12 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @DataSourceDefinition(name = "java:app/datasources/postgresql_ds",
-   className = "org.postgresql.ds.PGSimpleDataSource",
-   url = "jdbc:postgresql://localhost:65432/",
-   databaseName = "ape",
-   user = "ape",
-   password = "letmein")
+        className = "org.postgresql.ds.PGSimpleDataSource",
+        url = "jdbc:postgresql://localhost:65432/",
+        databaseName = "ape",
+        user = "ape",
+        password = "letmein")
 @Singleton
 @Startup
-public class PostgreSqlDataSource
-{
+public class PostgreSqlDataSource {
 }

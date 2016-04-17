@@ -24,94 +24,77 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class AnnotationInspector<T extends Annotation>
-{
+public class AnnotationInspector<T extends Annotation> {
 
-   private final Map<Method, T> annotatedMethods;
+    private final Map<Method, T> annotatedMethods;
 
-   private final TestClass testClass;
+    private final TestClass testClass;
 
-   private final Class<T> annotationClass;
+    private final Class<T> annotationClass;
 
-   public AnnotationInspector(TestClass testClass, Class<T> annotationClass)
-   {
-      this.testClass = testClass;
-      this.annotationClass = annotationClass;
-      this.annotatedMethods = fetch(annotationClass);
-   }
+    public AnnotationInspector(TestClass testClass, Class<T> annotationClass) {
+        this.testClass = testClass;
+        this.annotationClass = annotationClass;
+        this.annotatedMethods = fetch(annotationClass);
+    }
 
-   public Collection<T> fetchAll()
-   {
-      final Set<T> all = new HashSet<T>();
-      all.addAll(annotatedMethods.values());
-      final T annotationOnClassLevel = getAnnotationOnClassLevel();
-      if (annotationOnClassLevel != null)
-      {
-         all.add(annotationOnClassLevel);
-      }
-      return all;
-   }
+    public Collection<T> fetchAll() {
+        final Set<T> all = new HashSet<T>();
+        all.addAll(annotatedMethods.values());
+        final T annotationOnClassLevel = getAnnotationOnClassLevel();
+        if (annotationOnClassLevel != null) {
+            all.add(annotationOnClassLevel);
+        }
+        return all;
+    }
 
-   public boolean isDefinedOn(Method method)
-   {
-      return fetchFrom(method) != null;
-   }
+    public boolean isDefinedOn(Method method) {
+        return fetchFrom(method) != null;
+    }
 
-   public boolean isDefinedOnAnyMethod()
-   {
-      return !annotatedMethods.isEmpty();
-   }
+    public boolean isDefinedOnAnyMethod() {
+        return !annotatedMethods.isEmpty();
+    }
 
-   public T fetchFrom(Method method)
-   {
-      return annotatedMethods.get(method);
-   }
+    public T fetchFrom(Method method) {
+        return annotatedMethods.get(method);
+    }
 
-   public boolean isDefinedOnClassLevel()
-   {
-      return getAnnotationOnClassLevel() != null;
-   }
+    public boolean isDefinedOnClassLevel() {
+        return getAnnotationOnClassLevel() != null;
+    }
 
-   public T getAnnotationOnClassLevel()
-   {
-      return testClass.getAnnotation(annotationClass);
-   }
+    public T getAnnotationOnClassLevel() {
+        return testClass.getAnnotation(annotationClass);
+    }
 
-   /**
-    *
-    * Fetches annotation for a given test class. If annotation is defined on method
-    * level it's returned as a result. Otherwise class level annotation is returned if present.
-    *
-    * @return T annotation or null if not found.
-    *
-    */
-   public T fetchUsingFirst(Method testMethod)
-   {
-      T usedAnnotation = getAnnotationOnClassLevel();
-      if (isDefinedOn(testMethod))
-      {
-         usedAnnotation = fetchFrom(testMethod);
-      }
+    /**
+     * Fetches annotation for a given test class. If annotation is defined on method
+     * level it's returned as a result. Otherwise class level annotation is returned if present.
+     *
+     * @return T annotation or null if not found.
+     */
+    public T fetchUsingFirst(Method testMethod) {
+        T usedAnnotation = getAnnotationOnClassLevel();
+        if (isDefinedOn(testMethod)) {
+            usedAnnotation = fetchFrom(testMethod);
+        }
 
-      return usedAnnotation;
-   }
+        return usedAnnotation;
+    }
 
-   // Private
+    // Private
 
-   private Map<Method, T> fetch(Class<T> annotation)
-   {
-      final Map<Method, T> map = new HashMap<Method, T>();
+    private Map<Method, T> fetch(Class<T> annotation) {
+        final Map<Method, T> map = new HashMap<Method, T>();
 
-      for (Method testMethod : testClass.getMethods(annotation))
-      {
-         map.put(testMethod, testMethod.getAnnotation(annotation));
-      }
+        for (Method testMethod : testClass.getMethods(annotation)) {
+            map.put(testMethod, testMethod.getAnnotation(annotation));
+        }
 
-      return map;
-   }
+        return map;
+    }
 }
 

@@ -18,30 +18,24 @@ package org.jboss.arquillian.persistence.core.exception;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class ContextNotAvailableException extends RuntimeException
-{
+public class ContextNotAvailableException extends RuntimeException {
 
-   private static final long serialVersionUID = -845961691356399463L;
+    private static final long serialVersionUID = -845961691356399463L;
 
-   public ContextNotAvailableException()
-   {
-   }
+    public ContextNotAvailableException() {
+    }
 
-   public ContextNotAvailableException(String message)
-   {
-      super(message);
-   }
+    public ContextNotAvailableException(String message) {
+        super(message);
+    }
 
-   public ContextNotAvailableException(Throwable cause)
-   {
-      super(cause);
-   }
+    public ContextNotAvailableException(Throwable cause) {
+        super(cause);
+    }
 
-   public ContextNotAvailableException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public ContextNotAvailableException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

@@ -34,57 +34,51 @@ import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 
 import java.lang.reflect.Method;
 
-public class DataSetHandler
-{
+public class DataSetHandler {
 
-   @Inject
-   private Instance<MetadataExtractor> metadataExtractorInstance;
+    @Inject
+    private Instance<MetadataExtractor> metadataExtractorInstance;
 
-   @Inject
-   private Instance<DBUnitConfiguration> configurationInstance;
+    @Inject
+    private Instance<DBUnitConfiguration> configurationInstance;
 
-   @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
+    @Inject
+    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
-   @Inject
-   private Event<PrepareDBUnitData> prepareDataEvent;
+    @Inject
+    private Event<PrepareDBUnitData> prepareDataEvent;
 
-   @Inject
-   private Event<CompareDBUnitData> compareDataEvent;
+    @Inject
+    private Event<CompareDBUnitData> compareDataEvent;
 
-   public void prepareDatabase(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest)
-   {
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
+    public void prepareDatabase(@Observes(precedence = 20) BeforePersistenceTest beforePersistenceTest) {
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (persistenceExtensionFeatureResolver.shouldSeedData())
-      {
-         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), configurationInstance.get());
-         prepareDataEvent.fire(new PrepareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
-      }
+        if (persistenceExtensionFeatureResolver.shouldSeedData()) {
+            DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), configurationInstance.get());
+            prepareDataEvent.fire(new PrepareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
+        }
 
-   }
+    }
 
-   public void verifyDatabase(@Observes(precedence = 30) AfterPersistenceTest afterPersistenceTest)
-   {
+    public void verifyDatabase(@Observes(precedence = 30) AfterPersistenceTest afterPersistenceTest) {
 
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
 
-      if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest())
-      {
-         final MetadataExtractor metadataExtractor = metadataExtractorInstance.get();
-         final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor, configurationInstance.get());
-         final Method testMethod = afterPersistenceTest.getTestMethod();
-         final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
-                                                                      .fetchFrom(testMethod);
-         final CustomColumnFilter customColumnFilter = metadataExtractor.using(CustomColumnFilter.class).fetchFrom(testMethod);
-         final CompareDBUnitData compareDBUnitDataEvent = new CompareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.orderBy(), dataSetsToVerify.excludeColumns());
-         if (customColumnFilter != null)
-         {
-               compareDBUnitDataEvent.add(customColumnFilter.value());
-         }
-         compareDataEvent.fire(compareDBUnitDataEvent);
-      }
+        if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest()) {
+            final MetadataExtractor metadataExtractor = metadataExtractorInstance.get();
+            final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractor, configurationInstance.get());
+            final Method testMethod = afterPersistenceTest.getTestMethod();
+            final ShouldMatchDataSet dataSetsToVerify = metadataExtractor.shouldMatchDataSet()
+                    .fetchFrom(testMethod);
+            final CustomColumnFilter customColumnFilter = metadataExtractor.using(CustomColumnFilter.class).fetchFrom(testMethod);
+            final CompareDBUnitData compareDBUnitDataEvent = new CompareDBUnitData(dataSetProvider.getDescriptorsDefinedFor(testMethod), dataSetsToVerify.orderBy(), dataSetsToVerify.excludeColumns());
+            if (customColumnFilter != null) {
+                compareDBUnitDataEvent.add(customColumnFilter.value());
+            }
+            compareDataEvent.fire(compareDBUnitDataEvent);
+        }
 
-   }
+    }
 
 }

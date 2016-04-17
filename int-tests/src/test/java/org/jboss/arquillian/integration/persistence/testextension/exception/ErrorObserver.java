@@ -27,21 +27,19 @@ import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ErrorObserver
-{
-   @Inject @TestScoped
-   private Instance<AssertionErrorCollector> assertionErrorCollectorInstance;
+public class ErrorObserver {
+    @Inject
+    @TestScoped
+    private Instance<AssertionErrorCollector> assertionErrorCollectorInstance;
 
-   public void collectErrors(@Observes(precedence = 9999) EventContext<AfterPersistenceTest> context)
-   {
-      context.proceed();
-      final ShouldFailWith shouldFailWith = context.getEvent().getTestMethod().getAnnotation(ShouldFailWith.class);
-      if (shouldFailWith != null)
-      {
-         final AssertionErrorCollector errorCollector = assertionErrorCollectorInstance.get();
-         final Class<? extends Throwable> expectedError = shouldFailWith.value();
-         assertThat(errorCollector.contains(expectedError)).describedAs("Expected " + expectedError.getName() + ", but instead got following errors: " + errorCollector.showAllErrors()).isTrue();
-         errorCollector.clear();
-      }
-   }
+    public void collectErrors(@Observes(precedence = 9999) EventContext<AfterPersistenceTest> context) {
+        context.proceed();
+        final ShouldFailWith shouldFailWith = context.getEvent().getTestMethod().getAnnotation(ShouldFailWith.class);
+        if (shouldFailWith != null) {
+            final AssertionErrorCollector errorCollector = assertionErrorCollectorInstance.get();
+            final Class<? extends Throwable> expectedError = shouldFailWith.value();
+            assertThat(errorCollector.contains(expectedError)).describedAs("Expected " + expectedError.getName() + ", but instead got following errors: " + errorCollector.showAllErrors()).isTrue();
+            errorCollector.clear();
+        }
+    }
 }

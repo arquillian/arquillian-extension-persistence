@@ -17,24 +17,20 @@
  */
 package org.jboss.arquillian.persistence.dbunit.exception;
 
-public class DBUnitDataSetHandlingException extends RuntimeException
-{
+public class DBUnitDataSetHandlingException extends RuntimeException {
 
-   private static final long serialVersionUID = 121044416863086313L;
+    private static final long serialVersionUID = 121044416863086313L;
 
-   public DBUnitDataSetHandlingException(String message)
-   {
-      super(message);
-   }
+    public DBUnitDataSetHandlingException(String message) {
+        super(message);
+    }
 
-   public DBUnitDataSetHandlingException(Throwable cause)
-   {
-      super(cause);
-   }
+    public DBUnitDataSetHandlingException(Throwable cause) {
+        super(cause);
+    }
 
-   public DBUnitDataSetHandlingException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public DBUnitDataSetHandlingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

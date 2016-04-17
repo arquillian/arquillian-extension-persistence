@@ -20,14 +20,12 @@ package org.jboss.arquillian.integration.persistence.datasource.mysql;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
-public class MySqlDataSourceExtension implements LoadableExtension
-{
+public class MySqlDataSourceExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, MySqlDataSourceArchiveCreator.class);
-      builder.service(AuxiliaryArchiveAppender.class, MySqlDriverArchiveAppender.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, MySqlDataSourceArchiveCreator.class);
+        builder.service(AuxiliaryArchiveAppender.class, MySqlDriverArchiveAppender.class);
+    }
 
 }

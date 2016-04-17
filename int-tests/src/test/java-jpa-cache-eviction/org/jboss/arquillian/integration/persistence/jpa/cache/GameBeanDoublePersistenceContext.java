@@ -25,35 +25,30 @@ import javax.persistence.PersistenceContext;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  */
 @Stateless
-public class GameBeanDoublePersistenceContext
-{
+public class GameBeanDoublePersistenceContext {
 
-   @PersistenceContext(name="jpacacheeviction", unitName="jpacacheeviction")
-   private EntityManager em;
+    @PersistenceContext(name = "jpacacheeviction", unitName = "jpacacheeviction")
+    private EntityManager em;
 
-   @PersistenceContext(name="embedded", unitName="embedded")
-   private EntityManager embedded;
+    @PersistenceContext(name = "embedded", unitName = "embedded")
+    private EntityManager embedded;
 
-   public void init()
-   {
-      insertGames();
-   }
+    public void init() {
+        insertGames();
+    }
 
-   public void insertGames()
-   {
-      em.createNativeQuery("insert into Game(id, title) values (1, 'Pac Man')").executeUpdate();
-      em.createNativeQuery("insert into Game(id, title) values (2, 'Super Mario')").executeUpdate();
-      embedded.createNativeQuery("insert into Platform(id, title) values (1, 'PC')").executeUpdate();
-   }
+    public void insertGames() {
+        em.createNativeQuery("insert into Game(id, title) values (1, 'Pac Man')").executeUpdate();
+        em.createNativeQuery("insert into Game(id, title) values (2, 'Super Mario')").executeUpdate();
+        embedded.createNativeQuery("insert into Platform(id, title) values (1, 'PC')").executeUpdate();
+    }
 
-   public Game findById(long gameId)
-   {
-      return em.find(Game.class, gameId);
-   }
+    public Game findById(long gameId) {
+        return em.find(Game.class, gameId);
+    }
 
-   public Platform findByIdInEmbedded(long platformId)
-   {
-      return embedded.find(Platform.class, platformId);
-   }
+    public Platform findByIdInEmbedded(long platformId) {
+        return embedded.find(Platform.class, platformId);
+    }
 
 }

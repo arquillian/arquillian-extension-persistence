@@ -16,29 +16,24 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-public class MetadataProcessingException extends RuntimeException
-{
+public class MetadataProcessingException extends RuntimeException {
 
-   private static final long serialVersionUID = 7612693914215308357L;
+    private static final long serialVersionUID = 7612693914215308357L;
 
-   public MetadataProcessingException()
-   {
-      super();
-   }
+    public MetadataProcessingException() {
+        super();
+    }
 
-   public MetadataProcessingException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+    public MetadataProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-   public MetadataProcessingException(String message)
-   {
-      super(message);
-   }
+    public MetadataProcessingException(String message) {
+        super(message);
+    }
 
-   public MetadataProcessingException(Throwable cause)
-   {
-      super(cause);
-   }
+    public MetadataProcessingException(Throwable cause) {
+        super(cause);
+    }
 
 }

@@ -34,36 +34,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 
 @RunWith(Arquillian.class)
 @PersistenceTest
-public class DatabaseConnectionInjectionTest
-{
+public class DatabaseConnectionInjectionTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   // Test needs to be "persistence-extension-aware" in order to get this reference.
-   // This can be achieved using any of APE annotations such as
-   // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
-   @ArquillianResource
-   private DatabaseConnection databaseConnection;
+    // Test needs to be "persistence-extension-aware" in order to get this reference.
+    // This can be achieved using any of APE annotations such as
+    // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
+    @ArquillianResource
+    private DatabaseConnection databaseConnection;
 
-   @Test
-   public void should_inject_dbunit_database_connection() throws Exception
-   {
-      assertThat(databaseConnection).isNotNull();
-   }
+    @Test
+    public void should_inject_dbunit_database_connection() throws Exception {
+        assertThat(databaseConnection).isNotNull();
+    }
 
 }

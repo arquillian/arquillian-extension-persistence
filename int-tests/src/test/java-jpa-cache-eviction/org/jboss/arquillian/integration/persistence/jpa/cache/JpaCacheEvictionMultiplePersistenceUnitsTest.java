@@ -40,72 +40,65 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 @JpaCacheEviction(entityManager = "jpacacheeviction")
 @DataSource("java:app/datasources/mysql_ds")
-public class JpaCacheEvictionMultiplePersistenceUnitsTest
-{
+public class JpaCacheEvictionMultiplePersistenceUnitsTest {
 
-   @Deployment
-   public static WebArchive createDeployment()
-   {
-      return ShrinkWrap.create(WebArchive.class, "JpaCacheEvictionMultiplePersistenceUnitsTest.war")
-                       .addClasses(Platform.class, Game.class, GameBeanDoublePersistenceContext.class)
-                       .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-   }
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class, "JpaCacheEvictionMultiplePersistenceUnitsTest.war")
+                .addClasses(Platform.class, Game.class, GameBeanDoublePersistenceContext.class)
+                .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
 
-   @Inject
-   private GameBeanDoublePersistenceContext gameBean;
+    @Inject
+    private GameBeanDoublePersistenceContext gameBean;
 
-   @PersistenceUnit(unitName = "jpacacheeviction")
-   private EntityManagerFactory cacheEviction;
+    @PersistenceUnit(unitName = "jpacacheeviction")
+    private EntityManagerFactory cacheEviction;
 
-   @PersistenceUnit(unitName = "embedded")
-   private EntityManagerFactory embedded;
+    @PersistenceUnit(unitName = "embedded")
+    private EntityManagerFactory embedded;
 
-   @Test
-   @InSequence(value = 1)
-   public void should_put_games_and_platform_to_second_level_cache() throws Exception
-   {
-      // given
-      assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache was evicted").isFalse();
+    @Test
+    @InSequence(value = 1)
+    public void should_put_games_and_platform_to_second_level_cache() throws Exception {
+        // given
+        assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache was evicted").isFalse();
 
-      // when
-      gameBean.init();
-      Game game = gameBean.findById(1L);
-      Platform platform = gameBean.findByIdInEmbedded(1L);
+        // when
+        gameBean.init();
+        Game game = gameBean.findById(1L);
+        Platform platform = gameBean.findByIdInEmbedded(1L);
 
-      // then
-      assertThat(game).isNotNull();
-      assertThat(platform).isNotNull();
-      assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache contains entity").isTrue();
-      assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache contains entity").isTrue();
-   }
+        // then
+        assertThat(game).isNotNull();
+        assertThat(platform).isNotNull();
+        assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache contains entity").isTrue();
+        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache contains entity").isTrue();
+    }
 
-   @Test
-   @InSequence(value = 2)
-   public void should_evict_cache_before_test_method()
-   {
-      assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache cache was evicted").isFalse();
-      assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isTrue();
-   }
+    @Test
+    @InSequence(value = 2)
+    public void should_evict_cache_before_test_method() {
+        assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache cache was evicted").isFalse();
+        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isTrue();
+    }
 
-   @Test
-   @InSequence(value = 3)
-   @JpaCacheEviction(entityManager = { "embedded", "jpacacheeviction" })
-   public void should_evict_both_cache_before_test_method()
-   {
-      assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isFalse();
-   }
+    @Test
+    @InSequence(value = 3)
+    @JpaCacheEviction(entityManager = {"embedded", "jpacacheeviction"})
+    public void should_evict_both_cache_before_test_method() {
+        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isFalse();
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private boolean isGameEntityCached(EntityManagerFactory emf, Long id)
-   {
-      return emf.getCache().contains(Game.class, id);
-   }
+    private boolean isGameEntityCached(EntityManagerFactory emf, Long id) {
+        return emf.getCache().contains(Game.class, id);
+    }
 
-   private boolean isPlatformEntityCached(EntityManagerFactory emf, Long id)
-   {
-      return emf.getCache().contains(Platform.class, id);
-   }
+    private boolean isPlatformEntityCached(EntityManagerFactory emf, Long id) {
+        return emf.getCache().contains(Platform.class, id);
+    }
 
 }

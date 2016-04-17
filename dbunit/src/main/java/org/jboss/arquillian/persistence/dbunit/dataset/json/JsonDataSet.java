@@ -24,76 +24,68 @@ import java.io.*;
 
 /**
  * DBUnit data set produced from JSON format.
- *
+ * <p>
  * <pre><code>
  * {
  * 	"useraccount":
  * 	[
- * 		{
+ *        {
  * 			"id" : 1,
  * 			"firstname" : "John",
  * 			"lastname" : "Smith",
  * 			"username" : "doovde",
  * 			"password" : "password"
- * 		},
- * 		{
+ *        },
+ *        {
  * 			"id" : 2,
  * 			"firstname" : "Clark",
  * 			"lastname" : "Kent",
  * 			"username" : "superman",
  * 			"password" : "kryptonite",
  * 			"email" : "arquillian@jboss.org"
- * 		}
+ *        }
  * 	],
  *
  * 	"testtable":
  * 	[
- * 		{
+ *        {
  * 			"id" : 1,
  * 			"value" : "doovde"
- * 		},
- * 		{
+ *        },
+ *        {
  * 			"id" : 2,
  * 			"value" : "kryptonite"
- * 		}
+ *        }
  * 	]
  * }
  * </code></pre>
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class JsonDataSet extends CachedDataSet
-{
+public class JsonDataSet extends CachedDataSet {
 
-   public JsonDataSet(JsonDataSetProducer producer, boolean caseSensitiveTableNames) throws DataSetException
-   {
-      super(producer, caseSensitiveTableNames);
-   }
+    public JsonDataSet(JsonDataSetProducer producer, boolean caseSensitiveTableNames) throws DataSetException {
+        super(producer, caseSensitiveTableNames);
+    }
 
-   public JsonDataSet(File file, boolean caseSensitiveTableNames) throws DataSetException, FileNotFoundException
-   {
-      this(new FileInputStream(file), caseSensitiveTableNames);
-   }
+    public JsonDataSet(File file, boolean caseSensitiveTableNames) throws DataSetException, FileNotFoundException {
+        this(new FileInputStream(file), caseSensitiveTableNames);
+    }
 
-   public JsonDataSet(File file) throws IOException, DataSetException
-   {
-      this(new FileInputStream(file), false);
-   }
+    public JsonDataSet(File file) throws IOException, DataSetException {
+        this(new FileInputStream(file), false);
+    }
 
-   public JsonDataSet(JsonDataSetProducer producer) throws DataSetException
-   {
-      this(producer, false);
-   }
+    public JsonDataSet(JsonDataSetProducer producer) throws DataSetException {
+        this(producer, false);
+    }
 
-   public JsonDataSet(InputStream inputStream) throws DataSetException
-   {
-      this(inputStream, false);
-   }
+    public JsonDataSet(InputStream inputStream) throws DataSetException {
+        this(inputStream, false);
+    }
 
-   public JsonDataSet(InputStream inputStream, boolean caseSensitiveTableNames) throws DataSetException
-   {
-      this(new JsonDataSetProducer(inputStream), caseSensitiveTableNames);
-   }
+    public JsonDataSet(InputStream inputStream, boolean caseSensitiveTableNames) throws DataSetException {
+        this(new JsonDataSetProducer(inputStream), caseSensitiveTableNames);
+    }
 
 }

@@ -34,93 +34,77 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
-{
+public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSetResourceDescriptor> {
 
-   private final AnnotationInspector<DatabaseShouldContainAfterTest> annotationInspector;
+    private final AnnotationInspector<DatabaseShouldContainAfterTest> annotationInspector;
 
-   private final DBUnitConfiguration configuration;
+    private final DBUnitConfiguration configuration;
 
-   public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, DBUnitConfiguration configuration)
-   {
-      super(DatabaseShouldContainAfterTest.class, metadataExtractor);
-      this.configuration = configuration;
-      this.annotationInspector = new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
-   }
+    public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
+        super(DatabaseShouldContainAfterTest.class, metadataExtractor);
+        this.configuration = configuration;
+        this.annotationInspector = new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
+    }
 
-   @Override
-   protected DataSetResourceDescriptor createDescriptor(String resource)
-   {
-      return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
-   }
+    @Override
+    protected DataSetResourceDescriptor createDescriptor(String resource) {
+        return new DataSetResourceDescriptor(determineLocation(resource), inferFormat(resource));
+    }
 
-   @Override
-   protected String defaultLocation()
-   {
-      return configuration.getDefaultDataSetLocation();
-   }
+    @Override
+    protected String defaultLocation() {
+        return configuration.getDefaultDataSetLocation();
+    }
 
-   @Override
-   protected String defaultFileName()
-   {
-      Format format = configuration.getDefaultDataSetFormat();
-      String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-      return defaultFileName;
-   }
+    @Override
+    protected String defaultFileName() {
+        Format format = configuration.getDefaultDataSetFormat();
+        String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+        return defaultFileName;
+    }
 
-   @Override
-   public Collection<String> getResourceFileNames(Method testMethod)
-   {
-      DatabaseShouldContainAfterTest dataAnnotation = getResourceAnnotation(testMethod);
-      String[] specifiedFileNames = dataAnnotation.value();
-      if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim()))
-      {
-         return Arrays.asList(getDefaultFileName(testMethod));
-      }
-      return Arrays.asList(specifiedFileNames);
-   }
+    @Override
+    public Collection<String> getResourceFileNames(Method testMethod) {
+        DatabaseShouldContainAfterTest dataAnnotation = getResourceAnnotation(testMethod);
+        String[] specifiedFileNames = dataAnnotation.value();
+        if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim())) {
+            return Arrays.asList(getDefaultFileName(testMethod));
+        }
+        return Arrays.asList(specifiedFileNames);
+    }
 
-   // Private methods
+    // Private methods
 
-   private Format inferFormat(String dataFileName)
-   {
-      Format format = Format.inferFromFile(dataFileName);
-      if (Format.UNSUPPORTED.equals(format))
-      {
-         throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
-      }
-      return format;
-   }
+    private Format inferFormat(String dataFileName) {
+        Format format = Format.inferFromFile(dataFileName);
+        if (Format.UNSUPPORTED.equals(format)) {
+            throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
+        }
+        return format;
+    }
 
-   List<Format> getDataFormats(Method testMethod)
-   {
-      final List<Format> formats = new ArrayList<Format>();
-      for (String dataFileName : getResourceFileNames(testMethod))
-      {
-         formats.add(inferFormat(dataFileName));
-      }
-      return formats;
-   }
+    List<Format> getDataFormats(Method testMethod) {
+        final List<Format> formats = new ArrayList<Format>();
+        for (String dataFileName : getResourceFileNames(testMethod)) {
+            formats.add(inferFormat(dataFileName));
+        }
+        return formats;
+    }
 
-   private DatabaseShouldContainAfterTest getResourceAnnotation(Method testMethod)
-   {
-      return annotationInspector.fetchUsingFirst(testMethod);
-   }
+    private DatabaseShouldContainAfterTest getResourceAnnotation(Method testMethod) {
+        return annotationInspector.fetchUsingFirst(testMethod);
+    }
 
-   private String getDefaultFileName(Method testMethod)
-   {
-      Format format = configuration.getDefaultDataSetFormat();
+    private String getDefaultFileName(Method testMethod) {
+        Format format = configuration.getDefaultDataSetFormat();
 
-      if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod))
-      {
-         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
-      }
+        if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod)) {
+            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+        }
 
-      return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
-   }
+        return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+    }
 
 }

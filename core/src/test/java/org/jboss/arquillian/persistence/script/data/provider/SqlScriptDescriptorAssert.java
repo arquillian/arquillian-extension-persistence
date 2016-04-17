@@ -25,44 +25,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceDescriptor>
-{
+public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceDescriptor> {
 
-   protected SqlScriptDescriptorAssert(Iterable<SqlScriptResourceDescriptor> actual)
-   {
-      super(actual);
-   }
+    protected SqlScriptDescriptorAssert(Iterable<SqlScriptResourceDescriptor> actual) {
+        super(actual);
+    }
 
-   public static SqlScriptDescriptorAssert assertThat(SqlScriptResourceDescriptor ... scriptDescriptors)
-   {
-      return new SqlScriptDescriptorAssert(Arrays.asList(scriptDescriptors));
-   }
+    public static SqlScriptDescriptorAssert assertThat(SqlScriptResourceDescriptor... scriptDescriptors) {
+        return new SqlScriptDescriptorAssert(Arrays.asList(scriptDescriptors));
+    }
 
-   public static SqlScriptDescriptorAssert assertThat(Iterable<SqlScriptResourceDescriptor> scriptDescriptors)
-   {
-      return new SqlScriptDescriptorAssert(scriptDescriptors);
-   }
+    public static SqlScriptDescriptorAssert assertThat(Iterable<SqlScriptResourceDescriptor> scriptDescriptors) {
+        return new SqlScriptDescriptorAssert(scriptDescriptors);
+    }
 
-   public SqlScriptDescriptorAssert containsOnlyFollowingFiles(String ... files)
-   {
-      Assertions.assertThat(extractFileNames()).containsOnly(files);
-      return this;
-   }
+    public SqlScriptDescriptorAssert containsOnlyFollowingFiles(String... files) {
+        Assertions.assertThat(extractFileNames()).containsOnly(files);
+        return this;
+    }
 
-   public SqlScriptDescriptorAssert containsExactlyFollowingFiles(String ... files)
-   {
-      Assertions.assertThat(extractFileNames()).containsExactly(files);
-      return this;
-   }
+    public SqlScriptDescriptorAssert containsExactlyFollowingFiles(String... files) {
+        Assertions.assertThat(extractFileNames()).containsExactly(files);
+        return this;
+    }
 
-   private List<String> extractFileNames()
-   {
-      final List<String> fileNames = new ArrayList<String>();
-      for (SqlScriptResourceDescriptor scriptDescriptor : actual)
-      {
-         fileNames.add(scriptDescriptor.getLocation());
-      }
-      return fileNames;
-   }
+    private List<String> extractFileNames() {
+        final List<String> fileNames = new ArrayList<String>();
+        for (SqlScriptResourceDescriptor scriptDescriptor : actual) {
+            fileNames.add(scriptDescriptor.getLocation());
+        }
+        return fileNames;
+    }
 
 }

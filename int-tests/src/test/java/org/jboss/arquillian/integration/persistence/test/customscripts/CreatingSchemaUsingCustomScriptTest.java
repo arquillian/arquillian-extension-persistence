@@ -31,18 +31,16 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 @CreateSchema("schema/create.sql")
-public class CreatingSchemaUsingCustomScriptTest extends NonDeployableUserPersistenceTest
-{
+public class CreatingSchemaUsingCustomScriptTest extends NonDeployableUserPersistenceTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClass(Query.class)
-                       .addPackages(true, "org.assertj.core")
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence-no-generate.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addClass(Query.class)
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence-no-generate.xml", "persistence.xml");
+    }
 
 }

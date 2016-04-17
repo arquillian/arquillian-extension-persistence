@@ -30,20 +30,18 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
  * packages used in container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 public class PersistenceExtension implements LoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
-             .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
-             .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
-             .observer(PersistenceConfigurationClientSideProducer.class)
-             .observer(ScriptingConfigurationClientSideProducer.class)
-             .observer(SchemaCreationCoordinator.class)
-             .observer(DatabaseStateDumper.class);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
+                .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
+                .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
+                .observer(PersistenceConfigurationClientSideProducer.class)
+                .observer(ScriptingConfigurationClientSideProducer.class)
+                .observer(SchemaCreationCoordinator.class)
+                .observer(DatabaseStateDumper.class);
+    }
 
 }

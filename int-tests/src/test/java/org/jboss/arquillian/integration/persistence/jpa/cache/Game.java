@@ -27,87 +27,71 @@ import java.io.Serializable;
  */
 @Entity
 @Cacheable
-public class Game implements Serializable
-{
+public class Game implements Serializable {
 
-   private static final long serialVersionUID = -3578883688456649440L;
+    private static final long serialVersionUID = -3578883688456649440L;
 
-   @Id
-   private Long id;
+    @Id
+    private Long id;
 
-   private String title;
+    private String title;
 
-   protected Game()
-   {
-   }
+    protected Game() {
+    }
 
-   public Game(Long id, String title)
-   {
-      this.id = id;
-      this.title = title;
-   }
+    public Game(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 
-   public Long getId()
-   {
-      return id;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   public void setId(Long id)
-   {
-      this.id = id;
-   }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-   public String getTitle()
-   {
-      return title;
-   }
+    public String getTitle() {
+        return title;
+    }
 
-   public void setTitle(String title)
-   {
-      this.title = title;
-   }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((title == null) ? 0 : title.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        return result;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof Game))
-      {
-         return false;
-      }
-
-      final Game other = (Game) obj;
-      if (title == null)
-      {
-         if (other.getTitle() != null)
-         {
+        if (!(obj instanceof Game)) {
             return false;
-         }
-      }
-      else if (!title.equals(other.getTitle()))
-      {
-         return false;
-      }
-      return true;
-   }
+        }
 
-   @Override
-   public String toString()
-   {
-      return "Game@" + hashCode() + "[id = " + id + "; title = " + title + "]";
-   }
+        final Game other = (Game) obj;
+        if (title == null) {
+            if (other.getTitle() != null) {
+                return false;
+            }
+        } else if (!title.equals(other.getTitle())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Game@" + hashCode() + "[id = " + id + "; title = " + title + "]";
+    }
 
 }

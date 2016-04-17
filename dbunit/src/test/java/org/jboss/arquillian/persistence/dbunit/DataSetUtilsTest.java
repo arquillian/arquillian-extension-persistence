@@ -32,29 +32,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @NotThreadSafe
 @RunWith(JUnitParamsRunner.class)
-public class DataSetUtilsTest
-{
+public class DataSetUtilsTest {
 
-   @Test
-   @Parameters(method = "columns")
-   public void should_extract_non_existing_columns_defined_in_second_list(List<String> expectedColumns, List<String> actualColumns, List<String> nonExistingColums) throws Exception
-   {
-      // when
-      List<String> actualNonExistingColumns = DataSetUtils.extractNonExistingColumns(expectedColumns, actualColumns);
+    @Test
+    @Parameters(method = "columns")
+    public void should_extract_non_existing_columns_defined_in_second_list(List<String> expectedColumns, List<String> actualColumns, List<String> nonExistingColums) throws Exception {
+        // when
+        List<String> actualNonExistingColumns = DataSetUtils.extractNonExistingColumns(expectedColumns, actualColumns);
 
-      // then
-      assertThat(actualNonExistingColumns).isEqualTo(nonExistingColums);
-   }
+        // then
+        assertThat(actualNonExistingColumns).isEqualTo(nonExistingColums);
+    }
 
-   @SuppressWarnings("unused")
-   private Object[] columns()
-   {
-      return $(//   expected    ,   actual             , non existing in actual
-              $(asList("id", "name"), asList("name", "password"), asList("id")),
-              $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
-              $(emptyList(), asList("id", "name"), emptyList()),
-              $(emptyList(), emptyList(), emptyList())
-      );
-   }
+    @SuppressWarnings("unused")
+    private Object[] columns() {
+        return $(//   expected    ,   actual             , non existing in actual
+                $(asList("id", "name"), asList("name", "password"), asList("id")),
+                $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
+                $(emptyList(), asList("id", "name"), emptyList()),
+                $(emptyList(), emptyList(), emptyList())
+        );
+    }
 
 }

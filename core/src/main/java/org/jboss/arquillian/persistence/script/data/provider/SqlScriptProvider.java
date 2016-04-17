@@ -36,189 +36,157 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<SqlScriptResourceDescriptor>
-{
+public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<SqlScriptResourceDescriptor> {
 
-   private final ScriptingConfiguration configuration;
+    private final ScriptingConfiguration configuration;
 
-   private final FileNamingStrategy<String> strategy ;
+    private final FileNamingStrategy<String> strategy;
 
-   private final Class<T> annotation;
+    private final Class<T> annotation;
 
-   private final ValueExtractor<T> extractor;
+    private final ValueExtractor<T> extractor;
 
-   SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, FileNamingStrategy<String> scriptFileNamingStrategy, ScriptingConfiguration configuration)
-   {
-      super(annotation, metadataExtractor);
-      this.configuration = configuration;
-      this.strategy = scriptFileNamingStrategy;
-      this.annotation = annotation;
-      this.extractor = extractor;
-   }
+    SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, FileNamingStrategy<String> scriptFileNamingStrategy, ScriptingConfiguration configuration) {
+        super(annotation, metadataExtractor);
+        this.configuration = configuration;
+        this.strategy = scriptFileNamingStrategy;
+        this.annotation = annotation;
+        this.extractor = extractor;
+    }
 
-   public static <K extends Annotation> SqlScriptProviderBuilder<K> forAnnotation(Class<K> annotation)
-   {
-      return SqlScriptProviderBuilder.create(annotation);
-   }
+    public static <K extends Annotation> SqlScriptProviderBuilder<K> forAnnotation(Class<K> annotation) {
+        return SqlScriptProviderBuilder.create(annotation);
+    }
 
-   public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass, ScriptingConfiguration configuration)
-   {
-      return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
-                              .usingConfiguration(configuration)
-                              .extractingMetadataUsing(new MetadataExtractor(testClass))
-                              .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
-                              .build(new ValueExtractor<CleanupUsingScript>()
-                              {
-                                 @Override
-                                 public String[] extract(CleanupUsingScript toExtract)
-                                 {
-                                    return toExtract.value();
-                                 }
+    public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass, ScriptingConfiguration configuration) {
+        return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
+                .usingConfiguration(configuration)
+                .extractingMetadataUsing(new MetadataExtractor(testClass))
+                .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
+                .build(new ValueExtractor<CleanupUsingScript>() {
+                    @Override
+                    public String[] extract(CleanupUsingScript toExtract) {
+                        return toExtract.value();
+                    }
 
-                                 @Override
-                                 public boolean shouldExtract(CleanupUsingScript toExtract)
-                                 {
-                                    return (toExtract != null && !TestExecutionPhase.NONE.equals(toExtract.phase()));
-                                 }
-                              });
-   }
+                    @Override
+                    public boolean shouldExtract(CleanupUsingScript toExtract) {
+                        return (toExtract != null && !TestExecutionPhase.NONE.equals(toExtract.phase()));
+                    }
+                });
+    }
 
-   public static SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass, ScriptingConfiguration configuration)
-   {
-      return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
-                              .usingConfiguration(configuration)
-                              .extractingMetadataUsing(new MetadataExtractor(testClass))
-                              .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
-                              .build(new ValueExtractor<ApplyScriptAfter>()
-                              {
-                                 @Override
-                                 public String[] extract(ApplyScriptAfter toExtract)
-                                 {
-                                    return toExtract.value();
-                                 }
+    public static SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass, ScriptingConfiguration configuration) {
+        return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
+                .usingConfiguration(configuration)
+                .extractingMetadataUsing(new MetadataExtractor(testClass))
+                .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
+                .build(new ValueExtractor<ApplyScriptAfter>() {
+                    @Override
+                    public String[] extract(ApplyScriptAfter toExtract) {
+                        return toExtract.value();
+                    }
 
-                                 @Override
-                                 public boolean shouldExtract(ApplyScriptAfter toExtract)
-                                 {
-                                    return (toExtract != null);
-                                 }
-                              });
-   }
+                    @Override
+                    public boolean shouldExtract(ApplyScriptAfter toExtract) {
+                        return (toExtract != null);
+                    }
+                });
+    }
 
-   public static  SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass, ScriptingConfiguration configuration)
-   {
-      return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
-                              .usingConfiguration(configuration)
-                              .extractingMetadataUsing(new MetadataExtractor(testClass))
-                              .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-                              .build(new ValueExtractor<ApplyScriptBefore>()
-                              {
-                                 @Override
-                                 public String[] extract(ApplyScriptBefore toExtract)
-                                 {
-                                    return toExtract.value();
-                                 }
+    public static SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass, ScriptingConfiguration configuration) {
+        return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
+                .usingConfiguration(configuration)
+                .extractingMetadataUsing(new MetadataExtractor(testClass))
+                .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+                .build(new ValueExtractor<ApplyScriptBefore>() {
+                    @Override
+                    public String[] extract(ApplyScriptBefore toExtract) {
+                        return toExtract.value();
+                    }
 
-                                 @Override
-                                 public boolean shouldExtract(ApplyScriptBefore toExtract)
-                                 {
-                                    return (toExtract != null);
-                                 }
-                              });
-   }
+                    @Override
+                    public boolean shouldExtract(ApplyScriptBefore toExtract) {
+                        return (toExtract != null);
+                    }
+                });
+    }
 
-   public static  SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass, ScriptingConfiguration configuration)
-   {
-      return SqlScriptProvider.forAnnotation(CreateSchema.class)
-            .usingConfiguration(configuration)
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
-            .namingFollows(new FileNamingStrategy<String>("sql"){
-               @Override
-               public String getFileExtension()
-               {
-                  return extension;
-               }})
-            .build(new ValueExtractor<CreateSchema>()
-            {
-               @Override
-               public String[] extract(CreateSchema toExtract)
-               {
-                  return toExtract.value();
-               }
+    public static SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass, ScriptingConfiguration configuration) {
+        return SqlScriptProvider.forAnnotation(CreateSchema.class)
+                .usingConfiguration(configuration)
+                .extractingMetadataUsing(new MetadataExtractor(testClass))
+                .namingFollows(new FileNamingStrategy<String>("sql") {
+                    @Override
+                    public String getFileExtension() {
+                        return extension;
+                    }
+                })
+                .build(new ValueExtractor<CreateSchema>() {
+                    @Override
+                    public String[] extract(CreateSchema toExtract) {
+                        return toExtract.value();
+                    }
 
-               @Override
-               public boolean shouldExtract(CreateSchema toExtract)
-               {
-                  return (toExtract != null);
-               }
-            });
-   }
+                    @Override
+                    public boolean shouldExtract(CreateSchema toExtract) {
+                        return (toExtract != null);
+                    }
+                });
+    }
 
-   @Override
-   protected SqlScriptResourceDescriptor createDescriptor(String resource)
-   {
+    @Override
+    protected SqlScriptResourceDescriptor createDescriptor(String resource) {
 
-      if (!ScriptLoader.isSqlScriptFile(resource))
-      {
-         return new InlineSqlScriptResourceDescriptor(resource);
-      }
+        if (!ScriptLoader.isSqlScriptFile(resource)) {
+            return new InlineSqlScriptResourceDescriptor(resource);
+        }
 
-      return new FileSqlScriptResourceDescriptor(determineLocation(resource), configuration.getCharset());
-   }
+        return new FileSqlScriptResourceDescriptor(determineLocation(resource), configuration.getCharset());
+    }
 
-   @Override
-   protected String defaultLocation()
-   {
-      return configuration.getDefaultSqlScriptLocation();
-   }
+    @Override
+    protected String defaultLocation() {
+        return configuration.getDefaultSqlScriptLocation();
+    }
 
-   @Override
-   protected String defaultFileName()
-   {
-      return strategy.createFileName(metadataExtractor.getJavaClass());
-   }
+    @Override
+    protected String defaultFileName() {
+        return strategy.createFileName(metadataExtractor.getJavaClass());
+    }
 
-   @Override
-   public Collection<String> getResourceFileNames(Method testMethod)
-   {
-      final T annotation = getResourceAnnotation(testMethod);
-      if (!extractor.shouldExtract(annotation))
-      {
-         return Collections.emptyList();
-      }
+    @Override
+    public Collection<String> getResourceFileNames(Method testMethod) {
+        final T annotation = getResourceAnnotation(testMethod);
+        if (!extractor.shouldExtract(annotation)) {
+            return Collections.emptyList();
+        }
 
-      if (filesNotSpecified(annotation))
-      {
-         return Arrays.asList(getDefaultFileName(testMethod));
-      }
+        if (filesNotSpecified(annotation)) {
+            return Arrays.asList(getDefaultFileName(testMethod));
+        }
 
-      return Arrays.asList(extractor.extract(annotation));
-   }
+        return Arrays.asList(extractor.extract(annotation));
+    }
 
-   private boolean filesNotSpecified(T annotation)
-   {
-      final String[] specifiedFileNames = extractor.extract(annotation);
-      return specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim());
-   }
+    private boolean filesNotSpecified(T annotation) {
+        final String[] specifiedFileNames = extractor.extract(annotation);
+        return specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim());
+    }
 
-   private T getResourceAnnotation(Method testMethod)
-   {
-      return metadataExtractor.using(annotation).fetchUsingFirst(testMethod);
-   }
+    private T getResourceAnnotation(Method testMethod) {
+        return metadataExtractor.using(annotation).fetchUsingFirst(testMethod);
+    }
 
-   private String getDefaultFileName(Method testMethod)
-   {
+    private String getDefaultFileName(Method testMethod) {
 
-      if (metadataExtractor.using(annotation).isDefinedOn(testMethod))
-      {
-         return strategy.createFileName(metadataExtractor.getJavaClass(), testMethod);
-      }
+        if (metadataExtractor.using(annotation).isDefinedOn(testMethod)) {
+            return strategy.createFileName(metadataExtractor.getJavaClass(), testMethod);
+        }
 
-      return strategy.createFileName(metadataExtractor.getJavaClass());
-   }
+        return strategy.createFileName(metadataExtractor.getJavaClass());
+    }
 
 }

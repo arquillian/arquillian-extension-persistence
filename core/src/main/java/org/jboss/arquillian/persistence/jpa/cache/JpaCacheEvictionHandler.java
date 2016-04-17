@@ -43,136 +43,106 @@ import java.util.LinkedList;
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
  * @see JpaCacheEviction
  */
-public class JpaCacheEvictionHandler
-{
+public class JpaCacheEvictionHandler {
 
-   @Inject
-   private Instance<Context> ctx;
+    @Inject
+    private Instance<Context> ctx;
 
-   private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
+    private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
 
-   private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
+    private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
 
-   public JpaCacheEvictionHandler()
-   {
-   }
+    public JpaCacheEvictionHandler() {
+    }
 
-   public JpaCacheEvictionHandler(Instance<Context> ctx, JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration)
-   {
-      this.ctx = ctx;
-      this.jpaCacheEvictionConfiguration = jpaCacheEvictionConfiguration;
-   }
+    public JpaCacheEvictionHandler(Instance<Context> ctx, JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration) {
+        this.ctx = ctx;
+        this.jpaCacheEvictionConfiguration = jpaCacheEvictionConfiguration;
+    }
 
-   public final void initalizeCacheConfiguration(@Observes InitializeConfiguration event)
-   {
-      jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
-      Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
-   }
+    public final void initalizeCacheConfiguration(@Observes InitializeConfiguration event) {
+        jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
+        Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
+    }
 
-   public final void onBeforeTestMethod(@Observes(precedence = 15) BeforePersistenceTest event)
-   {
-      executeCacheEviction(event, TestExecutionPhase.BEFORE);
-   }
+    public final void onBeforeTestMethod(@Observes(precedence = 15) BeforePersistenceTest event) {
+        executeCacheEviction(event, TestExecutionPhase.BEFORE);
+    }
 
-   public final void onAfterTestMethod(@Observes(precedence = 45) AfterPersistenceTest event)
-   {
-      executeCacheEviction(event, TestExecutionPhase.AFTER);
-   }
+    public final void onAfterTestMethod(@Observes(precedence = 45) AfterPersistenceTest event) {
+        executeCacheEviction(event, TestExecutionPhase.AFTER);
+    }
 
-   private void executeCacheEviction(TestEvent event, TestExecutionPhase currentPhase)
-   {
-      JpaCacheEviction jpaCacheEviction = obtainAnnotation(event);
-      if (jpaCacheEviction != null)
-      {
-         final TestExecutionPhase phase = obtainPhase(jpaCacheEviction);
-         if (phase.equals(currentPhase))
-         {
-            final Collection<EntityManager> ems = obtainEntityManagers(jpaCacheEviction);
-            final JpaCacheEvictionStrategy strategy = obtainStrategy(jpaCacheEviction);
-            for (EntityManager em : ems)
-            {
-               strategy.evictCache(em);
+    private void executeCacheEviction(TestEvent event, TestExecutionPhase currentPhase) {
+        JpaCacheEviction jpaCacheEviction = obtainAnnotation(event);
+        if (jpaCacheEviction != null) {
+            final TestExecutionPhase phase = obtainPhase(jpaCacheEviction);
+            if (phase.equals(currentPhase)) {
+                final Collection<EntityManager> ems = obtainEntityManagers(jpaCacheEviction);
+                final JpaCacheEvictionStrategy strategy = obtainStrategy(jpaCacheEviction);
+                for (EntityManager em : ems) {
+                    strategy.evictCache(em);
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   private Collection<EntityManager> obtainEntityManagers(JpaCacheEviction jpaCacheEviction)
-   {
-      final Collection<EntityManager> entityManagers = new LinkedList<EntityManager>();
-      final String[] emJndiNames = jpaCacheEviction.entityManager();
-      for (String emJndiName : emJndiNames)
-      {
-         entityManagers.add(obtainEntityManager(emJndiName));
-      }
-      return entityManagers;
-   }
+    private Collection<EntityManager> obtainEntityManagers(JpaCacheEviction jpaCacheEviction) {
+        final Collection<EntityManager> entityManagers = new LinkedList<EntityManager>();
+        final String[] emJndiNames = jpaCacheEviction.entityManager();
+        for (String emJndiName : emJndiNames) {
+            entityManagers.add(obtainEntityManager(emJndiName));
+        }
+        return entityManagers;
+    }
 
-   private JpaCacheEviction obtainAnnotation(TestEvent event)
-   {
-      final JpaCacheEviction classLevel = event.getTestClass().getAnnotation(JpaCacheEviction.class);
-      final JpaCacheEviction methodLevel = event.getTestMethod().getAnnotation(JpaCacheEviction.class);
-      if (methodLevel != null)
-      {
-         return methodLevel;
-      }
-      return classLevel;
-   }
+    private JpaCacheEviction obtainAnnotation(TestEvent event) {
+        final JpaCacheEviction classLevel = event.getTestClass().getAnnotation(JpaCacheEviction.class);
+        final JpaCacheEviction methodLevel = event.getTestMethod().getAnnotation(JpaCacheEviction.class);
+        if (methodLevel != null) {
+            return methodLevel;
+        }
+        return classLevel;
+    }
 
-   private TestExecutionPhase obtainPhase(JpaCacheEviction jpaCacheEviction)
-   {
-      TestExecutionPhase phase = jpaCacheEviction.phase();
-      if (TestExecutionPhase.DEFAULT.equals(phase))
-      {
-         phase = jpaCacheEvictionConfiguration.getDefaultPhase();
-      }
-      return phase;
-   }
+    private TestExecutionPhase obtainPhase(JpaCacheEviction jpaCacheEviction) {
+        TestExecutionPhase phase = jpaCacheEviction.phase();
+        if (TestExecutionPhase.DEFAULT.equals(phase)) {
+            phase = jpaCacheEvictionConfiguration.getDefaultPhase();
+        }
+        return phase;
+    }
 
-   private JpaCacheEvictionStrategy obtainStrategy(JpaCacheEviction jpaCacheEviction)
-   {
-      Class<? extends JpaCacheEvictionStrategy> strategyClass = jpaCacheEviction.strategy();
-      if (DefaultJpaCacheEvictionStrategy.class.equals(strategyClass))
-      {
-         strategyClass = jpaCacheEvictionConfiguration.getDefaultStrategy();
-      }
-      try
-      {
-         return strategyClass.newInstance();
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Failed to obtain JpaCacheEvictionStrategy.", e);
-      }
-   }
+    private JpaCacheEvictionStrategy obtainStrategy(JpaCacheEviction jpaCacheEviction) {
+        Class<? extends JpaCacheEvictionStrategy> strategyClass = jpaCacheEviction.strategy();
+        if (DefaultJpaCacheEvictionStrategy.class.equals(strategyClass)) {
+            strategyClass = jpaCacheEvictionConfiguration.getDefaultStrategy();
+        }
+        try {
+            return strategyClass.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to obtain JpaCacheEvictionStrategy.", e);
+        }
+    }
 
-   private EntityManager obtainEntityManager(String emJndiName)
-   {
-      if (emJndiName.length() == 0)
-      {
-         emJndiName = jpaCacheEvictionConfiguration.getDefaultEntityManager();
-      }
-      try
-      {
-         return lookup(emJndiName);
-      }
-      catch (NamingException e)
-      {
-         try
-         {
-            return lookup(DEFAULT_JNDI_PREFIX + emJndiName);
-         }
-         catch (NamingException ne)
-         {
-            throw new RuntimeException("Failed to obtain EntityManager using JNDI name " + emJndiName + ", but also appending it with default prefix " + DEFAULT_JNDI_PREFIX, e);
-         }
+    private EntityManager obtainEntityManager(String emJndiName) {
+        if (emJndiName.length() == 0) {
+            emJndiName = jpaCacheEvictionConfiguration.getDefaultEntityManager();
+        }
+        try {
+            return lookup(emJndiName);
+        } catch (NamingException e) {
+            try {
+                return lookup(DEFAULT_JNDI_PREFIX + emJndiName);
+            } catch (NamingException ne) {
+                throw new RuntimeException("Failed to obtain EntityManager using JNDI name " + emJndiName + ", but also appending it with default prefix " + DEFAULT_JNDI_PREFIX, e);
+            }
 
-      }
-   }
+        }
+    }
 
-   public EntityManager lookup(String emJndiName) throws NamingException
-   {
-      return (EntityManager) ctx.get().lookup(emJndiName);
-   }
+    public EntityManager lookup(String emJndiName) throws NamingException {
+        return (EntityManager) ctx.get().lookup(emJndiName);
+    }
 
 }

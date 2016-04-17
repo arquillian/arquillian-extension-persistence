@@ -24,17 +24,14 @@ import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
 import java.sql.SQLException;
 
-public class OracleDatabaseSequenceFilterProvider implements TableFilterProvider
-{
-   @Override
-   public ITableFilter provide(IDatabaseConnection connection) throws SQLException, DataSetException
-   {
-      return new OracleDatabaseSequenceFilter(connection);
-   }
+public class OracleDatabaseSequenceFilterProvider implements TableFilterProvider {
+    @Override
+    public ITableFilter provide(IDatabaseConnection connection) throws SQLException, DataSetException {
+        return new OracleDatabaseSequenceFilter(connection);
+    }
 
-   @Override
-   public ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException
-   {
-      return new OracleDatabaseSequenceFilter(connection, tableNames);
-   }
+    @Override
+    public ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException {
+        return new OracleDatabaseSequenceFilter(connection, tableNames);
+    }
 }

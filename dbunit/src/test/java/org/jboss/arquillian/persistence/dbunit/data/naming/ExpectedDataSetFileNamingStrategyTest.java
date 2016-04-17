@@ -22,33 +22,30 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExpectedDataSetFileNamingStrategyTest
-{
+public class ExpectedDataSetFileNamingStrategyTest {
 
-   @Test
-   public void should_produce_default_file_name_of_expected_data_set_for_test_using_full_class_name_and_method_name() throws Exception
-   {
-      // given
-      ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
+    @Test
+    public void should_produce_default_file_name_of_expected_data_set_for_test_using_full_class_name_and_method_name() throws Exception {
+        // given
+        ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
 
-      // when
-      String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        // when
+        String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
-      // then
-      assertThat(fileName).isEqualTo("expected-org.jboss.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
-   }
+        // then
+        assertThat(fileName).isEqualTo("expected-org.jboss.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
+    }
 
-   @Test
-   public void should_produce_proper_file_extension_based_on_format() throws Exception
-   {
-      // given
-      ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
+    @Test
+    public void should_produce_proper_file_extension_based_on_format() throws Exception {
+        // given
+        ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
 
-      // when
-      String fileExtension = defaultFileNamingStrategy.getFileExtension();
+        // when
+        String fileExtension = defaultFileNamingStrategy.getFileExtension();
 
-      // then
-      assertThat(fileExtension).isEqualTo("xml");
-   }
+        // then
+        assertThat(fileExtension).isEqualTo("xml");
+    }
 
 }

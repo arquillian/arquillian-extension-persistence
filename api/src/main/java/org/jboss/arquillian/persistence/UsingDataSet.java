@@ -31,29 +31,28 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <br />
  * If files are not specified explicitly, following strategy is applied:
  * <ul>
- *   <li>Assumption that files are stored in <code>datasets</code> folder.</li>
- *   <li>
- *       If annotation is defined on method level, file name has following format:
- *       <i>[fully qualified class name]#[test method name].[default format]</i>.
- *   </li>
- *   <li>
- *       If annotation is defined on class level, file name has following format:
- *       <i>[fully qualified class name].[default format]</i>.
- *   </li>
+ * <li>Assumption that files are stored in <code>datasets</code> folder.</li>
+ * <li>
+ * If annotation is defined on method level, file name has following format:
+ * <i>[fully qualified class name]#[test method name].[default format]</i>.
+ * </li>
+ * <li>
+ * If annotation is defined on class level, file name has following format:
+ * <i>[fully qualified class name].[default format]</i>.
+ * </li>
  * </ul>
  * <br /><br />
  * If not specified in <code>arquillian.xml</code> expected format is XML.
- *
+ * <p>
  * Presence of this annotation in the test class enables Arquillian Persistence Extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
 public @interface UsingDataSet {
 
-   String[] value() default "";
+    String[] value() default "";
 
 }

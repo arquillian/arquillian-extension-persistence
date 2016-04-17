@@ -21,12 +21,10 @@ import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDe
 
 import java.util.Collection;
 
-public class PrepareDBUnitData extends DataEvent<DataSetResourceDescriptor>
-{
+public class PrepareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
-   public PrepareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors)
-   {
-      super(dataSetDescriptors);
-   }
+    public PrepareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
+        super(dataSetDescriptors);
+    }
 
 }

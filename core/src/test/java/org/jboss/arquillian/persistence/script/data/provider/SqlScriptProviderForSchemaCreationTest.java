@@ -26,43 +26,39 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-public class SqlScriptProviderForSchemaCreationTest
-{
+public class SqlScriptProviderForSchemaCreationTest {
 
-   private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+    private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
 
-   @Test
-   public void should_fetch_all_scripts_defined_for_test_class_in_defined_order() throws Exception
-   {
-      // given
-      TestEvent testEvent = createTestEvent("shouldPass");
-      SqlScriptProvider<CreateSchema> scriptsProvider = createSqlScriptProviderFor(testEvent);
+    @Test
+    public void should_fetch_all_scripts_defined_for_test_class_in_defined_order() throws Exception {
+        // given
+        TestEvent testEvent = createTestEvent("shouldPass");
+        SqlScriptProvider<CreateSchema> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
-      // when
-      Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+        // when
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
 
-      // then
+        // then
 
-      SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsExactlyFollowingFiles("one.sql", "two.sql", "three.sql");
-   }
+        SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsExactlyFollowingFiles("one.sql", "two.sql", "three.sql");
+    }
 
-   // ----------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------
 
-   private SqlScriptProvider<CreateSchema> createSqlScriptProviderFor(TestEvent testEvent)
-   {
-      return SqlScriptProvider.createProviderForCreateSchemaScripts(testEvent.getTestClass(), defaultConfiguration);
-   }
+    private SqlScriptProvider<CreateSchema> createSqlScriptProviderFor(TestEvent testEvent) {
+        return SqlScriptProvider.createProviderForCreateSchemaScripts(testEvent.getTestClass(), defaultConfiguration);
+    }
 
-   private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException
-   {
-      TestEvent testEvent = new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
-      return testEvent;
-   }
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent = new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
 
-   @CreateSchema({"one.sql", "two.sql", "three.sql"})
-   private static class CreateSchemaAnnotatedClass
-   {
-      public void shouldPass() {}
-   }
+    @CreateSchema({"one.sql", "two.sql", "three.sql"})
+    private static class CreateSchemaAnnotatedClass {
+        public void shouldPass() {
+        }
+    }
 
 }

@@ -32,29 +32,25 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
- *
  * Creates <code>arquillian-persistence.jar</code> archive
  * to run Persistence Extension. Includes all dependencies required
  * by the extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender
-{
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
+public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppender {
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
 
-      final JavaArchive persistenceExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core.jar")
-                                                                .addPackages(true,
-                                                                      // exclude client package
-                                                                      Filters.exclude(PersistenceExtension.class.getPackage()),
-                                                                      "org.jboss.arquillian.persistence")
-                                                                .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
-                                                                .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class, OracleStatementSplitter.class)
-                                                                .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
-      return persistenceExtensionArchive;
-   }
+        final JavaArchive persistenceExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core.jar")
+                .addPackages(true,
+                        // exclude client package
+                        Filters.exclude(PersistenceExtension.class.getPackage()),
+                        "org.jboss.arquillian.persistence")
+                .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
+                .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class, OracleStatementSplitter.class)
+                .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
+        return persistenceExtensionArchive;
+    }
 
 }

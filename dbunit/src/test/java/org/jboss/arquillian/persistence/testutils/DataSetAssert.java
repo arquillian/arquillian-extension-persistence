@@ -21,31 +21,24 @@ import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 
-public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet>
-{
+public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet> {
 
-   protected DataSetAssert(IDataSet actual)
-   {
-      super(actual, DataSetAssert.class);
-   }
+    protected DataSetAssert(IDataSet actual) {
+        super(actual, DataSetAssert.class);
+    }
 
-   public DataSetAssert hasTables(String... tables)
-   {
-      try
-      {
-         Assertions.assertThat(actual.getTableNames()).contains(tables);
-      }
-      catch (DataSetException e)
-      {
-         throw new RuntimeException(e);
-      }
-      
-      return this;
-   }
+    public DataSetAssert hasTables(String... tables) {
+        try {
+            Assertions.assertThat(actual.getTableNames()).contains(tables);
+        } catch (DataSetException e) {
+            throw new RuntimeException(e);
+        }
 
-   public static DataSetAssert assertThat(IDataSet dataSet)
-   {
-      return new DataSetAssert(dataSet);
-   }
+        return this;
+    }
+
+    public static DataSetAssert assertThat(IDataSet dataSet) {
+        return new DataSetAssert(dataSet);
+    }
 
 }

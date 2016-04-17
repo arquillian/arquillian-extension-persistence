@@ -27,146 +27,128 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author Bartosz Majsak
- *
  */
 @Entity
 @Table(name = "useraccount")
-public class UserAccount implements Serializable
-{
+public class UserAccount implements Serializable {
 
-   private static final long serialVersionUID = -5070859529655572725L;
+    private static final long serialVersionUID = -5070859529655572725L;
 
-   @Id
-   @GeneratedValue
-   private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-   @Basic
-   @NotNull @Size(min = 3, max = 32)
-   private String username;
+    @Basic
+    @NotNull
+    @Size(min = 3, max = 32)
+    private String username;
 
-   @Basic
-   @NotNull @Size(min = 8)
-   private String password;
+    @Basic
+    @NotNull
+    @Size(min = 8)
+    private String password;
 
-   @Basic
-   @NotNull @Size(max = 128)
-   private String firstname;
+    @Basic
+    @NotNull
+    @Size(max = 128)
+    private String firstname;
 
-   @Basic
-   @NotNull @Size(max = 128)
-   private String lastname;
+    @Basic
+    @NotNull
+    @Size(max = 128)
+    private String lastname;
 
-   @Basic
-   @Size(max = 128)
-   private String nickname;
+    @Basic
+    @Size(max = 128)
+    private String nickname;
 
-   @Basic
-   @Temporal(TemporalType.DATE)
-   private Date openDate;
+    @Basic
+    @Temporal(TemporalType.DATE)
+    private Date openDate;
 
-   @OneToMany(cascade = CascadeType.ALL)
-   private Set<Address> addresses = new HashSet<Address>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Address> addresses = new HashSet<Address>();
 
-   protected UserAccount()
-   {
-      // To satisfy JPA
-   }
+    protected UserAccount() {
+        // To satisfy JPA
+    }
 
-   public UserAccount(String firstName, String lastName, String username, String password)
-   {
-      this.firstname = firstName;
-      this.lastname = lastName;
-      this.username = username;
-      this.password = password;
-   }
+    public UserAccount(String firstName, String lastName, String username, String password) {
+        this.firstname = firstName;
+        this.lastname = lastName;
+        this.username = username;
+        this.password = password;
+    }
 
-   public void addAddress(Address address)
-   {
-      this.addresses.add(address);
-   }
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+    }
 
-   // Getters and setters
+    // Getters and setters
 
-   public Long getId()
-   {
-      return id;
-   }
+    public Long getId() {
+        return id;
+    }
 
-   void setId(Long id)
-   {
-      this.id = id;
-   }
+    void setId(Long id) {
+        this.id = id;
+    }
 
-   public String getUsername()
-   {
-      return username;
-   }
+    public String getUsername() {
+        return username;
+    }
 
-   public void setUsername(String username)
-   {
-      this.username = username;
-   }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-   public String getPassword()
-   {
-      return password;
-   }
+    public String getPassword() {
+        return password;
+    }
 
-   public void setPassword(String password)
-   {
-      this.password = password;
-   }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-   public String getFirstname()
-   {
-      return firstname;
-   }
+    public String getFirstname() {
+        return firstname;
+    }
 
-   public void setFirstname(String firstname)
-   {
-      this.firstname = firstname;
-   }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-   public String getLastname()
-   {
-      return lastname;
-   }
+    public String getLastname() {
+        return lastname;
+    }
 
-   public void setLastname(String lastname)
-   {
-      this.lastname = lastname;
-   }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-   public Set<Address> getAddresses()
-   {
-      return Collections.unmodifiableSet(addresses);
-   }
+    public Set<Address> getAddresses() {
+        return Collections.unmodifiableSet(addresses);
+    }
 
-   void setAddresses(Set<Address> addresses)
-   {
-      this.addresses = addresses;
-   }
+    void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
 
-   public String getNickname()
-   {
-      return nickname;
-   }
+    public String getNickname() {
+        return nickname;
+    }
 
-   public void setNickname(String nickname)
-   {
-      this.nickname = nickname;
-   }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-   public Date getOpenDate()
-   {
-      return (Date) openDate.clone();
-   }
+    public Date getOpenDate() {
+        return (Date) openDate.clone();
+    }
 
-   public void setOpenDate(Date openDate)
-   {
-      this.openDate = (Date) openDate.clone();
-   }
+    public void setOpenDate(Date openDate) {
+        this.openDate = (Date) openDate.clone();
+    }
 
 }

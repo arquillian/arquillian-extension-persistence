@@ -26,12 +26,10 @@ import static java.security.AccessController.doPrivileged;
 
 /**
  * SecurityActions
- *
+ * <p>
  * A set of privileged actions that are not to leak out of this package
  *
- *
  * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
- *
  * @version $Revision: $
  */
 final class ReflectionHelper {
@@ -54,28 +52,23 @@ final class ReflectionHelper {
     // -------------------------------------------------------------------------------||
 
     static List<Field> getAccessibleFields(final Class<?> source) {
-       return doPrivileged(new PrivilegedAction<List<Field>>()
-       {
-          public List<Field> run()
-          {
-             List<Field> foundFields = new ArrayList<Field>();
-             for (Field field : source.getDeclaredFields())
-             {
-                // omit final fields
-                if (Modifier.isFinal(field.getModifiers()))
-                {
-                   continue;
-                }
+        return doPrivileged(new PrivilegedAction<List<Field>>() {
+            public List<Field> run() {
+                List<Field> foundFields = new ArrayList<Field>();
+                for (Field field : source.getDeclaredFields()) {
+                    // omit final fields
+                    if (Modifier.isFinal(field.getModifiers())) {
+                        continue;
+                    }
 
-                if (!field.isAccessible())
-                {
-                   field.setAccessible(true);
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
+                    foundFields.add(field);
                 }
-                foundFields.add(field);
-             }
-             return foundFields;
-          }
-       });
+                return foundFields;
+            }
+        });
     }
 
 }

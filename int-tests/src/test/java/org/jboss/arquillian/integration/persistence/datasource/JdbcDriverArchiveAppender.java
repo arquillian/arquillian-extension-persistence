@@ -26,22 +26,19 @@ import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 
 import java.io.File;
 
-public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppender
-{
+public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppender {
 
-   public abstract String getDriverCoordinates();
+    public abstract String getDriverCoordinates();
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      return resolveDriverArtifact(getDriverCoordinates());
-   }
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        return resolveDriverArtifact(getDriverCoordinates());
+    }
 
-   private Archive<?> resolveDriverArtifact(final String driverCoordinates)
-   {
-      PomEquippedResolveStage resolver = Maven.resolver().offline().loadPomFromFile("pom.xml");
-      File[] jars = resolver.resolve(driverCoordinates).withoutTransitivity().asFile();
-      return ShrinkWrap.createFromZipFile(JavaArchive.class, jars[0]);
-   }
+    private Archive<?> resolveDriverArtifact(final String driverCoordinates) {
+        PomEquippedResolveStage resolver = Maven.resolver().offline().loadPomFromFile("pom.xml");
+        File[] jars = resolver.resolve(driverCoordinates).withoutTransitivity().asFile();
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, jars[0]);
+    }
 
 }

@@ -18,14 +18,11 @@
 package org.jboss.arquillian.persistence;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public enum TestExecutionPhase
-{
-   BEFORE,
-   AFTER,
-   NONE,
-   DEFAULT;
+public enum TestExecutionPhase {
+    BEFORE,
+    AFTER,
+    NONE,
+    DEFAULT;
 }

@@ -17,9 +17,9 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.naming;
 
-class DummyClass
-{
+class DummyClass {
 
-   public void shouldPass() {}
-   
+    public void shouldPass() {
+    }
+
 }

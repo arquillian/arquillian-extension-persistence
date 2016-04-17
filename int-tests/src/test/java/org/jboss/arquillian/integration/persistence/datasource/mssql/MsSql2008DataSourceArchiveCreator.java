@@ -22,14 +22,12 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class MsSql2008DataSourceArchiveCreator implements AuxiliaryArchiveAppender
-{
+public class MsSql2008DataSourceArchiveCreator implements AuxiliaryArchiveAppender {
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-mssql-datasource.jar")
-                       .addClass(MsSql2008DataSource.class);
-   }
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-mssql-datasource.jar")
+                .addClass(MsSql2008DataSource.class);
+    }
 
 }

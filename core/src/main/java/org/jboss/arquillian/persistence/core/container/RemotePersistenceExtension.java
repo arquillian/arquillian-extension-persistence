@@ -29,36 +29,31 @@ import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
  * container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class RemotePersistenceExtension implements RemoteLoadableExtension
-{
+public class RemotePersistenceExtension implements RemoteLoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
+    @Override
+    public void register(ExtensionBuilder builder) {
 
-      registerTestLifecycleHandlers(builder);
-      registerThirdPartyServices(builder);
+        registerTestLifecycleHandlers(builder);
+        registerThirdPartyServices(builder);
 
-      builder.observer(PersistenceConfigurationRemoteProducer.class)
-             .observer(ScriptingConfigurationRemoteProducer.class)
-             .observer(CommandServiceProducer.class)
-             .observer(JpaCacheEvictionHandler.class);
-   }
+        builder.observer(PersistenceConfigurationRemoteProducer.class)
+                .observer(ScriptingConfigurationRemoteProducer.class)
+                .observer(CommandServiceProducer.class)
+                .observer(JpaCacheEvictionHandler.class);
+    }
 
-   private void registerTestLifecycleHandlers(ExtensionBuilder builder)
-   {
-      builder.observer(PersistenceTestTrigger.class)
-             .observer(ErrorCollectorHandler.class)         // Order of execution Before / after test
-             .observer(SchemaCreationScriptsExecutor.class) // Wraps around BeforePersistenceTest
-             .observer(CustomScriptsExecutor.class)         // 50 / 10
-             .observer(DataCleanupHandler.class)            // 40 / 20
-             .observer(DataScriptsHandler.class);           // 30 / 40
-   }
+    private void registerTestLifecycleHandlers(ExtensionBuilder builder) {
+        builder.observer(PersistenceTestTrigger.class)
+                .observer(ErrorCollectorHandler.class)         // Order of execution Before / after test
+                .observer(SchemaCreationScriptsExecutor.class) // Wraps around BeforePersistenceTest
+                .observer(CustomScriptsExecutor.class)         // 50 / 10
+                .observer(DataCleanupHandler.class)            // 40 / 20
+                .observer(DataScriptsHandler.class);           // 30 / 40
+    }
 
-    private void registerThirdPartyServices(ExtensionBuilder builder)
-    {
+    private void registerThirdPartyServices(ExtensionBuilder builder) {
         builder.service(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);
     }
 }

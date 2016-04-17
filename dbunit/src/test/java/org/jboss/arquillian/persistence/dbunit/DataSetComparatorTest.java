@@ -36,127 +36,117 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.*;
 
-public class DataSetComparatorTest
-{
+public class DataSetComparatorTest {
 
-   @Test
-   public void should_map_columns_associated_with_particular_table() throws Exception
-   {
-      // given
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "table1.id", "table2.name", "table1.test" }, noCustomFilters());
+    @Test
+    public void should_map_columns_associated_with_particular_table() throws Exception {
+        // given
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"table1.id", "table2.name", "table1.test"}, noCustomFilters());
 
-      // then
-      assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
-                                                             .hasSize(2);
-   }
+        // then
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
+                .hasSize(2);
+    }
 
-   @Test
-   public void should_map_columns_associated_with_any_table() throws Exception
-   {
-      // given
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "id", "name" }, noCustomFilters());
+    @Test
+    public void should_map_columns_associated_with_any_table() throws Exception {
+        // given
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"id", "name"}, noCustomFilters());
 
-      // then
-      assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
-                                                    .hasSize(2);
-   }
+        // then
+        assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
+                .hasSize(2);
+    }
 
-   @Test
-   public void should_map_columns_used_for_all_filtering_and_associated_with_given_table() throws Exception
-   {
-      // given
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] { "id", "name", "table.test" }, noCustomFilters());
+    @Test
+    public void should_map_columns_used_for_all_filtering_and_associated_with_given_table() throws Exception {
+        // given
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"id", "name", "table.test"}, noCustomFilters());
 
-      // then
-      assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
-                                                    .hasSize(2);
-      assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Arrays.asList("test")))
-                                                             .hasSize(1);
-   }
+        // then
+        assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
+                .hasSize(2);
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Arrays.asList("test")))
+                .hasSize(1);
+    }
 
-   @Test
-   public void should_find_all_differences_between_datasets() throws Exception
-   {
-      // given
-      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml");
+    @Test
+    public void should_find_all_differences_between_datasets() throws Exception {
+        // given
+        final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+        IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml");
 
-      // when
-      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+        // when
+        dataSetComparator.compare(usersXml, usersYaml, errorCollector);
 
-      // then
-      assertThat(errorCollector.amountOfErrors()).isEqualTo(10);
-   }
+        // then
+        assertThat(errorCollector.amountOfErrors()).isEqualTo(10);
+    }
 
-   @Test
-   public void should_find_no_differences_between_identical_datasets() throws Exception
-   {
-      // given
-      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json");
+    @Test
+    public void should_find_no_differences_between_identical_datasets() throws Exception {
+        // given
+        final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+        IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json");
 
-      // when
-      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+        // when
+        dataSetComparator.compare(usersXml, usersYaml, errorCollector);
 
-      // then
-      assertThat(errorCollector.amountOfErrors()).isZero();
-   }
+        // then
+        assertThat(errorCollector.amountOfErrors()).isZero();
+    }
 
-   @Test
-   public void should_find_no_differences_comparing_the_same_dataset() throws Exception
-   {
-      // given
-      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
-      IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
-      IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+    @Test
+    public void should_find_no_differences_comparing_the_same_dataset() throws Exception {
+        // given
+        final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
+        IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
 
-      // when
-      dataSetComparator.compare(usersXml, usersYaml, errorCollector);
+        // when
+        dataSetComparator.compare(usersXml, usersYaml, errorCollector);
 
-      // then
-      assertThat(errorCollector.amountOfErrors()).isZero();
-   }
+        // then
+        assertThat(errorCollector.amountOfErrors()).isZero();
+    }
 
-   @Test
-   public void should_sort_data_using_data_type_of_current_dataset() throws Exception
-   {
-      // given
-      final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-      DataSetComparator dataSetComparator = new DataSetComparator(new String[] {"id"}, new String[] {"username"}, noCustomFilters());
-      IDataSet current = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
-      IDataSet expected = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
+    @Test
+    public void should_sort_data_using_data_type_of_current_dataset() throws Exception {
+        // given
+        final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{"id"}, new String[]{"username"}, noCustomFilters());
+        IDataSet current = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
+        IDataSet expected = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
 
-      Column firstColumn = spyOnFirstColumn(current);
-      doReturn(DataType.BIGINT).when(firstColumn).getDataType();
+        Column firstColumn = spyOnFirstColumn(current);
+        doReturn(DataType.BIGINT).when(firstColumn).getDataType();
 
-      // when
-      dataSetComparator.compare(current, expected, errorCollector);
+        // when
+        dataSetComparator.compare(current, expected, errorCollector);
 
-      // then
-      errorCollector.report();
-      assertThat(errorCollector.amountOfErrors()).isZero();
+        // then
+        errorCollector.report();
+        assertThat(errorCollector.amountOfErrors()).isZero();
 
-      verify(firstColumn, atLeastOnce()).getDataType();
-   }
+        verify(firstColumn, atLeastOnce()).getDataType();
+    }
 
-   // -- Helper methods
+    // -- Helper methods
 
-   private Column spyOnFirstColumn(IDataSet current) throws DataSetException
-   {
-      ITable useraccount = current.getTable("useraccount");
-      Column firstColumn = spy(useraccount.getTableMetaData().getColumns()[0]);
-      useraccount.getTableMetaData().getColumns()[0] = firstColumn;
-      return firstColumn;
-   }
+    private Column spyOnFirstColumn(IDataSet current) throws DataSetException {
+        ITable useraccount = current.getTable("useraccount");
+        Column firstColumn = spy(useraccount.getTableMetaData().getColumns()[0]);
+        useraccount.getTableMetaData().getColumns()[0] = firstColumn;
+        return firstColumn;
+    }
 
-   private Set<Class<? extends IColumnFilter>> noCustomFilters()
-   {
-      return emptySet();
-   }
+    private Set<Class<? extends IColumnFilter>> noCustomFilters() {
+        return emptySet();
+    }
 
 }

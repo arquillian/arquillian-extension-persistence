@@ -1,17 +1,16 @@
 {
-	"useraccount":
-	[
-		{
-			"firstname" : "John",
-			"lastname" : "Smith",
-			"username" : "doovde",
-			"password" : "password"
-		},
-		{
-			"firstname" : "Clark",
-			"lastname" : "Kent",
-			"username" : "superman",
-			"password" : "LexLuthor"
-		}
-	]
+  "useraccount": [
+    {
+      "firstname": "John",
+      "lastname": "Smith",
+      "username": "doovde",
+      "password": "password"
+    },
+    {
+      "firstname": "Clark",
+      "lastname": "Kent",
+      "username": "superman",
+      "password": "LexLuthor"
+    }
+  ]
 }

@@ -19,10 +19,8 @@ package org.jboss.arquillian.integration.persistence.test.contentverification;
 
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 
-public class NameColumnFilter extends DefaultColumnFilter
-{
-   public NameColumnFilter()
-   {
-      excludeColumn("*name*");
-   }
+public class NameColumnFilter extends DefaultColumnFilter {
+    public NameColumnFilter() {
+        excludeColumn("*name*");
+    }
 }

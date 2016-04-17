@@ -1,20 +1,19 @@
 {
-	"useraccount":
-	[
-		{
-			"id" : 1,
-			"firstname" : "John",
-			"lastname" : "Smith",
-			"username" : "doovde",
-			"password" : "password"
-		},
-		{
-			"id" : 2,
-			"firstname" : "Clark",
-			"lastname" : "Kent",
-			"username" : "superman",
-			"password" : "kryptonite",
-			"email" : "arquillian@jboss.org"
-		}
-	]
+  "useraccount": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "lastname": "Smith",
+      "username": "doovde",
+      "password": "password"
+    },
+    {
+      "id": 2,
+      "firstname": "Clark",
+      "lastname": "Kent",
+      "username": "superman",
+      "password": "kryptonite",
+      "email": "arquillian@jboss.org"
+    }
+  ]
 }

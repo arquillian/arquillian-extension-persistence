@@ -28,18 +28,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Defines SQL scripts applied on test database before test class execution to create
  * database schema. It first look for the files stored in <code>scripts</code>
  * folder from classpath.
- *
+ * <p>
  * Presence of this annotation in the test class enables Arquillian Persistence Extension.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @Target(TYPE)
 @Retention(RUNTIME)
 @Inherited
-public @interface CreateSchema
-{
+public @interface CreateSchema {
 
-   String[] value() default "";
+    String[] value() default "";
 
 }

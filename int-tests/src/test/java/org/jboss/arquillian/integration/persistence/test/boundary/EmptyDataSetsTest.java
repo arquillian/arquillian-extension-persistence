@@ -39,101 +39,88 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
  * All tests are wrapped in transaction.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.BEFORE)
-public class EmptyDataSetsTest
-{
+public class EmptyDataSetsTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addClasses(Query.class, UserPersistenceAssertion.class)
-                       // required for remote containers in order to run tests with FEST-Asserts
-                       .addPackages(true, "org.assertj.core")
-                       .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+                .addPackage(UserAccount.class.getPackage())
+                .addClasses(Query.class, UserPersistenceAssertion.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   @UsingDataSet("empty/empty.yml")
-   public void should_skip_empty_yaml_data_set() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
-   }
+    @Test
+    @UsingDataSet("empty/empty.yml")
+    public void should_skip_empty_yaml_data_set() throws Exception {
+        new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+    }
 
-   @Test
-   @UsingDataSet("empty/empty.json")
-   public void should_skip_empty_json_data_set() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
-   }
+    @Test
+    @UsingDataSet("empty/empty.json")
+    public void should_skip_empty_json_data_set() throws Exception {
+        new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+    }
 
-   @Test
-   @UsingDataSet("empty/empty.xml")
-   public void should_skip_empty_xml_data_set() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
-   }
+    @Test
+    @UsingDataSet("empty/empty.xml")
+    public void should_skip_empty_xml_data_set() throws Exception {
+        new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+    }
 
-   @Test
-   @UsingDataSet("empty/empty.xls")
-   public void should_skip_empty_xls_data_set() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
-   }
+    @Test
+    @UsingDataSet("empty/empty.xls")
+    public void should_skip_empty_xls_data_set() throws Exception {
+        new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+    }
 
-   @Test
-   @UsingDataSet("empty/empty-tables.yml")
-   public void should_clean_when_yaml_with_empty_tables_provided() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertNoUserAccountsStored();
-   }
+    @Test
+    @UsingDataSet("empty/empty-tables.yml")
+    public void should_clean_when_yaml_with_empty_tables_provided() throws Exception {
+        new UserPersistenceAssertion(em).assertNoUserAccountsStored();
+    }
 
-   @Test
-   @ShouldFailWith(AssertionError.class)
-   @UsingDataSet("users.json")
-   @ShouldMatchDataSet("empty/empty.yml")
-   public void should_fail_when_empty_set_yaml_used_for_verifying_content_of_non_empty_database()
-   {
-      new UserPersistenceAssertion(em).assertUserAccountsStored();
-   }
+    @Test
+    @ShouldFailWith(AssertionError.class)
+    @UsingDataSet("users.json")
+    @ShouldMatchDataSet("empty/empty.yml")
+    public void should_fail_when_empty_set_yaml_used_for_verifying_content_of_non_empty_database() {
+        new UserPersistenceAssertion(em).assertUserAccountsStored();
+    }
 
-   @Test
-   @ShouldFailWith(AssertionError.class)
-   @UsingDataSet("users.yml")
-   @ShouldMatchDataSet("empty/empty.json")
-   public void should_fail_when_empty_set_json_used_for_verifying_content_of_non_empty_database() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertUserAccountsStored();
-   }
+    @Test
+    @ShouldFailWith(AssertionError.class)
+    @UsingDataSet("users.yml")
+    @ShouldMatchDataSet("empty/empty.json")
+    public void should_fail_when_empty_set_json_used_for_verifying_content_of_non_empty_database() throws Exception {
+        new UserPersistenceAssertion(em).assertUserAccountsStored();
+    }
 
-   @Test
-   @ShouldFailWith(DbComparisonFailure.class)
-   @UsingDataSet("users.xml")
-   @ShouldMatchDataSet("empty/empty.xls")
-   public void should_fail_when_empty_set_xls_used_for_verifying_content_of_non_empty_database() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertUserAccountsStored();
-   }
+    @Test
+    @ShouldFailWith(DbComparisonFailure.class)
+    @UsingDataSet("users.xml")
+    @ShouldMatchDataSet("empty/empty.xls")
+    public void should_fail_when_empty_set_xls_used_for_verifying_content_of_non_empty_database() throws Exception {
+        new UserPersistenceAssertion(em).assertUserAccountsStored();
+    }
 
-   @Test
-   @ShouldFailWith(AssertionError.class)
-   @UsingDataSet("users.xml")
-   @ShouldMatchDataSet("empty/empty.xml")
-   public void should_fail_when_empty_set_xml_used_for_verifying_content_of_non_empty_database() throws Exception
-   {
-      new UserPersistenceAssertion(em).assertUserAccountsStored();
-   }
+    @Test
+    @ShouldFailWith(AssertionError.class)
+    @UsingDataSet("users.xml")
+    @ShouldMatchDataSet("empty/empty.xml")
+    public void should_fail_when_empty_set_xml_used_for_verifying_content_of_non_empty_database() throws Exception {
+        new UserPersistenceAssertion(em).assertUserAccountsStored();
+    }
 
 }

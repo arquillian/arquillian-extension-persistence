@@ -30,61 +30,48 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceDescriptorParser
-{
+public class PersistenceDescriptorParser {
 
-   private static final String JTA_DATA_SOURCE_TAG = "jta-data-source";
+    private static final String JTA_DATA_SOURCE_TAG = "jta-data-source";
 
-   private static final String NON_JTA_DATA_SOURCE_TAG = "non-jta-data-source";
+    private static final String NON_JTA_DATA_SOURCE_TAG = "non-jta-data-source";
 
-   private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-   public String obtainDataSourceName(final String descriptor)
-   {
-      Document document = parseXmlDescriptor(descriptor);
-      final NodeList persistenceUnits = document.getElementsByTagName("persistence-unit");
-      if (persistenceUnits.getLength() > 1)
-      {
-         throw new MultiplePersistenceUnitsException("Multiple persistence units defined. Please specify default data source either in 'arquillian.xml' or by using @DataSource annotation");
-      }
-      final Node persistenceUnit = persistenceUnits.item(0);
-      Node dataSource = getJtaDataSource(persistenceUnit);
-      if (dataSource == null)
-      {
-         dataSource = getNonJtaDataSource(persistenceUnit);
-      }
-      return dataSource.getTextContent();
-   }
+    public String obtainDataSourceName(final String descriptor) {
+        Document document = parseXmlDescriptor(descriptor);
+        final NodeList persistenceUnits = document.getElementsByTagName("persistence-unit");
+        if (persistenceUnits.getLength() > 1) {
+            throw new MultiplePersistenceUnitsException("Multiple persistence units defined. Please specify default data source either in 'arquillian.xml' or by using @DataSource annotation");
+        }
+        final Node persistenceUnit = persistenceUnits.item(0);
+        Node dataSource = getJtaDataSource(persistenceUnit);
+        if (dataSource == null) {
+            dataSource = getNonJtaDataSource(persistenceUnit);
+        }
+        return dataSource.getTextContent();
+    }
 
-   public String obtainDataSourceName(final InputStream inputStream)
-   {
-      return obtainDataSourceName(new Scanner(inputStream).useDelimiter("\\A").next());
-   }
+    public String obtainDataSourceName(final InputStream inputStream) {
+        return obtainDataSourceName(new Scanner(inputStream).useDelimiter("\\A").next());
+    }
 
-   private Document parseXmlDescriptor(final String descriptor)
-   {
-      try
-      {
-         return factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
-      }
-      catch (Exception e)
-      {
-         throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
-      }
-   }
-   
-   private Node getNonJtaDataSource(Node persistenceUnit)
-   {
-      return ((Element) persistenceUnit).getElementsByTagName(NON_JTA_DATA_SOURCE_TAG).item(0);
-   }
+    private Document parseXmlDescriptor(final String descriptor) {
+        try {
+            return factory.newDocumentBuilder().parse(new ByteArrayInputStream(descriptor.getBytes()));
+        } catch (Exception e) {
+            throw new PersistenceDescriptorParsingException("Unable to parse descriptor " + descriptor, e);
+        }
+    }
 
-   private Node getJtaDataSource(final Node persistenceUnit)
-   {
-      return ((Element) persistenceUnit).getElementsByTagName(JTA_DATA_SOURCE_TAG).item(0);
-   }
+    private Node getNonJtaDataSource(Node persistenceUnit) {
+        return ((Element) persistenceUnit).getElementsByTagName(NON_JTA_DATA_SOURCE_TAG).item(0);
+    }
+
+    private Node getJtaDataSource(final Node persistenceUnit) {
+        return ((Element) persistenceUnit).getElementsByTagName(JTA_DATA_SOURCE_TAG).item(0);
+    }
 
 }

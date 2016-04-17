@@ -20,65 +20,54 @@ package org.jboss.arquillian.persistence.script.data.descriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 
 /**
- *
  * Inline SQL script descriptor.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
-{
+public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor {
 
-   private final String content;
+    private final String content;
 
-   public InlineSqlScriptResourceDescriptor(String content)
-   {
-      super("-inline-file-");
-      this.content = content;
-   }
+    public InlineSqlScriptResourceDescriptor(String content) {
+        super("-inline-file-");
+        this.content = content;
+    }
 
-   @Override
-   public Format getFormat()
-   {
-      return Format.INLINE_SQL;
-   }
+    @Override
+    public Format getFormat() {
+        return Format.INLINE_SQL;
+    }
 
-   @Override
-   public String getContent()
-   {
-      return content;
-   }
+    @Override
+    public String getContent() {
+        return content;
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof InlineSqlScriptResourceDescriptor))
-      {
-         return false;
-      }
+        if (!(obj instanceof InlineSqlScriptResourceDescriptor)) {
+            return false;
+        }
 
-      final InlineSqlScriptResourceDescriptor other = (InlineSqlScriptResourceDescriptor) obj;
-      return content.equals(other.content);
-   }
+        final InlineSqlScriptResourceDescriptor other = (InlineSqlScriptResourceDescriptor) obj;
+        return content.equals(other.content);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 19;
-      int result = 1;
-      result = prime * result + ((content == null) ? 0 : content.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 19;
+        int result = 1;
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        return result;
+    }
 
-   @Override
-   public String toString()
-   {
-      return super.toString() + "\n content {" + content + "}";
-   }
+    @Override
+    public String toString() {
+        return super.toString() + "\n content {" + content + "}";
+    }
 
 }

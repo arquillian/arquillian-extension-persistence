@@ -52,165 +52,138 @@ import java.util.Map.Entry;
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public class DBUnitPersistenceTestLifecycleHandler
-{
+public class DBUnitPersistenceTestLifecycleHandler {
 
-   @Inject
-   private Instance<DataSource> dataSourceInstance;
+    @Inject
+    private Instance<DataSource> dataSourceInstance;
 
-   @Inject
-   private Instance<MetadataExtractor> metadataExtractorInstance;
+    @Inject
+    private Instance<MetadataExtractor> metadataExtractorInstance;
 
-   @Inject
-   private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
+    @Inject
+    private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;
 
-   @Inject
-   @ClassScoped
-   private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
+    @Inject
+    @ClassScoped
+    private InstanceProducer<DatabaseConnection> databaseConnectionProducer;
 
-   @Inject
-   @TestScoped
-   private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
+    @Inject
+    @TestScoped
+    private InstanceProducer<DataSetRegister> dataSetRegisterProducer;
 
-   @Inject
-   private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
+    @Inject
+    private Instance<PersistenceExtensionFeatureResolver> persistenceExtensionFeatureResolverInstance;
 
-   // ------------------------------------------------------------------------------------------------
-   // Intercepting data handling events
-   // ------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
+    // Intercepting data handling events
+    // ------------------------------------------------------------------------------------------------
 
-   public void provideDatabaseConnectionAroundBeforePersistenceTest(@Observes(precedence = 100000) EventContext<BeforePersistenceTest> context)
-   {
-      createDatabaseConnection();
-      context.proceed();
-   }
+    public void provideDatabaseConnectionAroundBeforePersistenceTest(@Observes(precedence = 100000) EventContext<BeforePersistenceTest> context) {
+        createDatabaseConnection();
+        context.proceed();
+    }
 
-   public void closeDatabaseConnections(@Observes(precedence = 100000) EventContext<AfterPersistenceTest> context)
-   {
-      try
-      {
-         context.proceed();
-      } finally
-      {
-         closeDatabaseConnection();
-      }
-   }
+    public void closeDatabaseConnections(@Observes(precedence = 100000) EventContext<AfterPersistenceTest> context) {
+        try {
+            context.proceed();
+        } finally {
+            closeDatabaseConnection();
+        }
+    }
 
-   public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context)
-   {
-      final Method testMethod = context.getEvent().getTestMethod();
+    public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context) {
+        final Method testMethod = context.getEvent().getTestMethod();
 
-      PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
-      if (persistenceExtensionFeatureResolver.shouldSeedData())
-      {
-         DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
-         createInitialDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
-      }
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
+        if (persistenceExtensionFeatureResolver.shouldSeedData()) {
+            DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+            createInitialDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
+        }
 
-      if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest())
-      {
-         final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
-         createExpectedDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
-      }
+        if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest()) {
+            final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+            createExpectedDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
+        }
 
-      context.proceed();
-   }
+        context.proceed();
+    }
 
-   // ------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
-   private void createDatabaseConnection()
-   {
+    private void createDatabaseConnection() {
 
-      if (databaseConnectionProducer.get() == null)
-      {
-         configureDatabaseConnection();
-      }
+        if (databaseConnectionProducer.get() == null) {
+            configureDatabaseConnection();
+        }
 
-   }
+    }
 
-   private void configureDatabaseConnection()
-   {
-      try
-      {
-         final DataSource dataSource = dataSourceInstance.get();
-         final String schema = dbUnitConfigurationInstance.get().getSchema();
-         final DatabaseConnection databaseConnection = createDatabaseConnection(dataSource, schema);
-         databaseConnectionProducer.set(databaseConnection);
+    private void configureDatabaseConnection() {
+        try {
+            final DataSource dataSource = dataSourceInstance.get();
+            final String schema = dbUnitConfigurationInstance.get().getSchema();
+            final DatabaseConnection databaseConnection = createDatabaseConnection(dataSource, schema);
+            databaseConnectionProducer.set(databaseConnection);
 
-         final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
-         dbUnitConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
+            final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
+            dbUnitConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
 
-         final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
-         for (Entry<String, Object> property : properties.entrySet())
-         {
-            dbUnitConfig.setProperty(property.getKey(), property.getValue());
-         }
-      } catch (Exception e)
-      {
-         throw new DBUnitInitializationException("Unable to initialize database connection for DBUnit module.", e);
-      }
-   }
+            final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
+            for (Entry<String, Object> property : properties.entrySet()) {
+                dbUnitConfig.setProperty(property.getKey(), property.getValue());
+            }
+        } catch (Exception e) {
+            throw new DBUnitInitializationException("Unable to initialize database connection for DBUnit module.", e);
+        }
+    }
 
-   public DatabaseConnection createDatabaseConnection(final DataSource dataSource, final String schema)
-         throws DatabaseUnitException, SQLException
-   {
-      DatabaseConnection databaseConnection;
-      if (schema != null && schema.length() > 0)
-      {
-         databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);
-      } else
-      {
-         databaseConnection = new DatabaseConnection(dataSource.getConnection());
-      }
-      return databaseConnection;
-   }
+    public DatabaseConnection createDatabaseConnection(final DataSource dataSource, final String schema)
+            throws DatabaseUnitException, SQLException {
+        DatabaseConnection databaseConnection;
+        if (schema != null && schema.length() > 0) {
+            databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);
+        } else {
+            databaseConnection = new DatabaseConnection(dataSource.getConnection());
+        }
+        return databaseConnection;
+    }
 
-   private void closeDatabaseConnection()
-   {
+    private void closeDatabaseConnection() {
 
-      try
-      {
-         final Connection connection = databaseConnectionProducer.get().getConnection();
-         if (!connection.isClosed())
-         {
-            connection.close();
-         }
-      } catch (Exception e)
-      {
-         throw new DBUnitConnectionException("Unable to close connection.", e);
-      }
+        try {
+            final Connection connection = databaseConnectionProducer.get().getConnection();
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            throw new DBUnitConnectionException("Unable to close connection.", e);
+        }
 
-   }
+    }
 
-   private void createInitialDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors)
-   {
-      DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
-      for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
-      {
-         dataSetRegister.addInitial(dataSetDescriptor.getContent());
-      }
-      dataSetRegisterProducer.set(dataSetRegister);
-   }
+    private void createInitialDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
+        DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
+        for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors) {
+            dataSetRegister.addInitial(dataSetDescriptor.getContent());
+        }
+        dataSetRegisterProducer.set(dataSetRegister);
+    }
 
-   private void createExpectedDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors)
-   {
-      DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
-      for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors)
-      {
-         dataSetRegister.addExpected(dataSetDescriptor.getContent());
-      }
-      dataSetRegisterProducer.set(dataSetRegister);
-   }
+    private void createExpectedDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
+        DataSetRegister dataSetRegister = getOrCreateDataSetRegister();
+        for (DataSetResourceDescriptor dataSetDescriptor : dataSetDescriptors) {
+            dataSetRegister.addExpected(dataSetDescriptor.getContent());
+        }
+        dataSetRegisterProducer.set(dataSetRegister);
+    }
 
-   private DataSetRegister getOrCreateDataSetRegister()
-   {
-      DataSetRegister dataSetRegister = dataSetRegisterProducer.get();
-      if (dataSetRegister == null)
-      {
-         dataSetRegister = new DataSetRegister();
-      }
-      return dataSetRegister;
-   }
+    private DataSetRegister getOrCreateDataSetRegister() {
+        DataSetRegister dataSetRegister = dataSetRegisterProducer.get();
+        if (dataSetRegister == null) {
+            dataSetRegister = new DataSetRegister();
+        }
+        return dataSetRegister;
+    }
 
 
 }

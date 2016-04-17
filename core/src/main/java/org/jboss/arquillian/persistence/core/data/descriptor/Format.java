@@ -19,49 +19,42 @@ package org.jboss.arquillian.persistence.core.data.descriptor;
 import java.util.EnumSet;
 import java.util.Set;
 
-public enum Format
-{
-   DTD("dtd"),
-   XML("xml"),
-   EXCEL("xls"),
-   YAML("yml"),
-   JSON("json"),
-   INLINE_SQL("-inline-"),
-   SQL_SCRIPT("sql"),
-   UNSUPPORTED("-none-");
+public enum Format {
+    DTD("dtd"),
+    XML("xml"),
+    EXCEL("xls"),
+    YAML("yml"),
+    JSON("json"),
+    INLINE_SQL("-inline-"),
+    SQL_SCRIPT("sql"),
+    UNSUPPORTED("-none-");
 
-   private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED, INLINE_SQL);
+    private static final EnumSet<Format> NOT_REAL_FILE_TYPES = EnumSet.of(UNSUPPORTED, INLINE_SQL);
 
-   private final String fileExtension;
+    private final String fileExtension;
 
-   private Format(String fileExtension)
-   {
-      this.fileExtension = fileExtension;
-   }
+    private Format(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
 
-   public String extension()
-   {
-      return fileExtension;
-   }
+    public String extension() {
+        return fileExtension;
+    }
 
-   public static Format inferFromFile(String fileName)
-   {
-      final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
+    public static Format inferFromFile(String fileName) {
+        final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
 
-      for (Format format : validFormats)
-      {
-         if (fileName.endsWith(format.fileExtension))
-         {
-            return format;
-         }
-      }
+        for (Format format : validFormats) {
+            if (fileName.endsWith(format.fileExtension)) {
+                return format;
+            }
+        }
 
-      return UNSUPPORTED;
-   }
+        return UNSUPPORTED;
+    }
 
-   public static boolean isFileType(Format format)
-   {
-      return EnumSet.complementOf(NOT_REAL_FILE_TYPES).contains(format);
-   }
+    public static boolean isFileType(Format format) {
+        return EnumSet.complementOf(NOT_REAL_FILE_TYPES).contains(format);
+    }
 
 }

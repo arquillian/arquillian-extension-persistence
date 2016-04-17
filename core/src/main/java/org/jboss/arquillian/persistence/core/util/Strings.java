@@ -17,12 +17,10 @@
  */
 package org.jboss.arquillian.persistence.core.util;
 
-public class Strings
-{
+public class Strings {
 
-   public static boolean isEmpty(final String string)
-   {
-      return string == null || "".equals(string);
-   }
+    public static boolean isEmpty(final String string) {
+        return string == null || "".equals(string);
+    }
 
 }

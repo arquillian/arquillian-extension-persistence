@@ -21,41 +21,43 @@ import java.io.Reader;
 import java.util.List;
 
 /**
- *
  * By providing concrete implementation you can specify parsing logic for given SQL dialect
  * and splits the script into executable sql parts.
- *
+ * <p>
  * Custom implementation can be bundled with the test class (for example as separated JAR) and should have
  * proper SPI entry in META-INF/services.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public interface StatementSplitter
-{
-   /**
-    * Defines the name of supported database dialect. Used in the Arquillian scripting configuration
-    * to determine which implementation should be used when parsing SQL scripts.
-    * @return
-    */
-   String supports();
+public interface StatementSplitter {
+    /**
+     * Defines the name of supported database dialect. Used in the Arquillian scripting configuration
+     * to determine which implementation should be used when parsing SQL scripts.
+     *
+     * @return
+     */
+    String supports();
 
-   /**
-    * Defines statement delimiter
-    * @param statementDelimiter
-    */
-   void setStatementDelimiter(String statementDelimiter);
+    /**
+     * Defines statement delimiter
+     *
+     * @param statementDelimiter
+     */
+    void setStatementDelimiter(String statementDelimiter);
 
-   /**
-    * Splits given script into executable statements
-    * @param script
-    * @return
-    */
-   List<String> splitStatements(String script);
+    /**
+     * Splits given script into executable statements
+     *
+     * @param script
+     * @return
+     */
+    List<String> splitStatements(String script);
 
-   /**
-    * Splits given script into executable statements
-    * @param reader
-    * @return
-    */
-   List<String> splitStatements(Reader reader);
+    /**
+     * Splits given script into executable statements
+     *
+     * @param reader
+     * @return
+     */
+    List<String> splitStatements(Reader reader);
 }

@@ -21,57 +21,47 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- *
  * Plain text file descriptor.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class DtdFileResourceDescriptor extends ResourceDescriptor<String>
-{
+public class DtdFileResourceDescriptor extends ResourceDescriptor<String> {
 
-   public DtdFileResourceDescriptor(String location)
-   {
-      super(location);
-   }
+    public DtdFileResourceDescriptor(String location) {
+        super(location);
+    }
 
-   @Override
-   public Format getFormat()
-   {
-      return Format.DTD;
-   }
+    @Override
+    public Format getFormat() {
+        return Format.DTD;
+    }
 
-   @Override
-   public String getContent()
-   {
-      final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(getLocation());
-      return new Scanner(inputStream).useDelimiter("\\A").next();
-   }
+    @Override
+    public String getContent() {
+        final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(getLocation());
+        return new Scanner(inputStream).useDelimiter("\\A").next();
+    }
 
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (this == obj)
-      {
-         return true;
-      }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-      if (!(obj instanceof DtdFileResourceDescriptor))
-      {
-         return false;
-      }
+        if (!(obj instanceof DtdFileResourceDescriptor)) {
+            return false;
+        }
 
-      final DtdFileResourceDescriptor other = (DtdFileResourceDescriptor) obj;
-      return location.equals(other.location);
-   }
+        final DtdFileResourceDescriptor other = (DtdFileResourceDescriptor) obj;
+        return location.equals(other.location);
+    }
 
-   @Override
-   public int hashCode()
-   {
-      final int prime = 29;
-      int result = 1;
-      result = prime * result + ((location == null) ? 0 : location.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 29;
+        int result = 1;
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        return result;
+    }
 
 }

@@ -20,16 +20,12 @@ package org.jboss.arquillian.persistence.script.data.descriptor;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public abstract class SqlScriptResourceDescriptor extends ResourceDescriptor<String>
-{
+public abstract class SqlScriptResourceDescriptor extends ResourceDescriptor<String> {
 
-   public SqlScriptResourceDescriptor(String location)
-   {
-      super(location);
-   }
+    public SqlScriptResourceDescriptor(String location) {
+        super(location);
+    }
 
 }

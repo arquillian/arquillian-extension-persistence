@@ -30,30 +30,25 @@ import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
  * container.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class RemoteDBUnitExtension implements RemoteLoadableExtension
-{
+public class RemoteDBUnitExtension implements RemoteLoadableExtension {
 
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      registerDBUnitTestLifecycleHandlers(builder);
-      registerDBUnitHandlers(builder);
-   }
+    @Override
+    public void register(ExtensionBuilder builder) {
+        registerDBUnitTestLifecycleHandlers(builder);
+        registerDBUnitHandlers(builder);
+    }
 
-   private void registerDBUnitHandlers(ExtensionBuilder builder)
-   {
-      builder.observer(DBUnitDataHandler.class)
-             .observer(DBUnitConfigurationRemoteProducer.class)
-             .observer(DBUnitPersistenceTestLifecycleHandler.class)
-             .observer(DBUnitDataStateLogger.class)
-             .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class);
-   }
+    private void registerDBUnitHandlers(ExtensionBuilder builder) {
+        builder.observer(DBUnitDataHandler.class)
+                .observer(DBUnitConfigurationRemoteProducer.class)
+                .observer(DBUnitPersistenceTestLifecycleHandler.class)
+                .observer(DBUnitDataStateLogger.class)
+                .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class);
+    }
 
-   private void registerDBUnitTestLifecycleHandlers(ExtensionBuilder builder)
-   {
-      builder.observer(DataSetHandler.class);               // 20 / 30
-   }
+    private void registerDBUnitTestLifecycleHandlers(ExtensionBuilder builder) {
+        builder.observer(DataSetHandler.class);               // 20 / 30
+    }
 
 }

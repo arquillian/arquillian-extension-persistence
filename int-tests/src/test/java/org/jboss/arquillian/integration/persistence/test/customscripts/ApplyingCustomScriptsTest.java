@@ -35,54 +35,49 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @RunWith(Arquillian.class)
-public class ApplyingCustomScriptsTest
-{
+public class ApplyingCustomScriptsTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                       .addPackage(UserAccount.class.getPackage())
-                       .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                       .addAsManifestResource("test-persistence.xml", "persistence.xml");
-   }
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
 
-   @PersistenceContext
-   EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-   @Test
-   @ApplyScriptBefore("users.sql")
-   @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_add_users_before_test_using_custom_script() throws Exception
-   {
-   }
+    @Test
+    @ApplyScriptBefore("users.sql")
+    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
+    @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
+    public void should_add_users_before_test_using_custom_script() throws Exception {
+    }
 
-   @Test
-   @ApplyScriptBefore({"INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
-                       "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')" })
-   @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
-   public void should_add_users_before_test_using_inline_script() throws Exception
-   {
-   }
+    @Test
+    @ApplyScriptBefore({"INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
+            "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')"})
+    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
+    @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
+    public void should_add_users_before_test_using_inline_script() throws Exception {
+    }
 
 
-   @Test
-   @ApplyScriptBefore("clark-kent.sql")
-   @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
-   @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.BEFORE)
-   public void should_add_user_to_already_created_entries_using_custom_script() throws Exception
-   {
-      // given
-      UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
+    @Test
+    @ApplyScriptBefore("clark-kent.sql")
+    @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
+    @ExecuteScriptsShouldBeTriggered(value = TestExecutionPhase.BEFORE)
+    public void should_add_user_to_already_created_entries_using_custom_script() throws Exception {
+        // given
+        UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
 
-      // when
-      em.persist(johnSmith);
+        // when
+        em.persist(johnSmith);
 
-      // then
-      // superman should be added before test execution
-      // and data should be compared using dataset defined in @ShouldMatchDataSet
-   }
+        // then
+        // superman should be added before test execution
+        // and data should be compared using dataset defined in @ShouldMatchDataSet
+    }
 
 }

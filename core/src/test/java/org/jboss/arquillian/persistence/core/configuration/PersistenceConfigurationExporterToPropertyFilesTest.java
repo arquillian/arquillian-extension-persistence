@@ -30,73 +30,67 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersistenceConfigurationExporterToPropertyFilesTest
-{
+public class PersistenceConfigurationExporterToPropertyFilesTest {
 
-   private File tmpPropertyFile;
+    private File tmpPropertyFile;
 
-   @Rule
-   public TemporaryFolder tmp = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder tmp = new TemporaryFolder();
 
-   @Before
-   public void createTemporaryFile() throws IOException
-   {
-      this.tmpPropertyFile = tmp.newFile();
-   }
+    @Before
+    public void createTemporaryFile() throws IOException {
+        this.tmpPropertyFile = tmp.newFile();
+    }
 
-   @Test
-   public void should_export_persistence_configuration_to_property_file() throws Exception
-   {
-      // given
-      Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
-      expectedProperties.setProperty("arquillian.extension.persistence.dump.directory", System.getProperty("java.io.tmpdir"));
+    @Test
+    public void should_export_persistence_configuration_to_property_file() throws Exception {
+        // given
+        Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
+        expectedProperties.setProperty("arquillian.extension.persistence.dump.directory", System.getProperty("java.io.tmpdir"));
 
-      PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
-      persistenceConfiguration.setDefaultDataSource("DefaultDS");
-      persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
+        PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
+        persistenceConfiguration.setDefaultDataSource("DefaultDS");
+        persistenceConfiguration.setDefaultTransactionMode(TransactionMode.ROLLBACK);
 
-      // when
-      Configuration.exportUsing(persistenceConfiguration)
-                   .toProperties(new FileOutputStream(tmpPropertyFile));
+        // when
+        Configuration.exportUsing(persistenceConfiguration)
+                .toProperties(new FileOutputStream(tmpPropertyFile));
 
-      // then
-      assertThat(createdProperties()).isEqualTo(expectedProperties);
-   }
+        // then
+        assertThat(createdProperties()).isEqualTo(expectedProperties);
+    }
 
-   @Test
-   public void should_export_custom_persistence_configuration_loaded_from_xml_to_property_file() throws Exception
-   {
-      // given
-      Properties expectedProperties = expectedProperties("properties/custom.arquillian.persistence.properties");
-      PersistenceConfiguration persistenceConfiguration = TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian.xml");
+    @Test
+    public void should_export_custom_persistence_configuration_loaded_from_xml_to_property_file() throws Exception {
+        // given
+        Properties expectedProperties = expectedProperties("properties/custom.arquillian.persistence.properties");
+        PersistenceConfiguration persistenceConfiguration = TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian.xml");
 
-      // when
-      Configuration.exportUsing(persistenceConfiguration)
-                   .toProperties(new FileOutputStream(tmpPropertyFile));
+        // when
+        Configuration.exportUsing(persistenceConfiguration)
+                .toProperties(new FileOutputStream(tmpPropertyFile));
 
-      // then
-      assertThat(createdProperties()).isEqualTo(expectedProperties);
-   }
+        // then
+        assertThat(createdProperties()).isEqualTo(expectedProperties);
+    }
 
-   // Utility methods
+    // Utility methods
 
-   private Properties createdProperties() throws IOException, FileNotFoundException
-   {
-      final Properties actualProperties = new Properties();
-      actualProperties.load(new FileInputStream(tmpPropertyFile));
-      return actualProperties;
-   }
+    private Properties createdProperties() throws IOException, FileNotFoundException {
+        final Properties actualProperties = new Properties();
+        actualProperties.load(new FileInputStream(tmpPropertyFile));
+        return actualProperties;
+    }
 
-   private Properties expectedProperties(String expectedPropertiesFileName) throws IOException,
-         FileNotFoundException, URISyntaxException
-   {
-      final Properties expectedProperties = new Properties();
-      final URI expectedPropertiesUri = Thread.currentThread()
-                                              .getContextClassLoader()
-                                              .getResource(expectedPropertiesFileName)
-                                              .toURI();
-      expectedProperties.load(new FileInputStream(new File(expectedPropertiesUri)));
-      return expectedProperties;
-   }
+    private Properties expectedProperties(String expectedPropertiesFileName) throws IOException,
+            FileNotFoundException, URISyntaxException {
+        final Properties expectedProperties = new Properties();
+        final URI expectedPropertiesUri = Thread.currentThread()
+                .getContextClassLoader()
+                .getResource(expectedPropertiesFileName)
+                .toURI();
+        expectedProperties.load(new FileInputStream(new File(expectedPropertiesUri)));
+        return expectedProperties;
+    }
 
 }

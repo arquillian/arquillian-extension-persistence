@@ -30,22 +30,20 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest
-{
+public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest {
 
-   @Deployment
-   public static Archive<?> createDeploymentPackage()
-   {
-      final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                                                .addPackages(true, UserAccount.class.getPackage())
-                                                .addClass(Query.class)
-                                                // required for remote containers in order to run tests with FEST-Asserts
-                                                .addPackages(true, "org.assertj.core")
-                                                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                                                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackages(true, UserAccount.class.getPackage())
+                .addClass(Query.class)
+                // required for remote containers in order to run tests with FEST-Asserts
+                .addPackages(true, "org.assertj.core")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
 
-      return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
-                       .addAsLibrary(javaArchive);
-   }
+        return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
+                .addAsLibrary(javaArchive);
+    }
 
 }

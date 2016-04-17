@@ -1,4 +1,4 @@
 <!--?xml version="1.0" encoding="utf-8"?-->
 <dataset>
-    <useraccount id="1" firstname="John" lastname="Smith" username="doovde" password="password" />
+  <useraccount id="1" firstname="John" lastname="Smith" username="doovde" password="password"/>
 </dataset>

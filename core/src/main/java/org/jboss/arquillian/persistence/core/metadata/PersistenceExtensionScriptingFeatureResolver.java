@@ -24,56 +24,47 @@ import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurat
 import java.lang.reflect.Method;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceExtensionScriptingFeatureResolver
-{
+public class PersistenceExtensionScriptingFeatureResolver {
 
-   private final ScriptingConfiguration configuration;
+    private final ScriptingConfiguration configuration;
 
-   private final MetadataExtractor metadataExtractor;
+    private final MetadataExtractor metadataExtractor;
 
-   private final Method testMethod;
+    private final Method testMethod;
 
-   public PersistenceExtensionScriptingFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor, ScriptingConfiguration configuration)
-   {
-      this.metadataExtractor = metadataExtractor;
-      this.configuration = configuration;
-      this.testMethod = testMethod;
-   }
+    public PersistenceExtensionScriptingFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor, ScriptingConfiguration configuration) {
+        this.metadataExtractor = metadataExtractor;
+        this.configuration = configuration;
+        this.testMethod = testMethod;
+    }
 
-   // ---------------------------------------------------------------------------------------------------
-   // Public API methods
-   // ---------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------
+    // Public API methods
+    // ---------------------------------------------------------------------------------------------------
 
-   public TestExecutionPhase getCleanupUsingScriptTestPhase()
-   {
-      final CleanupUsingScript cleanupAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
+    public TestExecutionPhase getCleanupUsingScriptTestPhase() {
+        final CleanupUsingScript cleanupAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
 
-      TestExecutionPhase phase = configuration.getDefaultCleanupUsingScriptPhase();
-      if (cleanupAnnotation != null && !TestExecutionPhase.DEFAULT.equals(cleanupAnnotation.phase()))
-      {
-         phase = cleanupAnnotation.phase();
-      }
+        TestExecutionPhase phase = configuration.getDefaultCleanupUsingScriptPhase();
+        if (cleanupAnnotation != null && !TestExecutionPhase.DEFAULT.equals(cleanupAnnotation.phase())) {
+            phase = cleanupAnnotation.phase();
+        }
 
-      return phase;
-   }
+        return phase;
+    }
 
-   public boolean shouldCleanupUsingScript()
-   {
-      return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) != null;
-   }
+    public boolean shouldCleanupUsingScript() {
+        return metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod) != null;
+    }
 
-   public boolean shouldCleanupUsingScriptBefore()
-   {
-      return shouldCleanupUsingScript() && TestExecutionPhase.BEFORE.equals(getCleanupUsingScriptTestPhase());
-   }
+    public boolean shouldCleanupUsingScriptBefore() {
+        return shouldCleanupUsingScript() && TestExecutionPhase.BEFORE.equals(getCleanupUsingScriptTestPhase());
+    }
 
-   public boolean shouldCleanupUsingScriptAfter()
-   {
-      return shouldCleanupUsingScript() && TestExecutionPhase.AFTER.equals(getCleanupUsingScriptTestPhase());
-   }
+    public boolean shouldCleanupUsingScriptAfter() {
+        return shouldCleanupUsingScript() && TestExecutionPhase.AFTER.equals(getCleanupUsingScriptTestPhase());
+    }
 
 }

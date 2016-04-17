@@ -42,101 +42,82 @@ import static org.jboss.arquillian.persistence.core.data.descriptor.Format.isFil
  * Appends all data sets defined for the test class to the test archive.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  */
-public class PersistenceExtensionDataResourcesTestArchiveEnricher implements ApplicationArchiveProcessor
-{
+public class PersistenceExtensionDataResourcesTestArchiveEnricher implements ApplicationArchiveProcessor {
 
-   @Inject
-   Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+    @Inject
+    Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
-   @Override
-   public void process(Archive<?> applicationArchive, TestClass testClass)
-   {
+    @Override
+    public void process(Archive<?> applicationArchive, TestClass testClass) {
 
-      final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
-      if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated())
-      {
-         return;
-      }
+        final PersistenceExtensionEnabler persistenceExtensionEnabler = new PersistenceExtensionEnabler(testClass);
+        if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated()) {
+            return;
+        }
 
-      final Set<ResourceDescriptor<?>> allDataResources = fetchAllDataResources(testClass);
-      if (!allDataResources.isEmpty())
-      {
-         addResources(applicationArchive, allDataResources);
-      }
-   }
+        final Set<ResourceDescriptor<?>> allDataResources = fetchAllDataResources(testClass);
+        if (!allDataResources.isEmpty()) {
+            addResources(applicationArchive, allDataResources);
+        }
+    }
 
-   // Private helper methods
+    // Private helper methods
 
-   private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass)
-   {
-      final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
+    private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass) {
+        final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
-      final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testClass, scriptingConfigurationInstance.get());
-      final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testClass, scriptingConfigurationInstance.get());
-      final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(testClass, scriptingConfigurationInstance.get());
-      final SqlScriptProvider<CreateSchema> createSchemaScripts = SqlScriptProvider.createProviderForCreateSchemaScripts(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<CreateSchema> createSchemaScripts = SqlScriptProvider.createProviderForCreateSchemaScripts(testClass, scriptingConfigurationInstance.get());
 
-      allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
-      allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
-      allDataSets.addAll(cleanupScriptsProvider.getDescriptors(testClass));
-      allDataSets.addAll(createSchemaScripts.getDescriptors(testClass));
+        allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
+        allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
+        allDataSets.addAll(cleanupScriptsProvider.getDescriptors(testClass));
+        allDataSets.addAll(createSchemaScripts.getDescriptors(testClass));
 
-      return allDataSets;
-   }
+        return allDataSets;
+    }
 
-   private void addResources(Archive<?> applicationArchive, Set<ResourceDescriptor<?>> allDataResources)
-   {
-      final List<String> resources = extractPaths(allDataResources);
+    private void addResources(Archive<?> applicationArchive, Set<ResourceDescriptor<?>> allDataResources) {
+        final List<String> resources = extractPaths(allDataResources);
 
-      if (EnterpriseArchive.class.isInstance(applicationArchive))
-      {
-         ((EnterpriseArchive) applicationArchive).addAsLibrary(createArchiveWithResources(resources));
-      }
-      else if (ResourceContainer.class.isInstance(applicationArchive))
-      {
-         addResourcesToApplicationArchive((ResourceContainer<?>) applicationArchive, resources);
-      }
-      else
-      {
-         throw new RuntimeException("Unsupported archive type " + applicationArchive.getClass().getName());
-      }
-   }
+        if (EnterpriseArchive.class.isInstance(applicationArchive)) {
+            ((EnterpriseArchive) applicationArchive).addAsLibrary(createArchiveWithResources(resources));
+        } else if (ResourceContainer.class.isInstance(applicationArchive)) {
+            addResourcesToApplicationArchive((ResourceContainer<?>) applicationArchive, resources);
+        } else {
+            throw new RuntimeException("Unsupported archive type " + applicationArchive.getClass().getName());
+        }
+    }
 
-   private void addResourcesToApplicationArchive(ResourceContainer<?> applicationArchive, List<String> resourcePaths)
-   {
-      for (String path : resourcePaths)
-      {
-         applicationArchive.addAsResource(path);
-      }
-   }
+    private void addResourcesToApplicationArchive(ResourceContainer<?> applicationArchive, List<String> resourcePaths) {
+        for (String path : resourcePaths) {
+            applicationArchive.addAsResource(path);
+        }
+    }
 
-   private JavaArchive createArchiveWithResources(Collection<String> resourcePaths)
-   {
-      final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-scripts.jar");
+    private JavaArchive createArchiveWithResources(Collection<String> resourcePaths) {
+        final JavaArchive dataSetsArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-scripts.jar");
 
-      for (String path : resourcePaths)
-      {
-         dataSetsArchive.addAsResource(path);
-      }
+        for (String path : resourcePaths) {
+            dataSetsArchive.addAsResource(path);
+        }
 
-      return dataSetsArchive;
-   }
+        return dataSetsArchive;
+    }
 
-   private List<String> extractPaths(final Collection<? extends ResourceDescriptor<?>> descriptors)
-   {
-      final List<String> paths = new ArrayList<String>(descriptors.size());
+    private List<String> extractPaths(final Collection<? extends ResourceDescriptor<?>> descriptors) {
+        final List<String> paths = new ArrayList<String>(descriptors.size());
 
-      for (ResourceDescriptor<?> descriptor : descriptors)
-      {
-         if (isFileType(descriptor.getFormat()))
-         {
-            paths.add(descriptor.getLocation());
-         }
-      }
+        for (ResourceDescriptor<?> descriptor : descriptors) {
+            if (isFileType(descriptor.getFormat())) {
+                paths.add(descriptor.getLocation());
+            }
+        }
 
-      return paths;
-   }
+        return paths;
+    }
 
 }
