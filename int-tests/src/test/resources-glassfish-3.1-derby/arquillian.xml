@@ -20,7 +20,6 @@
   </extension>
 
   <extension qualifier="persistence-script">
-    <property name="sqlStatementDelimiter">NEW_LINE</property>
     <property name="scriptsToExecuteBeforeTest">reset-sequence.sql</property>
   </extension>
 

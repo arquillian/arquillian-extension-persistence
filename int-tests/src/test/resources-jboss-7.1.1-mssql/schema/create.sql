@@ -1,13 +1,54 @@
-IF OBJECT_ID('dbo.useraccount_address', 'U') IS NOT NULL DROP TABLE dbo.useraccount_address;
-IF OBJECT_ID('dbo.address', 'U') IS NOT NULL DROP TABLE dbo.address;
-IF OBJECT_ID('dbo.useraccount', 'U') IS NOT NULL DROP TABLE dbo.useraccount;
-IF OBJECT_ID('dbo.hibernate_sequence', 'U') IS NOT NULL DROP TABLE dbo.hibernate_sequence;
+IF OBJECT_ID('dbo.useraccount_address', 'U') IS NOT NULL
+  DROP TABLE dbo.useraccount_address;;
 
-create table address (id bigint not null, city varchar(255) not null, houseNumber int, streetName varchar(255) not null, version bigint, zipCode int not null, primary key (id));
-create table useraccount (id bigint not null, firstname varchar(128) not null, lastname varchar(128) not null, nickname varchar(128), password varchar(255) not null, username varchar(32) not null, openDate date, primary key (id));
-create table useraccount_address (useraccount_id bigint not null, addresses_id bigint not null, primary key (useraccount_id, addresses_id), unique (addresses_id));
-alter table useraccount_address add constraint FK538F4B7EC498202 foreign key (useraccount_id) references useraccount;
-alter table useraccount_address add constraint FK538F4B757E57A74 foreign key (addresses_id) references address;
-create table hibernate_sequence ( next_val bigint );
-insert into hibernate_sequence values ( 1 );
+IF OBJECT_ID('dbo.address', 'U') IS NOT NULL
+  DROP TABLE dbo.address;;
+
+IF OBJECT_ID('dbo.useraccount', 'U') IS NOT NULL
+  DROP TABLE dbo.useraccount;;
+
+IF OBJECT_ID('dbo.hibernate_sequence', 'U') IS NOT NULL
+  DROP TABLE dbo.hibernate_sequence;;
+
+
+CREATE TABLE address (
+  id          BIGINT       NOT NULL,
+  city        VARCHAR(255) NOT NULL,
+  houseNumber INT,
+  streetName  VARCHAR(255) NOT NULL,
+  version     BIGINT,
+  zipCode     INT          NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE useraccount (
+  id        BIGINT       NOT NULL,
+  firstname VARCHAR(128) NOT NULL,
+  lastname  VARCHAR(128) NOT NULL,
+  nickname  VARCHAR(128),
+  password  VARCHAR(255) NOT NULL,
+  username  VARCHAR(32)  NOT NULL,
+  openDate  DATE,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE useraccount_address (
+  useraccount_id BIGINT NOT NULL,
+  addresses_id   BIGINT NOT NULL,
+  PRIMARY KEY (useraccount_id, addresses_id),
+  UNIQUE (addresses_id)
+);
+
+ALTER TABLE useraccount_address
+  ADD CONSTRAINT FK538F4B7EC498202 FOREIGN KEY (useraccount_id) REFERENCES useraccount;
+
+ALTER TABLE useraccount_address
+  ADD CONSTRAINT FK538F4B757E57A74 FOREIGN KEY (addresses_id) REFERENCES address;
+
+CREATE TABLE hibernate_sequence (
+  next_val BIGINT
+);
+
+INSERT INTO hibernate_sequence VALUES (1);
+
 

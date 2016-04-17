@@ -24,10 +24,6 @@
     <property name="filterTables">true</property>
   </extension>
 
-  <extension qualifier="persistence-script">
-    <property name="sqlStatementDelimiter">NEW_LINE</property>
-  </extension>
-
   <extension qualifier="transaction">
     <property name="manager">java:jboss/UserTransaction</property>
   </extension>

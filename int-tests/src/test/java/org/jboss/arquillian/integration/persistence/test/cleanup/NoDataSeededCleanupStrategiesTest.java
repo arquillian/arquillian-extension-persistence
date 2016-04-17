@@ -58,7 +58,7 @@ public class NoDataSeededCleanupStrategiesTest {
     }
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     @Cleanup(phase = TestExecutionPhase.BEFORE)

@@ -100,6 +100,15 @@ public class ScriptExecutorTest {
     }
 
     @Test
+    public void should_execute_mysql_script() throws Exception {
+        // when
+        scriptExecutor.execute(FileLoader.loadAsString("scripts/mysql-script.sql"));
+
+        // then
+        verify(connection, times(16)).createStatement();
+    }
+
+    @Test
     public void should_execute_statements_with_custom_delimiter() throws Exception {
         // given
         scriptingConfiguration.setSqlStatementDelimiter("GO");

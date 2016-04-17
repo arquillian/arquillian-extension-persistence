@@ -42,7 +42,6 @@
   <extension qualifier="persistence-script">
     <property name="scriptsToExecuteBeforeTest">SET REFERENTIAL_INTEGRITY FALSE;</property>
     <property name="scriptsToExecuteAfterTest">scripts/turn-on-integrity-checks.sql</property>
-    <property name="sqlStatementDelimiter">NEW_LINE</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

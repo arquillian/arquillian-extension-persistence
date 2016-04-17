@@ -98,7 +98,7 @@ public class DefaultStatementSplitter implements StatementSplitter {
                     if (multipleInlineStatements(line)) {
                         statements.addAll(splitInlineStatements(line));
                     } else {
-                        String trimmed = new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim());
+                        final String trimmed = trim(readSqlStatement.toString());
                         if (trimmed.length() > 0) {
                             statements.add(trimmed);
                         }
@@ -107,7 +107,7 @@ public class DefaultStatementSplitter implements StatementSplitter {
                 }
             }
             if (shouldExecuteRemainingStatements(readSqlStatement)) {
-                statements.add(new SpecialCharactersReplacer().unescape(readSqlStatement.toString().trim()));
+                statements.add(trim(readSqlStatement.toString()));
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed parsing file.", e);
@@ -146,9 +146,17 @@ public class DefaultStatementSplitter implements StatementSplitter {
         final StringTokenizer sqlStatements = new StringTokenizer(line, statementDelimiter);
         while (sqlStatements.hasMoreElements()) {
             final String token = sqlStatements.nextToken();
-            statements.add(new SpecialCharactersReplacer().unescape(token.trim()));
+            statements.add(trim(token));
         }
         return statements;
+    }
+
+    private String trim(String line) {
+        String trimmed = new SpecialCharactersReplacer().unescape(line.trim());
+        if (!lineIsStatementDelimiter(line)) {
+            trimmed.replace(LINE_SEPARATOR, " ");
+        }
+        return trimmed;
     }
 
     private boolean multipleInlineStatements(String line) {

@@ -1,3 +1,14 @@
-drop table if exists useraccount_audit cascade
-create table useraccount_audit (id  bigserial not null, firstname varchar(128) not null, lastname varchar(128) not null, nickname varchar(128), password varchar(255) not null, username varchar(32) not null, openDate date, primary key (id))
+DROP TABLE IF EXISTS useraccount_audit CASCADE;
+
+CREATE TABLE useraccount_audit (
+  id        BIGSERIAL    NOT NULL,
+  firstname VARCHAR(128) NOT NULL,
+  lastname  VARCHAR(128) NOT NULL,
+  nickname  VARCHAR(128),
+  password  VARCHAR(255) NOT NULL,
+  username  VARCHAR(32)  NOT NULL,
+  openDate  DATE,
+  PRIMARY KEY (id)
+);
+
 

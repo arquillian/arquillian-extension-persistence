@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class NonDeployableUserPersistenceTest {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     @UsingDataSet("datasets/single-user.xls")

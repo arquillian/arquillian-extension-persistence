@@ -15,6 +15,7 @@
     <configuration>
       <property name="jbossHome">target/jboss-as-7.0.2.Final</property>
       <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>
+      <property name="allowConnectingToRunningServer">true</property>
     </configuration>
   </container>
 
@@ -34,10 +35,6 @@
     <property name="excludeTablesFromComparisonWhenEmptyExpected">hibernate_sequence</property>
     <property name="excludeTablesFromCleanup">hibernate_sequence</property>
     <property name="filterTables">true</property>
-  </extension>
-
-  <extension qualifier="persistence-script">
-    <property name="sqlStatementDelimiter">NEW_LINE</property>
   </extension>
 
 </arquillian>

@@ -24,7 +24,6 @@
 
   <extension qualifier="persistence-script">
     <property name="scriptsToExecuteBeforeTest">SET DATABASE REFERENTIAL INTEGRITY FALSE</property>
-    <property name="sqlStatementDelimiter">NEW_LINE</property>
   </extension>
 
   <extension qualifier="persistence-dbunit">

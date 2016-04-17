@@ -1,10 +1,41 @@
-drop sequence if exists hibernate_sequence
-drop table if exists address cascade
-drop table if exists useraccount cascade
-drop table if exists useraccount_address cascade
-create table address (id int8 not null, city varchar(255) not null, houseNumber int4, streetName varchar(255) not null, version int8, zipCode int4 not null, primary key (id))
-create table useraccount (id  bigserial not null, firstname varchar(128) not null, lastname varchar(128) not null, nickname varchar(128), password varchar(255) not null, username varchar(32) not null, openDate date, primary key (id))
-create table useraccount_address (useraccount_id int8 not null, addresses_id int8 not null, primary key (useraccount_id, addresses_id), unique (addresses_id))
-alter table useraccount_address add constraint FK538F4B7EC498202 foreign key (useraccount_id) references useraccount
-alter table useraccount_address add constraint FK538F4B757E57A74 foreign key (addresses_id) references address
-create sequence hibernate_sequence start 1 increment 1
+DROP SEQUENCE IF EXISTS hibernate_sequence;
+DROP TABLE IF EXISTS address CASCADE;
+DROP TABLE IF EXISTS useraccount CASCADE;
+DROP TABLE IF EXISTS useraccount_address CASCADE;
+
+CREATE TABLE address (
+  id          INT8         NOT NULL,
+  city        VARCHAR(255) NOT NULL,
+  houseNumber INT4,
+  streetName  VARCHAR(255) NOT NULL,
+  version     INT8,
+  zipCode     INT4         NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE useraccount (
+  id        BIGSERIAL    NOT NULL,
+  firstname VARCHAR(128) NOT NULL,
+  lastname  VARCHAR(128) NOT NULL,
+  nickname  VARCHAR(128),
+  password  VARCHAR(255) NOT NULL,
+  username  VARCHAR(32)  NOT NULL,
+  openDate  DATE,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE useraccount_address (
+  useraccount_id INT8 NOT NULL,
+  addresses_id   INT8 NOT NULL,
+  PRIMARY KEY (useraccount_id, addresses_id),
+  UNIQUE (addresses_id)
+);
+
+ALTER TABLE useraccount_address
+  ADD CONSTRAINT FK538F4B7EC498202 FOREIGN KEY (useraccount_id) REFERENCES useraccount;
+
+ALTER TABLE useraccount_address
+  ADD CONSTRAINT FK538F4B757E57A74 FOREIGN KEY (addresses_id) REFERENCES address;
+
+CREATE SEQUENCE hibernate_sequence START 1 INCREMENT 1;
+
