@@ -769,14 +769,23 @@
                 <image>
                   <name>mysql</name>
                   <run>
+                    <privileged>true</privileged>
                     <ports>
                       <port>33306:3306</port>
                     </ports>
                     <env>
                       <MYSQL_ROOT_PASSWORD>letmein</MYSQL_ROOT_PASSWORD>
                     </env>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/test/${additional.test.resources}/shell:/scripts</volume>
+                      </bind>
+                    </volumes>
                     <wait>
                       <time>10000</time>
+                      <exec>
+                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
+                      </exec>
                     </wait>
                   </run>
                 </image>
@@ -796,25 +805,6 @@
                 <goals>
                   <goal>stop</goal>
                 </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${version.maven-exec-plugin}</version>
-            <executions>
-              <execution>
-                <id>create-ape-schema</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>
-                    ${project.basedir}/src/test/${additional.test.resources}/shell/prepare-db.sh
-                  </executable>
-                </configuration>
               </execution>
             </executions>
           </plugin>
