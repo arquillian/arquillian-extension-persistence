@@ -415,6 +415,7 @@ public class DBUnitConfiguration extends Configuration {
      * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
      * This property is related to {@link #customTableFilter} which is used to specify which implementation of
      * {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
+     * Should be registered using simple name exposed by given implementation {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
      *
      * @param filterTables
      */

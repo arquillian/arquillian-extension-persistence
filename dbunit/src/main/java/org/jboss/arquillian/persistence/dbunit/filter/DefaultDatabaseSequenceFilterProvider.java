@@ -26,6 +26,7 @@ import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import java.sql.SQLException;
 
 public class DefaultDatabaseSequenceFilterProvider implements TableFilterProvider {
+
     @Override
     public ITableFilter provide(IDatabaseConnection connection) throws SQLException, DataSetException {
         return new DatabaseSequenceFilter(connection);
@@ -34,5 +35,10 @@ public class DefaultDatabaseSequenceFilterProvider implements TableFilterProvide
     @Override
     public ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException {
         return new DatabaseSequenceFilter(connection, tableNames);
+    }
+
+    @Override
+    public String simpleName() {
+        return "default";
     }
 }

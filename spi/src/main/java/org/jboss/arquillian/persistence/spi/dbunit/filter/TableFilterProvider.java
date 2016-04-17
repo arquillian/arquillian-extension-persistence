@@ -38,4 +38,9 @@ public interface TableFilterProvider {
 
     ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException;
 
+    /**
+     * Simple name used in configuration to refer to given implementation of the filter eg. 'default', 'oracle'
+     */
+    String simpleName();
+
 }

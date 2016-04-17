@@ -23,6 +23,10 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.dbunit.client.DBUnitExtension;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.container.RemoteDBUnitExtension;
+import org.jboss.arquillian.persistence.dbunit.filter.DefaultDatabaseSequenceFilterProvider;
+import org.jboss.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider;
+import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
+import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -55,7 +59,8 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
                         // Avoid slf4j implementation in case different impl is chosen in @Deployment
                         Filters.exclude(".*/org/slf4j/impl/.*"),
                         requiredLibraries())
-                .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class);
+                .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class)
+                .addAsServiceProvider(TableFilterProvider.class, DefaultDatabaseSequenceFilterProvider.class, OracleDatabaseSequenceFilterProvider.class);
 
         return dbUnitExtensionArchive;
     }

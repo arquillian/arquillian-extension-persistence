@@ -42,18 +42,36 @@ public class TableFilterResolver {
 
         TableFilterProvider resolved = null;
         final Collection<TableFilterProvider> databaseSequenceFilterProviders = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), TableFilterProvider.class);
+
         for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
-            if (databaseSequenceFilterProvider.getClass().getName().equals(dbUnitConfiguration.getCustomTableFilter())) {
+            if (databaseSequenceFilterProvider.simpleName().equals(dbUnitConfiguration.getCustomTableFilter())) {
                 resolved = databaseSequenceFilterProvider;
             }
         }
 
         if (resolved == null) {
             log.warning("Unable to find sequence filter for " + dbUnitConfiguration.getCustomTableFilter() + ". Using default database sequence filter.");
-            return new DefaultDatabaseSequenceFilterProvider();
+            log.warning("Available filters: " + printFiltersWithNames(databaseSequenceFilterProviders));
+            return new OracleDatabaseSequenceFilterProvider();
         }
 
         return resolved;
+    }
+
+    private String printFiltersWithNames(final Collection<TableFilterProvider> databaseSequenceFilterProviders) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
+            sb.append("{name=").append(databaseSequenceFilterProvider.simpleName())
+              .append(", class=").append(databaseSequenceFilterProvider.getClass().getName()).append("},");
+        }
+
+        if (!databaseSequenceFilterProviders.isEmpty()) {
+            sb.replace(sb.lastIndexOf(","), sb.lastIndexOf(","), "]");
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
 }
