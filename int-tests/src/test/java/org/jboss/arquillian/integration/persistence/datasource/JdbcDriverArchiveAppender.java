@@ -36,7 +36,7 @@ public abstract class JdbcDriverArchiveAppender implements AuxiliaryArchiveAppen
     }
 
     private Archive<?> resolveDriverArtifact(final String driverCoordinates) {
-        PomEquippedResolveStage resolver = Maven.resolver().offline().loadPomFromFile("pom.xml");
+        PomEquippedResolveStage resolver = Maven.configureResolver().workOffline().loadPomFromFile("pom.xml");
         File[] jars = resolver.resolve(driverCoordinates).withoutTransitivity().asFile();
         return ShrinkWrap.createFromZipFile(JavaArchive.class, jars[0]);
     }
