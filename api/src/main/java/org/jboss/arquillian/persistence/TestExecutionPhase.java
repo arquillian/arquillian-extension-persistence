@@ -24,5 +24,5 @@ public enum TestExecutionPhase {
     BEFORE,
     AFTER,
     NONE,
-    DEFAULT;
+    DEFAULT
 }

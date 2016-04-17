@@ -27,9 +27,11 @@ import org.jboss.arquillian.persistence.dbunit.data.naming.DataSetFileNamingStra
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -64,9 +66,9 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
         UsingDataSet dataAnnotation = getResourceAnnotation(testMethod);
         String[] specifiedFileNames = dataAnnotation.value();
         if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim())) {
-            return Arrays.asList(getDefaultFileName(testMethod));
+            return singletonList(getDefaultFileName(testMethod));
         }
-        return Arrays.asList(specifiedFileNames);
+        return asList(specifiedFileNames);
     }
 
     // Private methods

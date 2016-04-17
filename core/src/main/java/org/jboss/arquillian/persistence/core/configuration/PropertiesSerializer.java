@@ -53,13 +53,12 @@ public class PropertiesSerializer {
 
     private String serializeAsProperty(Entry<String, String> entry) {
         String serializedAsProperty;
-        final StringBuilder sb = new StringBuilder();
-        sb.append(prefix)
-                .append(entry.getKey())
-                .append("=")
-                .append(entry.getValue().replace("\\", "\\\\"))
-                .append('\n');
-        serializedAsProperty = sb.toString();
+        String sb = prefix +
+                entry.getKey() +
+                "=" +
+                entry.getValue().replace("\\", "\\\\") +
+                '\n';
+        serializedAsProperty = sb;
         return serializedAsProperty;
     }
 

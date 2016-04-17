@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-
 @RunWith(Arquillian.class)
 @PersistenceTest
 public class DatabaseConnectionInjectionTest {

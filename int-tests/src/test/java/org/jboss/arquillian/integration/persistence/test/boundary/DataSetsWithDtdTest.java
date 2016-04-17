@@ -54,7 +54,7 @@ public class DataSetsWithDtdTest {
     }
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     @UsingDataSet("users-with-dtd.xml")

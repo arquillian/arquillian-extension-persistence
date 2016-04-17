@@ -59,7 +59,7 @@ public class EmptyDataSetsTest {
     }
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     @UsingDataSet("empty/empty.yml")

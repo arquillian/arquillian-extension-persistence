@@ -29,6 +29,7 @@ import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
@@ -44,7 +45,7 @@ public class DataSetComparatorTest {
         DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"table1.id", "table2.name", "table1.test"}, noCustomFilters());
 
         // then
-        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Arrays.asList("name")))
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Collections.singletonList("name")))
                 .hasSize(2);
     }
 
@@ -66,7 +67,7 @@ public class DataSetComparatorTest {
         // then
         assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
                 .hasSize(2);
-        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Arrays.asList("test")))
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Collections.singletonList("test")))
                 .hasSize(1);
     }
 

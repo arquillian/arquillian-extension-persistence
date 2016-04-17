@@ -139,7 +139,6 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
     @Override
     protected SqlScriptResourceDescriptor createDescriptor(String resource) {
-
         if (!ScriptLoader.isSqlScriptFile(resource)) {
             return new InlineSqlScriptResourceDescriptor(resource);
         }
@@ -165,7 +164,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         }
 
         if (filesNotSpecified(annotation)) {
-            return Arrays.asList(getDefaultFileName(testMethod));
+            return Collections.singletonList(getDefaultFileName(testMethod));
         }
 
         return Arrays.asList(extractor.extract(annotation));

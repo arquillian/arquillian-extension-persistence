@@ -26,10 +26,7 @@ import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDe
 import org.jboss.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -64,7 +61,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
         ShouldMatchDataSet dataAnnotation = getResourceAnnotation(testMethod);
         String[] specifiedFileNames = dataAnnotation.value();
         if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim())) {
-            return Arrays.asList(getDefaultFileName(testMethod));
+            return Collections.singletonList(getDefaultFileName(testMethod));
         }
         return Arrays.asList(specifiedFileNames);
     }

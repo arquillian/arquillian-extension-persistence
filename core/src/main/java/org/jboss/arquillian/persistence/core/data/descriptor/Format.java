@@ -33,7 +33,7 @@ public enum Format {
 
     private final String fileExtension;
 
-    private Format(String fileExtension) {
+    Format(String fileExtension) {
         this.fileExtension = fileExtension;
     }
 

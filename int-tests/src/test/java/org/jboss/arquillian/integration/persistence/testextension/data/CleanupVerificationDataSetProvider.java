@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
         DatabaseShouldContainAfterTest dataAnnotation = getResourceAnnotation(testMethod);
         String[] specifiedFileNames = dataAnnotation.value();
         if (specifiedFileNames.length == 0 || "".equals(specifiedFileNames[0].trim())) {
-            return Arrays.asList(getDefaultFileName(testMethod));
+            return Collections.singletonList(getDefaultFileName(testMethod));
         }
         return Arrays.asList(specifiedFileNames);
     }
@@ -83,14 +84,6 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
             throw new UnsupportedDataFormatException("File " + dataFileName + " is not supported as data set format.");
         }
         return format;
-    }
-
-    List<Format> getDataFormats(Method testMethod) {
-        final List<Format> formats = new ArrayList<Format>();
-        for (String dataFileName : getResourceFileNames(testMethod)) {
-            formats.add(inferFormat(dataFileName));
-        }
-        return formats;
     }
 
     private DatabaseShouldContainAfterTest getResourceAnnotation(Method testMethod) {

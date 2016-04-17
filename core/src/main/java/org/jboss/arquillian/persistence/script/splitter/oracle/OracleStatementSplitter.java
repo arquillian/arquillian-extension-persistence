@@ -82,7 +82,7 @@ public class OracleStatementSplitter implements StatementSplitter {
     public List<String> splitStatements(Reader reader) {
         LineNumberReader lineReader = new LineNumberReader(reader);
         StringBuilder sqlBuffer = new StringBuilder();
-        ;
+
         final ArrayList<String> statements = new ArrayList<String>();
         try {
             boolean plSqlMode = false;

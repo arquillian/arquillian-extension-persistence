@@ -27,6 +27,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,7 +48,7 @@ public class DataSetUtilsTest {
     @SuppressWarnings("unused")
     private Object[] columns() {
         return $(//   expected    ,   actual             , non existing in actual
-                $(asList("id", "name"), asList("name", "password"), asList("id")),
+                $(asList("id", "name"), asList("name", "password"), singletonList("id")),
                 $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
                 $(emptyList(), asList("id", "name"), emptyList()),
                 $(emptyList(), emptyList(), emptyList())

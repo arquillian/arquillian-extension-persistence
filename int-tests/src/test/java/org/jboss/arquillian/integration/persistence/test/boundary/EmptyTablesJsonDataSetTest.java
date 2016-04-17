@@ -35,7 +35,7 @@ public class EmptyTablesJsonDataSetTest {
     }
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
     @InSequence(1)

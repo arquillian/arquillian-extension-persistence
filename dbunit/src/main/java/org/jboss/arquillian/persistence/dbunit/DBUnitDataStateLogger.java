@@ -145,7 +145,7 @@ public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData>
         return dumpData;
     }
 
-    private static enum Phase {
+    private enum Phase {
         BEFORE_SEED("before-seed"),
         AFTER_SEED("after-seed"),
         BEFORE_CLEAN("before-clean"),
@@ -153,7 +153,7 @@ public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData>
 
         private final String name;
 
-        private Phase(String name) {
+        Phase(String name) {
             this.name = name;
         }
 
