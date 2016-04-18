@@ -33,3 +33,4 @@ infinitest.filters
 .~lock*
 
 atlassian-ide-plugin.xml
+.autoenv.zsh
