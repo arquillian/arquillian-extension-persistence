@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>19</version>
+    <version>20</version>
     <relativePath/>
   </parent>
 
@@ -85,8 +85,6 @@
     <version.wildfly>8.1.0.Final</version.wildfly>
 
     <!-- Maven plugins -->
-    <version.surefire.plugin>2.19.1</version.surefire.plugin>
-    <version.failsafe.plugin>2.19.1</version.failsafe.plugin>
     <version.docker.plugin>0.14.2</version.docker.plugin>
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
