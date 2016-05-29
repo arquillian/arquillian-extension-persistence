@@ -149,7 +149,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
             initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
         }
 
-        if(dbunitConfigurationInstance.get().isScriptableDataSets()){
+        if (dbunitConfigurationInstance.get().isScriptableDataSets()) {
             initialDataSet = new ScriptableDataSet(initialDataSet);
         }
         seedingStrategy().execute(connection, initialDataSet);
