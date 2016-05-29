@@ -89,9 +89,9 @@
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
-    <jdk.min.version>1.5</jdk.min.version>
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
+    <jdk.min.version>1.6</jdk.min.version>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
   </properties>
 
   <dependencyManagement>
@@ -210,8 +210,8 @@
         <configuration>
           <signature>
             <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java15</artifactId>
-            <version>1.0</version>
+            <artifactId>java16</artifactId>
+            <version>1.1</version>
           </signature>
         </configuration>
       </plugin>

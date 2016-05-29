@@ -1,0 +1,7 @@
+useraccount:
+  - id: "js: Math.floor(Math.random() * 6) + 1;"
+    firstname: Clark
+    lastname: Kent
+    username: "js: 'super'.concat('man')"
+    password: kryptonite
+    openDate: "groovy: new Date().clearTime()"

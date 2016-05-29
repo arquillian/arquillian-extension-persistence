@@ -39,6 +39,7 @@ import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.jboss.arquillian.persistence.dbunit.dataset.scriptable.ScriptableDataSet;
 import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
 import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
@@ -95,7 +96,11 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
             if (excludeTables.length != 0) {
                 currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
             }
-            final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
+            IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
+
+            if (dbunitConfigurationInstance.get().isScriptableDataSets()) {
+                expectedDataSet = new ScriptableDataSet(expectedDataSet);
+            }
             final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
                     compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
             dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
@@ -142,6 +147,10 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
             final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
             final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
             initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
+        }
+
+        if(dbunitConfigurationInstance.get().isScriptableDataSets()){
+            initialDataSet = new ScriptableDataSet(initialDataSet);
         }
         seedingStrategy().execute(connection, initialDataSet);
     }

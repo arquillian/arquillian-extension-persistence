@@ -35,6 +35,14 @@
     </configuration>
   </container>
 
+
+  <container qualifier="wildfly-remote" >
+    <configuration>
+      <property name="managementAddress">127.0.0.1</property>
+      <property name="managementPort">9990</property>
+    </configuration>
+  </container>
+
   <extension qualifier="transaction">
     <property name="manager">java:jboss/UserTransaction</property>
   </extension>
@@ -46,6 +54,7 @@
 
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.h2.H2DataTypeFactory</property>
+    <property name="scriptableDataSets">true</property>
   </extension>
 
 </arquillian>

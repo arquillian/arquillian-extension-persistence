@@ -16,6 +16,7 @@
  */
 package org.jboss.arquillian.persistence.dbunit.deployment;
 
+import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
@@ -25,13 +26,13 @@ import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration
 import org.jboss.arquillian.persistence.dbunit.container.RemoteDBUnitExtension;
 import org.jboss.arquillian.persistence.dbunit.filter.DefaultDatabaseSequenceFilterProvider;
 import org.jboss.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider;
-import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
 import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
+import javax.script.ScriptEngineFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,20 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
                 .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class)
                 .addAsServiceProvider(TableFilterProvider.class, DefaultDatabaseSequenceFilterProvider.class, OracleDatabaseSequenceFilterProvider.class);
 
+        if(dbunitConfigurationInstance.get().isScriptableDataSets()){
+            dbUnitExtensionArchive.addPackages(true,
+                    Filters.exclude(".*/package-info.*"),
+                    "groovy",
+                    "org.codehaus.groovy",
+                    "groovyjarjarcommonscli",
+                    "groovyjarjarasm.asm",
+                    "groovyjarjarantlr"
+            );
+            dbUnitExtensionArchive.
+                    addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
+                    .addAsManifestResource("META-INF/dgminfo", "dgminfo")
+                    .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
+        }
         return dbUnitExtensionArchive;
     }
 

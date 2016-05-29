@@ -1073,6 +1073,46 @@
         </testResources>
       </build>
     </profile>
+     <profile>
+          <id>wildfly-remote</id>
+          <dependencies>
+            <dependency>
+              <groupId>org.jboss.arquillian.extension</groupId>
+              <artifactId>arquillian-transaction-jta</artifactId>
+              <scope>test</scope>
+            </dependency>
+              <dependency>
+                  <groupId>org.wildfly</groupId>
+                  <artifactId>wildfly-arquillian-container-remote</artifactId>
+                  <scope>test</scope>
+                  <version>8.2.0.Final</version>
+              </dependency>
+          </dependencies>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-surefire-plugin</artifactId>
+                      <configuration>
+                          <systemPropertyVariables>
+                              <arquillian.launch>wildfly-remote</arquillian.launch>
+                          </systemPropertyVariables>
+                      </configuration>
+                  </plugin>
+              </plugins>
+            <testResources>
+              <testResource>
+                <directory>src/test/resources-datasets</directory>
+              </testResource>
+              <testResource>
+                <directory>src/test/resources-scripts</directory>
+              </testResource>
+              <testResource>
+                <directory>src/test/resources-wildfly-8.1.0</directory>
+              </testResource>
+            </testResources>
+          </build>
+      </profile>
   </profiles>
 
 </project>
