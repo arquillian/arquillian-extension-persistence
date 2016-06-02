@@ -21,6 +21,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.integration.persistence.testextension.data.CleanupVerificationDataSetProvider;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.jboss.arquillian.persistence.core.deployment.ResourceAppender;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
@@ -50,28 +51,11 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
         final CleanupVerificationDataSetProvider dataSetProvider = new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
         final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
         if (!dataSets.isEmpty()) {
-            addResources(applicationArchive, toJavaArchive(dataSets));
+            ResourceAppender.addResources(applicationArchive, toJavaArchive(dataSets));
         }
     }
 
     // Private helper methods
-
-    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            addAsResource(applicationArchive, dataArchive);
-        } else {
-            addAsLibrary(applicationArchive, dataArchive);
-        }
-    }
-
-    private void addAsResource(Archive<?> applicationArchive, JavaArchive dataArchive) {
-        applicationArchive.merge(dataArchive);
-    }
-
-    private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataArchive) {
-        final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-        libraryContainer.addAsLibrary(dataArchive);
-    }
 
     private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors) {
         final List<String> paths = new ArrayList<String>(descriptors.size());

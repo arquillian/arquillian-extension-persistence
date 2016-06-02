@@ -72,7 +72,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
                 persistenceConfigurationSerializedAsProperties(),
                 scriptingConfigurationSerializedAsProperties(),
                 jpaCacheEvictionConfigurationSerializedAsProperties());
-        addResources(applicationArchive, additionalPersistenceResources);
+        ResourceAppender.addResources(applicationArchive, additionalPersistenceResources);
     }
 
     // Private helper methods
@@ -156,15 +156,6 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
             }
         }
         return extensionProperties;
-    }
-
-    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            applicationArchive.merge(dataArchive);
-        } else {
-            final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-            libraryContainer.addAsLibrary(dataArchive);
-        }
     }
 
     private JavaArchive createArchiveWithResources(String... resourcePaths) {

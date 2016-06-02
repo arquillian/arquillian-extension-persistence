@@ -22,6 +22,7 @@ import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArch
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
+import org.jboss.arquillian.persistence.core.deployment.ResourceAppender;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -57,7 +58,7 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
         }
         final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
         merge(additionalPersistenceResources, dbUnitConfigurationSerializedAsProperties());
-        addResources(applicationArchive, additionalPersistenceResources);
+        ResourceAppender.addResources(applicationArchive, additionalPersistenceResources);
     }
 
     // Private helper methods
@@ -84,15 +85,6 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
             }
         }
         return extensionProperties;
-    }
-
-    private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            applicationArchive.merge(dataArchive);
-        } else {
-            final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-            libraryContainer.addAsLibrary(dataArchive);
-        }
     }
 
 }
