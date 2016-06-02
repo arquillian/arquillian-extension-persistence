@@ -159,11 +159,11 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
     }
 
     private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            applicationArchive.merge(dataArchive);
-        } else {
+        if (LibraryContainer.class.isAssignableFrom(applicationArchive.getClass())) {
             final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
             libraryContainer.addAsLibrary(dataArchive);
+        } else {
+            applicationArchive.merge(dataArchive);
         }
     }
 

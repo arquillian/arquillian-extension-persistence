@@ -57,10 +57,10 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
     // Private helper methods
 
     private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            addAsResource(applicationArchive, dataArchive);
-        } else {
+        if (LibraryContainer.class.isAssignableFrom(applicationArchive.getClass())) {
             addAsLibrary(applicationArchive, dataArchive);
+        } else {
+            addAsResource(applicationArchive, dataArchive);
         }
     }
 
