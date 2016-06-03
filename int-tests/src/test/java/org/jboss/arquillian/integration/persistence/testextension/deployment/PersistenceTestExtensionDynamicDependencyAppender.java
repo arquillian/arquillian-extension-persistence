@@ -57,10 +57,10 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
     // Private helper methods
 
     private void addResources(Archive<?> applicationArchive, final JavaArchive dataArchive) {
-        if (JavaArchive.class.isInstance(applicationArchive)) {
-            addAsResource(applicationArchive, dataArchive);
-        } else {
+        if (LibraryContainer.class.isAssignableFrom(applicationArchive.getClass())) {
             addAsLibrary(applicationArchive, dataArchive);
+        } else {
+            addAsResource(applicationArchive, dataArchive);
         }
     }
 
@@ -70,7 +70,13 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
 
     private void addAsLibrary(Archive<?> applicationArchive, JavaArchive dataArchive) {
         final LibraryContainer<?> libraryContainer = (LibraryContainer<?>) applicationArchive;
-        libraryContainer.addAsLibrary(dataArchive);
+
+        try {
+            libraryContainer.addAsLibrary(dataArchive);
+        } catch (UnsupportedOperationException e) {
+            // Because of this https://github.com/shrinkwrap/shrinkwrap/blob/master/impl-base/src/main/java/org/jboss/shrinkwrap/impl/base/spec/JavaArchiveImpl.java#L118
+            addAsResource(applicationArchive, dataArchive);
+        }
     }
 
     private JavaArchive toJavaArchive(final Collection<? extends ResourceDescriptor<?>> descriptors) {
