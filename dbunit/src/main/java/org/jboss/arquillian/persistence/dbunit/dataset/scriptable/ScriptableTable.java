@@ -73,11 +73,8 @@ public class ScriptableTable implements ITable {
             ScriptEngine engine = getScriptEngine(value.toString().trim());
             if (engine != null) {
                 try {
-                    Object scriptResult = getScriptResult(value.toString(), engine);
-                    if (scriptResult != null) {
-                        value = scriptResult;
-                    }
-                }catch (Exception e){
+                    return getScriptResult(value.toString(), engine);
+                } catch (Exception e) {
                     throw new ScriptableDataSetEvaluationException(String.format("Could not evaluate script expression for table '%s', column '%s'.", getTableMetaData().getTableName(), column));
                 }
             }
