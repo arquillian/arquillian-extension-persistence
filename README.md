@@ -12,6 +12,7 @@ It comes with following features:
 * Seeding database using:
     * [DBUnit](http://dbunit.sourceforge.net/) with **XML**, **XLS**, **YAML**  and **JSON** supported as data sets format.
     * Custom SQL scripts.
+    * Script from [JSR 223](http://docs.oracle.com/javase/6/docs/technotes/guides/scripting/) languages.
 * Comparing database state at the end of the test using given data sets (with column exclusion).
 * Eviction JPA second level cache between test method invocation, see `@JpaCacheEviction`.
 
