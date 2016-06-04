@@ -17,8 +17,11 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.scriptable;
 
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.jboss.arquillian.persistence.core.exception.ScriptableDataSetEngineException;
+import org.jboss.arquillian.persistence.core.exception.ScriptableDataSetEvaluationException;
 import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
 import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.testutils.FileLoader;
@@ -36,6 +39,33 @@ public class ScriptableDataSetTest {
     @After
     public void closeStream() {
         FileLoader.close(input);
+    }
+
+
+    @Test(expected = ScriptableDataSetEngineException.class)
+    public void should_not_load_rows_with_unknown_script_engine() throws DataSetException {
+        input = FileLoader.load("scriptable_with_unknown_engine.yml");
+
+        // when
+        IDataSet yamlDataSet = new YamlDataSet(input);
+        yamlDataSet = new ScriptableDataSet(yamlDataSet);
+
+        // then
+        TableAssert.assertThat(yamlDataSet.getTable("useraccount"))
+            .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password", "age: 42.0");
+    }
+
+    @Test(expected = ScriptableDataSetEvaluationException.class)
+    public void should_not_load_rows_with_script_evaluation_error() throws DataSetException {
+        input = FileLoader.load("scriptable_with_evaluation_error.yml");
+
+        // when
+        IDataSet yamlDataSet = new YamlDataSet(input);
+        yamlDataSet = new ScriptableDataSet(yamlDataSet);
+
+        // then
+        TableAssert.assertThat(yamlDataSet.getTable("useraccount"))
+                .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password", "age: 42.0");
     }
 
     @Test

@@ -1,0 +1,7 @@
+useraccount:
+  - id: 1
+    firstname: John
+    lastname: Smith
+    username: doovde
+    password: password
+    age: "js:var a=0;var b=0; return abcdefg"

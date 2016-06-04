@@ -22,15 +22,19 @@ import org.dbunit.dataset.ITableMetaData;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
+import org.jboss.arquillian.persistence.core.exception.ScriptableDataSetEvaluationException;
+import org.jboss.arquillian.persistence.core.exception.ScriptableDataSetEngineException;
+
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
+ * Adds support for script language (JSR 223) in table values.
+ *
  * @author <a href="mailto:rmpestano@gmail.com">Rafael Pestano</a>
- *         <p/>
- *         Adds support for script language (JSR 223) in table values.
  */
 public class ScriptableTable implements ITable {
 
@@ -68,16 +72,19 @@ public class ScriptableTable implements ITable {
         if (value != null && scriptEnginePattern.matcher(value.toString()).matches()) {
             ScriptEngine engine = getScriptEngine(value.toString().trim());
             if (engine != null) {
-                Object scriptResult = getScriptResult(value.toString(), engine);
-                if (scriptResult != null) {
-                    value = scriptResult;
-                } else {
-                    throw new RuntimeException(String.format("Could not evaluate script expression for table '%s', column '%s'.", getTableMetaData().getTableName(), column));
+                try {
+                    Object scriptResult = getScriptResult(value.toString(), engine);
+                    if (scriptResult != null) {
+                        value = scriptResult;
+                    }
+                }catch (Exception e){
+                    throw new ScriptableDataSetEvaluationException(String.format("Could not evaluate script expression for table '%s', column '%s'.", getTableMetaData().getTableName(), column));
                 }
             }
         }
         return value;
     }
+
 
     /**
      * Parses table cell to get script engine
@@ -94,7 +101,7 @@ public class ScriptableTable implements ITable {
             if (engine != null) {
                 engines.put(engineName, engine);
             } else {
-                log.warning(String.format("Could not find script engine with name %s in classpath", engineName));
+                throw new ScriptableDataSetEngineException(String.format("Could not find script engine with name %s in classpath", engineName));
             }
             return engine;
         }
@@ -104,15 +111,11 @@ public class ScriptableTable implements ITable {
     /**
      * Evaluates the script expression
      *
-     * @return script expression result or null if any evaluation error
+     * @return script expression result
      */
-    private Object getScriptResult(String script, ScriptEngine engine) {
+    private Object getScriptResult(String script, ScriptEngine engine) throws ScriptException {
         String scriptToExecute = script.substring(script.indexOf(":") + 1);
-        try {
-            return engine.eval(scriptToExecute);
-        } catch (Exception e) {
-            return null;
-        }
+        return engine.eval(scriptToExecute);
     }
 
 }
