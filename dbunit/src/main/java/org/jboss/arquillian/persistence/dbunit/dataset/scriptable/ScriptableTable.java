@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class ScriptableTable implements ITable {
 
     //any non digit char followed by ':' followed by 1 or more chars e.g: js: new Date().toString()
-    private final Pattern scriptEnginePattern = Pattern.compile(".*\\D.*:.+");
+    private final Pattern scriptEnginePattern = Pattern.compile("^[a-zA-Z]+:.+");
 
     private static Logger log = Logger.getLogger(ScriptableTable.class.getName());
 
