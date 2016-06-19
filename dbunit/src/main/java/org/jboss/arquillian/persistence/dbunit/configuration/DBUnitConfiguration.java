@@ -114,6 +114,9 @@ public class DBUnitConfiguration extends Configuration {
 
     private String customTableFilter;
 
+    private boolean scriptableDataSets = false;
+
+
     public DBUnitConfiguration() {
         super("persistence-dbunit", "arquillian.extension.persistence.dbunit.");
     }
@@ -435,5 +438,17 @@ public class DBUnitConfiguration extends Configuration {
      */
     public void setCustomTableFilter(String customTableFilter) {
         this.customTableFilter = customTableFilter;
+    }
+
+    public boolean isScriptableDataSets() {
+        return scriptableDataSets;
+    }
+
+    /**
+     * @param scriptableDataSets Enable or disable usage of script language in datasets.
+     *                          Default value is <code>false</code>
+     */
+    public void setScriptableDataSets(boolean scriptableDataSets) {
+        this.scriptableDataSets = scriptableDataSets;
     }
 }

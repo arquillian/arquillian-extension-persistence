@@ -1,0 +1,7 @@
+useraccount:
+  - id: 1
+    firstname: John
+    lastname: Smith
+    username: doovde
+    password: password
+    age: "kotlin:var a=1;var b=1; 40 + a + b"

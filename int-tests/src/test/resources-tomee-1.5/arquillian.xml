@@ -29,6 +29,7 @@
   <extension qualifier="persistence-dbunit">
     <property name="excludeTablesFromCleanup">openjpa_sequence_table</property>
     <property name="datatypeFactory">org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</property>
+    <property name="scriptableDataSets">true</property>
     <property name="excludeTablesFromComparisonWhenEmptyExpected">openjpa_sequence_table</property>
   </extension>
 

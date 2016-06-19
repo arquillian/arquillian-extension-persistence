@@ -28,6 +28,7 @@
 
   <extension qualifier="persistence-dbunit">
     <property name="datatypeFactory">org.dbunit.ext.h2.H2DataTypeFactory</property>
+    <property name="scriptableDataSets">true</property>
   </extension>
 
   <extension qualifier="transaction">

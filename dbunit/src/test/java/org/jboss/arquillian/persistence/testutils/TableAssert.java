@@ -93,9 +93,9 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
     private Map<String, String> extractRow(int rowIndex, final List<String> columnNames) throws DataSetException {
         final Map<String, String> cells = new HashMap<String, String>();
         for (String columnName : columnNames) {
-            String value = (String) actual.getValue(rowIndex, columnName);
+            Object value = actual.getValue(rowIndex, columnName);
             if (value != null) {
-                cells.put(columnName, value);
+                cells.put(columnName, value.toString());
             }
         }
         return cells;
