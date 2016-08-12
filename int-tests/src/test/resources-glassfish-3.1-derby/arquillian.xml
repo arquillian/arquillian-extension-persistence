@@ -8,10 +8,11 @@
     <property name="deploymentExportPath">target/deployment</property>
   </engine>
 
-  <container qualifier="glassfish-embedded" default="true">
+  <container qualifier="chameleon" default="true">
     <configuration>
       <property name="resourcesXml">src/test/resources-glassfish-3.1-derby/glassfish-resources.xml</property>
       <property name="bindHttpPort">9999</property>
+      <property name="enableDerby">true</property>
     </configuration>
   </container>
 

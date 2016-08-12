@@ -85,6 +85,19 @@
     </dependency>
 
     <dependency>
+      <groupId>org.arquillian.container</groupId>
+      <artifactId>arquillian-container-chameleon</artifactId>
+      <version>1.0.0.Alpha7</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-transaction-jta</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
       <version>${version.cdi}</version>
@@ -169,160 +182,41 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>glassfish-3.1-embedded-hsqldb</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-simple</artifactId>
-          <version>1.7.2</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.container</groupId>
-          <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
-          <version>${version.arq.container.glassfish}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.main.extras</groupId>
-          <artifactId>glassfish-embedded-all</artifactId>
-          <version>${version.glassfish}</version>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.hsqldb</groupId>
-          <artifactId>hsqldb</artifactId>
-          <version>2.2.8</version>
-          <type>jar</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-scripts</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-glassfish-3.1-hsqldb</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-test-extension</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
-    <profile>
-      <id>glassfish-3.1-embedded-derby</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-simple</artifactId>
-          <version>1.7.2</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.container</groupId>
-          <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
-          <version>${version.arq.container.glassfish}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.main.extras</groupId>
-          <artifactId>glassfish-embedded-all</artifactId>
-          <version>${version.glassfish}</version>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-scripts</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-glassfish-3.1-derby</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-test-extension</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
+
     <profile>
       <id>jbossas-7.0-managed</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!server</name>
+        </property>
       </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>${version.jbossas_7}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:managed
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>${version.build.helper.plugin}</version>
             <executions>
               <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
+                <id>add-test-source</id>
+                <phase>generate-test-sources</phase>
                 <goals>
-                  <goal>unpack</goal>
+                  <goal>add-test-source</goal>
                 </goals>
                 <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>${version.jbossas_7}</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
+                  <sources>
+                    <source>src/test/java-jpa-cache-eviction</source>
+                  </sources>
                 </configuration>
               </execution>
             </executions>
@@ -330,80 +224,45 @@
         </plugins>
         <testResources>
           <testResource>
+            <directory>src/test/resources-jboss</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+
+    <profile>
+      <id>wildfly-8.1-managed</id>
+      <activation>
+        <property>
+          <name>server</name>
+          <value>wildfly-8.1</value>
+        </property>
+      </activation>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-wildfly-8.1.0</directory>
+          </testResource>
+          <testResource>
             <directory>src/test/resources-datasets</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-jboss-7.0.2</directory>
-          </testResource>
-          <testResource>
             <directory>src/test/resources-test-extension</directory>
           </testResource>
         </testResources>
-      </build>
-    </profile>
-    <profile>
-      <id>wildfly-managed</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.wildfly</groupId>
-          <artifactId>wildfly-arquillian-container-managed</artifactId>
-          <version>${version.wildfly}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-      </dependencies>
-      <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.wildfly</groupId>
-                      <artifactId>wildfly-dist</artifactId>
-                      <version>${version.wildfly}</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
@@ -417,10 +276,118 @@
                 <exclude>**/DataCleanupStrategiesTest.java</exclude>
                 <exclude>**/JpaCacheEvictionTest.java</exclude>
               </excludes>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:managed
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
+      </build>
+    </profile>
+
+    <!-- Dockerized profiles
+      Make sure that
+      * your docker host is running
+      * you have DOCKER_HOST env variable defined
+    -->
+
+    <profile>
+      <id>jbossas-7.1-managed</id>
+      <activation>
+        <property>
+          <name>server</name>
+          <value>jbossas-7.1</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.1.1.Final:managed
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
+                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jboss-7.0</id>
+      <activation>
+        <property>
+          <name>server</name>
+          <value>jbossas-7.0</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:managed
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. This only happens with mysql -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jboss-postgresql</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>postgres:9.3</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.3-1102-jdbc41</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
         <testResources>
+          <testResource>
+            <directory>src/test/resources-jboss-postgres</directory>
+          </testResource>
           <testResource>
             <directory>src/test/resources-datasets</directory>
           </testResource>
@@ -428,11 +395,292 @@
             <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-wildfly-8.1.0</directory>
+            <directory>src/test/resources-test-extension</directory>
           </testResource>
         </testResources>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${version.docker.plugin}</version>
+            <configuration>
+              <autoPull>true</autoPull>
+              <images>
+                <image>
+                  <name>postgres:9.3</name>
+                  <alias>ape_postgres</alias>
+                  <run>
+                    <privileged>true</privileged>
+                    <ports>
+                      <port>65432:5432</port>
+                    </ports>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/test/resources-jboss-postgres/shell:/scripts</volume>
+                      </bind>
+                    </volumes>
+                    <wait>
+                      <time>5000</time>
+                      <exec>
+                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
+                      </exec>
+                    </wait>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>jboss-oracle11g</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>oracle11g</value>
+        </property>
+      </activation>
+      <dependencies>
+        <!-- 1. Download this dependency from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
+             2. install it in your local maven repository
+                mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.2.0 -Dpackaging=jar -->
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>11.2.0.2.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <!-- Unlike other profiles we use scripts from the profile-specific resource folder
+               so that they can use specific delimiters-->
+          <testResource>
+            <directory>src/test/resources-jboss-oracle11g</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+        </testResources>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${version.docker.plugin}</version>
+            <configuration>
+              <autoPull>true</autoPull>
+              <images>
+                <image>
+                  <alias>db</alias>
+                  <name>alexeiled/docker-oracle-xe-11g</name>
+                  <run>
+                    <privileged>true</privileged>
+                    <ports>
+                      <port>49160:22</port>
+                      <port>49161:1521</port>
+                      <port>49162:8080</port>
+                    </ports>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/test/resources-jboss-oracle11g/shell:/scripts</volume>
+                      </bind>
+                    </volumes>
+                    <wait>
+                      <url>http://localhost:49162/apex/</url>
+                      <time>60000</time>
+                      <exec>
+                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
+                      </exec>
+                    </wait>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jboss-mysql</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>mysql</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>${version.mysql.driver}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-jboss-mysql</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${version.docker.plugin}</version>
+            <configuration>
+              <autoPull>true</autoPull>
+              <images>
+                <image>
+                  <name>mysql</name>
+                  <run>
+                    <privileged>true</privileged>
+                    <ports>
+                      <port>33306:3306</port>
+                    </ports>
+                    <env>
+                      <MYSQL_ROOT_PASSWORD>letmein</MYSQL_ROOT_PASSWORD>
+                    </env>
+                    <volumes>
+                      <bind>
+                        <volume>${project.basedir}/src/test/resources-jboss-mysql/shell:/scripts</volume>
+                      </bind>
+                    </volumes>
+                    <wait>
+                      <time>10000</time>
+                      <exec>
+                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
+                      </exec>
+                    </wait>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
+
+
+    <!-- This profile requires VM to be up and running -->
+    <profile>
+      <id>jbossas-7.1-managed-mssql</id>
+      <dependencies>
+        <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
+          2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
+          -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
+        <dependency>
+          <groupId>com.microsoft.sqlserver</groupId>
+          <artifactId>sqljdbc4</artifactId>
+          <version>4.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-jboss-mssql</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is causing problems with @DataSourceDefinition.
+                  For some reason it's not picked up before test.jar deployment, so persistence.xml
+                  is referring to non existing datasource. -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
+                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- FIXME those profiles are not working anymore with Chameleon -->
     <profile>
       <id>tomee-1.5-managed</id>
       <dependencies>
@@ -477,7 +725,95 @@
             <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+          <testResource>
             <directory>src/test/resources-tomee-1.5</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+
+    <profile>
+      <id>glassfish-3.1-derby</id>
+      <activation>
+        <property>
+          <name>mvel</name>
+          <value>isdef server &amp;&amp; server == "glassfish-3.1" &amp;&amp;
+            !isdef db
+          </value>
+        </property>
+      </activation>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-glassfish-3.1-derby</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>GlassFish:3.1.2.2:embedded
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>glassfish-3.1-hsqldb</id>
+      <activation>
+        <property>
+          <name>mvel</name>
+          <value>isdef server &amp;&amp; server == "glassfish-3.1" &amp;&amp;
+            isdef db &amp;&amp; db == "hsqldb"
+          </value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.hsqldb</groupId>
+          <artifactId>hsqldb</artifactId>
+          <version>2.2.8</version>
+          <type>jar</type>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>GlassFish:3.1.2.2:embedded
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-glassfish-3.1-hsqldb</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-test-extension</directory>
@@ -485,594 +821,8 @@
         </testResources>
       </build>
     </profile>
-    <!-- Dockerized profiles
-        Make sure that
-        * your docker host is running
-        * you have DOCKER_HOST env variable defined
-    -->
-    <profile>
-      <id>jbossas-7.1-managed-oracle11g</id>
-      <properties>
-        <additional.test.resources>resources-jboss-7.1.1-oracle11g</additional.test.resources>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>7.1.1.Final</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <!-- 1. Download this dependency from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
-             2. install it in your local maven repository
-                mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.2.0 -Dpackaging=jar -->
-        <dependency>
-          <groupId>com.oracle</groupId>
-          <artifactId>ojdbc6</artifactId>
-          <version>11.2.0.2.0</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>${version.maven-dependency-plugin}</version>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>7.1.1.Final</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <!-- This test is causing problems with @DataSourceDefinition.
-                  For some reason it's not picked up before test.jar deployment, so persistence.xml
-                  is referring to non existing datasource. -->
-                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
-                <!-- This test is using custom SQL which I don't want to
-                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
-                  it's not essential for this profile to verify if this behaviour is correct
-                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
-                  database. -->
-                <exclude>**/DataCleanupStrategiesTest.java</exclude>
-                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
-                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
-                <exclude>**/JpaCacheEvictionTest.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${version.docker.plugin}</version>
-            <configuration>
-              <autoPull>true</autoPull>
-              <images>
-                <image>
-                  <alias>db</alias>
-                  <name>alexeiled/docker-oracle-xe-11g</name>
-                  <run>
-                    <privileged>true</privileged>
-                    <ports>
-                      <port>49160:22</port>
-                      <port>49161:1521</port>
-                      <port>49162:8080</port>
-                    </ports>
-                    <volumes>
-                      <bind>
-                        <volume>${project.basedir}/src/test/${additional.test.resources}/shell:/scripts</volume>
-                      </bind>
-                    </volumes>
-                    <wait>
-                      <url>http://localhost:49162/apex/</url>
-                      <time>60000</time>
-                      <exec>
-                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
-                      </exec>
-                    </wait>
-                  </run>
-                </image>
-              </images>
-            </configuration>
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <!-- Unlike other profiles we use scripts from the profile-specific resource folder
-               so that they can use specific delimiters-->
-          <testResource>
-            <directory>src/test/${additional.test.resources}</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
-    <profile>
-      <id>jbossas-7.0-managed-mysql</id>
-      <properties>
-        <additional.test.resources>resources-jboss-7.0.2-mysql</additional.test.resources>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>7.0.2.Final</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <version>${version.mysql.driver}</version>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>7.0.2.Final</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>${version.build.helper.plugin}</version>
-            <executions>
-              <execution>
-                <id>add-test-source</id>
-                <phase>generate-test-sources</phase>
-                <goals>
-                  <goal>add-test-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>src/test/java-jpa-cache-eviction</source>
-                  </sources>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <!-- This test is causing problems with @DataSourceDefinition.
-                  For some reason it's not picked up before test.jar deployment, so persistence.xml
-                  is referring to non existing datasource. This only happens with mysql -->
-                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
-                <!-- This test is using custom SQL which I don't want to
-                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
-                  it's not essential for this profile to verify if this behaviour is correct
-                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
-                  database. -->
-                <exclude>**/DataCleanupStrategiesTest.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${version.docker.plugin}</version>
-            <configuration>
-              <autoPull>true</autoPull>
-              <images>
-                <image>
-                  <name>mysql</name>
-                  <run>
-                    <privileged>true</privileged>
-                    <ports>
-                      <port>33306:3306</port>
-                    </ports>
-                    <env>
-                      <MYSQL_ROOT_PASSWORD>letmein</MYSQL_ROOT_PASSWORD>
-                    </env>
-                    <volumes>
-                      <bind>
-                        <volume>${project.basedir}/src/test/${additional.test.resources}/shell:/scripts</volume>
-                      </bind>
-                    </volumes>
-                    <wait>
-                      <time>10000</time>
-                      <exec>
-                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
-                      </exec>
-                    </wait>
-                  </run>
-                </image>
-              </images>
-            </configuration>
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-scripts</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/${additional.test.resources}</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
-    <profile>
-      <id>jbossas-7.1-managed-postgresql</id>
-      <properties>
-        <additional.test.resources>resources-jboss-7.1.1-postgresql</additional.test.resources>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>7.1.1.Final</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.postgresql</groupId>
-          <artifactId>postgresql</artifactId>
-          <version>9.3-1102-jdbc41</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>${version.maven-dependency-plugin}</version>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>7.1.1.Final</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <!-- This test is causing problems with @DataSourceDefinition.
-                  For some reason it's not picked up before test.jar deployment, so persistence.xml
-                  is referring to non existing datasource. -->
-                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
-                <!-- This test is using custom SQL which I don't want to
-                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
-                  it's not essential for this profile to verify if this behaviour is correct
-                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
-                  database. -->
-                <exclude>**/DataCleanupStrategiesTest.java</exclude>
-                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
-                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
-                <exclude>**/JpaCacheEvictionTest.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${version.docker.plugin}</version>
-            <configuration>
-              <autoPull>true</autoPull>
-              <images>
-                <image>
-                  <name>postgres:9.3</name>
-                  <alias>ape_postgres</alias>
-                  <run>
-                    <privileged>true</privileged>
-                    <ports>
-                      <port>65432:5432</port>
-                    </ports>
-                    <volumes>
-                      <bind>
-                        <volume>${project.basedir}/src/test/${additional.test.resources}/shell:/scripts</volume>
-                      </bind>
-                    </volumes>
-                    <wait>
-                      <time>5000</time>
-                      <exec>
-                        <postStart>/bin/sh -c scripts/prepare-db.sh</postStart>
-                      </exec>
-                    </wait>
-                  </run>
-                </image>
-              </images>
-            </configuration>
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-scripts</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/${additional.test.resources}</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
-    <profile>
-      <!-- This profile requires VM to be up and running -->
-      <id>jbossas-7.1-managed-mssql</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.jboss.arquillian.protocol</groupId>
-          <artifactId>arquillian-protocol-servlet</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.arquillian.extension</groupId>
-          <artifactId>arquillian-transaction-jta</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.as</groupId>
-          <artifactId>jboss-as-arquillian-container-managed</artifactId>
-          <version>7.1.1.Final</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <!-- 1. Download this dependency from http://msdn.microsoft.com/en-us/sqlserver/aa937724
-          2. install it in your local maven repository mvn install:install-file -Dfile=sqljdbc4.jar
-          -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
-        <dependency>
-          <groupId>com.microsoft.sqlserver</groupId>
-          <artifactId>sqljdbc4</artifactId>
-          <version>4.0</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>${version.maven-dependency-plugin}</version>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>7.1.1.Final</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <!-- This test is causing problems with @DataSourceDefinition.
-                  For some reason it's not picked up before test.jar deployment, so persistence.xml
-                  is referring to non existing datasource. -->
-                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
-                <!-- This test is using custom SQL which I don't want to
-                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
-                  it's not essential for this profile to verify if this behaviour is correct
-                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
-                  database. -->
-                <exclude>**/DataCleanupStrategiesTest.java</exclude>
-                <!-- Due to the bug in JBoss 7.1.1.Final / Infinispan cache eviction
-                throws NPE. This feature has been tested with 7.0.2.Final as for now. -->
-                <exclude>**/JpaCacheEvictionTest.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-        </plugins>
-        <testResources>
-          <testResource>
-            <directory>src/test/resources-datasets</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-scripts</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources-jboss-7.1.1-mssql</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
+
+
   </profiles>
 
 </project>

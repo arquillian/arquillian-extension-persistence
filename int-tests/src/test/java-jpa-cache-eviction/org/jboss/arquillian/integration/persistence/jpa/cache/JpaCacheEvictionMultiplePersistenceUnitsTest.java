@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(Arquillian.class)
 @JpaCacheEviction(entityManager = "jpacacheeviction")
-@DataSource("java:app/datasources/mysql_ds")
 public class JpaCacheEvictionMultiplePersistenceUnitsTest {
 
     @Deployment
