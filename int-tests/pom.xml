@@ -492,8 +492,8 @@
               <autoPull>true</autoPull>
               <images>
                 <image>
-                  <alias>db</alias>
                   <name>alexeiled/docker-oracle-xe-11g</name>
+                  <alias>ape_oracle11g</alias>
                   <run>
                     <privileged>true</privileged>
                     <ports>
@@ -578,6 +578,7 @@
               <images>
                 <image>
                   <name>mysql</name>
+                  <alias>ape_mysql</alias>
                   <run>
                     <privileged>true</privileged>
                     <ports>
