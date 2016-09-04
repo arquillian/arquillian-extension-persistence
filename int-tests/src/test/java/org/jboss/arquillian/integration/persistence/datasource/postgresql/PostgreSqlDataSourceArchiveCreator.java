@@ -26,7 +26,7 @@ public class PostgreSqlDataSourceArchiveCreator implements AuxiliaryArchiveAppen
 
     @Override
     public Archive<?> createAuxiliaryArchive() {
-        return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
+        return ShrinkWrap.create(JavaArchive.class, "arquillian-postgres-datasource.jar")
                 .addClass(PostgreSqlDataSource.class);
     }
 

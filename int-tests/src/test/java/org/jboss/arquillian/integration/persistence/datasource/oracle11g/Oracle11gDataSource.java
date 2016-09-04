@@ -25,7 +25,7 @@ import javax.ejb.Startup;
         className = "oracle.jdbc.pool.OracleDataSource",
         user = "ape",
         password = "letmein",
-        properties = {"driverType=thin", "URL=jdbc:oracle:thin:@localhost:49161:xe"})
+        properties = {"driverType=thin", "URL=jdbc:oracle:thin:@oracle11g:49161:xe"})
 @Singleton
 @Startup
 public class Oracle11gDataSource {
