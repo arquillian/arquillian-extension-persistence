@@ -23,6 +23,7 @@
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.poi>3.14</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
+    <mode>managed</mode>
   </properties>
 
   <dependencies>
@@ -184,7 +185,7 @@
   <profiles>
 
     <profile>
-      <id>jbossas-7.0-managed</id>
+      <id>default-container</id>
       <activation>
         <property>
           <name>!server</name>
@@ -197,7 +198,7 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
               <systemPropertyVariables>
-                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:managed
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
             </configuration>
@@ -240,7 +241,7 @@
     </profile>
 
     <profile>
-      <id>wildfly-8.1-managed</id>
+      <id>wildfly-8.1</id>
       <activation>
         <property>
           <name>server</name>
@@ -277,7 +278,7 @@
                 <exclude>**/JpaCacheEvictionTest.java</exclude>
               </excludes>
               <systemPropertyVariables>
-                <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:managed
+                <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
             </configuration>
@@ -286,14 +287,8 @@
       </build>
     </profile>
 
-    <!-- Dockerized profiles
-      Make sure that
-      * your docker host is running
-      * you have DOCKER_HOST env variable defined
-    -->
-
     <profile>
-      <id>jbossas-7.1-managed</id>
+      <id>jbossas-7.1</id>
       <activation>
         <property>
           <name>server</name>
@@ -307,7 +302,7 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
               <systemPropertyVariables>
-                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.1.1.Final:managed
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.1.1.Final:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
               <excludes>
@@ -346,7 +341,7 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
               <systemPropertyVariables>
-                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:managed
+                <arq.container.chameleon.configuration.chameleonTarget>JBoss AS:7.0.2.Final:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
               <excludes>
@@ -367,12 +362,19 @@
       </build>
     </profile>
 
+    <!-- Dockerized profiles
+         Make sure that
+          * your docker host is running
+          * you have DOCKER_HOST env variable defined
+    -->
+
+
     <profile>
-      <id>jboss-postgresql</id>
+      <id>jboss-postgresql-standalone</id>
       <activation>
         <property>
           <name>db</name>
-          <value>postgres:9.3</value>
+          <value>postgres-standalone</value>
         </property>
       </activation>
       <dependencies>
@@ -451,11 +453,45 @@
     </profile>
 
     <profile>
-      <id>jboss-oracle11g</id>
+      <id>jboss-postgresql-remote</id>
       <activation>
         <property>
           <name>db</name>
-          <value>oracle11g</value>
+          <value>postgres:9.3</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.3-1102-jdbc41</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-jboss-postgres</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jboss-oracle11g-standalone</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>oracle11g-standalone</value>
         </property>
       </activation>
       <dependencies>
@@ -539,11 +575,47 @@
     </profile>
 
     <profile>
-      <id>jboss-mysql</id>
+      <id>jboss-oracle11g-remote</id>
       <activation>
         <property>
           <name>db</name>
-          <value>mysql</value>
+          <value>oracle11g</value>
+        </property>
+      </activation>
+      <dependencies>
+        <!-- 1. Download this dependency from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
+             2. install it in your local maven repository
+                mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.2.0 -Dpackaging=jar -->
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>11.2.0.2.0</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <!-- Unlike other profiles we use scripts from the profile-specific resource folder
+               so that they can use specific delimiters-->
+          <testResource>
+            <directory>src/test/resources-jboss-oracle11g</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jboss-mysql-standalone</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>mysql-standalone</value>
         </property>
       </activation>
       <dependencies>
@@ -623,8 +695,38 @@
       </build>
     </profile>
 
-
-
+    <profile>
+      <id>jboss-mysql-remote</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>mysql</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>${version.mysql.driver}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources-jboss-mysql</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-datasets</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-scripts</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-test-extension</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
 
     <!-- This profile requires VM to be up and running -->
     <profile>
@@ -774,6 +876,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>glassfish-3.1-hsqldb</id>
       <activation>
