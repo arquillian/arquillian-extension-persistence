@@ -26,7 +26,7 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Defines SQL scripts applied on test database before test method execution.
+ * Defines SQL scripts applied on test database after test method execution.
  * <br />
  * If files are not specified explicitly, following strategy is applied:
  * <ul>
