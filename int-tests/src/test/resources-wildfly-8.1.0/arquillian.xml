@@ -30,7 +30,10 @@
 
   <container qualifier="chameleon" default="true">
     <configuration>
-      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>
+      <property name="chameleonTarget">wildfly:8.1.0.Final:managed</property>
+      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m
+        -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n
+      </property>
     </configuration>
   </container>
 
