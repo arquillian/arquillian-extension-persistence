@@ -24,6 +24,7 @@
     <version.poi>3.14</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
     <mode>managed</mode>
+    <server.version>8.1.0.Final</server.version>
   </properties>
 
   <dependencies>
@@ -241,11 +242,11 @@
     </profile>
 
     <profile>
-      <id>wildfly-8.1</id>
+      <id>wildfly-8.1-managed</id>
       <activation>
         <property>
           <name>server</name>
-          <value>wildfly-8.1</value>
+          <value>wildfly-8.1-managed</value>
         </property>
       </activation>
       <build>
@@ -279,6 +280,41 @@
               </excludes>
               <systemPropertyVariables>
                 <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:${mode}
+                </arq.container.chameleon.configuration.chameleonTarget>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>wildfly</id>
+      <activation>
+        <property>
+          <name>server</name>
+          <value>wildfly</value><!-- we have to have modified wildfly image to be able to connect to it remotely -->
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- This test is using custom SQL which I don't want to
+                  pollute with "SET INSERT_IDENTITY", because they should be portable. Hence
+                  it's not essential for this profile to verify if this behaviour is correct
+                  this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
+                  database. -->
+                <exclude>**/DataCleanupStrategiesTest.java</exclude>
+                <exclude>**/JpaCacheEvictionTest.java</exclude>
+                <!-- EAR deployment fails when using @DataSourceDefinition in WildFly  -->
+                <exclude>**/UserPersistenceEarDeploymentTest.java</exclude>
+              </excludes>
+              <systemPropertyVariables>
+                <arq.container.chameleon.configuration.chameleonTarget>wildfly:${server.version}:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
             </configuration>
