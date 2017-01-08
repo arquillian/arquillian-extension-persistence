@@ -23,7 +23,7 @@ import javax.ejb.Startup;
 
 @DataSourceDefinition(name = "java:app/datasources/postgresql_ds",
         className = "org.postgresql.ds.PGSimpleDataSource",
-        url = "jdbc:postgresql://psql:5432/",
+        url = "jdbc:postgresql://database:5432/",
         databaseName = "ape",
         user = "ape",
         password = "letmein")
