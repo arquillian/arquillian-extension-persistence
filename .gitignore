@@ -15,6 +15,7 @@
 
 # Maven
 target/
+dependency-reduced-pom.xml
 
 # TestNG
 test-output/
