@@ -7,6 +7,7 @@
     <jta-data-source>java:app/datasources/postgresql_ds</jta-data-source>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+      <property name="wildfly.jpa.twophasebootstrap" value="false" />
     </properties>
   </persistence-unit>
 

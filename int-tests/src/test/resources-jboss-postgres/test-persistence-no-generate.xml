@@ -5,6 +5,9 @@
 
   <persistence-unit name="test">
     <jta-data-source>java:app/datasources/postgresql_ds</jta-data-source>
+    <properties>
+      <property name="wildfly.jpa.twophasebootstrap" value="false" />
+    </properties>
   </persistence-unit>
 
 </persistence>
