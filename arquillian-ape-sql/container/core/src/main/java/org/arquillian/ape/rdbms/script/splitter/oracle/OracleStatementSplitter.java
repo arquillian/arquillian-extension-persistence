@@ -60,11 +60,14 @@ public class OracleStatementSplitter implements StatementSplitter {
 
     private final static Pattern BLOCK_START_PATTERN = Pattern.compile(BLOCK_START, Pattern.CASE_INSENSITIVE);
 
-    private String statementDelimiter;
-
     @Override
     public void setStatementDelimiter(String statementDelimiter) {
-        this.statementDelimiter = statementDelimiter;
+        // NOOP not relevant in this case
+    }
+
+    @Override
+    public void setTrimStatementDelimiter(boolean trimStatementDelimiter) {
+        // NOOP not relevant in this case
     }
 
     @Override
@@ -79,10 +82,10 @@ public class OracleStatementSplitter implements StatementSplitter {
 
     @Override
     public List<String> splitStatements(Reader reader) {
-        LineNumberReader lineReader = new LineNumberReader(reader);
-        StringBuilder sqlBuffer = new StringBuilder();
+        final LineNumberReader lineReader = new LineNumberReader(reader);
+        final StringBuilder sqlBuffer = new StringBuilder();
 
-        final ArrayList<String> statements = new ArrayList<String>();
+        final List<String> statements = new ArrayList<String>();
         try {
             boolean plSqlMode = false;
             String line;

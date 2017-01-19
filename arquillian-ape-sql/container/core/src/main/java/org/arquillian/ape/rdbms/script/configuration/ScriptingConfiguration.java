@@ -44,6 +44,8 @@ public class ScriptingConfiguration extends Configuration {
     private TestExecutionPhase defaultCleanupUsingScriptPhase = TestExecutionPhase.AFTER;
 
     private String sqlStatementDelimiter = ";";
+    
+    private boolean trimSqlStatementDelimiter = false;
 
     private boolean showSql = false;
 
@@ -117,6 +119,17 @@ public class ScriptingConfiguration extends Configuration {
      */
     public void setSqlStatementDelimiter(String sqlStatementDelimiter) {
         this.sqlStatementDelimiter = sqlStatementDelimiter;
+    }
+    
+    public boolean isTrimSqlStatementDelimiter() {
+        return trimSqlStatementDelimiter;
+    }
+
+    /**
+     * @param trimSqlStatementDelimiter Defines if the statement delimiter should be removed from the parsed statements. Default value: false
+     */
+    public void setTrimSqlStatementDelimiter(boolean trimSqlStatementDelimiter) {
+        this.trimSqlStatementDelimiter = trimSqlStatementDelimiter;
     }
 
     public boolean isShowSql() {

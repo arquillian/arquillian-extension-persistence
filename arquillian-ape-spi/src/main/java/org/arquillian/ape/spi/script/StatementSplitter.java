@@ -42,6 +42,13 @@ public interface StatementSplitter {
     void setStatementDelimiter(String statementDelimiter);
 
     /**
+     * Defines if the statement delimiter should be removed from the parsed statement
+     *
+     * @param trimStatementDelimiter
+     */
+    void setTrimStatementDelimiter(boolean trimStatementDelimiter);
+    
+    /**
      * Splits given script into executable statements
      */
     List<String> splitStatements(String script);
