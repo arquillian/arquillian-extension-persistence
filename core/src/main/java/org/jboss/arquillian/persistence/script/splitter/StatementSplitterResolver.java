@@ -43,6 +43,7 @@ public class StatementSplitterResolver {
                 }
                 resolved = statementSplitter;
                 resolved.setStatementDelimiter(scriptingConfiguration.getSqlStatementDelimiter());
+                resolved.setTrimStatementDelimiter(scriptingConfiguration.isTrimSqlStatementDelimiter());
             }
         }
 
