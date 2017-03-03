@@ -23,8 +23,9 @@
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.poi>3.14</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
-    <mode>managed</mode>
     <server.version>8.1.0.Final</server.version>
+    <!-- Chameleon container mode -->
+    <mode>managed</mode>
   </properties>
 
   <dependencies>
@@ -186,10 +187,11 @@
   <profiles>
 
     <profile>
-      <id>default-container</id>
+      <id>jbossas-7.0</id>
       <activation>
         <property>
-          <name>!server</name>
+          <name>server</name>
+          <value>jbossas-7.0</value>
         </property>
       </activation>
       <build>
@@ -245,8 +247,7 @@
       <id>wildfly-8.1-managed</id>
       <activation>
         <property>
-          <name>server</name>
-          <value>wildfly-8.1-managed</value>
+          <name>!server</name>
         </property>
       </activation>
       <build>
@@ -276,7 +277,7 @@
                   this test can be also skipped. It's tested on JBoss AS 7.0.2 with embedded
                   database. -->
                 <exclude>**/DataCleanupStrategiesTest.java</exclude>
-                <exclude>**/JpaCacheEvictionTest.java</exclude>
+                <exclude>**/JpaCacheEviction*Test.java</exclude>
               </excludes>
               <systemPropertyVariables>
                 <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:${mode}
