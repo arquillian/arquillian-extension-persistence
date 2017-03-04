@@ -69,6 +69,11 @@ public class OracleStatementSplitter implements StatementSplitter {
     }
 
     @Override
+    public void setTrimStatementDelimiter(boolean trimStatementDelimiter) {
+
+    }
+
+    @Override
     public String supports() {
         return "oracle";
     }
