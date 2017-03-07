@@ -33,6 +33,7 @@
     <module>dbunit</module>
     <module>spi</module>
     <module>int-tests</module>
+    <module>populator</module>
   </modules>
 
   <developers>
@@ -40,6 +41,11 @@
       <name>Bartosz Majsak</name>
       <timezone>UTC+1</timezone>
       <email>bartosz.majsak@gmail.com</email>
+    </developer>
+    <developer>
+      <name>Alex Soto</name>
+      <timezone>UTC+1</timezone>
+      <email>asotobue at redhat.com</email>
     </developer>
   </developers>
 
@@ -72,11 +78,16 @@
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.2</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
+    <version.gson>2.8.0</version.gson>
+    <version.okhttp>3.6.0</version.okhttp>
 
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
-    <version.assertj.core>2.2.0</version.assertj.core>
-    <version.mockito>1.10.19</version.mockito>
+    <version.assertj.core>3.6.2</version.assertj.core>
+    <version.mockito>2.7.14</version.mockito>
+    <version.cube>1.0.0.Alpha19</version.cube>
+    <version.wiremock>2.5.1</version.wiremock>
+    <version.restassured>3.0.2</version.restassured>
 
     <!-- Containers -->
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
@@ -89,9 +100,9 @@
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
-    <jdk.min.version>1.5</jdk.min.version>
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
+    <jdk.min.version>1.8</jdk.min.version>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <dependencyManagement>
@@ -137,6 +148,16 @@
         <type>pom</type>
       </dependency>
       <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${version.gson}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${version.okhttp}</version>
+      </dependency>
+      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>${version.assertj.core}</version>
@@ -144,9 +165,38 @@
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
+        <artifactId>mockito-core</artifactId>
         <version>${version.mockito}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-docker</artifactId>
+        <version>${version.cube}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-requirement</artifactId>
+        <version>${version.cube}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-docker-restassured</artifactId>
+        <version>${version.cube}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${version.wiremock}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>${version.restassured}</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>

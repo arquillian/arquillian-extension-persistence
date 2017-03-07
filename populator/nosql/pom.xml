@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Parent -->
+    <parent>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-populator-parent</artifactId>
+        <version>1.0.0.Final-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- Model Version -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <version.mongodb>3.2.2</version.mongodb>
+        <version.jedis>2.9.0</version.jedis>
+    </properties>
+
+    <!-- Artifact Configuration -->
+    <artifactId>arquillian-populator-nosql-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Arquillian Populator NoSQL Parent</name>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.lordofthejars</groupId>
+                <artifactId>nosqlunit-mongodb</artifactId>
+                <version>${version.nosqlunit}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lordofthejars</groupId>
+                <artifactId>nosqlunit-redis</artifactId>
+                <version>${version.nosqlunit}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver</artifactId>
+                <version>${version.mongodb}</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${version.jedis}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>api</module>
+        <module>mongodb</module>
+        <module>ftest-mongodb</module>
+        <module>redis</module>
+        <module>ftest-redis</module>
+    </modules>
+
+</project>

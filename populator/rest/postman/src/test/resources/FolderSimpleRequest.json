@@ -1,0 +1,19 @@
+{
+  "variables": [],
+  "info": {
+    "name": "book",
+    "_postman_id": "1803c743-318a-8751-b982-4f9475a00cea",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [{
+    "name": "Folder",
+    "description": "",
+    "item": [
+      {
+        "name": "This is one request",
+        "request": "http://localhost:8080"
+      }
+    ]
+  }]
+}
