@@ -477,7 +477,7 @@ You can customize *Arquillian Persistence Extension* configuration in
 
 [cols="1,1,8",options="header"]
 |===
-|Property name |Default value |Description
+|Property Name |Default Value |Description
 
 |`defaultDataSource`
 |_none_
@@ -539,7 +539,7 @@ features]) and some other customizations.
 
 [cols="1,1,8",options="header"]
 |===
-|Property name |Default value |Description
+|Property Name |Default Value |Description
 
 |`defaultDataSetLocation`
 |"datasets/"
@@ -607,19 +607,22 @@ escape pattern "\"" will have the same effect as the escape pattern
 |Used to configure the list of table types recognized by DBUnit.
 
 |`datatypeFactory`
-|`org.dbunit.dataset.datatype.DefaultDataTypeFactory`
+|`org.dbunit.dataset.datatype.
+DefaultDataTypeFactory`
 |Used to configure the DataType factory. You can replace the default
 factory to add support for non-standard database vendor data types.
 Provided class must implement
 `org.dbunit.dataset.datatype.IDataTypeFactory`.
 
 |`statementFactory`
-|`org.dbunit.database.statement.PreparedStatementFactory`
+|`org.dbunit.database.statement.
+PreparedStatementFactory`
 |Used to configure the statement factory. Provided class must implement
 `org.dbunit.database.statement.IStatementFactory`.
 
 |`resultSetTableFactory`
-|`org.dbunit.database.IResultSetTableFactory`
+|`org.dbunit.database.
+IResultSetTableFactory`
 |Used to configure the ResultSet table factory. Provided class must
 implement `org.dbunit.database.CachedResultSetTableFactory`.
 
@@ -642,7 +645,8 @@ Provided class must implement `org.dbunit.dataset.filter.IColumnFilter`.
 |The statement fetch size for loading data into a result set table.
 
 |`metadataHandler`
-|`org.dbunit.database.DefaultMetadataHandler`
+|`org.dbunit.database.
+DefaultMetadataHandler`
 |Used to configure the handler used to control database metadata related
 methods. Provided class must implement
 `org.dbunit.database.IMetadataHandler`
