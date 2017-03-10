@@ -607,7 +607,8 @@ escape pattern "\"" will have the same effect as the escape pattern
 |Used to configure the list of table types recognized by DBUnit.
 
 |`datatypeFactory`
-|`org.dbunit.dataset.datatype.
+|`org.dbunit.dataset.
+datatype.
 DefaultDataTypeFactory`
 |Used to configure the DataType factory. You can replace the default
 factory to add support for non-standard database vendor data types.
@@ -615,7 +616,8 @@ Provided class must implement
 `org.dbunit.dataset.datatype.IDataTypeFactory`.
 
 |`statementFactory`
-|`org.dbunit.database.statement.
+|`org.dbunit.database.
+statement.
 PreparedStatementFactory`
 |Used to configure the statement factory. Provided class must implement
 `org.dbunit.database.statement.IStatementFactory`.
