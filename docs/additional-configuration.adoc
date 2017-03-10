@@ -1,0 +1,303 @@
+[[additional-configuration]]
+=== Additional Configuration
+
+* <<other-goodies, Other Goodies>>
+* <<additional-configuration-1, Additional Configuration>>
+** <<general-settings, General Settings>>
+** <<dbunit-specific-settings, DBUnit Specific Settings>>
+** <<sql-scripts-customization, SQL Scripts Customization>>
+
+[[other-goodies]]
+==== Other Goodies
+
+* You can use `scriptsToExecuteBeforeTest` and `scriptsToExecuteAfterTest` scripts to turn off and bring back referential
+integrity checks for each tests using single, global definition
+externalized from the test class. This way your tests are portable and
+you can use different profiles with database specific `arquillian.xml`
+configurations transparently.
+* You can dump database content for each test execution and use it later
+for debugging purposes.
+
+See following section for details on how to configure those features.
+
+[[additional-configuration-1]]
+==== Additional Configuration
+
+*Arquillian Persistence Extension* can be customized in the similar way
+as any other components from Arquillian ecosystem - through
+`<extension>` elements defined in `arquillian.xml`. Following sections
+describe all possible settings which you can use to tweak the extension
+for your environment.
+
+IMPORTANT: Transaction management is delegated to Transaction Extension as of
+`1.0.0.Alpha6` version. Therefore if you want to specify JNDI for the
+`UserTransaction`, please use following snippet in the `arquillian.xml`.
+
+[source,xml]
+----
+<extension qualifier="transaction">
+    <property name="manager">java:jboss/UserTransaction</property>
+</extension>
+----
+
+[[general-settings]]
+===== General Settings
+
+You can customize *Arquillian Persistence Extension* configuration in
+`arquillian.xml` by adding following element:
+
+[source,xml]
+----
+<extension qualifier="persistence">
+    <property name="defaultDataSource">java:app/datasources/mssql_ds</property>
+</extension>
+----
+
+*List of all available properties*
+
+[cols="1,1,8",options="header"]
+|===
+|Property Name |Default Value |Description
+
+|`defaultDataSource`
+|_none_
+|Name of the default data source used to interact with the database
+(seeding, comparing etc). Required if not specified by using
+`@DataSource` annotation.
+
+|`defaultTransactionMode`
+|COMMIT
+|Transaction mode for running the tests if not specified explicitly by
+using `@Transactional`. Possible values: COMMIT, ROLLBACK or DISABLED.
+
+|`dumpData`
+|false
+|Enables database state dumping in following phases BEFORE_SEED,
+AFTER_SEED, BEFORE_CLEAN, AFTER_CLEAN. Might be handy for debugging.
+(Boolean.)
+
+|`dumpDirectory`
+|OS-specific tmp directory defined in `java.io.tmpdir`
+|Folder where all database dumps will be stored.
+
+|`defaultCleanupPhase`
+|AFTER
+|Defines default cleanup phase. Possible values: BEFORE, AFTER, NONE. If
+not defined on the test method or class level this setting is used.
+
+|`defaultCleanupStrategy`
+|STRICT
+|Defines strategy of cleaning database content for the test. Possible
+values: STRICT, USED_ROWS_ONLY or USED_TABLES_ONLY. If not defined on
+the test method or class level this setting is used.
+
+|`defaultDataSeedStrategy`
+|INSERT
+|Defines strategy of inserting data to the database. Possible values:
+INSERT, CLEAN_INSERT, UPDATE or REFRESH.
+|===
+
+[[dbunit-specific-settings]]
+===== DBUnit Specific Settings
+
+*Arquillian Persistence Extension* provides a way to customize
+underlying behaviour of DBUnit
+(http://dbunit.sourceforge.net/properties.html[exposed as properties and
+features]) and some other customizations.
+
+[source,xml]
+----
+<extension qualifier="persistence-dbunit">
+    <property name="datatypeFactory">org.dbunit.ext.mssql.MsSqlDataTypeFactory</property>
+    <property name="useIdentityInsert">true</property>
+    <property name="excludePoi">true</property>
+</extension>
+----
+
+*List of all available properties*
+
+[cols="1,1,8",options="header"]
+|===
+|Property Name |Default Value |Description
+
+|`defaultDataSetLocation`
+|"datasets/"
+|Folder where all datasets are located.
+
+|`defaultDataSetFormat`
+|XML
+|Default format of data sets when file name is inferred from test method
+name, when file is not specified in `@UsingDataSet` or
+`@ShouldMatchDataSet`. Other supported formats are EXCEL, YAML and JSON.
+
+|`excludePoi`
+|false
+|Excludes Apache POI from packaging process, which results in slimier
+deployment. If you are not using Excel datasets you can safely turn it
+off.
+
+|`batchedStatements`
+|false
+|Enable or disable usage of JDBC batched statement by DBUnit.
+
+|`caseSensitiveTableNames`
+|false
+|Enable or disable case sensitive table names. If enabled, DBUnit handles
+all table names in a case sensitive way.
+
+|`qualifiedTableNames`
+|false
+|Enable or disable multiple schemas support. If enabled, DBUnit access
+tables with names fully qualified by schema using this format:
+SCHEMA.TABLE.
+
+|`datatypeWarning`
+|true
+|Enable or disable the warning message displayed when DBUnit encounter an
+unsupported data type.
+
+|`skipOracleRecycleBinTables`
+|false
+|Enable or disable the processing of oracle recycle bin tables (tables
+starting with BIN$). Oracle 10g recycle bin tables may break DBUnit's
+assumption of tables name uniqueness within a schema since these table
+are case sensitive. Enable this feature for Oracle 10g databases until
+the bug in the oracle driver is fixed, which incorrectly reports this
+system tables to DVUnit.
+
+|`escapePattern`
+|_none_
+|Allows schema, table and column names escaping. The property value is an
+escape pattern where the ? is replaced by the name. For example, the
+pattern "
+[?]
+" is expanded as "
+[MY_TABLE]
+" for a table named "MY_TABLE". The most common escape pattern is
+"\"?\"" which surrounds the table name with quotes (for the above
+example it would result in "\"MY_TABLE\""). As a fallback if no
+questionmark is in the given string and its length is one it is used to
+surround the table name on the left and right side. For example the
+escape pattern "\"" will have the same effect as the escape pattern
+"\"?\"".
+
+|`tableType`
+|_none_
+|Used to configure the list of table types recognized by DBUnit.
+
+|`datatypeFactory`
+|`org.dbunit.dataset.
+datatype.
+DefaultDataTypeFactory`
+|Used to configure the DataType factory. You can replace the default
+factory to add support for non-standard database vendor data types.
+Provided class must implement
+`org.dbunit.dataset.datatype.IDataTypeFactory`.
+
+|`statementFactory`
+|`org.dbunit.database.
+statement.
+PreparedStatementFactory`
+|Used to configure the statement factory. Provided class must implement
+`org.dbunit.database.statement.IStatementFactory`.
+
+|`resultSetTableFactory`
+|`org.dbunit.database.
+IResultSetTableFactory`
+|Used to configure the ResultSet table factory. Provided class must
+implement `org.dbunit.database.CachedResultSetTableFactory`.
+
+|`primaryKeyFilter`
+|_none_
+|Use to override primary keys detection. Provided class must implement
+`org.dbunit.dataset.filter.IColumnFilter`.
+
+|`identityColumnFilter`
+|_none_
+|Use to override IDENTITY column detection (MS SQL specific solution).
+Provided class must implement `org.dbunit.dataset.filter.IColumnFilter`.
+
+|`batchSize`
+|100
+|Size of the batch updates.
+
+|`fetchSize`
+|100
+|The statement fetch size for loading data into a result set table.
+
+|`metadataHandler`
+|`org.dbunit.database.
+DefaultMetadataHandler`
+|Used to configure the handler used to control database metadata related
+methods. Provided class must implement
+`org.dbunit.database.IMetadataHandler`
+
+For MySQL users...
+
+If you are using MySQL, you must use
+`org.dbunit.ext.mysql.MySqlMetadataHandler` or you will get the "No
+columns found" error. See http://sourceforge.net/p/dbunit/bugs/226/.
+
+|`useIdentityInsert`
+|false
+|Disables MS SQL Server automatic identifier generation for the execution
+of inserts. For usage with Microsoft driver you should append your JDBC
+connection with "SelectMethod=cursor".
+
+|`excludeTablesFromCleanup`
+|_empty_
+|List of tables to be excluded from cleanup procedure. +
+    * Especially handy for sequence tables which are most likely to be
+cleared +
+    * when using STRICT cleanup strategy. +
+Comma separated list of table names to be excluded from cleanup
+procedure. Especially handy for sequence tables which are otherwise
+cleared when using STRICT cleanup strategy.
+
+|`schema`
+|_empty_
+|Database schema name to be used by DBUnit
+|===
+
+[[sql-scripts-customization]]
+===== SQL Scripts Customization
+
+*Arquillian Persistence Extension* allows you to customize the way how
+SQL scripts are handled.
+
+[source,xml]
+----
+<extension qualifier="persistence-script">
+    <property name="sqlStatementDelimiter">GO</property>
+</extension>
+----
+
+*List of all available properties*
+
+[cols="1,1,8",options="header"]
+|===
+|Property name |Default value |Description
+
+|`defaultSqlScriptLocation`
+|"scripts/"
+|Folder where all custom SQL scripts are located.
+
+|`scriptsToExecuteBeforeTest`
+|_none_
+|Ad-hoc scripts or file locations to be used before every test. Might be
+handy for turning off integrity checks.
+
+|`scriptsToExecuteAfterTest`
+|_none_
+|Ad-hoc scripts or file locations to be used after every test. Could be
+used to revert operations applied by scriptsToExecuteBeforeTest.
+
+|`defaultCleanupUsingScriptPhase`
+|AFTER
+|Defines default cleanup phase for custom SQL scripts.
+
+|`sqlStatementDelimiter`
+|;
+|Defines char sequence indicating end of SQL statement
+|===
+
