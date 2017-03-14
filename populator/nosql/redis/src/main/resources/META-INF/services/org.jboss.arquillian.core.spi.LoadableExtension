@@ -1,1 +1,1 @@
-org.arquillian.cube.populator.nosql.redis.RedisPopulatorExtension
+org.jboss.arquillian.populator.nosql.redis.RedisPopulatorExtension

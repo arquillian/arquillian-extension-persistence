@@ -1,1 +1,1 @@
-org.arquillian.cube.populator.nosql.mongodb.MongoDbPopulatorExtension
+org.jboss.arquillian.populator.nosql.mongodb.MongoDbPopulatorExtension
