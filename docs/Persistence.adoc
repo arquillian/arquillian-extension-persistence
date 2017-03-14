@@ -1,9 +1,16 @@
-Persistence
-===========
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Persistence
+:icons: font
 
 [[overview]]
-Overview
-~~~~~~~~
+== Overview
 
 *Arquillian Persistence Extension* is created to help you writing tests
 where persistence layer is involved. +
@@ -18,8 +25,7 @@ It comes with following features:
 (with column exclusion).
 
 [[see-it-in-action]]
-See It In Action
-~~~~~~~~~~~~~~~~
+== See It In Action
 
 Arquillian-powered test with Persistence Extension
 
@@ -57,9 +63,8 @@ public class UserPersistenceTest {
 }
 ----
 
-users.yml
-
 [source,java]
+.users.yml
 ----
 useraccount:
   - id: 1
@@ -74,9 +79,8 @@ useraccount:
     password: kryptonite
 ----
 
-expected-users.yml
-
 [source,java]
+.expected-users.yml
 ----
 useraccount:
   - firstname: John
@@ -100,8 +104,7 @@ https://github.com/arquillian/arquillian-showcase/tree/master/jpa-persistence-ex
 showcase on Github].
 
 [[transactional-tests]]
-Transactional Tests
-~~~~~~~~~~~~~~~~~~~
+== Transactional Tests
 
 Adding transaction support to your tests is pretty straightforward. If
 that's only what you need simply put `@Transactional` annotation
@@ -118,8 +121,7 @@ class level, marking given test with this mode will simply run it
 without the transaction.
 
 [[seeding-database]]
-Seeding Database
-~~~~~~~~~~~~~~~~
+== Seeding Database
 
 Creating ad-hoc object graphs in the test code is often too verbose and
 makes it harder to read the tests. Arquillian Persistence Extension
@@ -127,8 +129,7 @@ provides alternatives to set database fixtures to be used for the given
 test.
 
 [[data-sets]]
-Data Sets
-^^^^^^^^^
+=== Data Sets
 
 If you are familiar with http://dbunit.sourceforge.net[DBUnit] you already know the
 concept of data sets. In brief data sets are files containing rows to be
@@ -155,8 +156,7 @@ Arquillian Persistence Extension handles following formats available out
 of the box in DBUnit:
 
 [[flat-xml-data-set]]
-Flat XML Data Set
-+++++++++++++++++
+==== Flat XML Data Set
 
 Simple XML format where each element represents rows in the given table
 and attributes names corresponds to its columns. You can also explicitly
@@ -173,8 +173,7 @@ Flat XML Data Set
 ----
 
 [[excel-spreadsheets]]
-Excel Spreadsheets
-++++++++++++++++++
+==== Excel Spreadsheets
 
 Another format supported out of the box by DBUnit. In order to use it
 follow these conventions:
@@ -186,8 +185,7 @@ Have a look at the
 https://github.com/arquillian/arquillian-extension-persistence/blob/master/int-tests/src/test/resources-datasets/datasets/single-user.xls[example].
 
 [[yaml-and-json]]
-YAML and JSON
-+++++++++++++
+==== YAML and JSON
 
 In addition to the format supported out of the box by DBUnit, Arquillian
 Persistence Extension provides alternative way to describe your data
@@ -233,8 +231,7 @@ Data set described in JSON
 [[section]]
 
 [[schema-creation]]
-Schema Creation
-^^^^^^^^^^^^^^^
+=== Schema Creation
 
 If you want to use custom SQL scripts for schema creation you can
 decorate your test using `@CreateSchema` annotation providing list of
@@ -243,8 +240,7 @@ only once. By convention such scripts will be first looked in *schema*
 folder, but you can also provide full path if you wish.
 
 [[custom-sql-scripts]]
-Custom SQL Scripts
-^^^^^^^^^^^^^^^^^^
+=== Custom SQL Scripts
 
 If you want you can also use seed your database using plain SQL (or
 execute any other action directly on the database level). To achieve it
@@ -270,8 +266,7 @@ format:
 format: `[before|after]-[fully qualified class name].sql`.
 
 [[verfying-database-content-after-the-test]]
-Verifying Database Content After The Test
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Verifying Database Content After The Test
 
 Sometimes it might be a bit cumbersome to assert database state directly
 from your testing code. Especially when you change quite a lot in the
@@ -316,38 +311,33 @@ attribute:
 ----
 
 [[data-insert-strategies]]
-Data Insert Strategies
-~~~~~~~~~~~~~~~~~~~~~~
+== Data Insert Strategies
 
 DBUnit, and hence Arquillian Persistence Extension, provides following
 strategies for inserting data
 
 [[insert]]
-INSERT
-^^^^^^
+=== INSERT
 
 Performs insert of the data defined in provided data sets. This is the
 default strategy.
 
 [[clean_insert]]
-CLEAN_INSERT
-^^^^^^^^^^^^
+=== CLEAN_INSERT
 
 Performs insert of the data defined in provided data sets, after removal
 of all data present in the tables (DELETE_ALL invoked by DBUnit before
 INSERT).
 
 [[refresh]]
-REFRESH
-^^^^^^^
+=== REFRESH
 
 During this operation existing rows are updated and new ones are
 inserted. Entries already existing in the database which are not defined
 in the provided data set are not affected.
 
 [[update]]
-UPDATE
-^^^^^^
+=== UPDATE
 
 This strategy updates existing rows using data provided in the datasets.
 If dataset contain a row which is not present in the database
@@ -358,12 +348,10 @@ Please refer to the <<general-settings, configuration
 section>> for the details.
 
 [[cleaning-your-data]]
-Cleaning Your Data
-~~~~~~~~~~~~~~~~~~
+== Cleaning Your Data
 
 [[dbunit-cleanup-modes]]
-DBUnit Cleanup Modes
-^^^^^^^^^^^^^^^^^^^^
+=== DBUnit Cleanup Modes
 
 Arquillian Persistence Extension comes with great degree of
 configuration. In combination with data sets which you use to seed the
@@ -374,22 +362,19 @@ for this purpose. You can define it on the test method level or globally
 by decorating test class. Following modes are currently supported:
 
 [[strict]]
-STRICT
-++++++
+==== STRICT
 
 Cleans the entire database. This strategy might require turning off
 database constraints (e.g. referential integrity).
 
 [[used_rows_only]]
-USED_ROWS_ONLY
-++++++++++++++
+==== USED_ROWS_ONLY
 
 Deletes only those entries which were defined in data sets used for
 seeding.
 
 [[used_tables_only]]
-USED_TABLES_ONLY
-++++++++++++++++
+==== USED_TABLES_ONLY
 
 Deletes only those tables which were used in data sets.
 
@@ -405,8 +390,7 @@ You can invoke it `BEFORE` or `AFTER` the test. You can also disable
 cleanup by using `TestExecutionPhase.NONE`.
 
 [[using-custom-sql-scripts-for-cleanup]]
-Using Custom SQL Scripts For Cleanup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Using Custom SQL Scripts For Cleanup
 
 You can also use custom SQL scripts to clean your database before or
 after the test. For this purpose use `@CleanupUsingScript` annotation
@@ -424,8 +408,7 @@ The same way as with DBUnit cleanup you can also define test phase when
 it should take place.
 
 [[other-goodies]]
-Other Goodies
-~~~~~~~~~~~~~
+== Other Goodies
 
 * You can use scriptsToExecuteBeforeTest and
 scriptsToExecuteAfterTest scripts to turn off and bring back referential
@@ -439,8 +422,7 @@ for debugging purposes.
 See following section for details how to configure those features.
 
 [[additional-configuration]]
-Additional Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~
+== Additional Configuration
 
 *Arquillian Persistence Extension* can be customized in the similar way
 as any other components from Arquillian ecosystem - through
@@ -460,8 +442,7 @@ Transaction management is delegated to Transaction Extension as of
 ----
 
 [[general-settings]]
-General Settings
-^^^^^^^^^^^^^^^^
+=== General Settings
 
 You can customize *Arquillian Persistence Extension* configuration in
 `arquillian.xml` by adding following element:
@@ -518,8 +499,7 @@ INSERT, CLEAN_INSERT, UPDATE or REFRESH.
 |===
 
 [[dbunit-specific-settings]]
-DBUnit Specific Settings
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== DBUnit Specific Settings
 
 *Arquillian Persistence Extension* provides a way to customize
 underlying behaviour of DBUnit
@@ -681,8 +661,7 @@ cleared when using STRICT cleanup strategy.
 |===
 
 [[sql-scripts-customization]]
-SQL Scripts Customization
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== SQL Scripts Customization
 
 *Arquillian Persistence Extension* allows you to customize the way how
 SQL scripts are handled.
@@ -724,8 +703,7 @@ used to revert operations applied by scriptsToExecuteBeforeTest.
 |===
 
 [[maven-setup]]
-Maven Setup
-~~~~~~~~~~~
+== Maven Setup
 
 You'll first need to setup Arquillian in your project. You can find
 instructions in the
