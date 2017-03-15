@@ -38,12 +38,7 @@ public class PopulatorEnricherTest {
       populatorEnricher.serviceLoaderInstance = () -> serviceLoader;
       populatorEnricher.injectorInstance = () -> injector;
 
-      final Object populator = populatorEnricher.lookup(null, new Annotation() {
-         @Override
-         public Class<? extends Annotation> annotationType() {
-            return MyBackend.class;
-         }
-      });
+      final Object populator = populatorEnricher.lookup(null, (Annotation) () -> MyBackend.class);
 
       assertThat(populator).isInstanceOf(MyPopulator.class);
       assertThat(((Populator)populator).populatorService).isInstanceOf(TestPopulatorService.class);

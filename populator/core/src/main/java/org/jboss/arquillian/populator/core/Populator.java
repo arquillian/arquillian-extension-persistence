@@ -13,8 +13,6 @@ import java.util.logging.Logger;
  */
 public abstract class Populator<T extends PopulatorService, R extends Populator.PopulatorConfigurator> {
 
-    private static final Logger logger = Logger.getLogger(Populator.class.getName());
-
     protected T populatorService;
     protected String host;
     protected int bindPort;

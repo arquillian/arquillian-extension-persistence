@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Base annotation that all Populators annotation must implements to be elegible for enrichers.
+ * Base annotation that all Populators annotation must implements to be eligible for enrichment.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE})
