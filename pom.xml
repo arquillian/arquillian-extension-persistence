@@ -177,12 +177,6 @@
       </dependency>
       <dependency>
         <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-requirement</artifactId>
-        <version>${version.cube}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.arquillian.cube</groupId>
         <artifactId>arquillian-cube-docker-restassured</artifactId>
         <version>${version.cube}</version>
         <scope>test</scope>
@@ -197,6 +191,7 @@
         <groupId>io.rest-assured</groupId>
         <artifactId>rest-assured</artifactId>
         <version>${version.restassured}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>

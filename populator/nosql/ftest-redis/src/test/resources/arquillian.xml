@@ -8,7 +8,6 @@
      RMI is a difficult protocol to configure :(.    -->
 
     <extension qualifier="docker">
-        <property name="machineName">dev</property>
         <property name="dockerContainersFile">docker-compose.yml</property>
     </extension>
 

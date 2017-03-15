@@ -2,10 +2,9 @@ package org.arquillian.cube.populator.redis;
 
 import org.arquillian.cube.HostIp;
 import org.arquillian.cube.HostPort;
-import org.arquillian.cube.docker.impl.requirement.RequiresDockerMachine;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulator;
 import org.jboss.arquillian.populator.nosql.redis.Redis;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
 import org.junit.Test;
@@ -16,8 +15,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresDockerMachine(name = "dev")
+@RunWith(Arquillian.class)
 public class RedisTest {
 
    @HostIp

@@ -6,11 +6,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.arquillian.cube.HostIp;
 import org.arquillian.cube.HostPort;
-import org.arquillian.cube.docker.impl.requirement.RequiresDockerMachine;
+import org.bson.Document;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulator;
 import org.jboss.arquillian.populator.nosql.mongodb.MongoDb;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.bson.Document;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
 import org.junit.Test;
@@ -18,8 +17,7 @@ import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresDockerMachine(name = "dev")
+@RunWith(Arquillian.class)
 public class MongoDbTest {
 
    @HostIp

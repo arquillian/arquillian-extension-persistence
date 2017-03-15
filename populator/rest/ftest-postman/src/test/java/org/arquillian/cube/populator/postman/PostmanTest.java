@@ -4,10 +4,9 @@ import io.restassured.builder.RequestSpecBuilder;
 import org.arquillian.cube.DockerUrl;
 import org.arquillian.cube.HostIp;
 import org.arquillian.cube.HostPort;
-import org.arquillian.cube.docker.impl.requirement.RequiresDockerMachine;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.populator.rest.api.RestPopulator;
 import org.jboss.arquillian.populator.rest.postman.Postman;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +14,7 @@ import org.junit.runner.RunWith;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresDockerMachine(name = "dev")
+@RunWith(Arquillian.class)
 public class PostmanTest {
 
     @ArquillianResource
