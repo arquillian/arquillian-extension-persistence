@@ -3,8 +3,8 @@
 
     <!-- Parent -->
     <parent>
-        <groupId>org.arquillian.cube</groupId>
-        <artifactId>arquillian-cube-populator-parent</artifactId>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-populator-parent</artifactId>
         <version>1.0.0.Final-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -16,10 +16,10 @@
     </properties>
 
     <!-- Artifact Configuration -->
-    <artifactId>arquillian-cube-populator-sql-parent</artifactId>
+    <artifactId>arquillian-populator-sql-parent</artifactId>
     <packaging>pom</packaging>
 
-    <name>Arquillian Cube Populator SQL Parent</name>
+    <name>Arquillian Populator SQL Parent</name>
 
     <dependencies>
     </dependencies>

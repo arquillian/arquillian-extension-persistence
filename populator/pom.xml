@@ -24,11 +24,11 @@
 
     <modules>
         <module>api</module>
+        <module>core</module>
         <module>spi</module>
         <module>rest</module>
         <module>nosql</module>
         <module>sql</module>
-        <module>core</module>
     </modules>
 
     <dependencyManagement>
