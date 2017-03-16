@@ -1,13 +1,14 @@
-== Additional Configuration
+[[additional-configuration]]
+=== Additional Configuration
 
 * <<other-goodies, Other Goodies>>
-* <<additional-configuration, Additional Configuration>>
+* <<additional-configuration-1, Additional Configuration>>
 ** <<general-settings, General Settings>>
 ** <<dbunit-specific-settings, DBUnit Specific Settings>>
 ** <<sql-scripts-customization, SQL Scripts Customization>>
 
 [[other-goodies]]
-=== Other Goodies
+==== Other Goodies
 
 * You can use scriptsToExecuteBeforeTest and scriptsToExecuteAfterTest scripts to turn off and bring back referential
 integrity checks for each tests using single, global definition
@@ -19,8 +20,8 @@ for debugging purposes.
 
 See following section for details on how to configure those features.
 
-[[additional-configuration]]
-=== Additional Configuration
+[[additional-configuration-1]]
+==== Additional Configuration
 
 *Arquillian Persistence Extension* can be customized in the similar way
 as any other components from Arquillian ecosystem - through
@@ -40,7 +41,7 @@ Transaction management is delegated to Transaction Extension as of
 ----
 
 [[general-settings]]
-==== General Settings
+===== General Settings
 
 You can customize *Arquillian Persistence Extension* configuration in
 `arquillian.xml` by adding following element:
@@ -97,7 +98,7 @@ INSERT, CLEAN_INSERT, UPDATE or REFRESH.
 |===
 
 [[dbunit-specific-settings]]
-==== DBUnit Specific Settings
+===== DBUnit Specific Settings
 
 *Arquillian Persistence Extension* provides a way to customize
 underlying behaviour of DBUnit
@@ -259,7 +260,7 @@ cleared when using STRICT cleanup strategy.
 |===
 
 [[sql-scripts-customization]]
-==== SQL Scripts Customization
+===== SQL Scripts Customization
 
 *Arquillian Persistence Extension* allows you to customize the way how
 SQL scripts are handled.

@@ -1,11 +1,11 @@
 [[cleaning-your-data]]
-== Cleaning Your Data
+=== Cleaning Your Data
 
 * <<dbunit-cleanup-modes, DBUnit Cleanup Modes>>
 * <<using-custom-sql-scripts-for-cleanup, Using Custom SQL Scripts For Cleanup>>
 
 [[dbunit-cleanup-modes]]
-=== DBUnit Cleanup Modes
+==== DBUnit Cleanup Modes
 
 Arquillian Persistence Extension comes with great degree of
 configuration. In combination with data sets which you use to seed the
@@ -15,21 +15,16 @@ test. If you want to control this behavior, use `@Cleanup` annotation
 for this purpose. You can define it on the test method level or globally
 by decorating test class. Following modes are currently supported:
 
-[[strict]]
-==== STRICT
 
+* `STRICT` +
 Cleans the entire database. This strategy might require turning off
 database constraints (e.g. referential integrity).
 
-[[used_rows_only]]
-==== USED_ROWS_ONLY
-
+* `USED_ROWS_ONLY` +
 Deletes only those entries which were defined in data sets used for
 seeding.
 
-[[used_tables_only]]
-==== USED_TABLES_ONLY
-
+* `USED_TABLES_ONLY` +
 Deletes only those tables which were used in data sets.
 
 You can also specify when you would like to invoke the cleanup
@@ -44,7 +39,7 @@ You can invoke it `BEFORE` or `AFTER` the test. You can also disable
 cleanup by using `TestExecutionPhase.NONE`.
 
 [[using-custom-sql-scripts-for-cleanup]]
-=== Using Custom SQL Scripts For Cleanup
+==== Using Custom SQL Scripts For Cleanup
 
 You can also use custom SQL scripts to clean your database before or
 after the test. For this purpose use `@CleanupUsingScript` annotation

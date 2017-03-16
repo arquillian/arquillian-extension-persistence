@@ -1,34 +1,26 @@
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 [[data-insert-strategies]]
-== Data Insert Strategies
+=== Data Insert Strategies
 
 DBUnit, and hence Arquillian Persistence Extension, provides following
 strategies for inserting data:
 
-[[insert]]
-=== INSERT
-
+* `INSERT` +
 Performs insert of the data defined in provided data sets. This is the
 default strategy.
 
-[[clean_insert]]
-=== CLEAN_INSERT
-
+* `CLEAN_INSERT` +
 Performs insert of the data defined in provided data sets, after removal
 of all data present in the tables (DELETE_ALL invoked by DBUnit before
 INSERT).
 
-[[refresh]]
-=== REFRESH
-
+* `REFRESH` +
 During this operation existing rows are updated and new ones are
 inserted. Entries already existing in the database which are not defined
 in the provided data set are not affected.
 
-[[update]]
-=== UPDATE
-
+* `UPDATE` +
 This strategy updates existing rows using data provided in the datasets.
 If dataset contain a row which is not present in the database
 (identified by its primary key) then exception is thrown.

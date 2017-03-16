@@ -1,7 +1,7 @@
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 [[verfying-database-content-after-the-test]]
-== Verifying Database Content After The Test
+=== Verifying Database Content After The Test
 
 Sometimes it might be a bit cumbersome to assert database state directly
 from your testing code. Especially when you change quite a lot in the

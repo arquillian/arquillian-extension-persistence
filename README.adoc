@@ -1,5 +1,5 @@
 = Arquillian Persistence Extension
-:asciidoctor-source: https://raw.githubusercontent.com/hemanik/arquillian-extension-persistence/documentation/docs
+:asciidoctor-source: https://raw.githubusercontent.com/arquillian/arquillian-extension-persistence/documentation/docs
 :numbered:
 :sectlink:
 :sectanchors:
@@ -10,18 +10,20 @@
 :icons: font
 :toc: left
 
-[[what-is-this]]
-== What Is This?
+== Overview
 
-*Arquillian Persistence Extension* was created to help you writing tests
+[[what-is-this]]
+=== What Is This?
+
+*Arquillian Persistence Extension* was created to help you write tests
 where persistence layer is involved. Inspired by great framework called
-http://unitils.org/[Unitils], it brings bunch of annotations to help you
+http://unitils.org/[Unitils], it brings a bunch of annotations to help you
 deal with the underlying data storage.
 
 It comes with following features:
 
 * Wrapping each test in the separated transaction (with
-**commit**(default) or *rollback* at the end).
+**commit** (default) or *rollback* at the end).
 * Seeding database using:
 ** http://dbunit.sourceforge.net/[DBUnit] with **XML**, **XLS**, *YAML*
 and *JSON* supported as data sets format.
@@ -32,14 +34,14 @@ and *JSON* supported as data sets format.
 `@JpaCacheEviction`.
 
 [[containers-used-for-testing]]
-*Containers Used For Testing*
+=== Containers Used For Testing
 
 * Glassfish 3.1.2 Embedded
 * JBoss AS 7.0.2 Final (managed)
 * JBoss AS 7.1.1.Final (managed)
 
 [[verified-with-following-databases]]
-*Verified With Following Databases*
+=== Verified With Following Databases
 
 * HSQL
 * MS SQL 2008 Express (with Microsoft JDBC Driver)
@@ -47,7 +49,7 @@ and *JSON* supported as data sets format.
 * PostgreSQL 9.1.4
 * Derby
 
-Enough talking, let's see it in action!
+*Enough talking, let's see it in action!*
 
 [[code-example]]
 === Code Example
@@ -100,9 +102,10 @@ so feel free to have a closer look.
 
 But it's that easy! And there's more to come!
 
+[[documentation]]
 == Documentation
 
-include::{asciidoctor-source}/persistence-overview.adoc[]
+include::{asciidoctor-source}/maven-setup.adoc[]
 include::{asciidoctor-source}/transactional-tests.adoc[]
 include::{asciidoctor-source}/seeding-database.adoc[]
 include::{asciidoctor-source}/verifying-database-content.adoc[]

@@ -6,33 +6,44 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= Persistence
-:icons: font
+=== Setup
 
-* <<overview, Overview>>
-* <<see-it-in-action, See It In Action>>
 * <<maven-setup, Maven Setup>>
+* <<see-it-in-action, See It In Action>>
 
-[[overview]]
-== Overview
+[[maven-setup]]
+==== Maven Setup
 
-*Arquillian Persistence Extension* is created to help you writing tests
-where persistence layer is involved. +
+You'll first need to setup Arquillian in your project. You can find
+instructions in the
+http://arquillian.org/guides/getting_started/#add_the_arquillian_apis[Getting
+Started guide]. You'll also need to add an Arquillian container adapter
+for a container which provides JPA. Any Java EE 6 server will do, such
+as JBoss AS 7 or GlassFish 3.1. Adding the required container adapter to
+your project is also covered in the
+http://arquillian.org/guides/getting_started/#add_more_containers[Getting
+Started guide].
 
-It comes with following features:
+The only extra dependency you need is the Arquillian Persistence
+Extension implementation, `arquillian-persistence-dbunit`
+(former `arquillian-persistence-impl`), as shown in the snippet below.
 
-* Wrapping each test in the separated transaction.
-* Seeding database using:
-** http://dbunit.sourceforge.net[DBUnit] with **XML**, **XLS**, *YAML* and
-*JSON* supported as data sets format.
-** Custom SQL scripts.
-* Comparing database state at the end of the test using given data sets
-(with column exclusion).
+Maven dependency for Arquillian Persistence Extension
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-persistence-dbunit</artifactId>
+    <version>${version.arquillian.persistence}</version>
+    <scope>test</scope>
+</dependency>
+----
 
 [[see-it-in-action]]
-== See It In Action
+==== See It In Action
 
-Arquillian-powered test with Persistence Extension
+Here is an Arquillian-powered test with Persistence Extension.
 
 [source,java]
 ----
@@ -108,31 +119,3 @@ see more core have a look at
 https://github.com/arquillian/arquillian-showcase/tree/master/jpa-persistence-extension[our
 showcase on Github].
 
-[[maven-setup]]
-== Maven Setup
-
-You'll first need to setup Arquillian in your project. You can find
-instructions in the
-http://arquillian.org/guides/getting_started/#add_the_arquillian_apis[Getting
-Started guide]. You'll also need to add an Arquillian container adapter
-for a container which provides JPA. Any Java EE 6 server will do, such
-as JBoss AS 7 or GlassFish 3.1. Adding the required container adapter to
-your project is also covered in the
-http://arquillian.org/guides/getting_started/#add_more_containers[Getting
-Started guide].
-
-The only extra dependency you need is the Arquillian Persistence
-Extension implementation, `arquillian-persistence-dbunit`
-(former `arquillian-persistence-impl`), as shown in the snippet below.
-
-Maven dependency for Arquillian Persistence Extension
-
-[source,xml]
-----
-<dependency>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-persistence-dbunit</artifactId>
-    <version>${version.arquillian.persistence}</version>
-    <scope>test</scope>
-</dependency>
-----

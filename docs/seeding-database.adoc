@@ -1,7 +1,12 @@
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 [[seeding-database]]
-== Seeding Database
+=== Seeding Database
+
+Creating ad-hoc object graphs in the test code is often too verbose and
+makes it harder to read the tests. Arquillian Persistence Extension
+provides alternatives to set database fixtures to be used for the given
+test as described below.
 
 * <<data-sets, Data Sets>>
 ** <<flat-xml-data-set, Flat XML Data Set>>
@@ -10,13 +15,9 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 * <<schema-creation, Schema Creation>>
 * <<custom-sql-scripts, Custom SQL Scripts>>
 
-Creating ad-hoc object graphs in the test code is often too verbose and
-makes it harder to read the tests. Arquillian Persistence Extension
-provides alternatives to set database fixtures to be used for the given
-test.
 
 [[data-sets]]
-=== Data Sets
+==== Data Sets
 
 If you are familiar with http://dbunit.sourceforge.net[DBUnit] you already know the
 concept of data sets. In brief data sets are files containing rows to be
@@ -43,7 +44,7 @@ Arquillian Persistence Extension handles following formats available out
 of the box in DBUnit:
 
 [[flat-xml-data-set]]
-==== Flat XML Data Set
+===== Flat XML Data Set
 
 Simple XML format where each element represents rows in the given table
 and attributes names corresponds to its columns. You can also explicitly
@@ -60,7 +61,7 @@ Flat XML Data Set
 ----
 
 [[excel-spreadsheets]]
-==== Excel Spreadsheets
+===== Excel Spreadsheets
 
 Another format supported out of the box by DBUnit. In order to use it
 follow these conventions:
@@ -72,7 +73,7 @@ Have a look at the
 https://github.com/arquillian/arquillian-extension-persistence/blob/master/int-tests/src/test/resources-datasets/datasets/single-user.xls[example].
 
 [[yaml-and-json]]
-==== YAML and JSON
+===== YAML and JSON
 
 In addition to the format supported out of the box by DBUnit, Arquillian
 Persistence Extension provides alternative way to describe your data
@@ -118,7 +119,7 @@ Data set described in JSON
 [[section]]
 
 [[schema-creation]]
-=== Schema Creation
+==== Schema Creation
 
 If you want to use custom SQL scripts for schema creation you can
 decorate your test using `@CreateSchema` annotation providing list of
@@ -127,7 +128,7 @@ only once. By convention such scripts will be first looked in *schema*
 folder, but you can also provide full path if you wish.
 
 [[custom-sql-scripts]]
-=== Custom SQL Scripts
+==== Custom SQL Scripts
 
 If you want you can also use seed your database using plain SQL (or
 execute any other action directly on the database level). To achieve it
