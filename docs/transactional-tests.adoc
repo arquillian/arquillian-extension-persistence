@@ -1,0 +1,18 @@
+[[transactional-tests]]
+== Transactional Tests
+
+Adding transaction support to your tests is pretty straightforward. If
+that's only what you need simply put `@Transactional` annotation
+either on the test which you want be wrapped in transaction or on the
+test class which will result with all tests running in their
+transactions.
+
+Following modes are supported:
+
+* `COMMIT`. Each test will be finished with `commit` operation. This is
+*default* behaviour.
+* `ROLLBACK`. At the end of the test execution `rollback` will be
+performed
+* `DISABLED`. If you have enabled transactional support on the test
+class level, marking given test with this mode will simply run it
+without the transaction.
