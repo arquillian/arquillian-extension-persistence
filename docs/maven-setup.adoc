@@ -1,0 +1,121 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+=== Setup
+
+* <<maven-setup, Maven Setup>>
+* <<see-it-in-action, See It In Action>>
+
+[[maven-setup]]
+==== Maven Setup
+
+You'll first need to setup Arquillian in your project. You can find
+instructions in the
+http://arquillian.org/guides/getting_started/#add_the_arquillian_apis[Getting
+Started guide]. You'll also need to add an Arquillian container adapter
+for a container which provides JPA. Any Java EE 6 server will do, such
+as JBoss AS 7 or GlassFish 3.1. Adding the required container adapter to
+your project is also covered in the
+http://arquillian.org/guides/getting_started/#add_more_containers[Getting
+Started guide].
+
+The only extra dependency you need is the Arquillian Persistence
+Extension implementation, `arquillian-persistence-dbunit`
+(former `arquillian-persistence-impl`), as shown in the snippet below.
+
+Maven dependency for Arquillian Persistence Extension
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-persistence-dbunit</artifactId>
+    <version>${version.arquillian.persistence}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+[[see-it-in-action]]
+==== See It In Action
+
+Here is an Arquillian-powered test with Persistence Extension.
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class UserPersistenceTest {
+
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+                .addPackage(UserAccount.class.getPackage())
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+    }
+
+    @PersistenceContext
+    EntityManager em;
+
+    @Test
+    @UsingDataSet("datasets/users.yml")
+    @ShouldMatchDataSet("datasets/expected-users.yml")
+    public void should_change_user_password() throws Exception {
+        // given
+        String expectedPassword = "LexLuthor";
+        UserAccount user = em.find(UserAccount.class, 2L);
+
+        // when
+        user.setPassword("LexLuthor");
+        user = em.merge(user);
+
+        // then
+        assertEquals(expectedPassword, user.getPassword());
+    }
+}
+----
+
+[source,java]
+.users.yml
+----
+useraccount:
+  - id: 1
+    firstname: John
+    lastname: Smith
+    username: doovde
+    password: password
+  - id: 2
+    firstname: Clark
+    lastname: Kent
+    username: superman
+    password: kryptonite
+----
+
+[source,java]
+.expected-users.yml
+----
+useraccount:
+  - firstname: John
+    lastname: Smith
+    username: doovde
+    password: password
+  - firstname: Clark
+    lastname: Kent
+    username: superman
+    password: LexLuthor
+----
+
+There are just two things which are different from the standard
+Arquillian test - `@UsingDataSet` and `@ShouldMatchDataSet annotations`.
+Former seeds the database using file in
+http://en.wikipedia.org/wiki/YAML[YAML] format, and latter verifies
+database state using given file. Read on to learn more about the
+features offered by **Arquillian Persistence Extension**. If you want to
+see more core have a look at
+https://github.com/arquillian/arquillian-showcase/tree/master/jpa-persistence-extension[our
+showcase on Github].
+

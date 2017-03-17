@@ -1,0 +1,46 @@
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+[[verfying-database-content-after-the-test]]
+=== Verifying Database Content After The Test
+
+Sometimes it might be a bit cumbersome to assert database state directly
+from your testing code. Especially when you change quite a lot in the
+database tables you might want to validate values directly in the
+database. By using DBUnit you can use the same data sets approach. Put
+`@ShouldMatchDataSet` annotation either on the test method or your test
+class and Arquillian Persistence Extension will use all these files
+together to check if database contains entries you are expecting after
+test execution. Again, by convention it first looks for the files in
+`datasets` folder. If you don't provide file names in the annotation
+itself following rules are applied:
+
+* It's assumed that files are stored in `datasets` folder (or any other
+you have configured as default location).
+* If annotation is defined on method level, file name has following
+format
+`expected-[fully qualified class name]#[test method name].[default format]`
+* If annotation is defined on class level, file name has following
+format `expected-[fully qualified class name].[default format].`
+
+Where `default format` is XML, but <<additional-configuration#dbunit-specific-settings, can be also
+customized>>.
+
+In addition you can also specify which columns should not be used for
+comparision. This might be handy if you export large datasets directly
+from the database using tools like
+http://jailer.sourceforge.net/[Jailer] and you don't want to compare
+surrogate keys (database generated ids). You can specify these columns
+in the annotation:
+
+[source,java]
+----
+@ShouldMatchDataSet(value = "expected-users.yml", excludeColumns = { "id", "creationDate"})
+----
+
+To determine order of data sets comparison you can use `orderBy`
+attribute:
+
+[source,java]
+----
+@ShouldMatchDataSet(value = "expected-users.yml", orderBy = { "id""})
+----
