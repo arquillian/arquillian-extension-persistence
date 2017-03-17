@@ -55,14 +55,17 @@ public class DefaultStatementSplitter implements StatementSplitter {
 
     private static final String CHAR_SEQUENCE_PATTERN = "(?m)'([^']*)'|\"([^\"]*)\"";
 
-    private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?\\}";
+    private static final String ANSI_SQL_COMMENTS_PATTERN = "--.*|//.*|(?s)/\\*.*?\\*/|(?s)\\{.*?}";
 
     private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
     private String statementDelimiter;
+    
+    private boolean trimStatementDelimiter;
 
     public DefaultStatementSplitter() {
         this.statementDelimiter = ";";
+        this.trimStatementDelimiter = false;
     }
 
     public DefaultStatementSplitter(String statementDelimiter) {
@@ -72,6 +75,11 @@ public class DefaultStatementSplitter implements StatementSplitter {
     @Override
     public void setStatementDelimiter(String statementDelimiter) {
         this.statementDelimiter = statementDelimiter;
+    }
+    
+    @Override
+    public void setTrimStatementDelimiter(boolean trimStatementDelimiter) {
+        this.trimStatementDelimiter = trimStatementDelimiter;
     }
 
     @Override
@@ -155,6 +163,10 @@ public class DefaultStatementSplitter implements StatementSplitter {
         String trimmed = new SpecialCharactersReplacer().unescape(line.trim());
         if (!lineIsStatementDelimiter(line)) {
             trimmed.replace(LINE_SEPARATOR, " ");
+
+            if (trimStatementDelimiter && trimmed.endsWith(statementDelimiter)) {
+                return trimmed.substring(0, trimmed.length() - statementDelimiter.length());
+            }
         }
         return trimmed;
     }
