@@ -25,7 +25,7 @@
   <modules>
     <module>api</module>
     <module>postman</module>
-    <module>ftest-postman</module>
+    <module>postman-ftest</module>
   </modules>
 
 </project>

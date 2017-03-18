@@ -52,9 +52,9 @@
   <modules>
     <module>api</module>
     <module>mongodb</module>
-    <module>ftest-mongodb</module>
+    <module>mongodb-ftest</module>
     <module>redis</module>
-    <module>ftest-redis</module>
+    <module>redis-ftest</module>
   </modules>
 
 </project>
