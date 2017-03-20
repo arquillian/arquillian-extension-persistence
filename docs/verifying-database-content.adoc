@@ -42,5 +42,5 @@ attribute:
 
 [source,java]
 ----
-@ShouldMatchDataSet(value = "expected-users.yml", orderBy = { "id""})
+@ShouldMatchDataSet(value = "expected-users.yml", orderBy = { "id"})
 ----

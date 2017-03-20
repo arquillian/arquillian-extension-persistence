@@ -39,6 +39,8 @@ and *JSON* supported as data sets format.
 * Glassfish 3.1.2 Embedded
 * JBoss AS 7.0.2 Final (managed)
 * JBoss AS 7.1.1.Final (managed)
+* Wildfly 8.1
+
 
 [[verified-with-following-databases]]
 === Verified With Following Databases
@@ -47,6 +49,7 @@ and *JSON* supported as data sets format.
 * MS SQL 2008 Express (with Microsoft JDBC Driver)
 * MySQL 5.5.24
 * PostgreSQL 9.1.4
+* Oracle 11g
 * Derby
 
 *Enough talking, let's see it in action!*
@@ -65,7 +68,7 @@ public class UserPersistenceTest
   {
       return ShrinkWrap.create(JavaArchive.class, "test.jar")
                        .addPackage(UserAccount.class.getPackage())
-                       .addPackages(true, "org.fest") // FEST Assert is not part of Arquillian JUnit
+                       .addPackages(true, "org.fest") // FEST Assert is not part of Arquillian
                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                        .addAsManifestResource("test-persistence.xml", "persistence.xml");
   }
@@ -102,8 +105,13 @@ so feel free to have a closer look.
 
 But it's that easy! And there's more to come!
 
-[[documentation]]
-== Documentation
+If you have any questions or would like to file feature request or bug
+report (hope not!) please have a look at
+http://arquillian.org/community/[the ways how you can get in touch with
+us].
+
+[[guide]]
+== Guide
 
 include::{asciidoctor-source}/maven-setup.adoc[]
 include::{asciidoctor-source}/transactional-tests.adoc[]
@@ -112,11 +120,3 @@ include::{asciidoctor-source}/verifying-database-content.adoc[]
 include::{asciidoctor-source}/data-insert-strategies.adoc[]
 include::{asciidoctor-source}/cleaning-your-data.adoc[]
 include::{asciidoctor-source}/additional-configuration.adoc[]
-
-[[how-to-reach-us-out]]
-== How To Reach Us Out?
-
-If you have any questions or would like to file feature request or bug
-report (hope not!) please have a look at
-http://arquillian.org/community/[the ways how you can get in touch with
-us].

@@ -6,7 +6,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-=== Setup
+=== Getting Started
 
 * <<maven-setup, Maven Setup>>
 * <<see-it-in-action, See It In Action>>
