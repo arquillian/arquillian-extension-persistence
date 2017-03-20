@@ -37,9 +37,7 @@ public class CollectionLoader {
             gsonBuilder.registerTypeAdapter(Item.class, new ItemDeserializer());
             gsonBuilder.registerTypeAdapter(Url.class, new UrlDeserializer());
 
-            final Collection parsedCollection = gsonBuilder.create().fromJson(collectionJsonDocument, Collection.class);
-
-            return parsedCollection;
+            return gsonBuilder.create().fromJson(collectionJsonDocument, Collection.class);
         }
 
     }
@@ -196,9 +194,7 @@ public class CollectionLoader {
 
                 return itemItem;
             } else {
-                // It is a folder
-                Folder folder = gson.fromJson(json, Folder.class);
-                return folder;
+                return gson.fromJson(json, Folder.class);
             }
         }
 

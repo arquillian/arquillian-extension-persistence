@@ -41,7 +41,7 @@ public class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
         final DefaultInsertionStrategy mongoDBInsertionStrategy = new DefaultInsertionStrategy();
 
         resources.stream()
-                .map(resource -> MongoDbPopulatorService.class.getResourceAsStream(resource))
+                .map(MongoDbPopulatorService.class::getResourceAsStream)
                 .forEach((InputStream dataset) -> {
                     try {
                         mongoDBInsertionStrategy.insert(() -> database, dataset);

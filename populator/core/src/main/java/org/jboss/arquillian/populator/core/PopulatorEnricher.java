@@ -71,7 +71,7 @@ public abstract class PopulatorEnricher<T extends PopulatorService> implements R
         return serviceLoaderInstance.get()
                 .all(PopulatorService.class).stream()
                 .filter(populatorService -> populatorService.getPopulatorAnnotation().equals(annotation.annotationType()))
-                .map(populatorService -> typeOf.cast(populatorService))
+                .map(typeOf::cast)
                 .findFirst();
     }
 

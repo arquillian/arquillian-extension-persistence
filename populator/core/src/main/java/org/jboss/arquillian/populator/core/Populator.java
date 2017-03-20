@@ -2,8 +2,6 @@ package org.jboss.arquillian.populator.core;
 
 import org.jboss.arquillian.populator.spi.PopulatorService;
 
-import java.util.logging.Logger;
-
 /**
  * This class represents base class for all Populators DSL for storing configuration.
  * It implements common operations o to configure all populators.

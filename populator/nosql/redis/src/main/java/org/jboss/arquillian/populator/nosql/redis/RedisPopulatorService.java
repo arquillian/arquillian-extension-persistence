@@ -6,8 +6,8 @@ import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 import redis.clients.jedis.BinaryJedisCommands;
 import redis.clients.jedis.Jedis;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,12 +47,12 @@ public class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
 
             @Override
             public Collection<Jedis> getAllJedis() {
-                return Arrays.asList(jedis);
+                return Collections.singletonList(jedis);
             }
         };
 
         resources.stream()
-                .map(resource -> RedisPopulatorService.class.getResourceAsStream(resource))
+                .map(RedisPopulatorService.class::getResourceAsStream)
                 .forEach(dataset -> {
                     try {
                         redisInsertionStrategy.insert(connection, dataset);

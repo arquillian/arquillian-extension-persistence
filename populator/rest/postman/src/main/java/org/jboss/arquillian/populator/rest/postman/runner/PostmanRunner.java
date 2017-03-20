@@ -92,14 +92,14 @@ public class PostmanRunner {
                 }
                 case formdata: {
                     final FormBody.Builder formBuilder = new FormBody.Builder();
-                    body.getFormdata().stream()
+                    body.getFormdata()
                             .forEach(formParameter -> formBuilder.add(formParameter.getKey(), formParameter.getValue()));
                     requestBody = formBuilder.build();
                     break;
                 }
                 case urlencoded: {
                     final FormBody.Builder formBuilder = new FormBody.Builder();
-                    body.getUrlencoded().stream()
+                    body.getUrlencoded()
                             .forEach(encodedParameter -> formBuilder.addEncoded(encodedParameter.getKey(), encodedParameter.getValue()));
                     requestBody = formBuilder.build();
                     break;

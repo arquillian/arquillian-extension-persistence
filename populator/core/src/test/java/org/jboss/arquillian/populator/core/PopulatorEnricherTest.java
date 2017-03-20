@@ -1,8 +1,8 @@
 package org.jboss.arquillian.populator.core;
 
-import org.jboss.arquillian.populator.spi.PopulatorService;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.spi.ServiceLoader;
+import org.jboss.arquillian.populator.spi.PopulatorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -29,7 +29,7 @@ public class PopulatorEnricherTest {
    public void setupMocks() {
       PopulatorService populatorService = new TestPopulatorService();
       when(injector.inject(any())).thenAnswer(element -> element.getArgument(0));
-      when(serviceLoader.all(PopulatorService.class)).thenReturn(Arrays.asList(populatorService));
+      when(serviceLoader.all(PopulatorService.class)).thenReturn(Collections.singletonList(populatorService));
    }
 
    @Test
