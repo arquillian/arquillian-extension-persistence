@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>20</version>
+    <version>22</version>
     <relativePath/>
   </parent>
 
@@ -85,7 +85,7 @@
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
     <version.assertj.core>3.6.2</version.assertj.core>
     <version.mockito>2.7.14</version.mockito>
-    <version.cube>1.0.0.Alpha19</version.cube>
+    <version.cube>1.0.0.Alpha20</version.cube>
     <version.wiremock>2.5.1</version.wiremock>
     <version.restassured>3.0.2</version.restassured>
 
