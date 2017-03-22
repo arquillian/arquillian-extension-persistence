@@ -41,6 +41,7 @@ and *JSON* supported as data sets format.
 * JBoss AS 7.1.1.Final (managed)
 * Wildfly 8.1
 
+
 [[verified-with-following-databases]]
 === Verified With Following Databases
 
@@ -108,7 +109,6 @@ If you have any questions or would like to file feature request or bug
 report (hope not!) please have a look at
 http://arquillian.org/community/[the ways how you can get in touch with
 us].
-
 
 [[guide]]
 == Guide
