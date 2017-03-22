@@ -1,7 +1,11 @@
 package org.jboss.arquillian.populator.nosql.mongodb;
 
 import com.lordofthejars.nosqlunit.mongodb.DefaultInsertionStrategy;
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.IOException;
@@ -13,7 +17,7 @@ import java.util.Set;
 /**
  * Integration to NoSqlUnit MongoDb module.
  */
-public class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
+class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
 
     private Mongo mongoClient;
     private DB database;

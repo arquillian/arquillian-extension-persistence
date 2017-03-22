@@ -7,7 +7,7 @@ import org.jboss.arquillian.populator.rest.postman.runner.PostmanRunner;
 import java.util.List;
 import java.util.Map;
 
-public class PostmanPopulatorService implements RestPopulatorService<Postman> {
+class PostmanPopulatorService implements RestPopulatorService<Postman> {
     @Override
     public Class<Postman> getPopulatorAnnotation() {
         return Postman.class;

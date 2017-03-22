@@ -5,7 +5,7 @@ import org.jboss.arquillian.populator.spi.PopulatorService;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
-public class RedisPopulatorExtension implements LoadableExtension {
+class RedisPopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, RedisPopulatorService.class)

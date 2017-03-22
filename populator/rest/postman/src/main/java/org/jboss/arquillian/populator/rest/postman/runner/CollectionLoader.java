@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class CollectionLoader {
+class CollectionLoader {
 
     // ThreadLocal is the only way to share data between deserializers in a thread-safe way
     private ThreadLocal<VariableSubstitutor> variableSubstitutorThreadLocal = new ThreadLocal<>();

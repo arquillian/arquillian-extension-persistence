@@ -5,7 +5,7 @@ import org.jboss.arquillian.populator.spi.PopulatorService;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
-public class MongoDbPopulatorExtension implements LoadableExtension {
+class MongoDbPopulatorExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder extensionBuilder) {

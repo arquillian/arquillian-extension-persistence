@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Integration to NoSqlUnit Redis module.
  */
-public class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
+class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
 
     private Jedis jedis;
 
