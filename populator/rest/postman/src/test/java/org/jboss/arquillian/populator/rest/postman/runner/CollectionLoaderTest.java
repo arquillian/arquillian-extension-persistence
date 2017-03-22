@@ -16,16 +16,13 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_read_info_field() throws IOException {
-
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/SimpleRequest.json", new HashMap<>());
 
-        // Then:
+        // then
         Information expectedInformation = new Information("book", new URL("https://schema.getpostman.com/json/collection/v2.0.0/collection.json"), null);
         assertThat(collection.getInfo())
                 .isNotNull()
@@ -34,36 +31,28 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_read_simple_requests() throws IOException {
-
-        // Give:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/SimpleRequest.json", new HashMap<>());
 
-        // Then
+        // then
         assertThat(collection.getItem()).extracting("name", "request")
                 .containsExactly(
                         tuple("This is one request", new URL("http://localhost:8080"))
                 );
-
     }
 
     @Test
     public void should_read_complex_get_request() throws IOException {
-
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexGetRequest.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
 
@@ -82,17 +71,13 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_read_complex_get_request_with_headers() throws IOException {
-
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexGetRequestWithHeaders.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
 
@@ -110,22 +95,17 @@ public class CollectionLoaderTest {
         expectedItemItem.setRequestObject(expectedRequest);
 
         assertThat(itemItem).isEqualToComparingFieldByFieldRecursively(expectedItemItem);
-
-
     }
 
     @Test
     public void should_read_complex_post_with_body() throws IOException {
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexPostRequestWithBody.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
 
@@ -135,16 +115,13 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_read_complex_post_with_body_form_data() throws IOException {
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexPostRequestWithBodyFormData.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
 
@@ -156,16 +133,13 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_read_complex_url() throws IOException {
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexUrlGetRequest.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
         assertThat(itemItem.getRequestObject().getUrl().asNativeUrl())
@@ -177,16 +151,13 @@ public class CollectionLoaderTest {
 
     @Test
     public void should_replace_variables() throws IOException {
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/ComplexGetRequestVariables.json", new HashMap<>());
 
-        // Then:
-
+        // then
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
         assertThat(itemItem.getRequestObject().getUrl().asNativeUrl())
@@ -197,26 +168,22 @@ public class CollectionLoaderTest {
 
         assertThat(headers)
                 .containsValue("Basic XXX");
-
     }
 
     @Test
     public void should_load_folders() throws IOException {
-        // Given:
-
+        // given
         CollectionLoader collectionLoader = new CollectionLoader();
 
-        // When:
-
+        // when
         final Collection collection = collectionLoader.load("/FolderSimpleRequest.json", new HashMap<>());
 
-        // Then:
+        // then
         assertThat(collection.getItem()).hasSize(1);
         Folder folder = ((Folder) collection.getItem().get(0));
 
         assertThat(folder.getName()).isEqualTo("Folder");
         assertThat(folder.getItem()).hasSize(1);
-
     }
 
 }

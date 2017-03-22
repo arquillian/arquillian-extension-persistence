@@ -16,27 +16,24 @@ public class PostmanRunnerTest {
 
     @Test
     public void should_send_get_methods() {
-
-        // Given:
+        // given
 
         wireMockRule.stubFor(
                 get(urlEqualTo("/"))
                 .willReturn(aResponse().withBody("Hello World"))
         );
 
-        // When:
-
+        // when
         PostmanRunner postmanRunner = new PostmanRunner();
         postmanRunner.executeCalls(new HashMap<>(), "/SimpleRequest.json");
 
-        // Then:
-
+        // then
         verify(getRequestedFor(urlEqualTo("/")));
     }
 
     @Test
     public void should_execute_post_with_url_override() {
-        // Given:
+        // given
         wireMockRule
                 .stubFor(
                 post(urlEqualTo("/?a=a"))
@@ -45,8 +42,7 @@ public class PostmanRunnerTest {
                         .willReturn(aResponse().withStatus(200))
         );
 
-        // When:
-
+        // when
         PostmanRunner postmanRunner = new PostmanRunner();
 
         HostPortOverride hostPortOverride = new HostPortOverride("localhost", 8080);
@@ -56,8 +52,7 @@ public class PostmanRunnerTest {
             fail(wireMockRule.findNearMissesForAllUnmatchedRequests().toString());
         }
 
-        // Then:
-
+        // then
         verify(postRequestedFor(urlEqualTo("/?a=a"))
                 .withRequestBody(equalToJson("{\"name\": \"test\"}")));
 
