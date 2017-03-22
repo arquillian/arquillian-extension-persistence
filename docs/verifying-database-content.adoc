@@ -22,7 +22,7 @@ format
 * If annotation is defined on class level, file name has following
 format `expected-[fully qualified class name].[default format].`
 
-Where `default format` is XML, but <<additional-configuration#dbunit-specific-settings, can be also
+Where `default format` is XML, but <<dbunit-specific-settings, can be also
 customized>>.
 
 In addition you can also specify which columns should not be used for

@@ -25,7 +25,7 @@ inserted to the database. In order to seed your database using data set
 file put `@UsingDataSet` annotation either on the test itself or on the
 class level. If there is definition on both, test level annotation takes
 precedence. In addition you can specify files location in the annotation
-(default folder is "datasets/". Refer to <<additional-configuration#dbunit-specific-settings,
+(default folder is "datasets/". Refer to <<dbunit-specific-settings,
 DBUnit configuration section>> to see how can you customize it). If files are
 not specified explicitly, following strategy is applied:
 
@@ -37,7 +37,7 @@ format:
 * If annotation is defined on class level, file name has following
 format: `[fully qualified class name].[default format]`.
 
-Where `default format` is XML, but <<additional-configuration#dbunit-specific-settings, can be also
+Where `default format` is XML, but <<dbunit-specific-settings, can be also
 customized>>.
 
 Arquillian Persistence Extension handles following formats available out
@@ -140,7 +140,7 @@ on both, test level annotation takes precedence.
 By convention Arquillian Persistence Extension will look for these
 scripts in the **scripts** folder (in a Maven project, that's typically
 `src/test/resources/scripts` in the source tree), but you can customize
-it as you wish - see <<additional-configuration#general-settings, configuration
+it as you wish - see <<general-settings, configuration
 section>> how to do it. You can also specify files location in the
 annotation, the same way as you can do with DBUnit data sets. If files
 are not specified explicitly, following strategy is applied:

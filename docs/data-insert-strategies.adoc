@@ -26,5 +26,5 @@ If dataset contain a row which is not present in the database
 (identified by its primary key) then exception is thrown.
 
 Data seeding strategy can be specified globally in `arquillian.xml`.
-Please refer to the <<additional-configuration#general-settings, configuration
+Please refer to the <<general-settings, configuration
 section>> for the details.
