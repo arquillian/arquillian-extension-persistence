@@ -1,0 +1,33 @@
+{
+  "variables": [],
+  "info": {
+    "name": "book",
+    "_postman_id": "1803c743-318a-8751-b982-4f9475a00cea",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [{
+    "name" : "This is one request",
+    "request": {
+      "url": {
+        "protocol" : "http",
+        "domain" : "192.168.99.100",
+        "port" : 8080,
+        "path" : ["path", ":variableName"],
+        "query": [{
+          "key": "a",
+          "value" : "b"
+        }],
+        "variable": [{
+          "id": "variableName",
+          "value": "path2"
+        }]
+      },
+      "method": "GET",
+      "header": [],
+      "body": {},
+      "description": ""
+    }
+  }
+  ]
+}
