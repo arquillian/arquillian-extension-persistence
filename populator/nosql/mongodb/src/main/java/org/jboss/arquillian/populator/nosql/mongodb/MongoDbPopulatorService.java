@@ -1,26 +1,26 @@
 package org.jboss.arquillian.populator.nosql.mongodb;
 
 import com.lordofthejars.nosqlunit.mongodb.DefaultInsertionStrategy;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
+import com.lordofthejars.nosqlunit.mongodb.MongoDbConnectionCallback;
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+import org.bson.Document;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Integration to NoSqlUnit MongoDb module.
  */
 class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
 
-    private Mongo mongoClient;
-    private DB database;
+    private MongoClient mongoClient;
+    private MongoDatabase database;
 
     @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
@@ -29,7 +29,7 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
         }
 
         mongoClient = new MongoClient(host, port);
-        this.database = mongoClient.getDB(database);
+        this.database = mongoClient.getDatabase(database);
 
     }
 
@@ -48,7 +48,17 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
                 .map(MongoDbPopulatorService.class::getResourceAsStream)
                 .forEach((InputStream dataset) -> {
                     try {
-                        mongoDBInsertionStrategy.insert(() -> database, dataset);
+                        mongoDBInsertionStrategy.insert(new MongoDbConnectionCallback() {
+                            @Override
+                            public MongoDatabase db() {
+                                return database;
+                            }
+
+                            @Override
+                            public MongoClient mongoClient() {
+                                return mongoClient;
+                            }
+                        }, dataset);
                     } catch (IOException e) {
                         throw new IllegalStateException(e);
                     }
@@ -57,15 +67,15 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
 
     @Override
     public void clean() {
-        Set<String> collectionaNames = database.getCollectionNames();
+        final MongoIterable<String> listCollectionNames = database.listCollectionNames();
 
-        for (String collectionName : collectionaNames) {
+        for (String collectionName : listCollectionNames) {
 
             if (isNotASystemCollection(collectionName)) {
 
-                DBCollection dbCollection = database.getCollection(collectionName);
+                MongoCollection dbCollection = database.getCollection(collectionName);
                 // Delete ALL, No DROP
-                dbCollection.remove(new BasicDBObject(0));
+                dbCollection.deleteOne(new Document());
             }
         }
     }
