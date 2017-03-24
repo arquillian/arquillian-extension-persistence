@@ -12,6 +12,10 @@
 
 image:https://travis-ci.org/arquillian/arquillian-extension-persistence.svg?branch=master["Build Status", link="https://travis-ci.org/arquillian/arquillian-extension-persistence"]
 
+ifndef::generated-doc[]
+To read complete documentation visit http://arquillian.org/arquillian-extension-persistence/
+endif::generated-doc[]
+
 == Overview
 
 [[what-is-this]]
@@ -112,6 +116,7 @@ report (hope not!) please have a look at
 http://arquillian.org/community/[the ways how you can get in touch with
 us].
 
+ifdef::generated-doc[]
 [[guide]]
 == Guide
 
@@ -122,3 +127,4 @@ include::{asciidoctor-source}/verifying-database-content.adoc[]
 include::{asciidoctor-source}/data-insert-strategies.adoc[]
 include::{asciidoctor-source}/cleaning-your-data.adoc[]
 include::{asciidoctor-source}/additional-configuration.adoc[]
+
