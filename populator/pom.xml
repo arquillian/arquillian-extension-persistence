@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <version.nosqlunit>1.0.0-rc.1</version.nosqlunit>
+    <version.nosqlunit>1.0.0-rc.2</version.nosqlunit>
   </properties>
 
   <!-- Artifact Configuration -->
