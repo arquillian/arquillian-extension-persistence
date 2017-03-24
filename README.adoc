@@ -10,6 +10,8 @@
 :icons: font
 :toc: left
 
+image:https://travis-ci.org/arquillian/arquillian-extension-persistence.svg?branch=master["Build Status", link="https://travis-ci.org/arquillian/arquillian-extension-persistence"]
+
 == Overview
 
 [[what-is-this]]
