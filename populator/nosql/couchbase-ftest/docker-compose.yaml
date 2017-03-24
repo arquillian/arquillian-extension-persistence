@@ -1,0 +1,6 @@
+couchbase:
+  image: arungupta/couchbase:travel
+  ports:
+    - "8091:8091"
+    - "8092:8092"
+    - "11210:11210"
