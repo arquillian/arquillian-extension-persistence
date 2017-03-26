@@ -21,6 +21,7 @@
     <version.cdi>1.0-SP1</version.cdi>
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
+    <version.chameleon>1.0.0.Beta1</version.chameleon>
     <version.poi>3.14</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
     <server.version>8.1.0.Final</server.version>
@@ -84,13 +85,6 @@
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.arquillian.container</groupId>
-      <artifactId>arquillian-container-chameleon</artifactId>
-      <version>1.0.0.Alpha7</version>
       <scope>test</scope>
     </dependency>
 
@@ -194,6 +188,14 @@
           <value>jbossas-7.0</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -250,6 +252,14 @@
           <name>!server</name>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <testResources>
           <testResource>
@@ -332,6 +342,14 @@
           <value>jbossas-7.1</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -371,6 +389,14 @@
           <value>jbossas-7.0</value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -884,6 +910,14 @@
           </value>
         </property>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <testResources>
           <testResource>
@@ -925,6 +959,12 @@
         </property>
       </activation>
       <dependencies>
+        <dependency>
+          <groupId>org.arquillian.container</groupId>
+          <artifactId>arquillian-container-chameleon</artifactId>
+          <version>${version.chameleon}</version>
+          <scope>test</scope>
+        </dependency>
         <dependency>
           <groupId>org.hsqldb</groupId>
           <artifactId>hsqldb</artifactId>
