@@ -21,7 +21,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.PersistenceTest;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -41,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 @RunWith(Arquillian.class)
-@PersistenceTest
 public class TransactionalUserPersistenceTest {
 
     @Deployment
@@ -56,9 +56,10 @@ public class TransactionalUserPersistenceTest {
     }
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Test
+    @Transactional(TransactionMode.ROLLBACK)
     public void should_persist_users_within_transaction() throws Exception {
         // given
         UserAccount johnSmith = new UserAccount("John", "Smith", "doovde", "password");
