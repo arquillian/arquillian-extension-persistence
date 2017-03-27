@@ -31,7 +31,7 @@ public class RedisTest {
    @Test
    public void should_populate_mongodb() {
       populator.forServer(hostIp, port)
-              .usingDataSet("/books.json")
+              .usingDataSet("books.json")
               .execute();
 
       Jedis jedis = new Jedis(hostIp, port);

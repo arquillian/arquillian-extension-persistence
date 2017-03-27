@@ -27,7 +27,7 @@ public class CouchbaseTest {
     public void should_find_books() {
         populator.forServer(hostIp, 0)
                 .withDatabase("travel-sample")
-                .usingDataSet("/airlines.json")
+                .usingDataSet("airlines.json")
                 .execute();
 
         CouchbaseCluster couchbaseCluster = CouchbaseCluster.create(hostIp);

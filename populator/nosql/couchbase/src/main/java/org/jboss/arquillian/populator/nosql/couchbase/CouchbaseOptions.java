@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Class taht represents custom options for Couchbase
- */
 public class CouchbaseOptions implements Map<String, Object> {
 
     static String BUCKET_PASSWORD = "BUCKET_PASSWORD";

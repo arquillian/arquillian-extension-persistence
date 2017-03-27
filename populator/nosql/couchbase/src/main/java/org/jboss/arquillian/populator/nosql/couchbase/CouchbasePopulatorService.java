@@ -5,6 +5,7 @@ import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.java.cluster.ClusterManager;
 import com.couchbase.client.java.cluster.DefaultBucketSettings;
 import com.lordofthejars.nosqlunit.couchbase.DefaultCouchbaseInsertionStrategy;
+import org.jboss.arquillian.populator.core.DataSetLoader;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.InputStream;
@@ -14,9 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 
-/**
- * Integration to NoSqlUnit Couchbase module.
- */
 class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
 
     private CouchbaseCluster couchbaseCluster;
@@ -94,7 +92,7 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         final DefaultCouchbaseInsertionStrategy couchbaseInsertionStrategy = new DefaultCouchbaseInsertionStrategy();
 
         resources.stream()
-                .map(CouchbasePopulatorService.class::getResourceAsStream)
+                .map(DataSetLoader::resolve)
                 .forEach((InputStream dataset) -> {
                     try {
                         couchbaseInsertionStrategy.insert(() -> bucket, dataset);
