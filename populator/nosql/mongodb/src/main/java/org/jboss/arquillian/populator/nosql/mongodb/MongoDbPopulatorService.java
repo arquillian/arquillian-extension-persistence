@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import org.bson.Document;
+import org.jboss.arquillian.populator.core.DataSetLoader;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
         final DefaultInsertionStrategy mongoDBInsertionStrategy = new DefaultInsertionStrategy();
 
         resources.stream()
-                .map(MongoDbPopulatorService.class::getResourceAsStream)
+                .map(DataSetLoader::resolve)
                 .forEach((InputStream dataset) -> {
                     try {
                         mongoDBInsertionStrategy.insert(new MongoDbConnectionCallback() {

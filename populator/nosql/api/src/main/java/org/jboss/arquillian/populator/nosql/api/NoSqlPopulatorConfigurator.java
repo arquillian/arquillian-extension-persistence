@@ -79,7 +79,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
      * @param options to set.
      * @return this instance.
      */
-    public NoSqlPopulatorConfigurator withOptions(Map<String, String> options) {
+    public NoSqlPopulatorConfigurator withOptions(Map<String, Object> options) {
         this.options.putAll(options);
         return this;
     }

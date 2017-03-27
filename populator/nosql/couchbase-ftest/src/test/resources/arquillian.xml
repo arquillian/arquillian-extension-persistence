@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <!-- We have to bind the docker hostname and bindPort, otherwise RMI will choose a random bindPort, which we can't forward to the docker host.
+     RMI is a difficult protocol to configure :(.    -->
+
+    <extension qualifier="docker">
+        <property name="dockerContainersFile">docker-compose.yaml</property>
+        <property name="cubeSpecificProperties">
+            couchbase:
+              await:
+                strategy: log
+                match: 'fg 1'
+                stdOut: true
+                stdErr: true
+                timeout: 60
+        </property>
+    </extension>
+
+</arquillian>

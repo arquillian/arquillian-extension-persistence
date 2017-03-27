@@ -16,6 +16,8 @@
   <properties>
     <version.mongodb>3.2.2</version.mongodb>
     <version.jedis>2.9.0</version.jedis>
+    <version.couchbase>2.4.2</version.couchbase>
+    <version.awaitility>2.0.0</version.awaitility>
   </properties>
 
   <!-- Artifact Configuration -->
@@ -37,6 +39,11 @@
         <version>${version.nosqlunit}</version>
       </dependency>
       <dependency>
+        <groupId>com.lordofthejars</groupId>
+        <artifactId>nosqlunit-couchbase</artifactId>
+        <version>${version.nosqlunit}</version>
+      </dependency>
+      <dependency>
         <groupId>org.mongodb</groupId>
         <artifactId>mongodb-driver</artifactId>
         <version>${version.mongodb}</version>
@@ -45,6 +52,16 @@
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
         <version>${version.jedis}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.couchbase.client</groupId>
+        <artifactId>java-client</artifactId>
+        <version>${version.couchbase}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.awaitility</groupId>
+        <artifactId>awaitility</artifactId>
+        <version>${version.awaitility}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -55,6 +72,8 @@
     <module>mongodb-ftest</module>
     <module>redis</module>
     <module>redis-ftest</module>
+    <module>couchbase</module>
+    <module>couchbase-ftest</module>
   </modules>
 
 </project>

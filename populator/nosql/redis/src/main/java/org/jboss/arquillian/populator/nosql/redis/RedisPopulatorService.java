@@ -2,6 +2,7 @@ package org.jboss.arquillian.populator.nosql.redis;
 
 import com.lordofthejars.nosqlunit.redis.DefaultRedisInsertionStrategy;
 import com.lordofthejars.nosqlunit.redis.RedisConnectionCallback;
+import org.jboss.arquillian.populator.core.DataSetLoader;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 import redis.clients.jedis.BinaryJedisCommands;
 import redis.clients.jedis.Jedis;
@@ -52,7 +53,7 @@ class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
         };
 
         resources.stream()
-                .map(RedisPopulatorService.class::getResourceAsStream)
+                .map(DataSetLoader::resolve)
                 .forEach(dataset -> {
                     try {
                         redisInsertionStrategy.insert(connection, dataset);
