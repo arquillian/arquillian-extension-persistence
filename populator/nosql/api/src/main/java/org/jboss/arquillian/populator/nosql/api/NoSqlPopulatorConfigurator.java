@@ -27,7 +27,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
      * @param database name.
      * @return this instance.
      */
-    public NoSqlPopulatorConfigurator withDatabase(String database) {
+    public NoSqlPopulatorConfigurator withStorage(String database) {
         this.database = database;
         return this;
     }

@@ -26,7 +26,7 @@ public class CouchbaseTest {
     @Test
     public void should_find_books() {
         populator.forServer(hostIp, 0)
-                .withDatabase("travel-sample")
+                .withStorage("travel-sample")
                 .usingDataSet("airlines.json")
                 .execute();
 

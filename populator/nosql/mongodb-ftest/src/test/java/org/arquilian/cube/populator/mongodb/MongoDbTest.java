@@ -33,7 +33,7 @@ public class MongoDbTest {
    @Test
    public void should_populate_mongodb() {
       populator.forServer(hostIp, port)
-              .withDatabase("test")
+              .withStorage("test")
               .usingDataSet("books.json")
               .execute();
 
@@ -51,7 +51,7 @@ public class MongoDbTest {
    @After
    public void cleanDatabase() {
       populator.forServer(hostIp, port)
-              .withDatabase("test")
+              .withStorage("test")
               .clean();
    }
 
