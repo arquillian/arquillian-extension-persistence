@@ -56,6 +56,16 @@
       </dependency>
       <dependency>
         <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-populator-sql-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-populator-sql-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
         <artifactId>arquillian-populator-nosql-mongodb</artifactId>
         <version>${project.version}</version>
       </dependency>
