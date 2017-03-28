@@ -17,7 +17,7 @@
     </properties>
 
     <!-- Artifact Configuration -->
-    <artifactId>arquillian-populator-sql-core</artifactId>
+    <artifactId>arquillian-populator-sql-dbunit</artifactId>
     <packaging>jar</packaging>
 
     <name>Arquillian Populator SQL Core</name>

@@ -1,4 +1,4 @@
-package org.jboss.arquillian.populator.sql.core;
+package org.jboss.arquillian.populator.rdbms.core;
 
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class SqlPopulatorService implements org.jboss.arquillian.populator.nosql.api.SqlPopulatorService<Sql> {
+public class DbUnitPopulatorService implements org.jboss.arquillian.populator.rdbms.api.RdbmsPopulatorService<DbUnit> {
 
     private IDatabaseConnection databaseConnection;
 
@@ -57,8 +57,8 @@ public class SqlPopulatorService implements org.jboss.arquillian.populator.nosql
     private void executeDataSetOperation(List<String> resources, BiConsumer<IDatabaseConnection, IDataSet> predicate) {
         resources.stream()
                 .map(resource -> {
-                    String type = resource.substring(resource.lastIndexOf('.'));
-                    switch (type) {
+                    String strategy = resource.substring(resource.lastIndexOf('.'));
+                    switch (strategy) {
                         case "xml": {
                             return resolveXmlDataSet(resource);
                         }
@@ -92,7 +92,7 @@ public class SqlPopulatorService implements org.jboss.arquillian.populator.nosql
     }
 
     @Override
-    public Class<Sql> getPopulatorAnnotation() {
-        return Sql.class;
+    public Class<DbUnit> getPopulatorAnnotation() {
+        return DbUnit.class;
     }
 }

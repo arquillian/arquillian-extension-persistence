@@ -1,16 +1,13 @@
-package org.jboss.arquillian.populator.nosql.api;
+package org.jboss.arquillian.populator.rdbms.api;
 
 import org.jboss.arquillian.populator.core.Populator;
 
 import java.net.URI;
 import java.util.*;
 
-/**
- * Implementation of NoSql DSL configurator.
- */
-public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator {
+public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurator {
 
-    private SqlPopulatorService populatorService;
+    private RdbmsPopulatorService populatorService;
     private URI jdbc;
     private String username;
     private String password;
@@ -19,22 +16,22 @@ public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator
     private List<String> datasets = new ArrayList<>();
     private Map<String, Object> options = new HashMap<>();
 
-    SqlPopulatorConfigurator(URI jdbcUrl, SqlPopulatorService populatorService) {
+    RdbmsPopulatorConfigurator(URI jdbcUrl, RdbmsPopulatorService populatorService) {
         this.jdbc = jdbcUrl;
         this.populatorService = populatorService;
     }
 
-    public SqlPopulatorConfigurator withUsername(String username) {
+    public RdbmsPopulatorConfigurator withUsername(String username) {
         this.username = username;
         return this;
     }
 
-    public SqlPopulatorConfigurator withPassword(String password) {
+    public RdbmsPopulatorConfigurator withPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public SqlPopulatorConfigurator withDriver(Class<?> driver) {
+    public RdbmsPopulatorConfigurator withDriver(Class<?> driver) {
         this.driverName = driver;
         return this;
     }
@@ -44,7 +41,7 @@ public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator
      * @param dataset to use.
      * @return this instance.
      */
-    public SqlPopulatorConfigurator usingDataSet(String dataset) {
+    public RdbmsPopulatorConfigurator usingDataSet(String dataset) {
         this.datasets.add(dataset);
         return this;
     }
@@ -54,7 +51,7 @@ public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator
      * @param datasets to use.
      * @return this instance.
      */
-    public SqlPopulatorConfigurator usingDataSets(String... datasets) {
+    public RdbmsPopulatorConfigurator usingDataSets(String... datasets) {
         this.datasets.addAll(Arrays.asList(datasets));
         return this;
     }
@@ -66,7 +63,7 @@ public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator
      * @param elements pair key, value. Even elements are keys, odd ones values.
      * @return this instance.
      */
-    public SqlPopulatorConfigurator withOption(String key, String value, String... elements) {
+    public RdbmsPopulatorConfigurator withOption(String key, String value, String... elements) {
 
         if (elements.length % 2 != 0) {
             throw new IllegalArgumentException("Extra options should be passed in form of (key, value)");
@@ -86,7 +83,7 @@ public class SqlPopulatorConfigurator implements Populator.PopulatorConfigurator
      * @param options to set.
      * @return this instance.
      */
-    public SqlPopulatorConfigurator withOptions(Map<String, Object> options) {
+    public RdbmsPopulatorConfigurator withOptions(Map<String, Object> options) {
         this.options.putAll(options);
         return this;
     }

@@ -25,7 +25,7 @@
   
   <modules>
     <module>api</module>
-    <module>core</module>
+    <module>dbunit</module>
     <module>ftest</module>
   </modules>
 

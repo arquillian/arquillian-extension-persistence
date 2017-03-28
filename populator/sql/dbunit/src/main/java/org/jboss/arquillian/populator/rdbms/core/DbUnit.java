@@ -1,4 +1,4 @@
-package org.jboss.arquillian.populator.sql.core;
+package org.jboss.arquillian.populator.rdbms.core;
 
 import org.jboss.arquillian.populator.api.Populator;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Populator
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface Sql {
+public @interface DbUnit {
 }

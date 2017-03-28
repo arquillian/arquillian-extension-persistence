@@ -1,4 +1,4 @@
-package org.jboss.arquillian.populator.nosql.api;
+package org.jboss.arquillian.populator.rdbms.api;
 
 import org.jboss.arquillian.populator.spi.PopulatorService;
 
@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Extends the populator service for NoSql services. Each NoSql database should implement this interface, for example one for MongoDb, another one for Redis, ...
- * You can think about this interface as wrapper to real connection against service.
+ * Extends the populator service for Rdbms.
  * @param <T>
  */
-public interface SqlPopulatorService<T> extends PopulatorService<T> {
+public interface RdbmsPopulatorService<T> extends PopulatorService<T> {
     /**
      * Methods called to connect to the backend.
      * @param jdbc uri to coonnect

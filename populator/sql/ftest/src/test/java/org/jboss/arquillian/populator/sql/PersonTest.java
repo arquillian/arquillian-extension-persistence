@@ -1,13 +1,12 @@
 package org.jboss.arquillian.populator.sql;
 
-import org.assertj.db.api.Assertions;
 import org.assertj.db.type.Source;
 import org.assertj.db.type.Table;
 import org.h2.Driver;
 import org.h2.tools.RunScript;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.populator.nosql.api.SqlPopulator;
-import org.jboss.arquillian.populator.sql.core.Sql;
+import org.jboss.arquillian.populator.rdbms.api.RdbmsPopulator;
+import org.jboss.arquillian.populator.rdbms.core.DbUnit;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,9 +22,9 @@ import static org.assertj.db.api.Assertions.assertThat;
 public class PersonTest {
 
 
-    @Sql
+    @DbUnit
     @ArquillianResource
-    SqlPopulator sqlPopulator;
+    RdbmsPopulator rdbmsPopulator;
 
     @BeforeClass
     public static void createSchema() throws SQLException {
@@ -37,7 +36,7 @@ public class PersonTest {
 
     @Test
     public void should_find_all_persons() {
-        sqlPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
                         .withDriver(Driver.class)
                         .withUsername("sa")
                         .withPassword("")

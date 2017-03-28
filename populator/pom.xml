@@ -61,7 +61,7 @@
       </dependency>
       <dependency>
         <groupId>org.jboss.arquillian.extension</groupId>
-        <artifactId>arquillian-populator-sql-core</artifactId>
+        <artifactId>arquillian-populator-sql-dbunit</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
