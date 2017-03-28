@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.persistence.dbunit.api;
+package org.arquillian.ape.api;
 
 import org.dbunit.dataset.filter.IColumnFilter;
 

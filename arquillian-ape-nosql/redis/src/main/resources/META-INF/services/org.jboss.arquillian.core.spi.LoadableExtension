@@ -1,1 +1,1 @@
-org.jboss.arquillian.populator.nosql.redis.RedisPopulatorExtension
+org.arquillian.ape.nosql.redis.RedisPopulatorExtension

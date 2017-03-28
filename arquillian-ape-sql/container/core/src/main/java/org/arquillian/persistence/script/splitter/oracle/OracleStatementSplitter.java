@@ -17,7 +17,7 @@
  */
 package org.arquillian.persistence.script.splitter.oracle;
 
-import org.arquillian.persistence.spi.script.StatementSplitter;
+import org.arquillian.ape.spi.script.StatementSplitter;
 
 import java.io.LineNumberReader;
 import java.io.Reader;

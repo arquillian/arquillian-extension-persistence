@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit;
+package org.arquillian.ape;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
@@ -30,14 +30,14 @@ import org.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfigurationPropertyMapper;
-import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.arquillian.persistence.dbunit.data.provider.DataSetProvider;
-import org.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.arquillian.persistence.dbunit.dataset.DataSetRegister;
-import org.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
-import org.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
+import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.configuration.DBUnitConfigurationPropertyMapper;
+import org.arquillian.ape.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.data.provider.DataSetProvider;
+import org.arquillian.ape.data.provider.ExpectedDataSetProvider;
+import org.arquillian.ape.dataset.DataSetRegister;
+import org.arquillian.ape.exception.DBUnitConnectionException;
+import org.arquillian.ape.exception.DBUnitInitializationException;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 

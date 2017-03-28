@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.event;
+package org.arquillian.ape.event;
 
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.arquillian.persistence.core.event.DataEvent;
-import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.data.descriptor.DataSetResourceDescriptor;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.arquillian.ape</groupId>
-      <artifactId>arquillian-ape-sql-dbunit</artifactId>
+      <artifactId>arquillian-ape-sql-standalone-dbunit</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

@@ -1,1 +1,1 @@
-org.jboss.arquillian.integration.persistence.testextension.PersistenceExtensionTester
+org.arquillian.integration.ape.testextension.PersistenceExtensionTester

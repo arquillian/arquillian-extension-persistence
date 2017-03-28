@@ -17,12 +17,7 @@
  */
 package org.arquillian.persistence.core.lifecycle;
 
-import org.jboss.arquillian.core.api.Event;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.InstanceProducer;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.ServiceLoader;
+import org.arquillian.ape.spi.datasource.DataSourceProvider;
 import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.arquillian.persistence.core.datasource.JndiDataSourceProvider;
 import org.arquillian.persistence.core.event.AfterPersistenceTest;
@@ -34,7 +29,12 @@ import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
 import org.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
 import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.arquillian.persistence.spi.datasource.DataSourceProvider;
+import org.jboss.arquillian.core.api.Event;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;

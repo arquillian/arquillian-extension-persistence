@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit;
+package org.arquillian.ape;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
@@ -26,13 +26,13 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
 import org.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.arquillian.persistence.dbunit.dataset.TableWrapper;
-import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.arquillian.ape.dataset.TableWrapper;
+import org.arquillian.ape.exception.DBUnitDataSetHandlingException;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-import static org.arquillian.persistence.dbunit.DataSetUtils.*;
+import static org.arquillian.ape.DataSetUtils.*;
 
 public class DataSetComparator {
 

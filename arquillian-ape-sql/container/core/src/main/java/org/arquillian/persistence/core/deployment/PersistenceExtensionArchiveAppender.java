@@ -17,14 +17,14 @@
  */
 package org.arquillian.persistence.core.deployment;
 
-import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.arquillian.ape.spi.script.StatementSplitter;
 import org.arquillian.persistence.core.client.PersistenceExtension;
 import org.arquillian.persistence.core.container.RemotePersistenceExtension;
 import org.arquillian.persistence.script.splitter.DefaultStatementSplitter;
 import org.arquillian.persistence.script.splitter.oracle.OracleStatementSplitter;
-import org.arquillian.persistence.spi.script.StatementSplitter;
 import org.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;

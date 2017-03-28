@@ -17,8 +17,8 @@
  */
 package org.arquillian.persistence.script.splitter;
 
+import org.arquillian.ape.spi.script.StatementSplitter;
 import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.arquillian.persistence.spi.script.StatementSplitter;
 import org.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.util.Collection;

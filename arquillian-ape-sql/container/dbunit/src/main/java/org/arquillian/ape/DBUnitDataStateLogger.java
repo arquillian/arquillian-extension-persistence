@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit;
+package org.arquillian.ape;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
@@ -33,8 +33,8 @@ import org.arquillian.persistence.core.data.dump.DataStateLogger;
 import org.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.arquillian.persistence.core.event.CleanupData;
 import org.arquillian.persistence.core.event.PersistenceEvent;
-import org.arquillian.persistence.dbunit.event.PrepareDBUnitData;
-import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.arquillian.ape.event.PrepareDBUnitData;
+import org.arquillian.ape.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.io.IOException;

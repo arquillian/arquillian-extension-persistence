@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.configuration;
+package org.arquillian.ape.configuration;
 
 import org.arquillian.persistence.core.util.Strings;
-import org.arquillian.persistence.dbunit.configuration.annotations.Feature;
-import org.arquillian.persistence.dbunit.configuration.annotations.Property;
+import org.arquillian.ape.configuration.annotations.Feature;
+import org.arquillian.ape.configuration.annotations.Property;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

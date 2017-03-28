@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.filter;
+package org.arquillian.ape.filter;
 
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
-import org.arquillian.persistence.dbunit.DataSetUtils;
+import org.arquillian.ape.DataSetUtils;
 
 import java.sql.SQLException;
 

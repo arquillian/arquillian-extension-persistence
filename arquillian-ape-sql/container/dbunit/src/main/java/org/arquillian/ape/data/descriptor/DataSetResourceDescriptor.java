@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.data.descriptor;
+package org.arquillian.ape.data.descriptor;
 
 import org.dbunit.dataset.IDataSet;
 import org.arquillian.persistence.core.data.descriptor.Format;
 import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.arquillian.persistence.dbunit.dataset.DataSetBuilder;
+import org.arquillian.ape.dataset.DataSetBuilder;
 
 
 /**

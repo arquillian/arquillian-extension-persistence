@@ -1,4 +1,4 @@
-package org.arquillian.persistence.dbunit.configuration;
+package org.arquillian.ape.configuration;
 
 public class DBUnitConfigurationDefinitionException extends RuntimeException {
 

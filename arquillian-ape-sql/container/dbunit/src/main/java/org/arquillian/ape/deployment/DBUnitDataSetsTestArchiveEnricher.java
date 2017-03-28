@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.deployment;
+package org.arquillian.ape.deployment;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
@@ -25,12 +25,12 @@ import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.persistence.core.metadata.AnnotationInspector;
 import org.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.arquillian.persistence.dbunit.api.CustomColumnFilter;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.arquillian.persistence.dbunit.data.provider.DataSetProvider;
-import org.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
+import org.arquillian.ape.api.CustomColumnFilter;
+import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.data.provider.DataSetProvider;
+import org.arquillian.ape.data.provider.ExpectedDataSetProvider;
+import org.arquillian.ape.dataset.xml.DtdResolver;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

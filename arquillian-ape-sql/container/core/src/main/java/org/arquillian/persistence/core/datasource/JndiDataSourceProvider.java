@@ -17,11 +17,11 @@
  */
 package org.arquillian.persistence.core.datasource;
 
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
+import org.arquillian.ape.spi.datasource.DataSourceProvider;
 import org.arquillian.persistence.core.exception.ContextNotAvailableException;
 import org.arquillian.persistence.core.exception.DataSourceNotFoundException;
-import org.arquillian.persistence.spi.datasource.DataSourceProvider;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 
 import javax.naming.Context;
 import javax.naming.NamingException;

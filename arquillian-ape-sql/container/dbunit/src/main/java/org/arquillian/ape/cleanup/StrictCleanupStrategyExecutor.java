@@ -15,18 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.cleanup;
+package org.arquillian.ape.cleanup;
 
+import org.arquillian.ape.DataSetUtils;
+import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.exception.DBUnitDataSetHandlingException;
+import org.arquillian.ape.filter.TableFilterResolver;
+import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.operation.DatabaseOperation;
-import org.arquillian.persistence.dbunit.DataSetUtils;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
-import org.arquillian.persistence.dbunit.filter.TableFilterResolver;
-import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
 public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor {
 

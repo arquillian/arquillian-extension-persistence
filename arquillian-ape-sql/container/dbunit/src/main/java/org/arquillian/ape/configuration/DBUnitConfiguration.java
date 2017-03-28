@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.configuration;
+package org.arquillian.ape.configuration;
 
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DefaultMetadataHandler;
@@ -30,8 +30,8 @@ import org.arquillian.persistence.ShouldMatchDataSet;
 import org.arquillian.persistence.UsingDataSet;
 import org.arquillian.persistence.core.configuration.Configuration;
 import org.arquillian.persistence.core.data.descriptor.Format;
-import org.arquillian.persistence.dbunit.configuration.annotations.Feature;
-import org.arquillian.persistence.dbunit.configuration.annotations.Property;
+import org.arquillian.ape.configuration.annotations.Feature;
+import org.arquillian.ape.configuration.annotations.Property;
 import org.arquillian.persistence.util.Arrays;
 
 /**

@@ -1,1 +1,1 @@
-org.jboss.arquillian.populator.rest.postman.PostmanPopulatorExtension
+org.arquillian.ape.rest.postman.PostmanPopulatorExtension

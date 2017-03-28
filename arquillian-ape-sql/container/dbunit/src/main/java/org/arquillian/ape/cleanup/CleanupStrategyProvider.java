@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.cleanup;
+package org.arquillian.ape.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
 import org.arquillian.persistence.CleanupStrategy.StrategyProvider;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.dataset.DataSetRegister;
 
 public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategyExecutor> {
 

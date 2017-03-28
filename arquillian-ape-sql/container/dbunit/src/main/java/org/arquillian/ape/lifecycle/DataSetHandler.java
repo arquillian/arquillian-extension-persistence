@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.lifecycle;
+package org.arquillian.ape.lifecycle;
 
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
@@ -25,12 +25,12 @@ import org.arquillian.persistence.core.event.AfterPersistenceTest;
 import org.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.arquillian.persistence.dbunit.api.CustomColumnFilter;
-import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.dbunit.data.provider.DataSetProvider;
-import org.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.arquillian.persistence.dbunit.event.CompareDBUnitData;
-import org.arquillian.persistence.dbunit.event.PrepareDBUnitData;
+import org.arquillian.ape.api.CustomColumnFilter;
+import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.data.provider.DataSetProvider;
+import org.arquillian.ape.data.provider.ExpectedDataSetProvider;
+import org.arquillian.ape.event.CompareDBUnitData;
+import org.arquillian.ape.event.PrepareDBUnitData;
 
 import java.lang.reflect.Method;
 

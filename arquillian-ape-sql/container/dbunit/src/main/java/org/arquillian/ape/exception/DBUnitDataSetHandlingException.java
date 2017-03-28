@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.exception;
+package org.arquillian.ape.exception;
 
 public class DBUnitDataSetHandlingException extends RuntimeException {
 

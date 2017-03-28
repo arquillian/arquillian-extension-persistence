@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.configuration.annotations;
+package org.arquillian.ape.configuration.annotations;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;

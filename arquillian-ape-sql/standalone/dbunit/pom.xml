@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.arquillian.ape</groupId>
-      <artifactId>arquillian-ape-sql-core</artifactId>
+      <artifactId>arquillian-ape-sql-standalone-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

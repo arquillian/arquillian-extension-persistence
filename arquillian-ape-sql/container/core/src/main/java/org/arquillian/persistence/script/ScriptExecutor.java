@@ -17,9 +17,9 @@
  */
 package org.arquillian.persistence.script;
 
+import org.arquillian.ape.spi.script.StatementSplitter;
 import org.arquillian.persistence.core.exception.ScriptExecutionException;
 import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.arquillian.persistence.spi.script.StatementSplitter;
 
 import java.sql.Connection;
 import java.sql.SQLException;

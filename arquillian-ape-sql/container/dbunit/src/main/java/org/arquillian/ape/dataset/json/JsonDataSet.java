@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.persistence.dbunit.dataset.json;
+package org.arquillian.ape.dataset.json;
 
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
