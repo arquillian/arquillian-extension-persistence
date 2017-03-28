@@ -33,7 +33,7 @@ public class ScriptAppliedBeforeTestFileNamingStrategyTest {
         String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
-        assertThat(fileName).isEqualTo("before-org.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+        assertThat(fileName).isEqualTo("before-org.arquillian.ape.rdbms.testutils.DummyClass#shouldPass.sql");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ScriptAppliedBeforeTestFileNamingStrategyTest {
         String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
-        assertThat(fileName).isEqualTo("before-org.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+        assertThat(fileName).isEqualTo("before-org.arquillian.ape.rdbms.testutils.DummyClass#shouldPass.sql");
     }
 
 }

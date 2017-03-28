@@ -16,7 +16,7 @@
  */
 package org.arquillian.ape.testutils;
 
-import org.arquillian.ape.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;

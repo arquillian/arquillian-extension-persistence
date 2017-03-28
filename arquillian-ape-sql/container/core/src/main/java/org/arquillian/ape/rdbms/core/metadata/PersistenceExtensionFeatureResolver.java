@@ -25,7 +25,6 @@ import org.arquillian.ape.rdbms.DataSource;
 import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
-import org.arquillian.persistence.*;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotDefinedException;
 import org.arquillian.ape.rdbms.core.util.Strings;
 

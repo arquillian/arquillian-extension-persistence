@@ -26,7 +26,6 @@ import org.arquillian.ape.rdbms.core.lifecycle.SchemaCreationScriptsExecutor;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfigurationRemoteProducer;
 import org.arquillian.ape.rdbms.transaction.PersistenceExtensionConventionTransactionEnabler;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.arquillian.persistence.core.lifecycle.*;
 import org.arquillian.ape.rdbms.jpa.cache.JpaCacheEvictionHandler;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 

@@ -28,7 +28,6 @@ import org.arquillian.ape.rdbms.PersistenceTest;
 import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.UsingDataSet;
-import org.arquillian.persistence.*;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.annotation.Annotation;

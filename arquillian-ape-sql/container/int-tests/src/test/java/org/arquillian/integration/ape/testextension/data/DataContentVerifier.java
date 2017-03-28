@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.testextension.data;
 
-import org.arquillian.ape.dbunit.DataSetComparator;
-import org.arquillian.ape.dbunit.DataSetUtils;
-import org.arquillian.ape.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.ape.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.rdbms.dbunit.DataSetComparator;
+import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
+import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.integration.ape.testextension.data.annotation.DatabaseShouldBeEmptyAfterTest;
 import org.arquillian.integration.ape.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.arquillian.integration.ape.testextension.data.annotation.ShouldBeEmptyAfterTest;

@@ -28,7 +28,6 @@ import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.arquillian.persistence.core.configuration.*;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.jpa.cache.JpaCacheEvictionConfiguration;
 import org.arquillian.ape.rdbms.script.ScriptLoader;

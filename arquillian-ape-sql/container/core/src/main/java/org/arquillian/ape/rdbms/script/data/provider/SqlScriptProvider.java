@@ -24,7 +24,6 @@ import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.metadata.ValueExtractor;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.naming.PrefixedScriptFileNamingStrategy;
-import org.arquillian.persistence.*;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;

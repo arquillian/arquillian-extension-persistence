@@ -1,6 +1,6 @@
 package org.arquillian.integration.ape.test.contentverification;
 
-import org.arquillian.ape.dbunit.api.CustomColumnFilter;
+import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
 import org.arquillian.integration.ape.example.Address;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
