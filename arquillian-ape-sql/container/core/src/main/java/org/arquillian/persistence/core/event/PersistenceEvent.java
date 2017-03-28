@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.event;
+package org.arquillian.persistence.core.event;
 
 /**
  * Marker interface indicating that event is part of Persistence Extension lifecycle.

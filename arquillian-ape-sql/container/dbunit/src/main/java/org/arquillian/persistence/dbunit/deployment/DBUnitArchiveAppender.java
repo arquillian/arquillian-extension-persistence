@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.deployment;
+package org.arquillian.persistence.dbunit.deployment;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.dbunit.client.DBUnitExtension;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.container.RemoteDBUnitExtension;
-import org.jboss.arquillian.persistence.dbunit.filter.DefaultDatabaseSequenceFilterProvider;
-import org.jboss.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider;
-import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
-import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.persistence.dbunit.client.DBUnitExtension;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.container.RemoteDBUnitExtension;
+import org.arquillian.persistence.dbunit.filter.DefaultDatabaseSequenceFilterProvider;
+import org.arquillian.persistence.dbunit.filter.OracleDatabaseSequenceFilterProvider;
+import org.arquillian.persistence.dbunit.filter.TableFilterResolver;
+import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -54,7 +54,7 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
                 .addPackages(true,
                         // exclude client package
                         Filters.exclude(DBUnitExtension.class.getPackage()),
-                        "org.jboss.arquillian.persistence.dbunit")
+                        "org.arquillian.persistence.dbunit")
                 .addPackages(true,
                         // Avoid slf4j implementation in case different impl is chosen in @Deployment
                         Filters.exclude(".*/org/slf4j/impl/.*"),

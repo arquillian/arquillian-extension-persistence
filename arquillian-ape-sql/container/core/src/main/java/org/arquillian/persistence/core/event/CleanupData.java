@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.event;
+package org.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 public class CleanupData extends TestEvent implements PersistenceEvent {

@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.metadata;
+package org.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.*;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.exception.DataSourceNotDefinedException;
-import org.jboss.arquillian.persistence.core.util.Strings;
+import org.arquillian.persistence.*;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.core.exception.DataSourceNotDefinedException;
+import org.arquillian.persistence.core.util.Strings;
 
 import java.lang.reflect.Method;
 

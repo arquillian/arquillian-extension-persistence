@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.transaction;
+package org.arquillian.persistence.transaction;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;

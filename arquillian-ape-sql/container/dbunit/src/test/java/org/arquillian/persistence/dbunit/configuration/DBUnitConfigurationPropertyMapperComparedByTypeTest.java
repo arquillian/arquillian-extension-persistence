@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.dbunit.configuration;
+package org.arquillian.persistence.dbunit.configuration;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -8,7 +8,7 @@ import org.dbunit.database.statement.StatementFactory;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.ext.netezza.NetezzaMetadataHandler;
-import org.jboss.arquillian.persistence.core.configuration.ConfigurationImporter;
+import org.arquillian.persistence.core.configuration.ConfigurationImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -1,9 +1,9 @@
-package org.jboss.arquillian.persistence.dbunit.configuration;
+package org.arquillian.persistence.dbunit.configuration;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
-import org.jboss.arquillian.persistence.core.configuration.ConfigurationImporter;
+import org.arquillian.persistence.core.configuration.ConfigurationImporter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

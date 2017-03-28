@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.jpa.cache;
+package org.arquillian.persistence.jpa.cache;
 
 import net.jcip.annotations.NotThreadSafe;
 import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.JpaCacheEviction;
+import org.arquillian.persistence.JpaCacheEvictionStrategy;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Before;
 import org.junit.Test;

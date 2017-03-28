@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package org.jboss.arquillian.persistence.dbunit.deployment;
+package org.arquillian.persistence.dbunit.deployment;
 
 import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.ApplyScriptAfter;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.*;
 import org.jboss.shrinkwrap.api.asset.ArchiveAsset;

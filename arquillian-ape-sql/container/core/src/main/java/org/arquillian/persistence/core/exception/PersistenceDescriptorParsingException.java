@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.core.exception;
+package org.arquillian.persistence.core.exception;
 
 public class PersistenceDescriptorParsingException extends RuntimeException {
 

@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.provider;
+package org.arquillian.persistence.script.data.provider;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.IterableAssert;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

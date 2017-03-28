@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.filter;
+package org.arquillian.persistence.dbunit.filter;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.ITableFilter;
-import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
 import java.sql.SQLException;
 

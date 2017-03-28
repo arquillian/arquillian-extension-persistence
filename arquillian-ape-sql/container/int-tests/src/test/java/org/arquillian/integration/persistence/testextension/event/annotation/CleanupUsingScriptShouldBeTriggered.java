@@ -17,7 +17,7 @@
  */
 package org.jboss.arquillian.integration.persistence.testextension.event.annotation;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.TestExecutionPhase;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;

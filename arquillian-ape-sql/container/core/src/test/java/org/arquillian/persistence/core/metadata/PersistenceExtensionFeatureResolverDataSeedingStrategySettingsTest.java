@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.metadata;
+package org.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.DataSeedStrategy;
-import org.jboss.arquillian.persistence.SeedDataUsing;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
+import org.arquillian.persistence.DataSeedStrategy;
+import org.arquillian.persistence.SeedDataUsing;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

@@ -14,23 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.lifecycle;
+package org.arquillian.persistence.dbunit.lifecycle;
 
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
-import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
-import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.arquillian.persistence.dbunit.api.CustomColumnFilter;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.data.provider.DataSetProvider;
+import org.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
+import org.arquillian.persistence.dbunit.event.CompareDBUnitData;
+import org.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 
 import java.lang.reflect.Method;
 

@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.client;
+package org.arquillian.persistence.core.client;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionArchiveAppender;
-import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
-import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationClientSideProducer;
+import org.arquillian.persistence.core.deployment.PersistenceExtensionArchiveAppender;
+import org.arquillian.persistence.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
+import org.arquillian.persistence.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
+import org.arquillian.persistence.script.configuration.ScriptingConfigurationClientSideProducer;
 
 /**
  * Wires persistence extension services which are used to prepare

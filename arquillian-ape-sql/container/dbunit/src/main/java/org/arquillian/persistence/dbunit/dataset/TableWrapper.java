@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.dataset;
+package org.arquillian.persistence.dbunit.dataset;
 
 import org.dbunit.dataset.AbstractTable;
 import org.dbunit.dataset.DataSetException;

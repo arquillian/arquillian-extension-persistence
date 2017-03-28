@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testutils;
+package org.arquillian.persistence.testutils;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
-import org.jboss.arquillian.persistence.dbunit.dataset.Row;
+import org.arquillian.persistence.dbunit.dataset.Row;
 import org.yaml.snakeyaml.Yaml;
 
 import java.util.ArrayList;

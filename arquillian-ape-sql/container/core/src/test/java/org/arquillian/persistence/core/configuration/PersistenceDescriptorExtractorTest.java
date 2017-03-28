@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.core.configuration;
+package org.arquillian.persistence.core.configuration;
 
 import org.jboss.arquillian.container.test.api.Testable;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

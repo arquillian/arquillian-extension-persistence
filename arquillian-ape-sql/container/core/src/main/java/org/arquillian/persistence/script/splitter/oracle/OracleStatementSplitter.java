@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.splitter.oracle;
+package org.arquillian.persistence.script.splitter.oracle;
 
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+import org.arquillian.persistence.spi.script.StatementSplitter;
 
 import java.io.LineNumberReader;
 import java.io.Reader;

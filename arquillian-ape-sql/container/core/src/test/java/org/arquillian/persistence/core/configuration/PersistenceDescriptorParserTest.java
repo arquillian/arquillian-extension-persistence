@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.configuration;
+package org.arquillian.persistence.core.configuration;
 
-import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
-import org.jboss.arquillian.persistence.testutils.FileLoader;
+import org.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
+import org.arquillian.persistence.testutils.FileLoader;
 import org.junit.Test;
 
 import java.io.InputStream;

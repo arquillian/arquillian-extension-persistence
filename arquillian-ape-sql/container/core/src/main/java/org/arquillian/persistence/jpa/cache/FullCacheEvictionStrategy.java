@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.jpa.cache;
+package org.arquillian.persistence.jpa.cache;
 
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
+import org.arquillian.persistence.JpaCacheEviction;
+import org.arquillian.persistence.JpaCacheEvictionStrategy;
 
 import javax.persistence.Cache;
 import javax.persistence.EntityManager;
@@ -32,7 +32,7 @@ import javax.persistence.EntityManager;
 public class FullCacheEvictionStrategy implements JpaCacheEvictionStrategy {
 
     /**
-     * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
+     * @see org.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManagerFactory)
      */
     @Override
     public final void evictCache(EntityManager em) {

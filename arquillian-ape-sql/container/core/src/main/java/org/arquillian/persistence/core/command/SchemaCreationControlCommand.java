@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.command;
+package org.arquillian.persistence.core.command;
 
 import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-import org.jboss.arquillian.persistence.core.client.SchemaCreationCoordinator;
+import org.arquillian.persistence.core.client.SchemaCreationCoordinator;
 
 /**
  * Command used to communicate between local test executor and remote

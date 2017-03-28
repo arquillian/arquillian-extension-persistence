@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.naming;
+package org.arquillian.persistence.dbunit.data.naming;
 
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.descriptor.Format;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +33,7 @@ public class ExpectedDataSetFileNamingStrategyTest {
         String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
-        assertThat(fileName).isEqualTo("expected-org.jboss.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
+        assertThat(fileName).isEqualTo("expected-org.arquillian.persistence.dbunit.data.naming.DummyClass#shouldPass.xml");
     }
 
     @Test

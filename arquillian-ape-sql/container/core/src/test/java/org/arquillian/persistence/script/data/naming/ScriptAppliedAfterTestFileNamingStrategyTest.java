@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.naming;
+package org.arquillian.persistence.script.data.naming;
 
-import org.jboss.arquillian.persistence.testutils.DummyClass;
+import org.arquillian.persistence.testutils.DummyClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +33,7 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest {
         String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
-        assertThat(fileName).isEqualTo("after-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+        assertThat(fileName).isEqualTo("after-org.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest {
         String fileName = fileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
-        assertThat(fileName).isEqualTo("after-org.jboss.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
+        assertThat(fileName).isEqualTo("after-org.arquillian.persistence.testutils.DummyClass#shouldPass.sql");
     }
 
 }

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit;
+package org.arquillian.persistence.dbunit;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -23,9 +23,9 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.filter.IColumnFilter;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;

@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.container;
+package org.arquillian.persistence.dbunit.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
-import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
-import org.jboss.arquillian.persistence.dbunit.DBUnitDatabaseConnectionProvider;
-import org.jboss.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
-import org.jboss.arquillian.persistence.dbunit.lifecycle.DataSetHandler;
+import org.arquillian.persistence.dbunit.DBUnitDataHandler;
+import org.arquillian.persistence.dbunit.DBUnitDataStateLogger;
+import org.arquillian.persistence.dbunit.DBUnitDatabaseConnectionProvider;
+import org.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
+import org.arquillian.persistence.dbunit.lifecycle.DataSetHandler;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
 /**

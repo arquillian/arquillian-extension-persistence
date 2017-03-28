@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.deployment;
+package org.arquillian.persistence.core.deployment;
 
 import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.ApplyScriptAfter;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.*;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;

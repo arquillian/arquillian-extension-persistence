@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.deployment;
+package org.arquillian.persistence.core.deployment;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.configuration.*;
-import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
-import org.jboss.arquillian.persistence.script.ScriptLoader;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.core.configuration.*;
+import org.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
+import org.arquillian.persistence.script.ScriptLoader;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

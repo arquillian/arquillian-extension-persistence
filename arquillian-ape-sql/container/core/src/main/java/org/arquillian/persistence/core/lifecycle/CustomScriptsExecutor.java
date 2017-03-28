@@ -15,22 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.lifecycle;
+package org.arquillian.persistence.core.lifecycle;
 
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.ApplyScriptsAfterTest;
-import org.jboss.arquillian.persistence.core.event.ApplyScriptsBeforeTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.util.Strings;
-import org.jboss.arquillian.persistence.script.ScriptLoader;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.ApplyScriptsAfterTest;
+import org.arquillian.persistence.core.event.ApplyScriptsBeforeTest;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.util.Strings;
+import org.arquillian.persistence.script.ScriptLoader;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 import java.util.ArrayList;
 import java.util.Collections;

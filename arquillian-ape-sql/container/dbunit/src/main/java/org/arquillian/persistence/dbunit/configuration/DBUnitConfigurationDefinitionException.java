@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.dbunit.configuration;
+package org.arquillian.persistence.dbunit.configuration;
 
 public class DBUnitConfigurationDefinitionException extends RuntimeException {
 

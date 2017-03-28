@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.deployment;
+package org.arquillian.persistence.core.deployment;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.CreateSchema;
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
+import org.arquillian.persistence.ApplyScriptAfter;
+import org.arquillian.persistence.ApplyScriptBefore;
+import org.arquillian.persistence.CleanupUsingScript;
+import org.arquillian.persistence.CreateSchema;
+import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.provider.SqlScriptProvider;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,7 +36,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import java.util.*;
 
-import static org.jboss.arquillian.persistence.core.data.descriptor.Format.isFileType;
+import static org.arquillian.persistence.core.data.descriptor.Format.isFileType;
 
 /**
  * Appends all data sets defined for the test class to the test archive.

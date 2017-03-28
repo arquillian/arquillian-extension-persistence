@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.configuration;
+package org.arquillian.persistence.core.configuration;
 
-import org.jboss.arquillian.persistence.core.exception.ConfigurationExportException;
+import org.arquillian.persistence.core.exception.ConfigurationExportException;
 
 import java.io.IOException;
 import java.io.OutputStream;

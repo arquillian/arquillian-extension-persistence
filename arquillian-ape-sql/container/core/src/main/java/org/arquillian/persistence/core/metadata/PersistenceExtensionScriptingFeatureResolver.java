@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.metadata;
+package org.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.CleanupUsingScript;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
 
 import java.lang.reflect.Method;
 

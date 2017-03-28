@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.provider;
+package org.arquillian.persistence.dbunit.data.provider;
 
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
-import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatException;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.naming.DataSetFileNamingStrategy;
+import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.provider.ResourceProvider;
+import org.arquillian.persistence.core.exception.UnsupportedDataFormatException;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.persistence.dbunit.data.naming.DataSetFileNamingStrategy;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

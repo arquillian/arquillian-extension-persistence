@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.descriptor;
+package org.arquillian.persistence.script.data.descriptor;
 
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

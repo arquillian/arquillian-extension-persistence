@@ -17,14 +17,14 @@
 package org.jboss.arquillian.integration.persistence.testextension.data;
 
 import org.jboss.arquillian.integration.persistence.testextension.data.annotation.DatabaseShouldContainAfterTest;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
-import org.jboss.arquillian.persistence.core.exception.UnsupportedDataFormatException;
-import org.jboss.arquillian.persistence.core.metadata.AnnotationInspector;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.provider.ResourceProvider;
+import org.arquillian.persistence.core.exception.UnsupportedDataFormatException;
+import org.arquillian.persistence.core.metadata.AnnotationInspector;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.reflect.Method;

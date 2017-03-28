@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.deployment;
+package org.arquillian.persistence.core.deployment;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.persistence.core.client.PersistenceExtension;
-import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
-import org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter;
-import org.jboss.arquillian.persistence.script.splitter.oracle.OracleStatementSplitter;
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
-import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.arquillian.persistence.core.client.PersistenceExtension;
+import org.arquillian.persistence.core.container.RemotePersistenceExtension;
+import org.arquillian.persistence.script.splitter.DefaultStatementSplitter;
+import org.arquillian.persistence.script.splitter.oracle.OracleStatementSplitter;
+import org.arquillian.persistence.spi.script.StatementSplitter;
+import org.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
@@ -46,7 +46,7 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
                 .addPackages(true,
                         // exclude client package
                         Filters.exclude(PersistenceExtension.class.getPackage()),
-                        "org.jboss.arquillian.persistence")
+                        "org.arquillian.persistence")
                 .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
                 .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class, OracleStatementSplitter.class)
                 .addAsServiceProvider(TransactionEnabler.class, PersistenceExtensionConventionTransactionEnabler.class);

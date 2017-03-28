@@ -1,6 +1,6 @@
-package org.jboss.arquillian.persistence.core.event;
+package org.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 import java.util.Collection;

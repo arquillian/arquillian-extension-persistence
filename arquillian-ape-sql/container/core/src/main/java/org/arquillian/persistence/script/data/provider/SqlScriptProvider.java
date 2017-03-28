@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.provider;
+package org.arquillian.persistence.script.data.provider;
 
-import org.jboss.arquillian.persistence.*;
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
-import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
-import org.jboss.arquillian.persistence.script.ScriptLoader;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.naming.PrefixedScriptFileNamingStrategy;
+import org.arquillian.persistence.*;
+import org.arquillian.persistence.core.data.naming.FileNamingStrategy;
+import org.arquillian.persistence.core.data.provider.ResourceProvider;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.ValueExtractor;
+import org.arquillian.persistence.script.ScriptLoader;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.InlineSqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.annotation.Annotation;

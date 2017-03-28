@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.container;
+package org.arquillian.persistence.core.container;
 
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
+import org.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.core.event.InitializeConfiguration;
 
 /**
  * Triggers persistence configuration creation on the container side.

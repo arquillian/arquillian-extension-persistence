@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.data.dump;
+package org.arquillian.persistence.core.data.dump;
 
 import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.DataEvent;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.event.CleanupData;
+import org.arquillian.persistence.core.event.DataEvent;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

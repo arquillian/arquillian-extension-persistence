@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.provider;
+package org.arquillian.persistence.script.data.provider;
 
-import org.jboss.arquillian.persistence.ApplyScriptAfter;
-import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
+import org.arquillian.persistence.ApplyScriptAfter;
+import org.arquillian.persistence.core.exception.InvalidResourceLocation;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.descriptor.FileSqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

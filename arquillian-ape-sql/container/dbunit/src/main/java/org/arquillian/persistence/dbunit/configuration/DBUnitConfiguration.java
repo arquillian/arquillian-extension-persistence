@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.configuration;
+package org.arquillian.persistence.dbunit.configuration;
 
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DefaultMetadataHandler;
@@ -26,13 +26,13 @@ import org.dbunit.database.statement.PreparedStatementFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Feature;
-import org.jboss.arquillian.persistence.dbunit.configuration.annotations.Property;
-import org.jboss.arquillian.persistence.util.Arrays;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.dbunit.configuration.annotations.Feature;
+import org.arquillian.persistence.dbunit.configuration.annotations.Property;
+import org.arquillian.persistence.util.Arrays;
 
 /**
  * DBUnit configuration which can be customized in <code>arquillian.xml</code>
@@ -414,8 +414,8 @@ public class DBUnitConfiguration extends Configuration {
     /**
      * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
      * This property is related to {@link #customTableFilter} which is used to specify which implementation of
-     * {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
-     * Should be registered using simple name exposed by given implementation {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
+     * {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
+     * Should be registered using simple name exposed by given implementation {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
      *
      * @param filterTables
      */
@@ -428,7 +428,7 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * Specifies which implementation of {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
+     * Specifies which implementation of {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
      * should be used when {@link #filterTables} is enabled.
      *
      * @param customTableFilter

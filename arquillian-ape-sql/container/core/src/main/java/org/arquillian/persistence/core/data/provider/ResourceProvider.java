@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.data.provider;
+package org.arquillian.persistence.core.data.provider;
 
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.UsingDataSet;
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.MetadataProcessingException;
-import org.jboss.arquillian.persistence.core.util.Strings;
+import org.arquillian.persistence.ApplyScriptBefore;
+import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.persistence.core.exception.InvalidResourceLocation;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.MetadataProcessingException;
+import org.arquillian.persistence.core.util.Strings;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.annotation.Annotation;

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit;
+package org.arquillian.persistence.dbunit;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
@@ -26,34 +26,34 @@ import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.CleanupStrategy;
-import org.jboss.arquillian.persistence.DataSeedStrategy;
-import org.jboss.arquillian.persistence.core.data.DataHandler;
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
-import org.jboss.arquillian.persistence.core.event.ExecuteScripts;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyExecutor;
-import org.jboss.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrategyProvider;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
-import org.jboss.arquillian.persistence.dbunit.event.CompareDBUnitData;
-import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
-import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
-import org.jboss.arquillian.persistence.script.ScriptExecutor;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-import org.jboss.arquillian.persistence.script.splitter.StatementSplitterResolver;
-import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
+import org.arquillian.persistence.CleanupStrategy;
+import org.arquillian.persistence.DataSeedStrategy;
+import org.arquillian.persistence.core.data.DataHandler;
+import org.arquillian.persistence.core.event.CleanupData;
+import org.arquillian.persistence.core.event.CleanupDataUsingScript;
+import org.arquillian.persistence.core.event.ExecuteScripts;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.arquillian.persistence.dbunit.cleanup.CleanupStrategyExecutor;
+import org.arquillian.persistence.dbunit.cleanup.CleanupStrategyProvider;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.configuration.DBUnitDataSeedStrategyProvider;
+import org.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.arquillian.persistence.dbunit.event.CompareDBUnitData;
+import org.arquillian.persistence.dbunit.event.PrepareDBUnitData;
+import org.arquillian.persistence.dbunit.exception.DBUnitConnectionException;
+import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.arquillian.persistence.dbunit.filter.TableFilterResolver;
+import org.arquillian.persistence.script.ScriptExecutor;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.persistence.script.splitter.StatementSplitterResolver;
+import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.persistence.spi.script.StatementSplitter;
 
 import java.sql.SQLException;
 
-import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.mergeDataSets;
+import static org.arquillian.persistence.dbunit.DataSetUtils.mergeDataSets;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

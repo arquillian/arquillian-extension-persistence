@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.dataset.json;
+package org.arquillian.persistence.dbunit.dataset.json;
 
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
@@ -25,8 +25,8 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-import org.jboss.arquillian.persistence.dbunit.dataset.Row;
-import org.jboss.arquillian.persistence.dbunit.dataset.Table;
+import org.arquillian.persistence.dbunit.dataset.Row;
+import org.arquillian.persistence.dbunit.dataset.Table;
 
 import java.io.InputStream;
 import java.util.*;

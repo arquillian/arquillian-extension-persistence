@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.data.provider;
+package org.arquillian.persistence.script.data.provider;
 
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.core.data.naming.FileNamingStrategy;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.ValueExtractor;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
 
 import java.lang.annotation.Annotation;
 

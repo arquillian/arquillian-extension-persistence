@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.command;
+package org.arquillian.persistence.core.command;
 
 import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
+import org.arquillian.persistence.core.data.dump.DataDump;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

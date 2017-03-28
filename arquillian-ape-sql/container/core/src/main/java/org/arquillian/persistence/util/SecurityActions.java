@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.util;
+package org.arquillian.persistence.util;
 
 /*
  * JBoss, Home of Professional Open Source

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testutils;
+package org.arquillian.persistence.testutils;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;

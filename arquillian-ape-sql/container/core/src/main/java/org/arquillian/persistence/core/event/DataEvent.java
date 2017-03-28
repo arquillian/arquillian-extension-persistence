@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.event;
+package org.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 
 import java.util.ArrayList;
 import java.util.Collection;

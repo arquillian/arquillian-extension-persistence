@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.client;
+package org.arquillian.persistence.core.client;
 
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.command.DumpDataCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
-import org.jboss.arquillian.persistence.core.exception.DatabaseDumpException;
+import org.arquillian.persistence.core.command.DumpDataCommand;
+import org.arquillian.persistence.core.data.dump.DataDump;
+import org.arquillian.persistence.core.exception.DatabaseDumpException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.naming;
+package org.arquillian.persistence.dbunit.data.naming;
 
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.naming.FileNamingStrategy;
 
 import java.lang.reflect.Method;
 

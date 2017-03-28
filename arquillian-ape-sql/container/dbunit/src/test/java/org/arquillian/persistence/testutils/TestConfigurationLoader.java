@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testutils;
+package org.arquillian.persistence.testutils;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 import java.io.IOException;

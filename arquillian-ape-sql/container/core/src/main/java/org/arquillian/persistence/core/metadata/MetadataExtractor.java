@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.metadata;
+package org.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.*;
+import org.arquillian.persistence.*;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.annotation.Annotation;

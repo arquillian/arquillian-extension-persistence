@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.dataset.yaml;
+package org.arquillian.persistence.dbunit.dataset.yaml;
 
-import org.jboss.arquillian.persistence.testutils.DataSetAssert;
-import org.jboss.arquillian.persistence.testutils.FileLoader;
-import org.jboss.arquillian.persistence.testutils.TableAssert;
+import org.arquillian.persistence.testutils.DataSetAssert;
+import org.arquillian.persistence.testutils.FileLoader;
+import org.arquillian.persistence.testutils.TableAssert;
 import org.junit.After;
 import org.junit.Test;
 

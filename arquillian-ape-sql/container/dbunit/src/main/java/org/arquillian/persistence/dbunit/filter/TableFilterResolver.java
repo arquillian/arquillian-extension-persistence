@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.filter;
+package org.arquillian.persistence.dbunit.filter;
 
-import org.jboss.arquillian.persistence.core.util.Strings;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
-import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
+import org.arquillian.persistence.core.util.Strings;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.util.Collection;
 import java.util.logging.Logger;

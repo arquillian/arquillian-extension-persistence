@@ -14,23 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.deployment;
+package org.arquillian.persistence.dbunit.deployment;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.data.descriptor.DtdFileResourceDescriptor;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-import org.jboss.arquillian.persistence.core.metadata.AnnotationInspector;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.dbunit.api.CustomColumnFilter;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.jboss.arquillian.persistence.dbunit.data.provider.DataSetProvider;
-import org.jboss.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
-import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
+import org.arquillian.persistence.core.data.descriptor.DtdFileResourceDescriptor;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.persistence.core.metadata.AnnotationInspector;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.arquillian.persistence.dbunit.api.CustomColumnFilter;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.persistence.dbunit.data.provider.DataSetProvider;
+import org.arquillian.persistence.dbunit.data.provider.ExpectedDataSetProvider;
+import org.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -41,7 +41,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import java.util.*;
 
-import static org.jboss.arquillian.persistence.core.data.descriptor.Format.isFileType;
+import static org.arquillian.persistence.core.data.descriptor.Format.isFileType;
 
 /**
  * Appends all data sets defined for the test class to the test archive.

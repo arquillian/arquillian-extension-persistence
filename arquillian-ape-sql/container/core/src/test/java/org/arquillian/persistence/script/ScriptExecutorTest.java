@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script;
+package org.arquillian.persistence.script;
 
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter;
-import org.jboss.arquillian.persistence.testutils.FileLoader;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.splitter.DefaultStatementSplitter;
+import org.arquillian.persistence.testutils.FileLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

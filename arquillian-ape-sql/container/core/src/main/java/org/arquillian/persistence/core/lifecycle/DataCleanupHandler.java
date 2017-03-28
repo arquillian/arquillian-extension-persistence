@@ -15,21 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.lifecycle;
+package org.arquillian.persistence.core.lifecycle;
 
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.CleanupDataUsingScript;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.script.data.provider.SqlScriptProvider;
+import org.arquillian.persistence.CleanupUsingScript;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.event.CleanupData;
+import org.arquillian.persistence.core.event.CleanupDataUsingScript;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.script.data.provider.SqlScriptProvider;
 
 public class DataCleanupHandler {
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.lifecycle;
+package org.arquillian.persistence.core.lifecycle;
 
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
@@ -23,18 +23,18 @@ import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
-import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.jboss.arquillian.persistence.core.datasource.JndiDataSourceProvider;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceClass;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
-import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.spi.datasource.DataSourceProvider;
+import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.arquillian.persistence.core.datasource.JndiDataSourceProvider;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.BeforePersistenceClass;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.event.InitializeConfiguration;
+import org.arquillian.persistence.core.metadata.MetadataExtractor;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionFeatureResolver;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionScriptingFeatureResolver;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.spi.datasource.DataSourceProvider;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;

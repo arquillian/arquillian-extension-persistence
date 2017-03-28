@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.data;
+package org.arquillian.persistence.core.data;
 
-import org.jboss.arquillian.persistence.core.event.CleanupData;
-import org.jboss.arquillian.persistence.core.event.DataEvent;
+import org.arquillian.persistence.core.event.CleanupData;
+import org.arquillian.persistence.core.event.DataEvent;
 
 public interface DataHandler<P extends DataEvent, C extends DataEvent> {
 

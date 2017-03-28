@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.configuration;
+package org.arquillian.persistence.core.configuration;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
 import org.assertj.core.util.Arrays;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -209,7 +209,7 @@ public class ConfigurationTypeConverterTest {
         ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
 
         // when
-        Format convertedFormat = typeConverter.convert("org.jboss.arquillian.persistence.core.data.descriptor.Format.JSON", Format.class);
+        Format convertedFormat = typeConverter.convert("org.arquillian.persistence.core.data.descriptor.Format.JSON", Format.class);
 
         // then
         assertThat(convertedFormat).isEqualTo(expectedFormat);

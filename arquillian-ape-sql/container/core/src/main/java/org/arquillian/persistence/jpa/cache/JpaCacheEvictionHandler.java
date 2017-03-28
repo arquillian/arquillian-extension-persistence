@@ -15,20 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.jpa.cache;
+package org.arquillian.persistence.jpa.cache;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.JpaCacheEviction.DefaultJpaCacheEvictionStrategy;
-import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.core.container.RemotePersistenceExtension;
-import org.jboss.arquillian.persistence.core.event.AfterPersistenceTest;
-import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
-import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
+import org.arquillian.persistence.JpaCacheEviction;
+import org.arquillian.persistence.JpaCacheEviction.DefaultJpaCacheEvictionStrategy;
+import org.arquillian.persistence.JpaCacheEvictionStrategy;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.core.container.RemotePersistenceExtension;
+import org.arquillian.persistence.core.event.AfterPersistenceTest;
+import org.arquillian.persistence.core.event.BeforePersistenceTest;
+import org.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 import javax.naming.Context;

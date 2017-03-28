@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script;
+package org.arquillian.persistence.script;
 
-import org.jboss.arquillian.persistence.core.exception.ScriptLoadingException;
+import org.arquillian.persistence.core.exception.ScriptLoadingException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

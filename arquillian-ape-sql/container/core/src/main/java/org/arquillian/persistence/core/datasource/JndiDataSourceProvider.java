@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.datasource;
+package org.arquillian.persistence.core.datasource;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableException;
-import org.jboss.arquillian.persistence.core.exception.DataSourceNotFoundException;
-import org.jboss.arquillian.persistence.spi.datasource.DataSourceProvider;
+import org.arquillian.persistence.core.exception.ContextNotAvailableException;
+import org.arquillian.persistence.core.exception.DataSourceNotFoundException;
+import org.arquillian.persistence.spi.datasource.DataSourceProvider;
 
 import javax.naming.Context;
 import javax.naming.NamingException;

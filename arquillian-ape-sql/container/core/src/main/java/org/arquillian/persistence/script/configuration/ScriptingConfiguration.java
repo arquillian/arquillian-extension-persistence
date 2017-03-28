@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.configuration;
+package org.arquillian.persistence.script.configuration;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.core.configuration.Configuration;
 
 import java.nio.charset.Charset;
 
-import static org.jboss.arquillian.persistence.util.Arrays.copy;
+import static org.arquillian.persistence.util.Arrays.copy;
 
 /**
  * Scripting configuration which can be customized in <code>arquillian.xml</code>
@@ -133,8 +133,8 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * Defines which SQL-specific implementation of {@link org.jboss.arquillian.persistence.spi.script.StatementSplitter} (parser)
-     * should be used when splitting sql script into separated statements. Default value is "default" and {@link org.jboss.arquillian.persistence.script.splitter.DefaultStatementSplitter} is used.
+     * Defines which SQL-specific implementation of {@link org.arquillian.persistence.spi.script.StatementSplitter} (parser)
+     * should be used when splitting sql script into separated statements. Default value is "default" and {@link org.arquillian.persistence.script.splitter.DefaultStatementSplitter} is used.
      *
      * @param sqlDialect
      */

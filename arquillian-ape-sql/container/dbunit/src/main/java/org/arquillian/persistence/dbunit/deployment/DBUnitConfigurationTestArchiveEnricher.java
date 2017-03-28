@@ -14,17 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.deployment;
+package org.arquillian.persistence.dbunit.deployment;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
-import org.jboss.arquillian.persistence.core.deployment.ResourceAppender;
-import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.core.configuration.PropertiesSerializer;
+import org.arquillian.persistence.core.deployment.ResourceAppender;
+import org.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

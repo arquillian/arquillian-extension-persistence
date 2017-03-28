@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.metadata;
+package org.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.ApplyScriptBefore;
-import org.jboss.arquillian.persistence.PersistenceTest;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.UsingDataSet;
+import org.arquillian.persistence.ApplyScriptBefore;
+import org.arquillian.persistence.PersistenceTest;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

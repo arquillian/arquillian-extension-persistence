@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.jboss.arquillian.persistence.dbunit.api;
+package org.arquillian.persistence.dbunit.api;
 
 import org.dbunit.dataset.filter.IColumnFilter;
 
@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Provides ability to define custom column filters
  * ({@link org.dbunit.dataset.filter.IColumnFilter}) used when comparing datasets specified by
- * {@link org.jboss.arquillian.persistence.ShouldMatchDataSet} annotation.
+ * {@link org.arquillian.persistence.ShouldMatchDataSet} annotation.
  * <br><br>
  * The use of IColumnFilter implementations is described <a href="http://www.dbunit.org/faq.html#columnfilter">here</a>.
  * <br><br>

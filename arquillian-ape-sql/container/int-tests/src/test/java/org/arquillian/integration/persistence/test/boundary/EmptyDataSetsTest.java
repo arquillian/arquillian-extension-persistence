@@ -24,10 +24,10 @@ import org.jboss.arquillian.integration.persistence.testextension.exception.Shou
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.integration.persistence.util.UserPersistenceAssertion;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.Cleanup;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.UsingDataSet;
+import org.arquillian.persistence.Cleanup;
+import org.arquillian.persistence.ShouldMatchDataSet;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

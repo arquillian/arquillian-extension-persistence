@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.configuration;
+package org.arquillian.persistence.dbunit.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.configuration.ConfigurationProducer;
+import org.arquillian.persistence.core.configuration.ConfigurationProducer;
 
 /**
  * Triggers DBUnit configuration creation on the client side.

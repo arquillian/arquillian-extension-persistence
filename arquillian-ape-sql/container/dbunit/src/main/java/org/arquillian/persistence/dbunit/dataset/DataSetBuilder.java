@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.dataset;
+package org.arquillian.persistence.dbunit.dataset;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultDataSet;
@@ -23,11 +23,11 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
-import org.jboss.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
-import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.dbunit.dataset.json.JsonDataSet;
+import org.arquillian.persistence.dbunit.dataset.xml.DtdResolver;
+import org.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
+import org.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;

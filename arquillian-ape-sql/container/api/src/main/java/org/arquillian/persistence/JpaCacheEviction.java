@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.arquillian.persistence;
 
 import javax.persistence.Cache;
 import javax.persistence.EntityManager;
@@ -94,7 +94,7 @@ public @interface JpaCacheEviction {
      */
     class DefaultJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy {
         /**
-         * @see org.jboss.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManager)
+         * @see org.arquillian.persistence.JpaCacheEvictionStrategy#evictCache(javax.persistence.EntityManager)
          */
         @Override
         public void evictCache(EntityManager em) {

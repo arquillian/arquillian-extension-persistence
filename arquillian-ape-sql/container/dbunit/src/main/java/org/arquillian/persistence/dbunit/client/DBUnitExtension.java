@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.client;
+package org.arquillian.persistence.dbunit.client;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationClientSideProducer;
-import org.jboss.arquillian.persistence.dbunit.deployment.DBUnitArchiveAppender;
-import org.jboss.arquillian.persistence.dbunit.deployment.DBUnitConfigurationTestArchiveEnricher;
-import org.jboss.arquillian.persistence.dbunit.deployment.DBUnitDataSetsTestArchiveEnricher;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfigurationClientSideProducer;
+import org.arquillian.persistence.dbunit.deployment.DBUnitArchiveAppender;
+import org.arquillian.persistence.dbunit.deployment.DBUnitConfigurationTestArchiveEnricher;
+import org.arquillian.persistence.dbunit.deployment.DBUnitDataSetsTestArchiveEnricher;
 
 /**
  * Wires persistence extension services which are used to prepare

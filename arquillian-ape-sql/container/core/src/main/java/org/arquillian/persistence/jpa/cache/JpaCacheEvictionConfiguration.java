@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.jpa.cache;
+package org.arquillian.persistence.jpa.cache;
 
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.arquillian.persistence.JpaCacheEviction;
+import org.arquillian.persistence.JpaCacheEvictionStrategy;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.core.configuration.Configuration;
 
 /**
  * JPA cache eviction configuration which can be customized in

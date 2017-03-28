@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit;
+package org.arquillian.persistence.dbunit;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
@@ -25,14 +25,14 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
-import org.jboss.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.jboss.arquillian.persistence.dbunit.dataset.TableWrapper;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.arquillian.persistence.core.test.AssertionErrorCollector;
+import org.arquillian.persistence.dbunit.dataset.TableWrapper;
+import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-import static org.jboss.arquillian.persistence.dbunit.DataSetUtils.*;
+import static org.arquillian.persistence.dbunit.DataSetUtils.*;
 
 public class DataSetComparator {
 

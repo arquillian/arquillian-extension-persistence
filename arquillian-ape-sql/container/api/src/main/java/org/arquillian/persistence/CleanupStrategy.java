@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence;
+package org.arquillian.persistence;
 
 /**
  * Defines strategy to be applied for {@link @Cleanup} operation.

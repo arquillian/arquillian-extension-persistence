@@ -15,19 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.cleanup;
+package org.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.operation.DatabaseOperation;
-import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
-import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
-import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
-import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
-import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
-import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.persistence.dbunit.DataSetUtils;
+import org.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.persistence.dbunit.dataset.DataSetRegister;
+import org.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
+import org.arquillian.persistence.dbunit.filter.TableFilterResolver;
+import org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
 import java.util.logging.Logger;
 

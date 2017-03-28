@@ -17,8 +17,8 @@
  */
 package org.jboss.arquillian.integration.persistence.testextension.event;
 
-import org.jboss.arquillian.persistence.TestExecutionPhase;
-import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
+import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.persistence.core.event.PersistenceEvent;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

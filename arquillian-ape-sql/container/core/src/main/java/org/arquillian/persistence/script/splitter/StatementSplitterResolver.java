@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.script.splitter;
+package org.arquillian.persistence.script.splitter;
 
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
-import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
+import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.persistence.spi.script.StatementSplitter;
+import org.arquillian.persistence.util.JavaSPIExtensionLoader;
 
 import java.util.Collection;
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.data.naming;
+package org.arquillian.persistence.core.data.naming;
 
 import java.lang.reflect.Method;
 

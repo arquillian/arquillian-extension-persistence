@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.core.container;
+package org.arquillian.persistence.core.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.persistence.core.lifecycle.*;
-import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionHandler;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationRemoteProducer;
-import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.arquillian.persistence.core.lifecycle.*;
+import org.arquillian.persistence.jpa.cache.JpaCacheEvictionHandler;
+import org.arquillian.persistence.script.configuration.ScriptingConfigurationRemoteProducer;
+import org.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 /**

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.dbunit.data.naming;
+package org.arquillian.persistence.dbunit.data.naming;
 
 class DummyClass {
 

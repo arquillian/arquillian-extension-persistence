@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.persistence.testutils;
+package org.arquillian.persistence.testutils;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.IterableAssert;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

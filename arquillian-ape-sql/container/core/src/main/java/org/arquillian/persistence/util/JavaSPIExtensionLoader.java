@@ -1,4 +1,4 @@
-package org.jboss.arquillian.persistence.util;
+package org.arquillian.persistence.util;
 
 import org.jboss.arquillian.core.spi.ExtensionLoader;
 import org.jboss.arquillian.core.spi.LoadableExtension;
