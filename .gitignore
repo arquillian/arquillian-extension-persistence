@@ -15,6 +15,7 @@
 
 # Maven
 target/
+pom.xml.versionsBackup
 dependency-reduced-pom.xml
 
 # TestNG
