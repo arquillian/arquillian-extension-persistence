@@ -2,29 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-populator-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-sql-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <dbunit.version>2.5.3</dbunit.version>
-  </properties>
-
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-populator-sql-parent</artifactId>
+  <artifactId>arquillian-ape-sql-standalone-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Arquillian Populator SQL Parent</name>
+  <name>Arquillian Ape SQL Standalone Parent</name>
   
   <modules>
-    <module>api</module>
+    <module>core</module>
     <module>dbunit</module>
     <module>ftest</module>
   </modules>
@@ -34,7 +26,7 @@
       <dependency>
         <groupId>org.dbunit</groupId>
         <artifactId>dbunit</artifactId>
-        <version>${dbunit.version}</version>
+        <version>${version.dbunit}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

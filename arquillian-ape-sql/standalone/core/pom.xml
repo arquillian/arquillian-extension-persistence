@@ -7,13 +7,13 @@
     <artifactId>arquillian-ape-sql-standalone-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
   </parent>
-
+  
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>arquillian-ape-sql-standalone-dbunit</artifactId>
+  <artifactId>arquillian-ape-sql-standalone-core</artifactId>
   <packaging>jar</packaging>
 
-  <name>Arquillian Ape SQL Standalone DBUnit</name>
+  <name>Arquillian Ape SQL Standalone Core</name>
 
   <dependencies>
     <dependency>
@@ -21,21 +21,7 @@
       <artifactId>arquillian-ape-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.arquillian.ape</groupId>
-      <artifactId>arquillian-ape-sql-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.dbunit</groupId>
-      <artifactId>dbunit</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>
+

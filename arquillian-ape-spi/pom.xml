@@ -2,21 +2,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-populator-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-populator-spi</artifactId>
+  <artifactId>arquillian-ape-spi</artifactId>
   <packaging>jar</packaging>
 
-  <name>Arquillian Populator SPI</name>
+  <name>Arquillian Ape SPI</name>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.dbunit</groupId>
+      <artifactId>dbunit</artifactId>
+      <version>${version.dbunit}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+  </dependencies>
 
 </project>

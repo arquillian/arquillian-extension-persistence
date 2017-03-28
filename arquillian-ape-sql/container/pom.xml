@@ -4,25 +4,22 @@
 
   <parent>
     <groupId>org.arquillian.ape</groupId>
-    <artifactId>arquillian-ape-rest-parent</artifactId>
+    <artifactId>arquillian-ape-sql-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>arquillian-ape-rest-core</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>arquillian-ape-sql-container-parent</artifactId>
+  <packaging>pom</packaging>
 
-  <name>Arquillian Ape Rest Core</name>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.arquillian.ape</groupId>
-      <artifactId>arquillian-ape-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+  <name>Arquillian Ape SQL Container Parent</name>
+  
+  <modules>
+    <module>api</module>
+    <module>core</module>
+    <module>dbunit</module>
+    <module>int-tests</module>
+  </modules>
 
 </project>
-
-

@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- vi:ts=2:sw=2:expandtab: -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-persistence-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-sql-container-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-persistence-api</artifactId>
-  <name>Arquillian Persistence Extension API</name>
-  <description>Extension API for persistence tests</description>
+  <artifactId>arquillian-ape-sql-container-api</artifactId>
+  <name>Arquillian Ape SQL Container API</name>
 
   <dependencies>
     <dependency>

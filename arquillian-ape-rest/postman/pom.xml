@@ -2,30 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-populator-rest-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-rest-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
-
-  <!-- Model Version -->
+  
   <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-  </properties>
-
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-populator-rest-postman</artifactId>
+  <artifactId>arquillian-ape-rest-postman</artifactId>
   <packaging>jar</packaging>
 
-  <name>Arquillian Populator Rest Postman</name>
+  <name>Arquillian Ape Rest Postman</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-populator-rest-api</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-rest-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

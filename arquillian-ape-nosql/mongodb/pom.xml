@@ -2,25 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-populator-nosql-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-nosql-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-  </properties>
-
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-populator-nosql-mongodb</artifactId>
+  <artifactId>arquillian-ape-nosql-mongodb</artifactId>
   <packaging>jar</packaging>
 
-  <name>Arquillian Populator NoSQL MongoDB</name>
+  <name>Arquillian Ape NoSQL MongoDB</name>
 
   <dependencies>
     <dependency>
@@ -32,14 +25,11 @@
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver</artifactId>
       <scope>provided</scope>
-    </dependency>
+    </dependency>    
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-populator-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-populator-nosql-api</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-nosql-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

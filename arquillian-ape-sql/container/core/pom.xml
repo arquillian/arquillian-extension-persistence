@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-persistence-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-sql-container-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-persistence-core</artifactId>
-  <name>Arquillian Persistence Extension Core</name>
+  <artifactId>arquillian-ape-sql-container-core</artifactId>
+  <name>Arquillian Ape SQL Container Core</name>
   <description>Extension for controlling data sources</description>
 
   <properties>
@@ -26,14 +23,14 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-api</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-container-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-spi</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-spi</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -61,7 +58,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Arquillian dependencies -->
     <dependency>
       <groupId>org.jboss.arquillian.core</groupId>
       <artifactId>arquillian-core-impl-base</artifactId>
@@ -114,7 +110,6 @@
       <artifactId>shrinkwrap-descriptors-api-base</artifactId>
     </dependency>
 
-    <!-- Test dependencies -->
     <dependency>
       <groupId>org.jboss.arquillian.test</groupId>
       <artifactId>arquillian-test-impl-base</artifactId>

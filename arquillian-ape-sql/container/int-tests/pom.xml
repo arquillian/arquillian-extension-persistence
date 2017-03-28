@@ -2,20 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
     <groupId>org.jboss.arquillian.extension</groupId>
     <artifactId>arquillian-persistence-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-persistence-integration-tests</artifactId>
-  <name>Arquillian Persistence Extension Integration Tests</name>
-  <description>Demonstrates usage of Arquillian Persistence extension.</description>
+  <artifactId>arquillian-ape-sql-standalone-integration-tests</artifactId>
+  <name>Arquillian Ape SQL Container Integration Tests</name>
+  <description>Demonstrates usage of Arquillian Ape SQL Container extension.</description>
 
   <properties>
     <version.cdi>1.0-SP1</version.cdi>
@@ -32,15 +29,15 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-api</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-container-api</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-core</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-container-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
       <exclusions>
@@ -56,8 +53,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-persistence-dbunit</artifactId>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-container-dbunit</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

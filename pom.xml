@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
@@ -10,30 +9,27 @@
     <relativePath/>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <groupId>org.jboss.arquillian.extension</groupId>
-  <artifactId>arquillian-persistence-parent</artifactId>
+  <groupId>org.arquillian.ape</groupId>
+  <artifactId>arquillian-ape-parent</artifactId>
   <version>1.0.0.Final-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Arquillian Persistence Extension Aggregator</name>
+  <name>Arquillian Ape</name>
   <url>http://www.jboss.org</url>
-  <description>Arquillian Persistence Extension Aggregator</description>
+  <description>Arquillian Ape</description>
 
   <prerequisites>
     <maven>3.2.1</maven>
   </prerequisites>
 
   <modules>
-    <module>api</module>
-    <module>core</module>
-    <module>dbunit</module>
-    <module>spi</module>
-    <module>int-tests</module>
-    <module>populator</module>
+    <module>arquillian-ape-core</module>
+    <module>arquillian-ape-sql</module>
+    <module>arquillian-ape-nosql</module>
+    <module>arquillian-ape-rest</module>
+    <module>arquillian-ape-spi</module>
   </modules>
 
   <developers>

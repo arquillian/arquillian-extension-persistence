@@ -2,15 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
-    <groupId>org.jboss.arquillian.extension</groupId>
-    <artifactId>arquillian-populator-parent</artifactId>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-parent</artifactId>
     <version>1.0.0.Final-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
@@ -18,13 +15,13 @@
     <version.jedis>2.9.0</version.jedis>
     <version.couchbase>2.4.2</version.couchbase>
     <version.awaitility>2.0.0</version.awaitility>
+    <version.nosqlunit>1.0.0-rc.2</version.nosqlunit>
   </properties>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-populator-nosql-parent</artifactId>
+  <artifactId>arquillian-ape-nosql-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Arquillian Populator NoSQL Parent</name>
+  <name>Arquillian Ape NoSQL Parent</name>
 
   <dependencyManagement>
     <dependencies>
@@ -67,13 +64,13 @@
   </dependencyManagement>
 
   <modules>
-    <module>api</module>
+    <module>core</module>
+    <module>couchbase</module>
+    <module>couchbase-ftest</module>    
     <module>mongodb</module>
     <module>mongodb-ftest</module>
     <module>redis</module>
     <module>redis-ftest</module>
-    <module>couchbase</module>
-    <module>couchbase-ftest</module>
   </modules>
 
 </project>

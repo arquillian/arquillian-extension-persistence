@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 class PostmanPopulatorService implements RestPopulatorService<Postman> {
+
     @Override
     public Class<Postman> getPopulatorAnnotation() {
         return Postman.class;
