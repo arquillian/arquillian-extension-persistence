@@ -11,12 +11,12 @@
     <property name="dockerContainersFile">docker-compose.yaml</property>
     <property name="cubeSpecificProperties">
       couchbase:
-      await:
-      strategy: log
-      match: 'fg 1'
-      stdOut: true
-      stdErr: true
-      timeout: 60
+        await:
+          strategy: log
+          match: 'fg 1'
+          stdOut: true
+          stdErr: true
+          timeout: 60
     </property>
   </extension>
 
