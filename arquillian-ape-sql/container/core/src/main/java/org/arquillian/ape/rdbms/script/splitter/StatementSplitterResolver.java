@@ -18,8 +18,8 @@
 package org.arquillian.ape.rdbms.script.splitter;
 
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-import org.arquillian.ape.spi.script.StatementSplitter;
 import org.arquillian.ape.rdbms.util.JavaSPIExtensionLoader;
+import org.arquillian.ape.spi.script.StatementSplitter;
 
 import java.util.Collection;
 

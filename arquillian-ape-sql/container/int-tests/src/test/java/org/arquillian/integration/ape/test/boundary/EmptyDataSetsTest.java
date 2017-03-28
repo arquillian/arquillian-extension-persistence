@@ -17,17 +17,17 @@
  */
 package org.arquillian.integration.ape.test.boundary;
 
-import org.dbunit.assertion.DbComparisonFailure;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.testextension.exception.ShouldFailWith;
-import org.arquillian.integration.ape.util.Query;
-import org.arquillian.integration.ape.util.UserPersistenceAssertion;
-import org.jboss.arquillian.junit.Arquillian;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.testextension.exception.ShouldFailWith;
+import org.arquillian.integration.ape.util.Query;
+import org.arquillian.integration.ape.util.UserPersistenceAssertion;
+import org.dbunit.assertion.DbComparisonFailure;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -47,6 +47,9 @@ import javax.persistence.PersistenceContext;
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class EmptyDataSetsTest {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -57,9 +60,6 @@ public class EmptyDataSetsTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Test
     @UsingDataSet("empty/empty.yml")

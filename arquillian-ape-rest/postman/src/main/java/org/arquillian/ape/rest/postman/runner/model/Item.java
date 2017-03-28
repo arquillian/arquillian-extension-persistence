@@ -7,6 +7,7 @@ public interface Item {
 
     /**
      * Method to avoid cost of instanceof
+     *
      * @return Type of element.
      */
     ItemType getItemType();

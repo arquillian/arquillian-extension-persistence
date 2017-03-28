@@ -17,8 +17,8 @@
  */
 package org.arquillian.integration.ape.example;
 
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.PersistenceTest;
+import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -45,6 +45,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @PersistenceTest
 public class UserPersistenceTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -55,9 +58,6 @@ public class UserPersistenceTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     public void should_persist_users_within_transaction() throws Exception {

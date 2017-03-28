@@ -18,9 +18,9 @@
 package org.arquillian.ape.rdbms.core.metadata;
 
 import org.arquillian.ape.rdbms.DataSeedStrategy;
+import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
-import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

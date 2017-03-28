@@ -22,6 +22,7 @@ import org.arquillian.ape.rdbms.core.event.ApplyScriptsAfterTest;
 import org.arquillian.ape.rdbms.core.event.ApplyScriptsBeforeTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.util.Strings;
+import org.arquillian.ape.rdbms.script.ScriptLoader;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.arquillian.ape.rdbms.script.data.descriptor.InlineSqlScriptResourceDescriptor;
@@ -30,7 +31,6 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.arquillian.ape.rdbms.script.ScriptLoader;
 
 import java.util.ArrayList;
 import java.util.Collections;

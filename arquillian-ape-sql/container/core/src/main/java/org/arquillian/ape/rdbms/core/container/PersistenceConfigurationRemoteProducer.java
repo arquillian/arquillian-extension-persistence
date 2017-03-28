@@ -17,13 +17,13 @@
  */
 package org.arquillian.ape.rdbms.core.container;
 
+import org.arquillian.ape.rdbms.core.configuration.Configuration;
+import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
+import org.arquillian.ape.rdbms.core.event.InitializeConfiguration;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.arquillian.ape.rdbms.core.configuration.Configuration;
-import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
-import org.arquillian.ape.rdbms.core.event.InitializeConfiguration;
 
 /**
  * Triggers persistence configuration creation on the container side.

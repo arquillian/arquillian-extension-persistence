@@ -16,9 +16,6 @@
  */
 package org.arquillian.ape.rdbms.core.deployment;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -27,6 +24,9 @@ import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.provider.SqlScriptProvider;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,7 +34,11 @@ import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.arquillian.ape.rdbms.core.data.descriptor.Format.isFileType;
 

@@ -17,13 +17,13 @@
  */
 package org.arquillian.integration.ape.test.boundary;
 
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -42,6 +42,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class UsedRowsOnlyCleanupStrategyTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
@@ -52,9 +55,6 @@ public class UsedRowsOnlyCleanupStrategyTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     @InSequence(1)

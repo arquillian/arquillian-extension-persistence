@@ -17,11 +17,11 @@
  */
 package org.arquillian.integration.ape.test.boundary;
 
-import org.jboss.arquillian.container.test.api.Deployment;
+import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.util.Query;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -42,6 +42,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class DataSetsWithDtdTest {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -52,9 +55,6 @@ public class DataSetsWithDtdTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Test
     @UsingDataSet("users-with-dtd.xml")

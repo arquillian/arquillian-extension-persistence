@@ -17,35 +17,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class RedisTest {
 
-   @HostIp
-   private String hostIp;
+    @HostPort(containerName = "redis", value = 6379)
+    int port;
+    @ArquillianResource
+    @Redis
+    NoSqlPopulator populator;
+    @HostIp
+    private String hostIp;
 
-   @HostPort(containerName = "redis", value = 6379)
-   int port;
+    @Test
+    public void should_populate_mongodb() {
+        populator.forServer(hostIp, port)
+                .usingDataSet("books.json")
+                .execute();
 
-   @ArquillianResource
-   @Redis
-   NoSqlPopulator populator;
+        Jedis jedis = new Jedis(hostIp, port);
+        final Map<String, String> fieldsOfTheHobbitBook = jedis.hgetAll("The Hobbit");
 
-   @Test
-   public void should_populate_mongodb() {
-      populator.forServer(hostIp, port)
-              .usingDataSet("books.json")
-              .execute();
+        assertThat(fieldsOfTheHobbitBook)
+                .containsEntry("title", "The Hobbit")
+                .containsEntry("numberOfPages", "293");
 
-      Jedis jedis = new Jedis(hostIp, port);
-      final Map<String, String> fieldsOfTheHobbitBook = jedis.hgetAll("The Hobbit");
+    }
 
-      assertThat(fieldsOfTheHobbitBook)
-              .containsEntry("title", "The Hobbit")
-              .containsEntry("numberOfPages", "293");
-
-   }
-
-   @After
-   public void cleanDatabase() {
-      populator.forServer(hostIp, port)
-              .clean();
-   }
+    @After
+    public void cleanDatabase() {
+        populator.forServer(hostIp, port)
+                .clean();
+    }
 
 }

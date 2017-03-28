@@ -32,11 +32,10 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 public class CommandServiceProducer {
 
     @Inject
-    private Instance<ServiceLoader> serviceLoaderInstance;
-
-    @Inject
     @SuiteScoped
     InstanceProducer<CommandService> commandServiceProducer;
+    @Inject
+    private Instance<ServiceLoader> serviceLoaderInstance;
 
     public void createCommandService(@Observes(precedence = 100) BeforeSuite beforeSuite) {
         final ServiceLoader serviceLoader = serviceLoaderInstance.get();

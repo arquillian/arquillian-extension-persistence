@@ -20,7 +20,11 @@ package org.arquillian.ape.rdbms.dbunit.dataset.json;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * DBUnit data set produced from JSON format.

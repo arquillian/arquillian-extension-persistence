@@ -17,13 +17,13 @@
  */
 package org.arquillian.integration.ape.test.cleanup;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.util.Query;
-import org.jboss.arquillian.junit.Arquillian;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.util.Query;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -48,6 +48,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class StrictCleanupWithEmptyDataSetsTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -58,9 +61,6 @@ public class StrictCleanupWithEmptyDataSetsTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     public void should_not_have_any_user_in_database() throws Exception {

@@ -17,12 +17,12 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
-import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
+import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.descriptor.FileSqlScriptResourceDescriptor;
 import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -41,6 +41,11 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     private static final String SQL_DATA_SET_ON_METHOD_LEVEL = "scripts/method-level.sql";
 
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
 
     @Test
     public void should_fetch_all_scripts_defined_for_test_class() throws Exception {
@@ -157,6 +162,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
         // exception should be thrown
     }
 
+    // ----------------------------------------------------------------------------------------
+
     @Test
     public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception {
         // given
@@ -170,13 +177,6 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
 
         // then
         assertThat(dataSetDescriptors).containsOnly(expectedFile);
-    }
-
-    // ----------------------------------------------------------------------------------------
-
-    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
-        return testEvent;
     }
 
     private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent) {

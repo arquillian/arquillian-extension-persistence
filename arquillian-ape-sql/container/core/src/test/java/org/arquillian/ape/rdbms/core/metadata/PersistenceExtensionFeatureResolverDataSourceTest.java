@@ -17,11 +17,11 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
-import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
-import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.arquillian.ape.rdbms.DataSource;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotDefinedException;
+import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

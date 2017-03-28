@@ -6,22 +6,25 @@
     "description": "",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
-  "item": [{
-    "name" : "This is one message",
-    "request": {
-      "url": "http://localhost:8080/message",
-      "method": "POST",
-      "header": [{
-        "key": "Content-Type",
-        "value": "text/plain",
+  "item": [
+    {
+      "name": "This is one message",
+      "request": {
+        "url": "http://localhost:8080/message",
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain",
+            "description": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "Hello From Populator Test"
+        },
         "description": ""
-      }],
-      "body": {
-        "mode": "raw",
-        "raw": "Hello From Populator Test"
-      },
-      "description": ""
+      }
     }
-  }
   ]
 }

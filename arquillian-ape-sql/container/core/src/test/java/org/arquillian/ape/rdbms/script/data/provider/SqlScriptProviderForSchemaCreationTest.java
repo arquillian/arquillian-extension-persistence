@@ -19,8 +19,8 @@ package org.arquillian.ape.rdbms.script.data.provider;
 
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
@@ -29,6 +29,13 @@ import java.util.Collection;
 public class SqlScriptProviderForSchemaCreationTest {
 
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent = new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
+
+    // ----------------------------------------------------------------------------------------
 
     @Test
     public void should_fetch_all_scripts_defined_for_test_class_in_defined_order() throws Exception {
@@ -44,15 +51,8 @@ public class SqlScriptProviderForSchemaCreationTest {
         SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsExactlyFollowingFiles("one.sql", "two.sql", "three.sql");
     }
 
-    // ----------------------------------------------------------------------------------------
-
     private SqlScriptProvider<CreateSchema> createSqlScriptProviderFor(TestEvent testEvent) {
         return SqlScriptProvider.createProviderForCreateSchemaScripts(testEvent.getTestClass(), defaultConfiguration);
-    }
-
-    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
-        return testEvent;
     }
 
     @CreateSchema({"one.sql", "two.sql", "three.sql"})

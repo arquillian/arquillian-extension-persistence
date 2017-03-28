@@ -1,6 +1,8 @@
 {
-  "Book":
-  [
-    {"title":"The Hobbit","numberOfPages":293}
+  "Book": [
+    {
+      "title": "The Hobbit",
+      "numberOfPages": 293
+    }
   ]
 }

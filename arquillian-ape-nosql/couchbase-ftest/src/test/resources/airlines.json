@@ -1,17 +1,17 @@
 {
-    "data": [
-        {
-            "key": "airline_1",
-            "document": {
-                "id": "1",
-                "country": "ES",
-                "iata": "VY",
-                "callsign": "VUELING",
-                "name": "Vueling Airlines",
-                "icao": "VLG",
-                "type": "airline"
-            },
-            "expirationSecs": 100
-        }
-    ]
+  "data": [
+    {
+      "key": "airline_1",
+      "document": {
+        "id": "1",
+        "country": "ES",
+        "iata": "VY",
+        "callsign": "VUELING",
+        "name": "Vueling Airlines",
+        "icao": "VLG",
+        "type": "airline"
+      },
+      "expirationSecs": 100
+    }
+  ]
 }

@@ -48,6 +48,11 @@ public class DataSetProviderShouldMatchDataSetTest {
 
     private DBUnitConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultDBUnitConfiguration();
 
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedClass(), ShouldMatchDataSetAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
+
     @Test
     public void should_fetch_all_expected_data_sets_defined_for_test_class() throws Exception {
         // given
@@ -218,6 +223,8 @@ public class DataSetProviderShouldMatchDataSetTest {
         // exception should be thrown
     }
 
+    // ----------------------------------------------------------------------------------------
+
     @Test
     public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception {
         // given
@@ -231,13 +238,6 @@ public class DataSetProviderShouldMatchDataSetTest {
 
         // then
         assertThat(dataSetDescriptors).containsOnly(expectedFile);
-    }
-
-    // ----------------------------------------------------------------------------------------
-
-    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new ShouldMatchDataSetAnnotatedClass(), ShouldMatchDataSetAnnotatedClass.class.getMethod(testMethod));
-        return testEvent;
     }
 
     @UsingDataSet("datasets/test.xml")

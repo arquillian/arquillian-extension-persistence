@@ -35,6 +35,10 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
         super(actual, TableAssert.class);
     }
 
+    public static TableAssert assertThat(ITable table) {
+        return new TableAssert(table);
+    }
+
     public TableAssert hasColumns(String... expectedColumnNames) {
         final List<String> columnNames = extractColumnNames();
         Assertions.assertThat(columnNames).contains(expectedColumnNames);
@@ -43,8 +47,7 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
 
     public TableAssert hasRow(String... keyValuePairs) {
 
-        @SuppressWarnings("unchecked")
-        final Row expectedRow = new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
+        @SuppressWarnings("unchecked") final Row expectedRow = new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
 
         List<Row> rows = extractRows();
         Assertions.assertThat(rows).contains(expectedRow);
@@ -55,10 +58,6 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
     public TableAssert hasRows(int amount) {
         Assertions.assertThat(actual.getRowCount()).isEqualTo(amount);
         return this;
-    }
-
-    public static TableAssert assertThat(ITable table) {
-        return new TableAssert(table);
     }
 
     private List<String> extractColumnNames() {

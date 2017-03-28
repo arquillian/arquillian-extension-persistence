@@ -142,21 +142,21 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param strategy Defines strategy of inserting data to the data store.
-     *                 Default value is {@link DataSeedStrategy#INSERT}
-     * @see DataSeedStrategy
-     */
-    public void setDataSeedStrategy(DataSeedStrategy strategy) {
-        setDefaultDataSeedStrategy(strategy);
-    }
-
-    /**
      * @param defaultDataSeedStrategy Defines strategy of inserting data to the data store.
      *                                Default value is {@link DataSeedStrategy#INSERT}
      * @see DataSeedStrategy
      */
     public void setDefaultDataSeedStrategy(DataSeedStrategy defaultDataSeedStrategy) {
         this.defaultDataSeedStrategy = defaultDataSeedStrategy;
+    }
+
+    /**
+     * @param strategy Defines strategy of inserting data to the data store.
+     *                 Default value is {@link DataSeedStrategy#INSERT}
+     * @see DataSeedStrategy
+     */
+    public void setDataSeedStrategy(DataSeedStrategy strategy) {
+        setDefaultDataSeedStrategy(strategy);
     }
 
 }

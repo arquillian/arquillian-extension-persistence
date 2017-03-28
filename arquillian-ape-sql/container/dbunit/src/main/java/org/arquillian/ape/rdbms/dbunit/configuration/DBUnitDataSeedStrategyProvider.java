@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
+import org.arquillian.ape.rdbms.DataSeedStrategy.StrategyProvider;
 import org.dbunit.ext.mssql.InsertIdentityOperation;
 import org.dbunit.operation.DatabaseOperation;
-import org.arquillian.ape.rdbms.DataSeedStrategy.StrategyProvider;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

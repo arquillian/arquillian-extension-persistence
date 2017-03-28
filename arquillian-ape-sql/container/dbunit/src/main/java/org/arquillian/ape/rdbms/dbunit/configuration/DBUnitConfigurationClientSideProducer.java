@@ -17,12 +17,12 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
+import org.arquillian.ape.rdbms.core.configuration.ConfigurationProducer;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.arquillian.ape.rdbms.core.configuration.ConfigurationProducer;
 
 /**
  * Triggers DBUnit configuration creation on the client side.

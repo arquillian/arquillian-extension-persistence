@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.core.datasource;
 
+import org.arquillian.ape.rdbms.core.exception.ContextNotAvailableException;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotFoundException;
 import org.arquillian.ape.spi.datasource.DataSourceProvider;
-import org.arquillian.ape.rdbms.core.exception.ContextNotAvailableException;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 

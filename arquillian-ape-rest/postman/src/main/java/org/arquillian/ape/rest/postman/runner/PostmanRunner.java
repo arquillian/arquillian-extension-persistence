@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PostmanRunner {
 
-    private CollectionLoader collectionLoader = new CollectionLoader();
     private final OkHttpClient client;
+    private CollectionLoader collectionLoader = new CollectionLoader();
 
     public PostmanRunner() {
         this.client = new OkHttpClient.Builder()
@@ -94,7 +94,7 @@ public class PostmanRunner {
         final Body body = requestObject.getBody();
         if (body.isBodyWithMode()) {
 
-            switch(body.getMode()) {
+            switch (body.getMode()) {
                 case raw: {
                     requestBody = RequestBody.create(
                             getMediaType(requestObject.getHeaders()),

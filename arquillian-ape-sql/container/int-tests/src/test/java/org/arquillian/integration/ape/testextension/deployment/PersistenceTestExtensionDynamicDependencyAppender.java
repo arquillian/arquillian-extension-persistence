@@ -16,16 +16,16 @@
  */
 package org.arquillian.integration.ape.testextension.deployment;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.arquillian.integration.ape.testextension.data.CleanupVerificationDataSetProvider;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.deployment.ResourceAppender;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.integration.ape.testextension.data.CleanupVerificationDataSetProvider;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

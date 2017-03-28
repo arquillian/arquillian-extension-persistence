@@ -17,17 +17,17 @@
  */
 package org.arquillian.ape.rdbms.dbunit.dataset;
 
+import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.dbunit.dataset.json.JsonDataSet;
+import org.arquillian.ape.rdbms.dbunit.dataset.xml.DtdResolver;
+import org.arquillian.ape.rdbms.dbunit.dataset.yaml.YamlDataSet;
+import org.arquillian.ape.rdbms.dbunit.exception.DBUnitInitializationException;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
-import org.arquillian.ape.rdbms.dbunit.dataset.json.JsonDataSet;
-import org.arquillian.ape.rdbms.dbunit.dataset.xml.DtdResolver;
-import org.arquillian.ape.rdbms.dbunit.dataset.yaml.YamlDataSet;
-import org.arquillian.ape.rdbms.dbunit.exception.DBUnitInitializationException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -42,6 +42,10 @@ public class DataSetBuilder {
 
     private DataSetBuilder(Format format) {
         this.format = format;
+    }
+
+    public static DataSetBuilder builderFor(final Format format) {
+        return new DataSetBuilder(format);
     }
 
     public IDataSet build(final String file) {
@@ -68,10 +72,6 @@ public class DataSetBuilder {
         }
 
         return defineReplaceableExpressions(dataSet);
-    }
-
-    public static DataSetBuilder builderFor(final Format format) {
-        return new DataSetBuilder(format);
     }
 
     // Private methods

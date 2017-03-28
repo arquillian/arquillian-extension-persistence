@@ -16,12 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class CouchbaseTest {
 
-    @HostIp
-    private String hostIp;
-
     @ArquillianResource
     @Couchbase
     NoSqlPopulator populator;
+    @HostIp
+    private String hostIp;
 
     @Test
     public void should_find_books() {

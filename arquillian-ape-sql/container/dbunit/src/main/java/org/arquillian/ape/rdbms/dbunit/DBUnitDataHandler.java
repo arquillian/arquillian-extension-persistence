@@ -17,6 +17,14 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import org.arquillian.ape.rdbms.CleanupStrategy;
+import org.arquillian.ape.rdbms.DataSeedStrategy;
+import org.arquillian.ape.rdbms.core.data.DataHandler;
+import org.arquillian.ape.rdbms.core.event.CleanupData;
+import org.arquillian.ape.rdbms.core.event.CleanupDataUsingScript;
+import org.arquillian.ape.rdbms.core.event.ExecuteScripts;
+import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
+import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.arquillian.ape.rdbms.dbunit.cleanup.CleanupStrategyExecutor;
 import org.arquillian.ape.rdbms.dbunit.cleanup.CleanupStrategyProvider;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
@@ -27,20 +35,12 @@ import org.arquillian.ape.rdbms.dbunit.event.PrepareDBUnitData;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitConnectionException;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
 import org.arquillian.ape.rdbms.dbunit.filter.TableFilterResolver;
-import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
-import org.arquillian.ape.spi.script.StatementSplitter;
-import org.arquillian.ape.rdbms.CleanupStrategy;
-import org.arquillian.ape.rdbms.DataSeedStrategy;
-import org.arquillian.ape.rdbms.core.data.DataHandler;
-import org.arquillian.ape.rdbms.core.event.CleanupData;
-import org.arquillian.ape.rdbms.core.event.CleanupDataUsingScript;
-import org.arquillian.ape.rdbms.core.event.ExecuteScripts;
-import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
-import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.arquillian.ape.rdbms.script.ScriptExecutor;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.arquillian.ape.rdbms.script.splitter.StatementSplitterResolver;
+import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
+import org.arquillian.ape.spi.script.StatementSplitter;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;

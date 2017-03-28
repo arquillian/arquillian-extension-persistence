@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.dbunit.filter;
 
+import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
-import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
 
 import java.sql.SQLException;
 

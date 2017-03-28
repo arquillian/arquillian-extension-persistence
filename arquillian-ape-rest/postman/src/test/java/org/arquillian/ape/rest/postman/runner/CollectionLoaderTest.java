@@ -1,7 +1,16 @@
 package org.arquillian.ape.rest.postman.runner;
 
 
-import org.arquillian.ape.rest.postman.runner.model.*;
+import org.arquillian.ape.rest.postman.runner.model.Body;
+import org.arquillian.ape.rest.postman.runner.model.Collection;
+import org.arquillian.ape.rest.postman.runner.model.Folder;
+import org.arquillian.ape.rest.postman.runner.model.FormParameter;
+import org.arquillian.ape.rest.postman.runner.model.Information;
+import org.arquillian.ape.rest.postman.runner.model.ItemItem;
+import org.arquillian.ape.rest.postman.runner.model.Method;
+import org.arquillian.ape.rest.postman.runner.model.Mode;
+import org.arquillian.ape.rest.postman.runner.model.Request;
+import org.arquillian.ape.rest.postman.runner.model.Url;
 import org.junit.Test;
 
 import java.io.IOException;

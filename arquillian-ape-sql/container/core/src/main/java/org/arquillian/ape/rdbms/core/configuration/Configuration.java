@@ -32,20 +32,20 @@ public abstract class Configuration implements Serializable {
         this.prefix = prefix;
     }
 
-    public String getQualifier() {
-        return qualifier;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
     public static <K extends Configuration> ConfigurationImporter<K> importTo(K configuration) {
         return new ConfigurationImporter<K>(configuration);
     }
 
     public static <K extends Configuration> ConfigurationExporter<K> exportUsing(K configuration) {
         return new ConfigurationExporter<K>(configuration);
+    }
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 
     @Override

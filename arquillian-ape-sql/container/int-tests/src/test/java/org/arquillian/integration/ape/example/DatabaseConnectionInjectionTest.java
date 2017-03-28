@@ -17,8 +17,8 @@
  */
 package org.arquillian.integration.ape.example;
 
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.PersistenceTest;
+import org.arquillian.integration.ape.util.Query;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -39,6 +39,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @PersistenceTest
 public class DatabaseConnectionInjectionTest {
 
+    // Test needs to be "persistence-extension-aware" in order to get this reference.
+    // This can be achieved using any of APE annotations such as
+    // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
+    @ArquillianResource
+    private DatabaseConnection databaseConnection;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -49,12 +55,6 @@ public class DatabaseConnectionInjectionTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    // Test needs to be "persistence-extension-aware" in order to get this reference.
-    // This can be achieved using any of APE annotations such as
-    // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
-    @ArquillianResource
-    private DatabaseConnection databaseConnection;
 
     @Test
     public void should_inject_dbunit_database_connection() throws Exception {

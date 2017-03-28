@@ -18,12 +18,12 @@
 package org.arquillian.ape.rdbms.core.client;
 
 import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionArchiveAppender;
+import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
 import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
+import org.arquillian.ape.rdbms.script.configuration.ScriptingConfigurationClientSideProducer;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
-import org.arquillian.ape.rdbms.script.configuration.ScriptingConfigurationClientSideProducer;
 
 /**
  * Wires persistence extension services which are used to prepare

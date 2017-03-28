@@ -11,12 +11,12 @@ public class Request {
     private Map<String, String> headers = new HashMap<>();
     private Body body;
 
-    public void setUrl(Url url) {
-        this.url = url;
-    }
-
     public Url getUrl() {
         return url;
+    }
+
+    public void setUrl(Url url) {
+        this.url = url;
     }
 
     public Method getMethod() {
@@ -27,19 +27,19 @@ public class Request {
         this.method = method;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
-    }
-
     public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public void setBody(Body body) {
-        this.body = body;
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
     }
 
     public Body getBody() {
         return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
     }
 }

@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.testutils;
 
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 import java.io.IOException;

@@ -16,13 +16,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.container;
 
-import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.arquillian.ape.rdbms.dbunit.DBUnitDataHandler;
 import org.arquillian.ape.rdbms.dbunit.DBUnitDataStateLogger;
 import org.arquillian.ape.rdbms.dbunit.DBUnitDatabaseConnectionProvider;
 import org.arquillian.ape.rdbms.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationRemoteProducer;
 import org.arquillian.ape.rdbms.dbunit.lifecycle.DataSetHandler;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
 /**

@@ -1,11 +1,11 @@
 package org.arquillian.integration.ape.test.seeding;
 
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.DataSeedStrategy;
 import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -24,6 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class SeedingStrategyTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
@@ -34,8 +37,12 @@ public class SeedingStrategyTest {
                 .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
-    @PersistenceContext
-    EntityManager em;
+    private static void assertUserAccountsAreEqual(UserAccount actual, UserAccount expected) {
+        assertThat(actual.getFirstname()).isEqualTo(expected.getFirstname());
+        assertThat(actual.getLastname()).isEqualTo(expected.getLastname());
+        assertThat(actual.getUsername()).isEqualTo(expected.getUsername());
+        assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
+    }
 
     @Test
     @ApplyScriptBefore("lex-luthor.sql")
@@ -82,6 +89,8 @@ public class SeedingStrategyTest {
         assertUserAccountsAreEqual(lexLuthor, updatedLex);
     }
 
+    // -- Test utility methods
+
     @Test
     @ApplyScriptBefore("lex-luthor.sql")
     @UsingDataSet({"two-users.yml", "updated-lex-luthor.yml"})
@@ -98,15 +107,6 @@ public class SeedingStrategyTest {
         // then
         assertUserAccountsAreEqual(lexLuthor, updatedLex);
         assertThat(userAccounts).hasSize(3);
-    }
-
-    // -- Test utility methods
-
-    private static void assertUserAccountsAreEqual(UserAccount actual, UserAccount expected) {
-        assertThat(actual.getFirstname()).isEqualTo(expected.getFirstname());
-        assertThat(actual.getLastname()).isEqualTo(expected.getLastname());
-        assertThat(actual.getUsername()).isEqualTo(expected.getUsername());
-        assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
     }
 
 }

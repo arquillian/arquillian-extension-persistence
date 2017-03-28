@@ -17,13 +17,13 @@
  */
 package org.arquillian.ape.rdbms.core.lifecycle;
 
+import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
+import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
+import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
-import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
-import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
-import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 
 public class ErrorCollectorHandler {

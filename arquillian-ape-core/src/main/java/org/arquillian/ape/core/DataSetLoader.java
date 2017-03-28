@@ -8,7 +8,7 @@ public class DataSetLoader {
     }
 
     public static InputStream resolve(String location) {
-        if (! location.startsWith("/")) {
+        if (!location.startsWith("/")) {
             location = "/" + location;
         }
 

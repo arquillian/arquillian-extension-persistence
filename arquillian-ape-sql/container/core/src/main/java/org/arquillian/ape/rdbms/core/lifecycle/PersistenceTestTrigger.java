@@ -18,17 +18,17 @@
 package org.arquillian.ape.rdbms.core.lifecycle;
 
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
+import org.arquillian.ape.rdbms.core.datasource.JndiDataSourceProvider;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceClass;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.event.InitializeConfiguration;
+import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionScriptingFeatureResolver;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.spi.datasource.DataSourceProvider;
-import org.arquillian.ape.rdbms.core.datasource.JndiDataSourceProvider;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
-import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;

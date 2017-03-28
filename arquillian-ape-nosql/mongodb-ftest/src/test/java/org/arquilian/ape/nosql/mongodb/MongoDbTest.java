@@ -20,39 +20,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class MongoDbTest {
 
-   @HostIp
-   private String hostIp;
+    @HostPort(containerName = "mongodb", value = 27017)
+    int port;
+    @ArquillianResource
+    @MongoDb
+    NoSqlPopulator populator;
+    @HostIp
+    private String hostIp;
 
-   @HostPort(containerName = "mongodb", value = 27017)
-   int port;
+    @Test
+    public void should_populate_mongodb() {
+        populator.forServer(hostIp, port)
+                .withStorage("test")
+                .usingDataSet("books.json")
+                .execute();
 
-   @ArquillianResource
-   @MongoDb
-   NoSqlPopulator populator;
+        MongoClient mongoClient = new MongoClient(hostIp, port);
+        final MongoDatabase database = mongoClient.getDatabase("test");
+        final MongoCollection<Document> book = database.getCollection("Book");
+        final FindIterable<Document> documents = book.find();
 
-   @Test
-   public void should_populate_mongodb() {
-      populator.forServer(hostIp, port)
-              .withStorage("test")
-              .usingDataSet("books.json")
-              .execute();
+        assertThat(documents.first())
+                .containsEntry("title", "The Hobbit")
+                .containsEntry("numberOfPages", 293);
 
-      MongoClient mongoClient = new MongoClient(hostIp, port);
-      final MongoDatabase database = mongoClient.getDatabase("test");
-      final MongoCollection<Document> book = database.getCollection("Book");
-      final FindIterable<Document> documents = book.find();
+    }
 
-      assertThat(documents.first())
-              .containsEntry("title", "The Hobbit")
-              .containsEntry("numberOfPages", 293);
-
-   }
-
-   @After
-   public void cleanDatabase() {
-      populator.forServer(hostIp, port)
-              .withStorage("test")
-              .clean();
-   }
+    @After
+    public void cleanDatabase() {
+        populator.forServer(hostIp, port)
+                .withStorage("test")
+                .clean();
+    }
 
 }

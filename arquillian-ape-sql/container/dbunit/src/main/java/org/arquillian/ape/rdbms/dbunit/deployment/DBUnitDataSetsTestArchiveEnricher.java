@@ -16,9 +16,6 @@
  */
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
 import org.arquillian.ape.rdbms.core.data.descriptor.DtdFileResourceDescriptor;
 import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
@@ -31,6 +28,9 @@ import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor
 import org.arquillian.ape.rdbms.dbunit.data.provider.DataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.data.provider.ExpectedDataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.dataset.xml.DtdResolver;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -39,7 +39,11 @@ import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.arquillian.ape.rdbms.core.data.descriptor.Format.isFileType;
 

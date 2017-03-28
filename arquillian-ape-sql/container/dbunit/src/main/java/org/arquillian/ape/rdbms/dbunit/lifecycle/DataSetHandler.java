@@ -16,10 +16,6 @@
  */
 package org.arquillian.ape.rdbms.dbunit.lifecycle;
 
-import org.jboss.arquillian.core.api.Event;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
@@ -31,6 +27,10 @@ import org.arquillian.ape.rdbms.dbunit.data.provider.DataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.data.provider.ExpectedDataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.event.CompareDBUnitData;
 import org.arquillian.ape.rdbms.dbunit.event.PrepareDBUnitData;
+import org.jboss.arquillian.core.api.Event;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
 
 import java.lang.reflect.Method;
 

@@ -17,11 +17,11 @@
  */
 package org.arquillian.integration.ape.example;
 
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.junit.Test;

@@ -17,6 +17,7 @@ public class Information {
     public String getName() {
         return name;
     }
+
     public URL getSchema() {
         return schema;
     }

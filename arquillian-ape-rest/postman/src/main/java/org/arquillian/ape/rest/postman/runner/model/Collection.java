@@ -9,22 +9,20 @@ public class Collection {
 
     // Variables are pre-read it to have them during parsing.
 
+    public Information getInfo() {
+        return info;
+    }
 
     public void setInfo(Information info) {
         this.info = info;
     }
 
-    public void setItem(List<Item> item) {
-        this.item = item;
-    }
-
-
-    public Information getInfo() {
-        return info;
-    }
-
     public List<Item> getItem() {
         return item;
+    }
+
+    public void setItem(List<Item> item) {
+        this.item = item;
     }
 
 }

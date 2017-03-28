@@ -41,20 +41,20 @@ public class CompleteUrl {
                 .map(URLEncoder::encode)
                 .collect(Collectors.joining("/"));
 
-        if (! fullPath.startsWith("/")) {
+        if (!fullPath.startsWith("/")) {
             file.append("/");
         }
 
         file.append(fullPath);
 
-        if (! query.isEmpty()) {
+        if (!query.isEmpty()) {
             final String fullQuery = query.stream()
                     .map(QueryParam::asString)
                     .collect(Collectors.joining("&"));
             file.append("?").append(fullQuery);
         }
 
-        if (hash != null && ! hash.isEmpty()) {
+        if (hash != null && !hash.isEmpty()) {
             file.append("#").append(hash);
         }
 

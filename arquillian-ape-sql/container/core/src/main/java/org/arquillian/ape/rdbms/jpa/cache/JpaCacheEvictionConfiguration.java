@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.jpa.cache;
 
+import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.arquillian.ape.rdbms.JpaCacheEvictionStrategy;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
-import org.arquillian.ape.rdbms.JpaCacheEviction;
 
 /**
  * JPA cache eviction configuration which can be customized in

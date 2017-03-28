@@ -22,14 +22,6 @@ public class ItemItem implements Item {
         this.name = name;
     }
 
-    public void setRequest(URL request) {
-        this.request = request;
-    }
-
-    public void setRequestObject(Request requestObject) {
-        this.requestObject = requestObject;
-    }
-
     public boolean isRequestAsString() {
         return this.request != null;
     }
@@ -38,8 +30,16 @@ public class ItemItem implements Item {
         return requestObject;
     }
 
+    public void setRequestObject(Request requestObject) {
+        this.requestObject = requestObject;
+    }
+
     public URL getRequest() {
         return request;
+    }
+
+    public void setRequest(URL request) {
+        this.request = request;
     }
 
     @Override

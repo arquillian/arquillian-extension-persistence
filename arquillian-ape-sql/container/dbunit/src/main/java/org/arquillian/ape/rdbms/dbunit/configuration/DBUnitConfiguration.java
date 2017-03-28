@@ -17,6 +17,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.rdbms.core.configuration.Configuration;
+import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;
+import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Property;
+import org.arquillian.ape.rdbms.util.Arrays;
 import org.dbunit.database.CachedResultSetTableFactory;
 import org.dbunit.database.DefaultMetadataHandler;
 import org.dbunit.database.IMetadataHandler;
@@ -26,13 +33,6 @@ import org.dbunit.database.statement.PreparedStatementFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.IColumnFilter;
-import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
-import org.arquillian.ape.rdbms.core.configuration.Configuration;
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
-import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;
-import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Property;
-import org.arquillian.ape.rdbms.util.Arrays;
 
 /**
  * DBUnit configuration which can be customized in <code>arquillian.xml</code>

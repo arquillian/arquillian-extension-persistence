@@ -17,19 +17,32 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
+import org.arquillian.ape.rdbms.dbunit.dataset.TableWrapper;
+import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.assertion.DiffCollectingFailureHandler;
 import org.dbunit.assertion.Difference;
-import org.dbunit.dataset.*;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.Columns;
+import org.dbunit.dataset.CompositeTable;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.FilteredTableMetaData;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
-import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
-import org.arquillian.ape.rdbms.dbunit.dataset.TableWrapper;
-import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class DataSetComparator {
@@ -48,6 +61,10 @@ public class DataSetComparator {
         this.toExclude = new ColumnsHolder(toExclude);
         this.orderBy = new ColumnsHolder(orderBy);
         this.columnFilters = columnFilters;
+    }
+
+    private static <T> String[] toStringArray(final Collection<T> collection) {
+        return collection.toArray(new String[collection.size()]);
     }
 
     public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
@@ -85,8 +102,7 @@ public class DataSetComparator {
                 errorCollector.collect(e);
             }
 
-            @SuppressWarnings("unchecked")
-            final List<Difference> diffs = diffCollector.getDiffList();
+            @SuppressWarnings("unchecked") final List<Difference> diffs = diffCollector.getDiffList();
             collectErrors(errorCollector, diffs);
         }
     }
@@ -98,6 +114,8 @@ public class DataSetComparator {
         }
     }
 
+    // -- Private methods
+
     public void shouldBeEmpty(IDataSet dataSet, String tableName, AssertionErrorCollector errorCollector)
             throws DataSetException {
         final SortedTable tableState = new SortedTable(dataSet.getTable(tableName));
@@ -106,8 +124,6 @@ public class DataSetComparator {
             errorCollector.collect(new AssertionError(tableName + " expected to be empty, but was <" + rowCount + ">."));
         }
     }
-
-    // -- Private methods
 
     private void collectErrors(AssertionErrorCollector errorCollector, List<Difference> diffs) {
         for (Difference diff : diffs) {
@@ -139,10 +155,6 @@ public class DataSetComparator {
         columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName),
                 currentDataSet.getTable(tableName)));
         return columnsForSorting;
-    }
-
-    private static <T> String[] toStringArray(final Collection<T> collection) {
-        return collection.toArray(new String[collection.size()]);
     }
 
     private List<String> additionalColumnsForSorting(final ITable expectedTableState, final ITable currentTableState) {

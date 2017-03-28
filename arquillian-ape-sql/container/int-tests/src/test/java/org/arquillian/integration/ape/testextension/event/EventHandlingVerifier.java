@@ -28,19 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventHandlingVerifier {
 
-    private boolean triggeredBefore;
-
-    private boolean triggeredAfter;
-
-    private boolean triggered;
-
-    private TestExecutionPhase phase = TestExecutionPhase.NONE;
-
-    private TestExecutionPhase expectedPhase;
-
-    private boolean verificationRequested;
-
     public final Class<? extends PersistenceEvent> event;
+    private boolean triggeredBefore;
+    private boolean triggeredAfter;
+    private boolean triggered;
+    private TestExecutionPhase phase = TestExecutionPhase.NONE;
+    private TestExecutionPhase expectedPhase;
+    private boolean verificationRequested;
 
     private EventHandlingVerifier(Class<? extends PersistenceEvent> event) {
         this.event = event;

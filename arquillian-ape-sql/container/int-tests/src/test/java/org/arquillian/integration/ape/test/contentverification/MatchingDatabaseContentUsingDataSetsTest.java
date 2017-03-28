@@ -1,10 +1,10 @@
 package org.arquillian.integration.ape.test.contentverification;
 
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
 import org.arquillian.integration.ape.example.Address;
 import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,6 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class MatchingDatabaseContentUsingDataSetsTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -32,9 +35,6 @@ public class MatchingDatabaseContentUsingDataSetsTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     @UsingDataSet("users.yml")

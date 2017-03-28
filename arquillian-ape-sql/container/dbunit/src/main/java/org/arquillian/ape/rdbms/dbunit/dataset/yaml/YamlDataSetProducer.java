@@ -17,6 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit.dataset.yaml;
 
+import org.arquillian.ape.rdbms.dbunit.dataset.Row;
+import org.arquillian.ape.rdbms.dbunit.dataset.Table;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
@@ -25,8 +27,6 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-import org.arquillian.ape.rdbms.dbunit.dataset.Row;
-import org.arquillian.ape.rdbms.dbunit.dataset.Table;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -35,7 +35,11 @@ import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Produces YAML data set from the given file.
@@ -45,11 +49,9 @@ import java.util.*;
  */
 public class YamlDataSetProducer implements IDataSetProducer {
 
-    private boolean caseSensitiveTableNames;
-
-    private IDataSetConsumer consumer = new DefaultConsumer();
-
     private final InputStream input;
+    private boolean caseSensitiveTableNames;
+    private IDataSetConsumer consumer = new DefaultConsumer();
 
     public YamlDataSetProducer(InputStream inputStream) {
         input = inputStream;
@@ -64,8 +66,7 @@ public class YamlDataSetProducer implements IDataSetProducer {
     public void produce() throws DataSetException {
         consumer.startDataSet();
 
-        @SuppressWarnings("unchecked")
-        final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
+        @SuppressWarnings("unchecked") final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
 
         for (Table table : tables) {
             ITableMetaData tableMetaData = createTableMetaData(table);

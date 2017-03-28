@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.dbunit.filter;
 
-import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
 import org.arquillian.ape.rdbms.core.util.Strings;
+import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.util.JavaSPIExtensionLoader;
+import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
 
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -63,7 +63,7 @@ public class TableFilterResolver {
         sb.append('[');
         for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
             sb.append("{name=").append(databaseSequenceFilterProvider.simpleName())
-              .append(", class=").append(databaseSequenceFilterProvider.getClass().getName()).append("},");
+                    .append(", class=").append(databaseSequenceFilterProvider.getClass().getName()).append("},");
         }
 
         if (!databaseSequenceFilterProviders.isEmpty()) {

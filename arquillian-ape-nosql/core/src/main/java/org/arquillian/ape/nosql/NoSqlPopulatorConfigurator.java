@@ -38,6 +38,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     /**
      * Sets database name.
+     *
      * @param database name.
      * @return this instance.
      */
@@ -48,6 +49,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     /**
      * Register a new dataset for populating data.
+     *
      * @param dataset to use.
      * @return this instance.
      */
@@ -58,6 +60,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     /**
      * Register new datasets for populating data.
+     *
      * @param datasets to use.
      * @return this instance.
      */
@@ -68,8 +71,9 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     /**
      * Set custom options.
-     * @param key name.
-     * @param value of property.
+     *
+     * @param key      name.
+     * @param value    of property.
      * @param elements pair key, value. Even elements are keys, odd ones values.
      * @return this instance.
      */
@@ -81,8 +85,8 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
         this.options.put(key, value);
 
-        for (int i=0; i < elements.length; i+=2) {
-            this.options.put(elements[i], elements[i+1]);
+        for (int i = 0; i < elements.length; i += 2) {
+            this.options.put(elements[i], elements[i + 1]);
         }
 
         return this;
@@ -90,6 +94,7 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     /**
      * Set custom options as map.
+     *
      * @param options to set.
      * @return this instance.
      */

@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.testextension;
 
-import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.arquillian.integration.ape.testextension.data.DataContentVerifier;
 import org.arquillian.integration.ape.testextension.event.EventObserver;
 import org.arquillian.integration.ape.testextension.exception.ErrorObserver;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 
 public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension {
 

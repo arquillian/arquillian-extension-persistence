@@ -17,12 +17,12 @@
  */
 package org.arquillian.ape.rdbms.core.deployment;
 
-import org.arquillian.ape.rdbms.transaction.PersistenceExtensionConventionTransactionEnabler;
-import org.arquillian.ape.spi.script.StatementSplitter;
 import org.arquillian.ape.rdbms.core.client.PersistenceExtension;
 import org.arquillian.ape.rdbms.core.container.RemotePersistenceExtension;
 import org.arquillian.ape.rdbms.script.splitter.DefaultStatementSplitter;
 import org.arquillian.ape.rdbms.script.splitter.oracle.OracleStatementSplitter;
+import org.arquillian.ape.rdbms.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.arquillian.ape.spi.script.StatementSplitter;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;

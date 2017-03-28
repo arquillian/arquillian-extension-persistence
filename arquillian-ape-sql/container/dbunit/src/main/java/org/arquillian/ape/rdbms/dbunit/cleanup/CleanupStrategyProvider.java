@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.dbunit.cleanup;
 
-import org.dbunit.database.DatabaseConnection;
 import org.arquillian.ape.rdbms.CleanupStrategy.StrategyProvider;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.dataset.DataSetRegister;
+import org.dbunit.database.DatabaseConnection;
 
 public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategyExecutor> {
 

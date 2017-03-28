@@ -44,12 +44,10 @@ import java.util.LinkedList;
  */
 public class JpaCacheEvictionHandler {
 
+    private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
     @Inject
     private Instance<Context> ctx;
-
     private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
-
-    private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
 
     public JpaCacheEvictionHandler() {
     }

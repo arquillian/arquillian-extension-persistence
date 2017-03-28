@@ -4,6 +4,7 @@ import org.arquillian.ape.core.Populator;
 
 /**
  * NoSql Populator that creates the NoSqlPopulatorConfigurator with specific DSL methods related to NoSql engines.
+ *
  * @see NoSqlPopulatorConfigurator
  */
 public class NoSqlPopulator extends Populator<NoSqlPopulatorService, NoSqlPopulatorConfigurator> {

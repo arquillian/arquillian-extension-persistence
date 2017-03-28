@@ -75,7 +75,7 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         final ClusterManager clusterManager = couchbaseCluster
                 .clusterManager((String) customOptions.get(CouchbaseOptions.CLUSTER_USERNAME), (String) customOptions.get(CouchbaseOptions.CLUSTER_PASSWORD));
 
-        if (! clusterManager.hasBucket(database)) {
+        if (!clusterManager.hasBucket(database)) {
             // Create Bucket
             final DefaultBucketSettings.Builder bucketBuilder = DefaultBucketSettings.builder()
                     .enableFlush(true)

@@ -4,11 +4,11 @@
             xsi:schemaLocation="http://jboss.org/schema/arquillian
     http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-    <!-- We have to bind the docker hostname and bindPort, otherwise RMI will choose a random bindPort, which we can't forward to the docker host.
-     RMI is a difficult protocol to configure :(.    -->
+  <!-- We have to bind the docker hostname and bindPort, otherwise RMI will choose a random bindPort, which we can't forward to the docker host.
+   RMI is a difficult protocol to configure :(.    -->
 
-    <extension qualifier="docker">
-        <property name="dockerContainersFile">docker-compose.yaml</property>
-    </extension>
+  <extension qualifier="docker">
+    <property name="dockerContainersFile">docker-compose.yaml</property>
+  </extension>
 
 </arquillian>

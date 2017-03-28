@@ -17,11 +17,11 @@
  */
 package org.arquillian.integration.ape.test.customscripts;
 
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -37,6 +37,9 @@ import javax.persistence.PersistenceContext;
 @RunWith(Arquillian.class)
 public class ApplyingCustomScriptsTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
@@ -44,9 +47,6 @@ public class ApplyingCustomScriptsTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     @ApplyScriptBefore("users.sql")

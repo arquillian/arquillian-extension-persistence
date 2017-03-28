@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.transaction;
 
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;

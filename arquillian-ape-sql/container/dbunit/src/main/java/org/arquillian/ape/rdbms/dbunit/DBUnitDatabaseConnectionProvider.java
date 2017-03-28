@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 

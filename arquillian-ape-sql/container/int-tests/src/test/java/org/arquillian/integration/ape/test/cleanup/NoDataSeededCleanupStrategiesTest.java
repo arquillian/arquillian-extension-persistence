@@ -17,14 +17,14 @@
  */
 package org.arquillian.integration.ape.test.cleanup;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.util.Query;
-import org.jboss.arquillian.junit.Arquillian;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.util.Query;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -47,6 +47,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @CreateSchema("schema/create.sql")
 public class NoDataSeededCleanupStrategiesTest {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war").addPackage(UserAccount.class.getPackage())
@@ -56,9 +59,6 @@ public class NoDataSeededCleanupStrategiesTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Test
     @Cleanup(phase = TestExecutionPhase.BEFORE)

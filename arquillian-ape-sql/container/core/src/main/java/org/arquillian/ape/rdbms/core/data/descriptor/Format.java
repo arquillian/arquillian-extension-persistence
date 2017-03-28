@@ -37,10 +37,6 @@ public enum Format {
         this.fileExtension = fileExtension;
     }
 
-    public String extension() {
-        return fileExtension;
-    }
-
     public static Format inferFromFile(String fileName) {
         final Set<Format> validFormats = EnumSet.complementOf(NOT_REAL_FILE_TYPES);
 
@@ -55,6 +51,10 @@ public enum Format {
 
     public static boolean isFileType(Format format) {
         return EnumSet.complementOf(NOT_REAL_FILE_TYPES).contains(format);
+    }
+
+    public String extension() {
+        return fileExtension;
     }
 
 }

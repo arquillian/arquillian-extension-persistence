@@ -6,15 +6,16 @@
     "description": "",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
-  "item": [{
-    "name" : "This is one request",
-    "request": {
-      "url": "http://192.168.99.100:8080/?a=a",
-      "method": "GET",
-      "header": [],
-      "body": {},
-      "description": ""
+  "item": [
+    {
+      "name": "This is one request",
+      "request": {
+        "url": "http://192.168.99.100:8080/?a=a",
+        "method": "GET",
+        "header": [],
+        "body": {},
+        "description": ""
+      }
     }
-  }
   ]
 }

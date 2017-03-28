@@ -17,12 +17,17 @@
 
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
-import org.jboss.arquillian.core.api.Instance;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
+import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.shrinkwrap.api.*;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePath;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.Filters;
+import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.impl.base.NodeImpl;
@@ -39,6 +44,11 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
 
     private DBUnitDataSetsTestArchiveEnricher enricher = new DBUnitDataSetsTestArchiveEnricher();
 
+    private static void assertThatContainsOnly(Archive<?> archive, String path) {
+        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
+        assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+    }
+
     @Before
     public void initializeEnricher() {
         enricher.dbunitConfigurationInstance = new Instance<DBUnitConfiguration>() {
@@ -48,6 +58,8 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             }
         };
     }
+
+    //
 
     @Test
     public void should_bundle_resources_as_library_jar_in_enterprise_archive() throws Exception {
@@ -64,13 +76,6 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
 
         assertThatContainsOnly(archive, scriptPath);
         assertThatContainsOnly(library, "/datasets/users.json");
-    }
-
-    //
-
-    private static void assertThatContainsOnly(Archive<?> archive, String path) {
-        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
-        assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
     }
 
     private static class ScriptOnMethodLevel {

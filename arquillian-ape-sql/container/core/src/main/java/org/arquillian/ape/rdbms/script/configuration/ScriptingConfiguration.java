@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.configuration;
 
-import org.arquillian.ape.rdbms.script.splitter.DefaultStatementSplitter;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
+import org.arquillian.ape.rdbms.script.splitter.DefaultStatementSplitter;
 
 import java.nio.charset.Charset;
 
@@ -34,10 +34,8 @@ import static org.arquillian.ape.rdbms.util.Arrays.copy;
  */
 public class ScriptingConfiguration extends Configuration {
 
-    private static final long serialVersionUID = -7466338979646960512L;
-
     public static final String NEW_LINE_SYMBOL = "NEW_LINE";
-
+    private static final long serialVersionUID = -7466338979646960512L;
     private String defaultSqlScriptLocation = "scripts/";
 
     private String[] scriptsToExecuteBeforeTest;

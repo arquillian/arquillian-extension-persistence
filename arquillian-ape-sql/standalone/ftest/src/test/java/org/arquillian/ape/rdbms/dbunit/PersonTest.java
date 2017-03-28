@@ -36,18 +36,18 @@ public class PersonTest {
     @Test
     public void should_find_all_persons() {
         rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
-                        .withDriver(Driver.class)
-                        .withUsername("sa")
-                        .withPassword("")
-                        .usingDataSet("person.xml")
-                    .execute();
+                .withDriver(Driver.class)
+                .withUsername("sa")
+                .withPassword("")
+                .usingDataSet("person.xml")
+                .execute();
 
 
         Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "PERSON");
         assertThat(table).column("NAME")
-                         .value().isEqualTo("Bob")
-                         .value().isEqualTo("Alice")
-                         .value().isEqualTo("Charlie");
+                .value().isEqualTo("Bob")
+                .value().isEqualTo("Alice")
+                .value().isEqualTo("Charlie");
     }
 
 }

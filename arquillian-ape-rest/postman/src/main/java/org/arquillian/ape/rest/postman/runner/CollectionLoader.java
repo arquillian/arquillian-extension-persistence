@@ -1,8 +1,25 @@
 package org.arquillian.ape.rest.postman.runner;
 
-import com.google.gson.*;
-import org.arquillian.ape.rest.postman.runner.model.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import org.arquillian.ape.rest.postman.runner.model.Body;
 import org.arquillian.ape.rest.postman.runner.model.Collection;
+import org.arquillian.ape.rest.postman.runner.model.CompleteUrl;
+import org.arquillian.ape.rest.postman.runner.model.Domain;
+import org.arquillian.ape.rest.postman.runner.model.Folder;
+import org.arquillian.ape.rest.postman.runner.model.Item;
+import org.arquillian.ape.rest.postman.runner.model.ItemItem;
+import org.arquillian.ape.rest.postman.runner.model.Method;
+import org.arquillian.ape.rest.postman.runner.model.Path;
+import org.arquillian.ape.rest.postman.runner.model.Request;
+import org.arquillian.ape.rest.postman.runner.model.Url;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +27,10 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -60,6 +80,77 @@ class CollectionLoader {
 
     private String applyVariables(String element) {
         return VariablesParser.parseExpressions(element, variableSubstitutorThreadLocal.get().getVariables());
+    }
+
+    private static class VariableSubstitutor implements JsonDeserializer<String> {
+
+        private Map<String, String> variables = new HashMap<>();
+
+        public VariableSubstitutor(Map<String, String> variables) {
+            this.variables = variables;
+        }
+
+        @Override
+        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+            if (json.isJsonPrimitive()) {
+                return VariablesParser.parseExpressions(json.getAsString(), variables);
+            }
+
+            return null;
+        }
+
+        public Map<String, String> getVariables() {
+            return variables;
+        }
+    }
+
+    private static class VariablesParser {
+
+        private static final String START_EXPRESSION = "{{";
+        private static final String END_EXPRESSION = "}}";
+
+        private static String parseExpressions(final String value, Map<String, String> values) {
+            if (value.contains(START_EXPRESSION)) {
+                return replaceExpressions(value, values);
+            }
+            return value;
+        }
+
+        private static String replaceExpressions(String value, Map<String, String> values) {
+            StringJoiner joiner = new StringJoiner("");
+
+            String buffer = value;
+            int position = buffer.indexOf(START_EXPRESSION);
+            while (position >= 0) {
+                if (position > 0) {
+                    joiner.add(buffer.substring(0, position));
+                }
+                int endPosition = buffer.indexOf(END_EXPRESSION, position);
+                if (endPosition < 0) {
+                    throw new RuntimeException("Missing closing brace in expression string \"" + value + "]\"");
+                }
+                String expression = "";
+                if (endPosition - position > 2) {
+                    expression = resolve(buffer.substring(position + START_EXPRESSION.length(), endPosition), values);
+                }
+                joiner.add(expression);
+                buffer = buffer.substring(endPosition + END_EXPRESSION.length());
+                position = buffer.indexOf(START_EXPRESSION);
+            }
+            joiner.add(buffer);
+
+            return joiner.toString();
+
+        }
+
+        private static String resolve(String variable, Map<String, String> values) {
+            if (values.containsKey(variable)) {
+                return values.get(variable);
+            }
+
+            return variable;
+        }
     }
 
     private class RequestDeserializer implements JsonDeserializer<Request> {
@@ -210,77 +301,6 @@ class CollectionLoader {
                     throw new IllegalArgumentException(e);
                 }
             }
-        }
-    }
-
-    private static class VariableSubstitutor implements JsonDeserializer<String> {
-
-        private Map<String, String> variables = new HashMap<>();
-
-        public VariableSubstitutor(Map<String, String> variables) {
-            this.variables = variables;
-        }
-
-        @Override
-        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-
-            if (json.isJsonPrimitive()) {
-                return VariablesParser.parseExpressions(json.getAsString(), variables);
-            }
-
-            return null;
-        }
-
-        public Map<String, String> getVariables() {
-            return variables;
-        }
-    }
-
-    private static class VariablesParser {
-
-        private static final String START_EXPRESSION = "{{";
-        private static final String END_EXPRESSION = "}}";
-        
-        private static String parseExpressions(final String value, Map<String, String> values) {
-            if (value.contains(START_EXPRESSION)) {
-                return replaceExpressions(value, values);
-            }
-            return value;
-        }
-
-        private static String replaceExpressions(String value, Map<String, String> values) {
-            StringJoiner joiner = new StringJoiner("");
-
-            String buffer = value;
-            int position = buffer.indexOf(START_EXPRESSION);
-            while (position >= 0) {
-                if (position > 0) {
-                    joiner.add(buffer.substring(0, position));
-                }
-                int endPosition = buffer.indexOf(END_EXPRESSION, position);
-                if (endPosition < 0) {
-                    throw new RuntimeException("Missing closing brace in expression string \"" + value + "]\"");
-                }
-                String expression = "";
-                if (endPosition - position > 2) {
-                    expression = resolve(buffer.substring(position + START_EXPRESSION.length(), endPosition), values);
-                }
-                joiner.add(expression);
-                buffer = buffer.substring(endPosition + END_EXPRESSION.length());
-                position = buffer.indexOf(START_EXPRESSION);
-            }
-            joiner.add(buffer);
-
-            return joiner.toString();
-
-        }
-
-        private static String resolve(String variable, Map<String, String> values) {
-            if (values.containsKey(variable)) {
-                return values.get(variable);
-            }
-
-            return variable;
         }
     }
 

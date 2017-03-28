@@ -21,8 +21,8 @@ import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
-import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
 import org.arquillian.ape.rdbms.core.util.Strings;
 import org.jboss.arquillian.test.spi.TestClass;
 
@@ -30,7 +30,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Handles metadata extraction from given test class or test method and provides

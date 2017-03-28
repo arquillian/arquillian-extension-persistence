@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.command;
 
-import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
 import org.arquillian.ape.rdbms.core.data.dump.DataDump;
+import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

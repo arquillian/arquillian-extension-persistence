@@ -24,8 +24,7 @@ public class Arrays {
         if (source == null) {
             return null;
         }
-        @SuppressWarnings("unchecked")
-        final T[] copy = (T[]) Array.newInstance(source.getClass().getComponentType(), source.length);
+        @SuppressWarnings("unchecked") final T[] copy = (T[]) Array.newInstance(source.getClass().getComponentType(), source.length);
         System.arraycopy(source, 0, copy, 0, source.length);
         return copy;
     }

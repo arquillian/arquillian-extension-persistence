@@ -17,8 +17,8 @@
  */
 package org.arquillian.integration.ape.example;
 
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.integration.ape.util.Query;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -38,6 +38,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class DatabaseConnectionVerificationTest {
 
+    @ArquillianResource
+    private DatabaseConnection databaseConnection;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -48,9 +51,6 @@ public class DatabaseConnectionVerificationTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @ArquillianResource
-    private DatabaseConnection databaseConnection;
 
     @Test
     @UsingDataSet("users.yml")

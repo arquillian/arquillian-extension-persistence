@@ -26,14 +26,16 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
     /**
      * Method that needs to be implemented that implements custom DSL methods.
      * For example in case of SQL databases some parameters like driver class or JDBC are required meanwhile in case of NoSQL you only need database name.
+     *
      * @return Class implementing {@link PopulatorConfigurator}
      */
     public abstract R createExecutor();
 
     /**
      * Initial method for Populators DSL
+     *
      * @param hostname of service to populate.
-     * @param port exposed by the service
+     * @param port     exposed by the service
      * @return Next commands to configure service.
      */
     public R forServer(String hostname, int port) {
@@ -44,6 +46,7 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
 
     /**
      * Initial method for Populators DSL
+     *
      * @param uri to connect
      * @return Next commands to configure the service.
      */

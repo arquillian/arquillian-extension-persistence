@@ -17,15 +17,6 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
-import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.InstanceProducer;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.EventContext;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
@@ -38,6 +29,15 @@ import org.arquillian.ape.rdbms.dbunit.data.provider.ExpectedDataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitConnectionException;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitInitializationException;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 

@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.jpa.cache;
 
+import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -40,6 +40,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JpaCacheEviction(entityManager = "jpacacheeviction")
 public class JpaCacheEvictionTest {
 
+    @Inject
+    private GameBean gameBean;
+    @PersistenceUnit(unitName = "jpacacheeviction")
+    private EntityManagerFactory emf;
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "jpacacheeviction-test.war")
@@ -47,12 +52,6 @@ public class JpaCacheEvictionTest {
                 .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
-    @Inject
-    private GameBean gameBean;
-
-    @PersistenceUnit(unitName = "jpacacheeviction")
-    private EntityManagerFactory emf;
 
     @Test
     @InSequence(value = 1)

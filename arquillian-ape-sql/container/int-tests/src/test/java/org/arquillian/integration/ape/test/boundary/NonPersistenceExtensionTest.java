@@ -17,8 +17,8 @@
  */
 package org.arquillian.integration.ape.test.boundary;
 
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.arquillian.integration.ape.example.UserAccount;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -35,6 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class NonPersistenceExtensionTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
@@ -44,9 +47,6 @@ public class NonPersistenceExtensionTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     public void should_inject_entity_manager() throws Exception {

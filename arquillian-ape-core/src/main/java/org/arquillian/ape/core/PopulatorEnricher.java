@@ -1,10 +1,10 @@
 package org.arquillian.ape.core;
 
+import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.spi.ServiceLoader;
-import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
@@ -52,6 +52,7 @@ public abstract class PopulatorEnricher<T extends PopulatorService> implements R
 
     /**
      * Method that instantiate the custom populator DSL specific for each case. For example NoSql populator, Sql populator, ...
+     *
      * @param populatorService used in DSL Populator to execute and clean methods.
      * @return Populator instance.
      */

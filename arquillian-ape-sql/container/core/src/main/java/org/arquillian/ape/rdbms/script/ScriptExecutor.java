@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script;
 
+import org.arquillian.ape.rdbms.core.exception.ScriptExecutionException;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.spi.script.StatementSplitter;
-import org.arquillian.ape.rdbms.core.exception.ScriptExecutionException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

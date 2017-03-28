@@ -16,12 +16,17 @@
  */
 package org.arquillian.ape.rdbms.core.deployment;
 
+import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.core.api.Instance;
-import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.shrinkwrap.api.*;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePath;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.Filters;
+import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.NodeImpl;
@@ -37,6 +42,12 @@ import static org.assertj.core.data.MapEntry.entry;
 public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
 
     private PersistenceExtensionDataResourcesTestArchiveEnricher enricher = new PersistenceExtensionDataResourcesTestArchiveEnricher();
+
+    private static void assertThatContainsOnly(Archive<?> archive, String path) {
+        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
+        assertThat(content).hasSize(1)
+                .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+    }
 
     @Before
     public void initializeEnricher() {
@@ -61,6 +72,8 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
         assertThatContainsOnly(archive, scriptPath);
     }
 
+    //
+
     @Test
     public void should_bundle_resources_directly_in_web_archive() throws Exception {
         // given
@@ -72,14 +85,6 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
 
         // then
         assertThatContainsOnly(archive, scriptPath);
-    }
-
-    //
-
-    private static void assertThatContainsOnly(Archive<?> archive, String path) {
-        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
-        assertThat(content).hasSize(1)
-                .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
     }
 
     private static class ScriptOnMethodLevel {

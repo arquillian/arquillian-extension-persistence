@@ -16,13 +16,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.client;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationClientSideProducer;
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitArchiveAppender;
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitConfigurationTestArchiveEnricher;
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitDataSetsTestArchiveEnricher;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
  * Wires persistence extension services which are used to prepare

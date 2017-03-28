@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.command;
 
-import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
 import org.arquillian.ape.rdbms.core.client.SchemaCreationCoordinator;
+import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
 
 /**
  * Command used to communicate between local test executor and remote

@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.configuration;
 
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 

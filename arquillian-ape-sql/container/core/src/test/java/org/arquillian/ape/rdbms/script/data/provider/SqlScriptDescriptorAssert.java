@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
+import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.IterableAssert;
-import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

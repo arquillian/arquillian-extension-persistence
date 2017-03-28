@@ -16,9 +16,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.event;
 
-import org.dbunit.dataset.filter.IColumnFilter;
 import org.arquillian.ape.rdbms.core.event.DataEvent;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.dbunit.dataset.filter.IColumnFilter;
 
 import java.util.Arrays;
 import java.util.Collection;

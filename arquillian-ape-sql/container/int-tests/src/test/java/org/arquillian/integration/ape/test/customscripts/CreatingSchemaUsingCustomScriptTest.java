@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.test.customscripts;
 
-import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.integration.ape.example.NonDeployableUserPersistenceTest;
-import org.arquillian.integration.ape.util.Query;
 import org.arquillian.ape.rdbms.CreateSchema;
+import org.arquillian.integration.ape.example.NonDeployableUserPersistenceTest;
+import org.arquillian.integration.ape.example.UserAccount;
+import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

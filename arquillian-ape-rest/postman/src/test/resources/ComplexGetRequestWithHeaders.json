@@ -6,26 +6,27 @@
     "description": "",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
   },
-  "item": [{
-    "name" : "This is one request",
-    "request": {
-      "url": "http://192.168.99.100:8080/?a=a",
-      "method": "GET",
-      "header": [
-        {
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        },
-        {
-          "key": "Authorization",
-          "value": "Basic YWE6YmI=",
-          "description": ""
-        }
-      ],
-      "body": {},
-      "description": ""
+  "item": [
+    {
+      "name": "This is one request",
+      "request": {
+        "url": "http://192.168.99.100:8080/?a=a",
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": ""
+          },
+          {
+            "key": "Authorization",
+            "value": "Basic YWE6YmI=",
+            "description": ""
+          }
+        ],
+        "body": {},
+        "description": ""
+      }
     }
-  }
   ]
 }

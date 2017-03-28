@@ -17,12 +17,12 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
-import org.arquillian.ape.rdbms.CleanupStrategy;
-import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
-import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.arquillian.ape.rdbms.Cleanup;
+import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
+import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

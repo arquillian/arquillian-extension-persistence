@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.integration.persistence.jpa.cache;
 
+import org.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.arquillian.persistence.DataSource;
-import org.arquillian.persistence.JpaCacheEviction;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -41,6 +40,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JpaCacheEviction(entityManager = "jpacacheeviction")
 public class JpaCacheEvictionMultiplePersistenceUnitsTest {
 
+    @Inject
+    private GameBeanDoublePersistenceContext gameBean;
+    @PersistenceUnit(unitName = "jpacacheeviction")
+    private EntityManagerFactory cacheEviction;
+    @PersistenceUnit(unitName = "embedded")
+    private EntityManagerFactory embedded;
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "JpaCacheEvictionMultiplePersistenceUnitsTest.war")
@@ -48,15 +54,6 @@ public class JpaCacheEvictionMultiplePersistenceUnitsTest {
                 .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
-    @Inject
-    private GameBeanDoublePersistenceContext gameBean;
-
-    @PersistenceUnit(unitName = "jpacacheeviction")
-    private EntityManagerFactory cacheEviction;
-
-    @PersistenceUnit(unitName = "embedded")
-    private EntityManagerFactory embedded;
 
     @Test
     @InSequence(value = 1)

@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.testextension;
 
+import org.arquillian.integration.ape.testextension.deployment.PersistenceTestExtensionDynamicDependencyAppender;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.arquillian.integration.ape.testextension.deployment.PersistenceTestExtensionDynamicDependencyAppender;
 
 public class PersistenceExtensionTester implements LoadableExtension {
 

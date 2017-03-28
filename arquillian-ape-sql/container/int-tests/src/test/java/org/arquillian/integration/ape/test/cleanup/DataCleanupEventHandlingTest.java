@@ -17,16 +17,16 @@
  */
 package org.arquillian.integration.ape.test.cleanup;
 
-import org.jboss.arquillian.container.test.api.Deployment;
+import org.arquillian.ape.rdbms.Cleanup;
+import org.arquillian.ape.rdbms.PersistenceTest;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupShouldBeTriggered;
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupShouldNotBeTriggered;
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.arquillian.ape.rdbms.Cleanup;
-import org.arquillian.ape.rdbms.PersistenceTest;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -44,6 +44,9 @@ import javax.persistence.PersistenceContext;
 @PersistenceTest
 public class DataCleanupEventHandlingTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -53,9 +56,6 @@ public class DataCleanupEventHandlingTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     @InSequence(1)

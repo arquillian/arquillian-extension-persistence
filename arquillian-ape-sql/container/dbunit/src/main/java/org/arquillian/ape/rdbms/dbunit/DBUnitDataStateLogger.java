@@ -17,15 +17,6 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.jboss.arquillian.container.test.spi.command.CommandService;
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.EventContext;
 import org.arquillian.ape.rdbms.core.command.DumpDataCommand;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.data.dump.DataDump;
@@ -35,6 +26,15 @@ import org.arquillian.ape.rdbms.core.event.CleanupData;
 import org.arquillian.ape.rdbms.core.event.PersistenceEvent;
 import org.arquillian.ape.rdbms.dbunit.event.PrepareDBUnitData;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.jboss.arquillian.container.test.spi.command.CommandService;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.io.IOException;
