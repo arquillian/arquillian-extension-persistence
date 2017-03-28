@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>org.arquillian.ape</groupId>
-    <artifactId>arquillian-ape-sql-parent</artifactId>
+    <artifactId>arquillian-ape-sql-container-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
@@ -17,7 +17,7 @@
   <description>Extension for controlling data sources</description>
 
   <properties>
-    <version.snakeyaml>1.17</version.snakeyaml>
+    <version.snakeyaml>1.18</version.snakeyaml>
     <version.jackson>1.9.11</version.jackson>
     <version.poi>3.14</version.poi>
     <version.cdi>1.0-SP1</version.cdi>
