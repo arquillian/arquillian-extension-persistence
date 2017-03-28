@@ -24,9 +24,9 @@ import org.arquillian.integration.ape.testextension.event.annotation.CleanupShou
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.arquillian.persistence.Cleanup;
-import org.arquillian.persistence.PersistenceTest;
-import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.ape.rdbms.Cleanup;
+import org.arquillian.ape.rdbms.PersistenceTest;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

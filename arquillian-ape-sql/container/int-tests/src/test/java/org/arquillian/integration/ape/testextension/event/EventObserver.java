@@ -17,11 +17,16 @@
  */
 package org.arquillian.integration.ape.testextension.event;
 
+import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
+import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
+import org.arquillian.ape.rdbms.core.event.CleanupData;
+import org.arquillian.ape.rdbms.core.event.CleanupDataUsingScript;
+import org.arquillian.ape.rdbms.core.event.ExecuteScripts;
+import org.arquillian.ape.rdbms.core.event.PersistenceEvent;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.arquillian.integration.ape.testextension.event.annotation.*;
-import org.arquillian.persistence.core.event.*;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;

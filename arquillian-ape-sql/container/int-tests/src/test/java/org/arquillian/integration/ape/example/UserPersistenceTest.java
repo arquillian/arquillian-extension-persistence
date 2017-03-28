@@ -18,7 +18,7 @@
 package org.arquillian.integration.ape.example;
 
 import org.arquillian.integration.ape.util.Query;
-import org.arquillian.persistence.PersistenceTest;
+import org.arquillian.ape.rdbms.PersistenceTest;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

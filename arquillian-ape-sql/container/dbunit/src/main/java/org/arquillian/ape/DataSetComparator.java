@@ -25,9 +25,9 @@ import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
-import org.arquillian.persistence.core.test.AssertionErrorCollector;
-import org.arquillian.ape.dataset.TableWrapper;
-import org.arquillian.ape.exception.DBUnitDataSetHandlingException;
+import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
+import org.arquillian.ape.dbunit.dataset.TableWrapper;
+import org.arquillian.ape.dbunit.exception.DBUnitDataSetHandlingException;
 
 import java.util.*;
 import java.util.logging.Logger;

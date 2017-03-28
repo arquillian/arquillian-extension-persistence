@@ -17,7 +17,7 @@
  */
 package org.arquillian.integration.ape.testextension.event.annotation;
 
-import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;

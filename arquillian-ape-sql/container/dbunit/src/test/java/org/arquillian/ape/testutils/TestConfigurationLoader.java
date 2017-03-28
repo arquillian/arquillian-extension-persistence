@@ -16,10 +16,10 @@
  */
 package org.arquillian.ape.testutils;
 
-import org.arquillian.ape.configuration.DBUnitConfiguration;
-import org.arquillian.persistence.core.configuration.Configuration;
-import org.arquillian.persistence.core.configuration.PersistenceConfiguration;
-import org.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.arquillian.ape.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.ape.rdbms.core.configuration.Configuration;
+import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
+import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 

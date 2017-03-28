@@ -2,10 +2,10 @@ package org.arquillian.integration.ape.test.seeding;
 
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.util.Query;
-import org.arquillian.persistence.ApplyScriptBefore;
-import org.arquillian.persistence.DataSeedStrategy;
-import org.arquillian.persistence.SeedDataUsing;
-import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.ape.rdbms.ApplyScriptBefore;
+import org.arquillian.ape.rdbms.DataSeedStrategy;
+import org.arquillian.ape.rdbms.SeedDataUsing;
+import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

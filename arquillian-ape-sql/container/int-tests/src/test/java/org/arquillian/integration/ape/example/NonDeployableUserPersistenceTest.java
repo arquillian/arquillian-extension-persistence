@@ -18,10 +18,10 @@
 package org.arquillian.integration.ape.example;
 
 import org.arquillian.integration.ape.util.Query;
-import org.arquillian.persistence.ApplyScriptBefore;
-import org.arquillian.persistence.CleanupUsingScript;
-import org.arquillian.persistence.ShouldMatchDataSet;
-import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.ape.rdbms.ApplyScriptBefore;
+import org.arquillian.ape.rdbms.CleanupUsingScript;
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.junit.Test;

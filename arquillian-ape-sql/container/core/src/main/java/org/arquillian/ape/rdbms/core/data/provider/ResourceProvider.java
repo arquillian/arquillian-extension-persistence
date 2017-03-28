@@ -1,0 +1,168 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2011 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.arquillian.ape.rdbms.core.data.provider;
+
+import org.arquillian.ape.rdbms.ApplyScriptBefore;
+import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
+import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
+import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.util.Strings;
+import org.jboss.arquillian.test.spi.TestClass;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
+
+/**
+ * Handles metadata extraction from given test class or test method and provides
+ * {@link ResourceDescriptor descriptors} for resources defined in given annotation type
+ * (such as {@link UsingDataSet} or {@link ApplyScriptBefore}).
+ *
+ * @param <T> Concrete implementation of {@link ResourceDescriptor} providing necessary information for given resource type.
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ */
+public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
+
+    protected final MetadataExtractor metadataExtractor;
+
+    protected final Class<? extends Annotation> resourceAnnotation;
+
+    public ResourceProvider(Class<? extends Annotation> resourceAnnotation, MetadataExtractor metadataExtractor) {
+        this.resourceAnnotation = resourceAnnotation;
+        this.metadataExtractor = metadataExtractor;
+    }
+
+    /**
+     * Returns all resources defined for this test class
+     * including those defined on the test method level.
+     *
+     * @param testClass
+     * @return
+     */
+    public Collection<T> getDescriptors(TestClass testClass) {
+        final List<T> descriptors = new ArrayList<T>();
+        for (Method testMethod : testClass.getMethods(resourceAnnotation)) {
+            descriptors.addAll(getDescriptorsDefinedFor(testMethod));
+        }
+        descriptors.addAll(obtainClassLevelDescriptor(testClass.getAnnotation(resourceAnnotation)));
+        return descriptors;
+    }
+
+    public Collection<T> getDescriptorsDefinedFor(Method testMethod) {
+        final List<T> descriptors = new ArrayList<T>();
+        for (String dataFileName : getResourceFileNames(testMethod)) {
+            T descriptor = createDescriptor(dataFileName);
+            descriptors.add(descriptor);
+        }
+
+        return descriptors;
+    }
+
+    public abstract Collection<String> getResourceFileNames(Method testMethod);
+
+    protected abstract T createDescriptor(String resource);
+
+    protected abstract String defaultLocation();
+
+    protected abstract String defaultFileName();
+
+    protected List<T> obtainClassLevelDescriptor(Annotation classLevelAnnotation) {
+        if (classLevelAnnotation == null) {
+            return Collections.emptyList();
+        }
+
+        final List<T> descriptors = new ArrayList<T>();
+
+        try {
+            final String[] values = (String[]) classLevelAnnotation.annotationType()
+                    .getMethod("value")
+                    .invoke(classLevelAnnotation);
+
+            final List<String> resources = new ArrayList<String>(Arrays.asList(values));
+
+            if (resources.isEmpty() || Strings.isEmpty(resources.get(0))) {
+                String defaultFileName = defaultFileName();
+                resources.clear();
+                resources.add(defaultFileName);
+            }
+
+            for (String dataFileName : resources) {
+                descriptors.add(createDescriptor(dataFileName));
+            }
+
+        } catch (Exception e) {
+            throw new MetadataProcessingException("Unable to evaluate annotation value", e);
+        }
+
+        return descriptors;
+    }
+
+    protected String defaultFolder() {
+        String defaultLocation = defaultLocation();
+        if (!defaultLocation.endsWith("/")) {
+            defaultLocation += "/";
+        }
+        return defaultLocation;
+    }
+
+    /**
+     * Checks if file exists in the default location.
+     * If that's not the case, file is looked up starting from the root.
+     *
+     * @return determined file location
+     */
+    protected String determineLocation(String location) {
+        if (existsInDefaultLocation(location)) {
+            return defaultFolder() + location;
+        }
+
+        if (!existsInGivenLocation(location)) {
+            throw new InvalidResourceLocation("Unable to locate " + location + ". " +
+                    "File does not exist also in default location " + defaultLocation());
+        }
+
+        return location;
+    }
+
+    protected boolean existsInGivenLocation(String location) {
+        try {
+            final URL url = load(location);
+            if (url == null) {
+                return false;
+            }
+        } catch (URISyntaxException e) {
+            throw new InvalidResourceLocation("Unable to open resource file in " + location, e);
+        }
+
+        return true;
+    }
+
+    protected boolean existsInDefaultLocation(String location) {
+        final String defaultLocation = defaultFolder() + location;
+        return existsInGivenLocation(defaultLocation);
+    }
+
+    private URL load(String resourceLocation) throws URISyntaxException {
+        return Thread.currentThread().getContextClassLoader().getResource(resourceLocation);
+    }
+
+}

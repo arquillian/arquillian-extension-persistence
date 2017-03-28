@@ -16,7 +16,7 @@
  */
 package org.arquillian.ape.testutils;
 
-import org.arquillian.ape.dataset.Row;
+import org.arquillian.ape.dbunit.dataset.Row;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.Column;

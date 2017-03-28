@@ -19,9 +19,9 @@ package org.arquillian.integration.ape.test.customscripts;
 
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.testextension.event.annotation.ExecuteScriptsShouldBeTriggered;
-import org.arquillian.persistence.ApplyScriptBefore;
-import org.arquillian.persistence.ShouldMatchDataSet;
-import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.ape.rdbms.ApplyScriptBefore;
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

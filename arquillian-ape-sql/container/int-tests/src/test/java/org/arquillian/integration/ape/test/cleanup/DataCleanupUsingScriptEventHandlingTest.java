@@ -25,9 +25,9 @@ import org.arquillian.integration.ape.testextension.event.annotation.CleanupUsin
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupUsingScriptShouldNotBeTriggered;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.arquillian.persistence.CleanupUsingScript;
-import org.arquillian.persistence.ShouldMatchDataSet;
-import org.arquillian.persistence.TestExecutionPhase;
+import org.arquillian.ape.rdbms.CleanupUsingScript;
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

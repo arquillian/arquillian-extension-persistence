@@ -20,7 +20,7 @@ package org.arquillian.ape;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.arquillian.ape.configuration.DBUnitConfiguration;
+import org.arquillian.ape.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 

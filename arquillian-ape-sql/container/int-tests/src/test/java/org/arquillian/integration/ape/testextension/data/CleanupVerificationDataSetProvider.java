@@ -17,14 +17,14 @@
 package org.arquillian.integration.ape.testextension.data;
 
 import org.arquillian.integration.ape.testextension.data.annotation.DatabaseShouldContainAfterTest;
-import org.arquillian.persistence.core.data.descriptor.Format;
-import org.arquillian.persistence.core.data.provider.ResourceProvider;
-import org.arquillian.persistence.core.exception.UnsupportedDataFormatException;
-import org.arquillian.persistence.core.metadata.AnnotationInspector;
-import org.arquillian.persistence.core.metadata.MetadataExtractor;
-import org.arquillian.ape.configuration.DBUnitConfiguration;
-import org.arquillian.ape.data.descriptor.DataSetResourceDescriptor;
-import org.arquillian.ape.data.naming.ExpectedDataSetFileNamingStrategy;
+import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
+import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
+import org.arquillian.ape.rdbms.core.metadata.AnnotationInspector;
+import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.dbunit.configuration.DBUnitConfiguration;
+import org.arquillian.ape.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
 import java.lang.reflect.Method;

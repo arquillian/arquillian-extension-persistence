@@ -16,8 +16,8 @@
  */
 package org.arquillian.ape.testutils;
 
-import org.arquillian.ape.data.descriptor.DataSetResourceDescriptor;
-import org.arquillian.persistence.core.data.descriptor.Format;
+import org.arquillian.ape.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.IterableAssert;
 

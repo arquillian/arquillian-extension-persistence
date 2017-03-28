@@ -1,10 +1,10 @@
 package org.arquillian.integration.ape.test.contentverification;
 
-import org.arquillian.ape.api.CustomColumnFilter;
+import org.arquillian.ape.dbunit.api.CustomColumnFilter;
 import org.arquillian.integration.ape.example.Address;
 import org.arquillian.integration.ape.example.UserAccount;
-import org.arquillian.persistence.ShouldMatchDataSet;
-import org.arquillian.persistence.UsingDataSet;
+import org.arquillian.ape.rdbms.ShouldMatchDataSet;
+import org.arquillian.ape.rdbms.UsingDataSet;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
