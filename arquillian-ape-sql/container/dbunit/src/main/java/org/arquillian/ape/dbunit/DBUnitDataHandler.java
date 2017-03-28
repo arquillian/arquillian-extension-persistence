@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape;
+package org.arquillian.ape.dbunit;
 
 import org.arquillian.ape.dbunit.cleanup.CleanupStrategyExecutor;
 import org.arquillian.ape.dbunit.cleanup.CleanupStrategyProvider;
@@ -52,8 +52,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 
 import java.sql.SQLException;
-
-import static org.arquillian.ape.DataSetUtils.mergeDataSets;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -95,7 +93,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
             if (excludeTables.length != 0) {
                 currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
             }
-            final IDataSet expectedDataSet = mergeDataSets(dataSetRegister.get().getExpected());
+            final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
             final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
                     compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
             dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
@@ -137,7 +135,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
 
     private void seedDatabase() throws Exception {
         final DatabaseConnection connection = databaseConnection.get();
-        IDataSet initialDataSet = mergeDataSets(dataSetRegister.get().getInitial());
+        IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
         if (dbunitConfigurationInstance.get().isFilterTables()) {
             final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
             final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());

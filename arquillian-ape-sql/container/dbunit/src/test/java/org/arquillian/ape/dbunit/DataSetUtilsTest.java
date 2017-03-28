@@ -15,11 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape;
+package org.arquillian.ape.dbunit;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
+import org.arquillian.ape.dbunit.DataSetUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

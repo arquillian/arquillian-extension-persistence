@@ -20,7 +20,7 @@ package org.arquillian.ape.dbunit.filter;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
-import org.arquillian.ape.DataSetUtils;
+import org.arquillian.ape.dbunit.DataSetUtils;
 
 import java.sql.SQLException;
 

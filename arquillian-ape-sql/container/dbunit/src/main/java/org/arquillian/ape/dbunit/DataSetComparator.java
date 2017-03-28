@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape;
+package org.arquillian.ape.dbunit;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
@@ -31,8 +31,6 @@ import org.arquillian.ape.dbunit.exception.DBUnitDataSetHandlingException;
 
 import java.util.*;
 import java.util.logging.Logger;
-
-import static org.arquillian.ape.DataSetUtils.*;
 
 public class DataSetComparator {
 
@@ -150,7 +148,7 @@ public class DataSetComparator {
     private List<String> additionalColumnsForSorting(final ITable expectedTableState, final ITable currentTableState) {
         final List<String> columnsForSorting = new ArrayList<String>();
         try {
-            final Set<String> allColumns = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData()
+            final Set<String> allColumns = new HashSet<String>(DataSetUtils.extractColumnNames(expectedTableState.getTableMetaData()
                     .getColumns()));
             final Set<String> columnsToIgnore = new HashSet<String>(extractColumnsToBeIgnored(expectedTableState,
                     currentTableState));
@@ -169,7 +167,7 @@ public class DataSetComparator {
 
     private List<String> extractColumnsToBeIgnored(final ITable expectedTableState, final ITable currentTableState)
             throws DataSetException {
-        final List<String> columnsToIgnore = extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState,
+        final List<String> columnsToIgnore = DataSetUtils.extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState,
                 currentTableState);
         final String tableName = expectedTableState.getTableMetaData().getTableName();
         final List<String> tableColumns = toExclude.columnsPerTable.get(tableName);
@@ -180,8 +178,8 @@ public class DataSetComparator {
             columnsToIgnore.addAll(tableColumns);
         }
 
-        final List<String> nonExistingColumns = extractNonExistingColumns(columnsToIgnore,
-                extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+        final List<String> nonExistingColumns = DataSetUtils.extractNonExistingColumns(columnsToIgnore,
+                DataSetUtils.extractColumnNames(currentTableState.getTableMetaData().getColumns()));
 
         if (!nonExistingColumns.isEmpty()) {
             log.warning("Columns which are specified to be filtered out " + Arrays.toString(nonExistingColumns.toArray())

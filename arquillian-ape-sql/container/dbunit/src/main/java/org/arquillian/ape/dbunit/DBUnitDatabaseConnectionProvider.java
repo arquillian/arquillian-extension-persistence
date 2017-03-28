@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape;
+package org.arquillian.ape.dbunit;
 
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.core.api.Instance;

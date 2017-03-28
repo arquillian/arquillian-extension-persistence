@@ -17,10 +17,10 @@
 package org.arquillian.ape.dbunit.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.arquillian.ape.DBUnitDataHandler;
-import org.arquillian.ape.DBUnitDataStateLogger;
-import org.arquillian.ape.DBUnitDatabaseConnectionProvider;
-import org.arquillian.ape.DBUnitPersistenceTestLifecycleHandler;
+import org.arquillian.ape.dbunit.DBUnitDataHandler;
+import org.arquillian.ape.dbunit.DBUnitDataStateLogger;
+import org.arquillian.ape.dbunit.DBUnitDatabaseConnectionProvider;
+import org.arquillian.ape.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.arquillian.ape.dbunit.configuration.DBUnitConfigurationRemoteProducer;
 import org.arquillian.ape.dbunit.lifecycle.DataSetHandler;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;

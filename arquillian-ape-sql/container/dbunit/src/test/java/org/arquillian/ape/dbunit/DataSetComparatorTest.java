@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape;
+package org.arquillian.ape.dbunit;
 
+import org.arquillian.ape.dbunit.DataSetComparator;
 import org.arquillian.ape.dbunit.dataset.DataSetBuilder;
 import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
