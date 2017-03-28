@@ -7,6 +7,7 @@ import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 import redis.clients.jedis.BinaryJedisCommands;
 import redis.clients.jedis.Jedis;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,12 @@ class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
     @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
         jedis = new Jedis(host, port);
+        jedis.connect();
+    }
+
+    @Override
+    public void connect(URI uri, String database, Map<String, Object> customOptions) {
+        jedis = new Jedis(uri);
         jedis.connect();
     }
 

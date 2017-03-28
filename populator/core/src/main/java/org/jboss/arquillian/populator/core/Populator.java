@@ -2,6 +2,8 @@ package org.jboss.arquillian.populator.core;
 
 import org.jboss.arquillian.populator.spi.PopulatorService;
 
+import java.net.URI;
+
 /**
  * This class represents base class for all Populators DSL for storing configuration.
  * It implements common operations o to configure all populators.
@@ -14,6 +16,8 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
     protected T populatorService;
     protected String host;
     protected int bindPort;
+
+    protected URI uri;
 
     protected Populator(T populatorService) {
         this.populatorService = populatorService;
@@ -35,6 +39,16 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
     public R forServer(String hostname, int port) {
         this.host = hostname;
         this.bindPort = port;
+        return createExecutor();
+    }
+
+    /**
+     * Initial method for Populators DSL
+     * @param uri to connect
+     * @return Next commands to configure the service.
+     */
+    public R forUri(URI uri) {
+        this.uri = uri;
         return createExecutor();
     }
 

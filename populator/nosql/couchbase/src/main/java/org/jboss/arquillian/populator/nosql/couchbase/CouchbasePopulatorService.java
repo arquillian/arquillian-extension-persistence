@@ -9,6 +9,7 @@ import org.jboss.arquillian.populator.core.DataSetLoader;
 import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,21 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
 
         this.couchbaseCluster = CouchbaseCluster.create(createCouchbaseClusterUri(host, port));
 
+        connectToBucket(database, customOptions);
+
+    }
+
+    @Override
+    public void connect(URI uri, String database, Map<String, Object> customOptions) {
+        if (database == null) {
+            database = "default";
+        }
+
+        this.couchbaseCluster = CouchbaseCluster.create(uri.toString());
+        connectToBucket(database, customOptions);
+    }
+
+    private void connectToBucket(String database, Map<String, Object> customOptions) {
         if (isCreationOfBucketEnabled(customOptions)) {
             createBucket(database, customOptions);
         }
@@ -37,7 +53,6 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         } else {
             this.bucket = couchbaseCluster.openBucket(database);
         }
-
     }
 
     private String createCouchbaseClusterUri(String host, int port) {

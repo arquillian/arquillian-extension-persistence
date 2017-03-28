@@ -14,7 +14,12 @@ public class NoSqlPopulator extends Populator<NoSqlPopulatorService, NoSqlPopula
 
     @Override
     public NoSqlPopulatorConfigurator createExecutor() {
-        return new NoSqlPopulatorConfigurator(this.host, this.bindPort, this.populatorService);
+
+        if (this.uri != null) {
+            return new NoSqlPopulatorConfigurator(this.uri, this.populatorService);
+        } else {
+            return new NoSqlPopulatorConfigurator(this.host, this.bindPort, this.populatorService);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package org.jboss.arquillian.populator.rest.api;
 
 import org.jboss.arquillian.populator.core.Populator;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +18,14 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     private List<String> datasets = new ArrayList<>();
     private Map<String, String> variables = new HashMap<>();
 
+    private URI uri;
+
     private boolean urlOverride = true;
+
+    RestPopulatorConfigurator(URI uri, RestPopulatorService populatorService) {
+        this.uri = uri;
+        this.populatorService = populatorService;
+    }
 
     RestPopulatorConfigurator(String host, int bindPort, RestPopulatorService populatorService) {
         this.host = host;
@@ -36,7 +44,8 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     }
 
     /**
-     *Set variables to be used in script.
+     * Set variables to be used in script.
+     *
      * @param variables map.
      * @return this instance.
      */
@@ -47,8 +56,9 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
 
     /**
      * Set variables to be used in script.
-     * @param key name.
-     * @param value of property.
+     *
+     * @param key      name.
+     * @param value    of property.
      * @param elements pair key, value. Even elements are keys, odd ones values.
      * @return this instance.
      */
@@ -60,8 +70,8 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
 
         this.variables.put(key, value);
 
-        for (int i=0; i < elements.length; i+=2) {
-            this.variables.put(elements[i], elements[i+1]);
+        for (int i = 0; i < elements.length; i += 2) {
+            this.variables.put(elements[i], elements[i + 1]);
         }
 
         return this;
@@ -70,7 +80,14 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     @Override
     public void execute() {
         if (urlOverride) {
-            this.populatorService.execute(this.host, this.bindPort, Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
+            // TODO should runners manage uri internally? Yes let's do it in next alpha since it is an internal change
+            if (uri != null) {
+                this.host = uri.getHost();
+                this.bindPort = uri.getPort();
+            }
+
+            this.populatorService.execute(host, bindPort, Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
+
         } else {
             this.populatorService.execute(Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
         }
@@ -79,7 +96,14 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     @Override
     public void clean() {
         if (urlOverride) {
+
+            if (uri != null) {
+                this.host = uri.getHost();
+                this.bindPort = uri.getPort();
+            }
+
             this.populatorService.clean(this.host, this.bindPort, Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
+
         } else {
             this.populatorService.clean(Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
         }

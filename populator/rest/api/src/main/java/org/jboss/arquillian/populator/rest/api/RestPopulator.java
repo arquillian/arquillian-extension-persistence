@@ -11,6 +11,10 @@ public class RestPopulator extends Populator<RestPopulatorService, RestPopulator
 
     @Override
     public RestPopulatorConfigurator createExecutor() {
-        return new RestPopulatorConfigurator(this.host, this.bindPort, this.populatorService);
+        if (this.uri != null) {
+            return new RestPopulatorConfigurator(uri, populatorService);
+        } else {
+            return new RestPopulatorConfigurator(this.host, this.bindPort, this.populatorService);
+        }
     }
 }

@@ -3,6 +3,7 @@ package org.jboss.arquillian.populator.nosql.mongodb;
 import com.lordofthejars.nosqlunit.mongodb.DefaultInsertionStrategy;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbConnectionCallback;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
@@ -12,6 +13,7 @@ import org.jboss.arquillian.populator.nosql.api.NoSqlPopulatorService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,16 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
         mongoClient = new MongoClient(host, port);
         this.database = mongoClient.getDatabase(database);
 
+    }
+
+    @Override
+    public void connect(URI uri, String database, Map<String, Object> customOptions) {
+        if (database == null) {
+            database = "test";
+        }
+
+        mongoClient = new MongoClient(new MongoClientURI(uri.toString()));
+        this.database = mongoClient.getDatabase(database);
     }
 
     @Override

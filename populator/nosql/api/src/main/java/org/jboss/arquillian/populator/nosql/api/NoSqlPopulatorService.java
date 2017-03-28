@@ -2,6 +2,7 @@ package org.jboss.arquillian.populator.nosql.api;
 
 import org.jboss.arquillian.populator.spi.PopulatorService;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,14 @@ public interface NoSqlPopulatorService<T> extends PopulatorService<T> {
      * @param customOptions to use for connection.
      */
     void connect(String host, int bindPort, String database, Map<String, Object> customOptions);
+
+    /**
+     * Methods called to connect to the backend.
+     * @param uri to use
+     * @param database to connect
+     * @param customOptions to use in connection.
+     */
+    void connect(URI uri, String database, Map<String, Object> customOptions);
 
     /**
      * Method called to disconnect from the backend.

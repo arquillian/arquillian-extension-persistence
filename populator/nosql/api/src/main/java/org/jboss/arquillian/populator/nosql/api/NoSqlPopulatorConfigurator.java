@@ -2,6 +2,7 @@ package org.jboss.arquillian.populator.nosql.api;
 
 import org.jboss.arquillian.populator.core.Populator;
 
+import java.net.URI;
 import java.util.*;
 
 /**
@@ -15,6 +16,13 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     private String database;
     private List<String> datasets = new ArrayList<>();
     private Map<String, Object> options = new HashMap<>();
+
+    private URI uri;
+
+    NoSqlPopulatorConfigurator(URI uri, NoSqlPopulatorService populatorService) {
+        this.uri = uri;
+        this.populatorService = populatorService;
+    }
 
     NoSqlPopulatorConfigurator(String host, int bindPort, NoSqlPopulatorService populatorService) {
         this.host = host;
@@ -89,16 +97,24 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
         // TODO Improve this so connect and disconnect only happens once.
         // This implies for example observing @AfterClass to disconnect and add some boolean to know that connection is already started in execute and clean method.
         try {
-            populatorService.connect(host, bindPort, this.database, this.options);
+            connect();
             populatorService.execute(Collections.unmodifiableList(datasets));
         } finally {
             populatorService.disconnect();
         }
     }
 
+    private void connect() {
+        if (this.uri != null) {
+            populatorService.connect(uri, database, options);
+        } else {
+            populatorService.connect(host, bindPort, this.database, this.options);
+        }
+    }
+
     public void clean() {
         try {
-            populatorService.connect(host, bindPort, this.database, this.options);
+            connect();
             populatorService.clean();
         } catch (UnsupportedOperationException e) {
             //Nothing to do just log
