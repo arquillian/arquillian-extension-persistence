@@ -94,6 +94,7 @@
     <!-- Maven plugins -->
     <version.docker.plugin>0.15.16</version.docker.plugin>
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
+    <skip.gpg>true</skip.gpg>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.8</jdk.min.version>
@@ -221,6 +222,22 @@
           <pushChanges>false</pushChanges>
           <localCheckout>true</localCheckout>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <configuration>
+          <skip>${skip.gpg}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
