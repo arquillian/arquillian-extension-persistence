@@ -68,8 +68,8 @@
 
   <properties>
     <!-- Arquillian dependencies -->
-    <version.arquillian_core>1.1.13.Final</version.arquillian_core>
-    <version.arquillian_transaction>1.0.4</version.arquillian_transaction>
+    <version.arquillian_core>1.1.12.Final</version.arquillian_core>
+    <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
     <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.3</version.dbunit>
@@ -89,7 +89,7 @@
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2.2</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
-    <version.wildfly>8.1.0.Final</version.wildfly>
+    <version.wildfly>8.2.1.Final</version.wildfly>
 
     <!-- Maven plugins -->
     <version.docker.plugin>0.15.16</version.docker.plugin>

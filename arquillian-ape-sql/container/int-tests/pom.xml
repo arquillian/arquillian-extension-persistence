@@ -20,8 +20,7 @@
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.chameleon>1.0.0.Beta1</version.chameleon>
     <version.poi>3.14</version.poi>
-    <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
-    <server.version>8.1.0.Final</server.version>
+    <server.version>${version.wildfly}</server.version>
     <!-- Chameleon container mode -->
     <mode>managed</mode>
   </properties>
@@ -242,7 +241,7 @@
     </profile>
 
     <profile>
-      <id>wildfly-8.1-managed</id>
+      <id>wildfly-8-managed</id>
       <activation>
         <property>
           <name>!server</name>
@@ -259,7 +258,7 @@
       <build>
         <testResources>
           <testResource>
-            <directory>src/test/resources-wildfly-8.1.0</directory>
+            <directory>src/test/resources-wildfly-8</directory>
           </testResource>
           <testResource>
             <directory>src/test/resources-datasets</directory>
@@ -286,7 +285,7 @@
                 <exclude>**/JpaCacheEviction*Test.java</exclude>
               </excludes>
               <systemPropertyVariables>
-                <arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:${mode}
+                <arq.container.chameleon.configuration.chameleonTarget>wildfly:${version.wildfly}:${mode}
                 </arq.container.chameleon.configuration.chameleonTarget>
               </systemPropertyVariables>
             </configuration>
