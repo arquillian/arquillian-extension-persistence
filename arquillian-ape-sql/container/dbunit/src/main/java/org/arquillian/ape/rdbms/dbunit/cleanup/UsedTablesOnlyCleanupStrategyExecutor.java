@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.cleanup;
 
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
-import org.arquillian.ape.rdbms.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
 import org.arquillian.ape.rdbms.dbunit.filter.TableFilterResolver;
 import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;

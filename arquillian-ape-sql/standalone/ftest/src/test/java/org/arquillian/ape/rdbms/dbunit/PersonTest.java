@@ -43,11 +43,64 @@ public class PersonTest {
                 .execute();
 
 
-        Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "PERSON");
-        assertThat(table).column("NAME")
+        Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
+        assertThat(table).column("name")
                 .value().isEqualTo("Bob")
                 .value().isEqualTo("Alice")
                 .value().isEqualTo("Charlie");
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("person.xml")
+            .clean();
+    }
+
+    @Test
+    public void should_find_all_heroes() {
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("heroes.yml")
+            .execute();
+
+
+        Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
+        assertThat(table).column("name")
+            .value().isEqualTo("Clark")
+            .value().isEqualTo("Lex");
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("heroes.yml")
+            .clean();
+    }
+
+    @Test
+    public void should_find_all_captains() {
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("captains.json")
+            .execute();
+
+
+        Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
+        assertThat(table).column("name")
+            .value().isEqualTo("Jean-Luc")
+            .value().isEqualTo("James");
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("captains.json")
+            .clean();
     }
 
 }

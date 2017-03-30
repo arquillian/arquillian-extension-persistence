@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.core.data.descriptor;
 
+
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+
 /**
  * Describes resource attributes such as it's location in classpath
  * and format.

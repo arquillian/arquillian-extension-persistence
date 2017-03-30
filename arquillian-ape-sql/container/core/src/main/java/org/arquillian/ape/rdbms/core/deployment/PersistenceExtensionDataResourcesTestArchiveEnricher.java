@@ -21,6 +21,7 @@ import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.script.data.provider.SqlScriptProvider;
@@ -40,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.arquillian.ape.rdbms.core.data.descriptor.Format.isFileType;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -116,7 +116,7 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
         final List<String> paths = new ArrayList<String>(descriptors.size());
 
         for (ResourceDescriptor<?> descriptor : descriptors) {
-            if (isFileType(descriptor.getFormat())) {
+            if (Format.isFileType(descriptor.getFormat())) {
                 paths.add(descriptor.getLocation());
             }
         }

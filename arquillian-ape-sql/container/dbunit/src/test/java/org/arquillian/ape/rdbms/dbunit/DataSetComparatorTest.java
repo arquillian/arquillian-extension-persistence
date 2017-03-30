@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
-import org.arquillian.ape.rdbms.dbunit.dataset.DataSetBuilder;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
