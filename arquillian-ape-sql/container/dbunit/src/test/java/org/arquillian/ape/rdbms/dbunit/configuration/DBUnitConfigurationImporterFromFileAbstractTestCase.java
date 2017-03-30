@@ -17,7 +17,7 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.junit.Test;
 
 import java.io.IOException;

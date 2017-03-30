@@ -17,8 +17,8 @@
 package org.arquillian.ape.rdbms.dbunit.data.provider;
 
 import org.arquillian.ape.rdbms.UsingDataSet;
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;

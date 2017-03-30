@@ -17,6 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
+import org.arquillian.ape.rdbms.core.dbunit.exception.DBUnitInitializationException;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
@@ -26,9 +28,7 @@ import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationProperty
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.rdbms.dbunit.data.provider.DataSetProvider;
 import org.arquillian.ape.rdbms.dbunit.data.provider.ExpectedDataSetProvider;
-import org.arquillian.ape.rdbms.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitConnectionException;
-import org.arquillian.ape.rdbms.dbunit.exception.DBUnitInitializationException;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;

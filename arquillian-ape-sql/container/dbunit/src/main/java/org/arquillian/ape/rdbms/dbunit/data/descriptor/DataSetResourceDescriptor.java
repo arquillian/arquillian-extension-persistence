@@ -17,9 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.data.descriptor;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
-import org.arquillian.ape.rdbms.dbunit.dataset.DataSetBuilder;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
 import org.dbunit.dataset.IDataSet;
 
 

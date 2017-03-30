@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit.data.naming;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 
 public class DataSetFileNamingStrategy extends FileNamingStrategy<Format> {
 

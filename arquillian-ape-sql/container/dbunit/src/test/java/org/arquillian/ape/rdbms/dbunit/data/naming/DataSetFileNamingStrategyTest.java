@@ -17,7 +17,7 @@
  */
 package org.arquillian.ape.rdbms.dbunit.data.naming;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

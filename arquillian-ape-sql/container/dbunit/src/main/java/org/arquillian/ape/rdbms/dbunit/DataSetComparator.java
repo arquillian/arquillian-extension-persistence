@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import org.arquillian.ape.rdbms.core.dbunit.dataset.TableWrapper;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
-import org.arquillian.ape.rdbms.dbunit.dataset.TableWrapper;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;

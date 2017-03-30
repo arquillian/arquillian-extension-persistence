@@ -17,7 +17,7 @@
  */
 package org.arquillian.ape.rdbms.script.data.descriptor;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 
 /**
  * Inline SQL script descriptor.

@@ -16,8 +16,8 @@
  */
 package org.arquillian.integration.ape.testextension.data;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
 import org.arquillian.ape.rdbms.core.metadata.AnnotationInspector;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;

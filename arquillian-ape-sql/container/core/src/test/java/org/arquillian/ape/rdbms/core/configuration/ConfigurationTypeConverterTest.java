@@ -20,7 +20,7 @@ package org.arquillian.ape.rdbms.core.configuration;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.assertj.core.util.Arrays;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;

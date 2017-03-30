@@ -17,6 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.data.descriptor;
 
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+
 import java.io.InputStream;
 import java.util.Scanner;
 

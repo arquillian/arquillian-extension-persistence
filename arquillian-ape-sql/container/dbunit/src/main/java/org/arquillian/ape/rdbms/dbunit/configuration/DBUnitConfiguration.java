@@ -20,7 +20,7 @@ package org.arquillian.ape.rdbms.dbunit.configuration;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
-import org.arquillian.ape.rdbms.core.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;
 import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Property;
 import org.arquillian.ape.rdbms.util.Arrays;
@@ -353,7 +353,7 @@ public class DBUnitConfiguration extends Configuration {
     /**
      * @param defaultDataSetFormat Default format of data sets when file name is inferred from test method name,
      *                             when file is not specified in {@link UsingDataSet} or {@link ShouldMatchDataSet}.
-     *                             Default value is {@link Format.XML}
+     *                             Default value is {@link org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format.XML}
      */
     public void setDefaultDataSetFormat(Format defaultDataSetFormat) {
         this.defaultDataSetFormat = defaultDataSetFormat;
@@ -414,8 +414,8 @@ public class DBUnitConfiguration extends Configuration {
     /**
      * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
      * This property is related to {@link #customTableFilter} which is used to specify which implementation of
-     * {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
-     * Should be registered using simple name exposed by given implementation {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
+     * {@link org.arquillian.ape.spi.dbunit.filter.TableFilterProvider} should be used.
+     * Should be registered using simple name exposed by given implementation {@link org.arquillian.ape.spi.dbunit.filter.TableFilterProvider}
      *
      * @param filterTables
      */
@@ -428,7 +428,7 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * Specifies which implementation of {@link org.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
+     * Specifies which implementation of {@link org.arquillian.ape.spi.dbunit.filter.TableFilterProvider}
      * should be used when {@link #filterTables} is enabled.
      *
      * @param customTableFilter
