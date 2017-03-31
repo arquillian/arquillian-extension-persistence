@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
@@ -26,15 +29,12 @@ import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
 
-    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = "before-" + ApplyScriptBeforeAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
+    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD =
+        "before-" + ApplyScriptBeforeAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
 
     private static final String SQL_DATA_SET_ON_CLASS_LEVEL = "scripts/class-level.sql";
 
@@ -43,7 +43,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
 
     private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
+        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(),
+            ApplyScriptBeforeAnnotatedClass.class.getMethod(testMethod));
         return testEvent;
     }
 
@@ -54,12 +55,12 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptors(testEvent.getTestClass());
 
         // then
         SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,
-                SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
-
+            SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
     }
 
     @Test
@@ -108,7 +109,8 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     public void should_provide_default_file_name_when_not_specified_in_annotation_on_class_level() throws Exception {
         // given
         String expectedFileName = "before-" + ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getName() + ".sql";
-        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedOnClassLevelOnly(), ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
+        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedOnClassLevelOnly(),
+            ApplyScriptBeforeAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
@@ -121,14 +123,19 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     @Test
     public void should_extract_all_scripts() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
-        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(), ApplyScriptBeforeAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
+        FileSqlScriptResourceDescriptor one =
+            new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor two =
+            new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor three =
+            new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
+        TestEvent testEvent = new TestEvent(new ApplyScriptBeforeAnnotatedClass(),
+            ApplyScriptBeforeAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -138,11 +145,12 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     public void should_throw_exception_for_non_existing_file_infered_from_class_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile(),
-                UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
+            UsingScriptAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         // exception should be thrown
@@ -152,11 +160,13 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     public void should_throw_exception_for_non_existing_file_defined_on_method_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
+            UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                "shouldFailForNonExistingFile"));
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         // exception should be thrown
@@ -167,20 +177,25 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
     @Test
     public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(
+            defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql",
+            defaultConfiguration.getCharset());
         TestEvent testEvent = new TestEvent(new UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
+            UsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                "shouldPassForFileStoredInDefaultLocation"));
         SqlScriptProvider<ApplyScriptBefore> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(dataSetDescriptors).containsOnly(expectedFile);
     }
 
     private SqlScriptProvider<ApplyScriptBefore> createSqlScriptProviderFor(TestEvent testEvent) {
-        return SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testEvent.getTestClass(), defaultConfiguration);
+        return SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testEvent.getTestClass(),
+            defaultConfiguration);
     }
 
     @ApplyScriptBefore(SQL_DATA_SET_ON_CLASS_LEVEL)
@@ -199,7 +214,6 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
         @ApplyScriptBefore({"one.sql", "two.sql", "three.sql"})
         public void shouldPassWithMultipleFilesDefined() {
         }
-
     }
 
     private static class UsingScriptAnnotationWithUnsupportedFormat {
@@ -228,7 +242,5 @@ public class SqlScriptProviderForScriptsAppliedBeforeTestMethodTest {
         @ApplyScriptBefore("tables-in-scripts-folder.sql")
         public void shouldPassForFileStoredInDefaultLocation() {
         }
-
     }
-
 }

@@ -1,5 +1,7 @@
 package org.arquillian.integration.ape.test.contentverification;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
@@ -15,9 +17,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -29,11 +28,11 @@ public class MatchingDatabaseContentUsingDataSetsTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
 
     @Test
@@ -89,7 +88,8 @@ public class MatchingDatabaseContentUsingDataSetsTest {
     @UsingDataSet("users.yml")
     @ShouldMatchDataSet(value = "users.yml", excludeColumns = {"useraccount.password"})
     // id excluded in arquillian.xml
-    public void should_verify_database_content_using_custom_data_set_with_implicit_multiple_columns_exclusion() throws Exception {
+    public void should_verify_database_content_using_custom_data_set_with_implicit_multiple_columns_exclusion()
+        throws Exception {
         // given
         String expectedPassword = "LexLuthor";
         UserAccount user = em.find(UserAccount.class, 2L);
@@ -124,7 +124,8 @@ public class MatchingDatabaseContentUsingDataSetsTest {
     @Test
     @UsingDataSet("simple-with-negative-ids.yml")
     @ShouldMatchDataSet("simple-with-negative-ids.yml")
-    public void should_verify_database_content_using_custom_data_set_respecting_ordering_by_proper_type() throws Exception {
+    public void should_verify_database_content_using_custom_data_set_respecting_ordering_by_proper_type()
+        throws Exception {
     }
 
     @Test
@@ -151,7 +152,8 @@ public class MatchingDatabaseContentUsingDataSetsTest {
     @UsingDataSet("three-users.yml")
     @ShouldMatchDataSet(value = "datasets/three-users-with-fake-names.yml", orderBy = {"id"})
     @CustomColumnFilter(NameColumnFilter.class)
-    public void should_filter_non_existing_columns_using_custom_filter_from_external_class_which_should_be_autodeployed() throws Exception {
+    public void should_filter_non_existing_columns_using_custom_filter_from_external_class_which_should_be_autodeployed()
+        throws Exception {
     }
 
     public static class FirstNameColumnFilter extends DefaultColumnFilter {

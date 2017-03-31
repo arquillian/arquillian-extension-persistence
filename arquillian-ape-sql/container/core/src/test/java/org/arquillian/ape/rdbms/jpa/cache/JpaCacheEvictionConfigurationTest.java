@@ -17,14 +17,13 @@
  */
 package org.arquillian.ape.rdbms.jpa.cache;
 
-import org.arquillian.ape.rdbms.TestExecutionPhase;
-import org.arquillian.ape.rdbms.core.configuration.Configuration;
-import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.rdbms.core.configuration.Configuration;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
@@ -55,7 +54,7 @@ public class JpaCacheEvictionConfigurationTest {
     @Test
     public void should_import_configuration_from_properties() {
         Configuration.importTo(config).loadFromPropertyFile(
-                "properties/jpacacheeviction.arquillian.persistence.properties");
+            "properties/jpacacheeviction.arquillian.persistence.properties");
 
         assertThat(config.getDefaultPhase()).isEqualTo(TestExecutionPhase.BEFORE);
         assertThat(config.getDefaultEntityManager()).isEqualTo("java:comp/env/ExamplePersistenceUnit");
@@ -75,9 +74,10 @@ public class JpaCacheEvictionConfigurationTest {
 
         assertThat(properties).hasSize(3);
         assertThat(properties).contains(
-                entry("arquillian.extension.persistence.jpacacheeviction.default.phase", config.getDefaultPhase().toString()),
-                entry("arquillian.extension.persistence.jpacacheeviction.default.entity.manager", config.getDefaultEntityManager()),
-                entry("arquillian.extension.persistence.jpacacheeviction.default.strategy", config.getDefaultStrategy().getName()));
+            entry("arquillian.extension.persistence.jpacacheeviction.default.phase", config.getDefaultPhase().toString()),
+            entry("arquillian.extension.persistence.jpacacheeviction.default.entity.manager",
+                config.getDefaultEntityManager()),
+            entry("arquillian.extension.persistence.jpacacheeviction.default.strategy",
+                config.getDefaultStrategy().getName()));
     }
-
 }

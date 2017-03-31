@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import java.sql.SQLException;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.DataSeedStrategy;
 import org.arquillian.ape.rdbms.core.data.DataHandler;
@@ -50,8 +51,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-
-import java.sql.SQLException;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -89,13 +88,14 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
     public void compare(@Observes CompareDBUnitData compareDataEvent) {
         try {
             IDataSet currentDataSet = databaseConnection.get().createDataSet();
-            final String[] excludeTables = dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
+            final String[] excludeTables =
+                dbunitConfigurationInstance.get().getExcludeTablesFromComparisonWhenEmptyExpected();
             if (excludeTables.length != 0) {
                 currentDataSet = new FilteredDataSet(new ExcludeTableFilter(excludeTables), currentDataSet);
             }
             final IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getExpected());
             final DataSetComparator dataSetComparator = new DataSetComparator(compareDataEvent.getSortByColumns(),
-                    compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
+                compareDataEvent.getColumnsToExclude(), compareDataEvent.getCustomColumnFilters());
             dataSetComparator.compare(currentDataSet, expectedDataSet, assertionErrorCollector.get());
         } catch (Exception e) {
             throw new DBUnitDataSetHandlingException("Failed while comparing database state with provided data sets.", e);
@@ -125,8 +125,11 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
 
     private void executeScript(String script) {
         try {
-            final StatementSplitter statementSplitter = new StatementSplitterResolver(scriptConfigurationInstance.get()).resolve();
-            final ScriptExecutor scriptExecutor = new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(), statementSplitter);
+            final StatementSplitter statementSplitter =
+                new StatementSplitterResolver(scriptConfigurationInstance.get()).resolve();
+            final ScriptExecutor scriptExecutor =
+                new ScriptExecutor(databaseConnection.get().getConnection(), scriptConfigurationInstance.get(),
+                    statementSplitter);
             scriptExecutor.execute(script);
         } catch (SQLException e) {
             throw new DBUnitConnectionException("Unable to execute script.", e);
@@ -137,8 +140,10 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
         final DatabaseConnection connection = databaseConnection.get();
         IDataSet initialDataSet = DataSetUtils.mergeDataSets(dataSetRegister.get().getInitial());
         if (dbunitConfigurationInstance.get().isFilterTables()) {
-            final TableFilterProvider sequenceFilterProvider = new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
-            final ITableFilter databaseSequenceFilter = sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
+            final TableFilterProvider sequenceFilterProvider =
+                new TableFilterResolver(dbunitConfigurationInstance.get()).resolve();
+            final ITableFilter databaseSequenceFilter =
+                sequenceFilterProvider.provide(connection, initialDataSet.getTableNames());
             initialDataSet = new FilteredDataSet(databaseSequenceFilter, initialDataSet);
         }
         seedingStrategy().execute(connection, initialDataSet);
@@ -153,8 +158,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
 
     private void cleanDatabase(CleanupStrategy cleanupStrategy) {
         final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
-                databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
+            databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
         cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());
     }
-
 }

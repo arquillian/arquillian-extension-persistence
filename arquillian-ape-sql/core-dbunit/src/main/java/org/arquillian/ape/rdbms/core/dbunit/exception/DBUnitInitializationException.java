@@ -36,5 +36,4 @@ public class DBUnitInitializationException extends RuntimeException {
     public DBUnitInitializationException(Throwable cause) {
         super(cause);
     }
-
 }

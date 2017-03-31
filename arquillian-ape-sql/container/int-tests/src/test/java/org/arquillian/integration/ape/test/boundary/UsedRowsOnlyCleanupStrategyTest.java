@@ -17,6 +17,8 @@
  */
 package org.arquillian.integration.ape.test.boundary;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
@@ -34,9 +36,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -48,12 +47,12 @@ public class UsedRowsOnlyCleanupStrategyTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
     @Test
@@ -71,5 +70,4 @@ public class UsedRowsOnlyCleanupStrategyTest {
         UserAccount clarkKent = em.find(UserAccount.class, 2L);
         assertThat(clarkKent.getNickname()).isNullOrEmpty();
     }
-
 }

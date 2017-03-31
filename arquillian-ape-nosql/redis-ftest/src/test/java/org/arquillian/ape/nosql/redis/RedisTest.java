@@ -1,5 +1,6 @@
 package org.arquillian.ape.nosql.redis;
 
+import java.util.Map;
 import org.arquillian.ape.nosql.NoSqlPopulator;
 import org.arquillian.cube.HostIp;
 import org.arquillian.cube.HostPort;
@@ -9,8 +10,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import redis.clients.jedis.Jedis;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,22 +27,20 @@ public class RedisTest {
     @Test
     public void should_populate_mongodb() {
         populator.forServer(hostIp, port)
-                .usingDataSet("books.json")
-                .execute();
+            .usingDataSet("books.json")
+            .execute();
 
         Jedis jedis = new Jedis(hostIp, port);
         final Map<String, String> fieldsOfTheHobbitBook = jedis.hgetAll("The Hobbit");
 
         assertThat(fieldsOfTheHobbitBook)
-                .containsEntry("title", "The Hobbit")
-                .containsEntry("numberOfPages", "293");
-
+            .containsEntry("title", "The Hobbit")
+            .containsEntry("numberOfPages", "293");
     }
 
     @After
     public void cleanDatabase() {
         populator.forServer(hostIp, port)
-                .clean();
+            .clean();
     }
-
 }

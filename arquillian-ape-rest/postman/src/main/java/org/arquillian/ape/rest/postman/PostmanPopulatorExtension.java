@@ -9,6 +9,6 @@ class PostmanPopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, PostmanPopulatorService.class)
-                .service(ResourceProvider.class, RestPopulatorEnricher.class);
+            .service(ResourceProvider.class, RestPopulatorEnricher.class);
     }
 }

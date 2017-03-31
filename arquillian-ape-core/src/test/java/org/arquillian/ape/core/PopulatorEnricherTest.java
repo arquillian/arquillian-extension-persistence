@@ -1,5 +1,7 @@
 package org.arquillian.ape.core;
 
+import java.lang.annotation.Annotation;
+import java.util.Collections;
 import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.spi.ServiceLoader;
@@ -8,9 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.lang.annotation.Annotation;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -42,7 +41,6 @@ public class PopulatorEnricherTest {
 
         assertThat(populator).isInstanceOf(MyPopulator.class);
         assertThat(((Populator) populator).populatorService).isInstanceOf(TestPopulatorService.class);
-
     }
 
     public static class TestPopulatorService implements PopulatorService<MyBackend> {
@@ -52,7 +50,6 @@ public class PopulatorEnricherTest {
             return MyBackend.class;
         }
     }
-
 }
 
 

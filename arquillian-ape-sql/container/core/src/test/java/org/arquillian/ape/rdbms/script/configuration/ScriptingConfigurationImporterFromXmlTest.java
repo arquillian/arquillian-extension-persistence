@@ -17,13 +17,12 @@
  */
 package org.arquillian.ape.rdbms.script.configuration;
 
+import java.nio.charset.Charset;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,5 +73,4 @@ public class ScriptingConfigurationImporterFromXmlTest {
         // then
         assertThat(configuration.getCharset()).isEqualTo(utf8);
     }
-
 }

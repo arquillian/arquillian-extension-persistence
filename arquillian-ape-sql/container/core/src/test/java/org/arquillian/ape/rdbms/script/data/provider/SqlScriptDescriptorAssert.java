@@ -17,13 +17,12 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
-import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.IterableAssert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
 
 public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceDescriptor> {
 
@@ -56,5 +55,4 @@ public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceD
         }
         return fileNames;
     }
-
 }

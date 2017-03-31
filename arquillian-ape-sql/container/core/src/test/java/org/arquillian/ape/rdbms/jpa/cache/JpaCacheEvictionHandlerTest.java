@@ -17,6 +17,10 @@
  */
 package org.arquillian.ape.rdbms.jpa.cache;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
 import net.jcip.annotations.NotThreadSafe;
 import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.arquillian.ape.rdbms.JpaCacheEvictionStrategy;
@@ -27,11 +31,6 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -105,13 +104,14 @@ public class JpaCacheEvictionHandlerTest {
     }
 
     private BeforePersistenceTest createBeforeEvent(Object testInstance) throws Exception {
-        return new BeforePersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
+        return new BeforePersistenceTest(new TestEvent(testInstance,
+            StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[] {})));
     }
 
     private AfterPersistenceTest createAfterEvent(Object testInstance) throws Exception {
-        return new AfterPersistenceTest(new TestEvent(testInstance, StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[]{})));
+        return new AfterPersistenceTest(new TestEvent(testInstance,
+            StubTestCaseNoAnnotation.class.getDeclaredMethod("stubTestMethod", new Class[] {})));
     }
-
 
     public static class StubContext extends InitialContext {
 
@@ -124,7 +124,6 @@ public class JpaCacheEvictionHandlerTest {
             tmpLookupName = name;
             return null;
         }
-
     }
 
     public static class StubContextInstance implements Instance<Context> {
@@ -139,7 +138,6 @@ public class JpaCacheEvictionHandlerTest {
         public Context get() {
             return instance;
         }
-
     }
 
     public static class StubJpaCacheEvictionStrategy implements JpaCacheEvictionStrategy {

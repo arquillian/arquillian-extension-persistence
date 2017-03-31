@@ -1,10 +1,9 @@
 package org.arquillian.ape.rest.postman.runner;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import java.util.HashMap;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -27,8 +26,8 @@ public class PostmanRunnerTest {
         // given
 
         wireMockRule.stubFor(
-                get(urlEqualTo("/"))
-                        .willReturn(aResponse().withBody("Hello World"))
+            get(urlEqualTo("/"))
+                .willReturn(aResponse().withBody("Hello World"))
         );
 
         // when
@@ -43,12 +42,12 @@ public class PostmanRunnerTest {
     public void should_execute_post_with_url_override() {
         // given
         wireMockRule
-                .stubFor(
-                        post(urlEqualTo("/?a=a"))
-                                .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
-                                .withRequestBody(equalToJson("{\"name\": \"test\"}"))
-                                .willReturn(aResponse().withStatus(200))
-                );
+            .stubFor(
+                post(urlEqualTo("/?a=a"))
+                    .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
+                    .withRequestBody(equalToJson("{\"name\": \"test\"}"))
+                    .willReturn(aResponse().withStatus(200))
+            );
 
         // when
         PostmanRunner postmanRunner = new PostmanRunner();
@@ -62,8 +61,6 @@ public class PostmanRunnerTest {
 
         // then
         verify(postRequestedFor(urlEqualTo("/?a=a"))
-                .withRequestBody(equalToJson("{\"name\": \"test\"}")));
-
+            .withRequestBody(equalToJson("{\"name\": \"test\"}")));
     }
-
 }

@@ -17,10 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.data.descriptor;
 
+import java.nio.charset.Charset;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.script.ScriptLoader;
-
-import java.nio.charset.Charset;
 
 /**
  * SQL script file descriptor.
@@ -66,5 +65,4 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
         result = prime * result + ((location == null) ? 0 : location.hashCode());
         return result;
     }
-
 }

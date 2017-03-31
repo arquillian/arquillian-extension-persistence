@@ -13,7 +13,6 @@ public class ItemItem implements Item {
 
     // Response is ignored in this case.
 
-
     public void setId(String id) {
         this.id = id;
     }

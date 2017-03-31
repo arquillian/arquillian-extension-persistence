@@ -5,14 +5,13 @@ import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.java.cluster.ClusterManager;
 import com.couchbase.client.java.cluster.DefaultBucketSettings;
 import com.lordofthejars.nosqlunit.couchbase.DefaultCouchbaseInsertionStrategy;
-import org.arquillian.ape.core.DataSetLoader;
-import org.arquillian.ape.nosql.NoSqlPopulatorService;
-
 import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import org.arquillian.ape.core.DataSetLoader;
+import org.arquillian.ape.nosql.NoSqlPopulatorService;
 
 import static org.awaitility.Awaitility.await;
 
@@ -30,7 +29,6 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         this.couchbaseCluster = CouchbaseCluster.create(createCouchbaseClusterUri(host, port));
 
         connectToBucket(database, customOptions);
-
     }
 
     @Override
@@ -49,7 +47,8 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         }
 
         if (isBucketPasswordSet(customOptions)) {
-            this.bucket = couchbaseCluster.openBucket(database, (String) customOptions.get(CouchbaseOptions.BUCKET_PASSWORD));
+            this.bucket =
+                couchbaseCluster.openBucket(database, (String) customOptions.get(CouchbaseOptions.BUCKET_PASSWORD));
         } else {
             this.bucket = couchbaseCluster.openBucket(database);
         }
@@ -73,25 +72,24 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
 
     private void createBucket(String database, Map<String, Object> customOptions) {
         final ClusterManager clusterManager = couchbaseCluster
-                .clusterManager((String) customOptions.get(CouchbaseOptions.CLUSTER_USERNAME), (String) customOptions.get(CouchbaseOptions.CLUSTER_PASSWORD));
+            .clusterManager((String) customOptions.get(CouchbaseOptions.CLUSTER_USERNAME),
+                (String) customOptions.get(CouchbaseOptions.CLUSTER_PASSWORD));
 
         if (!clusterManager.hasBucket(database)) {
             // Create Bucket
             final DefaultBucketSettings.Builder bucketBuilder = DefaultBucketSettings.builder()
-                    .enableFlush(true)
-                    .name(database);
+                .enableFlush(true)
+                .name(database);
 
             if (isBucketPasswordSet(customOptions)) {
                 bucketBuilder.password((String) customOptions.get(CouchbaseOptions.BUCKET_PASSWORD));
             }
 
-
             clusterManager.insertBucket(bucketBuilder.build());
 
             await()
-                    .atMost(60, TimeUnit.SECONDS)
-                    .until(() -> clusterManager.hasBucket(database));
-
+                .atMost(60, TimeUnit.SECONDS)
+                .until(() -> clusterManager.hasBucket(database));
         }
     }
 
@@ -107,14 +105,14 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
         final DefaultCouchbaseInsertionStrategy couchbaseInsertionStrategy = new DefaultCouchbaseInsertionStrategy();
 
         resources.stream()
-                .map(DataSetLoader::resolve)
-                .forEach((InputStream dataset) -> {
-                    try {
-                        couchbaseInsertionStrategy.insert(() -> bucket, dataset);
-                    } catch (Throwable e) {
-                        throw new IllegalStateException(e);
-                    }
-                });
+            .map(DataSetLoader::resolve)
+            .forEach((InputStream dataset) -> {
+                try {
+                    couchbaseInsertionStrategy.insert(() -> bucket, dataset);
+                } catch (Throwable e) {
+                    throw new IllegalStateException(e);
+                }
+            });
     }
 
     @Override

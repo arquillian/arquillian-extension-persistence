@@ -16,6 +16,11 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -33,12 +38,6 @@ import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescript
 import org.arquillian.ape.rdbms.script.data.naming.PrefixedScriptFileNamingStrategy;
 import org.jboss.arquillian.test.spi.TestClass;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
@@ -52,7 +51,8 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
     private final ValueExtractor<T> extractor;
 
-    SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor, FileNamingStrategy<String> scriptFileNamingStrategy, ScriptingConfiguration configuration) {
+    SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor,
+        FileNamingStrategy<String> scriptFileNamingStrategy, ScriptingConfiguration configuration) {
         super(annotation, metadataExtractor);
         this.configuration = configuration;
         this.strategy = scriptFileNamingStrategy;
@@ -64,81 +64,85 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         return SqlScriptProviderBuilder.create(annotation);
     }
 
-    public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass, ScriptingConfiguration configuration) {
+    public static SqlScriptProvider<CleanupUsingScript> createProviderForCleanupScripts(TestClass testClass,
+        ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
-                .usingConfiguration(configuration)
-                .extractingMetadataUsing(new MetadataExtractor(testClass))
-                .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
-                .build(new ValueExtractor<CleanupUsingScript>() {
-                    @Override
-                    public String[] extract(CleanupUsingScript toExtract) {
-                        return toExtract.value();
-                    }
+            .usingConfiguration(configuration)
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
+            .build(new ValueExtractor<CleanupUsingScript>() {
+                @Override
+                public String[] extract(CleanupUsingScript toExtract) {
+                    return toExtract.value();
+                }
 
-                    @Override
-                    public boolean shouldExtract(CleanupUsingScript toExtract) {
-                        return (toExtract != null && !TestExecutionPhase.NONE.equals(toExtract.phase()));
-                    }
-                });
+                @Override
+                public boolean shouldExtract(CleanupUsingScript toExtract) {
+                    return (toExtract != null && !TestExecutionPhase.NONE.equals(toExtract.phase()));
+                }
+            });
     }
 
-    public static SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass, ScriptingConfiguration configuration) {
+    public static SqlScriptProvider<ApplyScriptAfter> createProviderForScriptsToBeAppliedAfterTest(TestClass testClass,
+        ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
-                .usingConfiguration(configuration)
-                .extractingMetadataUsing(new MetadataExtractor(testClass))
-                .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
-                .build(new ValueExtractor<ApplyScriptAfter>() {
-                    @Override
-                    public String[] extract(ApplyScriptAfter toExtract) {
-                        return toExtract.value();
-                    }
+            .usingConfiguration(configuration)
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
+            .build(new ValueExtractor<ApplyScriptAfter>() {
+                @Override
+                public String[] extract(ApplyScriptAfter toExtract) {
+                    return toExtract.value();
+                }
 
-                    @Override
-                    public boolean shouldExtract(ApplyScriptAfter toExtract) {
-                        return (toExtract != null);
-                    }
-                });
+                @Override
+                public boolean shouldExtract(ApplyScriptAfter toExtract) {
+                    return (toExtract != null);
+                }
+            });
     }
 
-    public static SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass, ScriptingConfiguration configuration) {
+    public static SqlScriptProvider<ApplyScriptBefore> createProviderForScriptsToBeAppliedBeforeTest(TestClass testClass,
+        ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
-                .usingConfiguration(configuration)
-                .extractingMetadataUsing(new MetadataExtractor(testClass))
-                .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
-                .build(new ValueExtractor<ApplyScriptBefore>() {
-                    @Override
-                    public String[] extract(ApplyScriptBefore toExtract) {
-                        return toExtract.value();
-                    }
+            .usingConfiguration(configuration)
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
+            .build(new ValueExtractor<ApplyScriptBefore>() {
+                @Override
+                public String[] extract(ApplyScriptBefore toExtract) {
+                    return toExtract.value();
+                }
 
-                    @Override
-                    public boolean shouldExtract(ApplyScriptBefore toExtract) {
-                        return (toExtract != null);
-                    }
-                });
+                @Override
+                public boolean shouldExtract(ApplyScriptBefore toExtract) {
+                    return (toExtract != null);
+                }
+            });
     }
 
-    public static SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass, ScriptingConfiguration configuration) {
+    public static SqlScriptProvider<CreateSchema> createProviderForCreateSchemaScripts(TestClass testClass,
+        ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(CreateSchema.class)
-                .usingConfiguration(configuration)
-                .extractingMetadataUsing(new MetadataExtractor(testClass))
-                .namingFollows(new FileNamingStrategy<String>("sql") {
-                    @Override
-                    public String getFileExtension() {
-                        return extension;
-                    }
-                })
-                .build(new ValueExtractor<CreateSchema>() {
-                    @Override
-                    public String[] extract(CreateSchema toExtract) {
-                        return toExtract.value();
-                    }
+            .usingConfiguration(configuration)
+            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .namingFollows(new FileNamingStrategy<String>("sql") {
+                @Override
+                public String getFileExtension() {
+                    return extension;
+                }
+            })
+            .build(new ValueExtractor<CreateSchema>() {
+                @Override
+                public String[] extract(CreateSchema toExtract) {
+                    return toExtract.value();
+                }
 
-                    @Override
-                    public boolean shouldExtract(CreateSchema toExtract) {
-                        return (toExtract != null);
-                    }
-                });
+                @Override
+                public boolean shouldExtract(CreateSchema toExtract) {
+                    return (toExtract != null);
+                }
+            });
     }
 
     @Override
@@ -191,5 +195,4 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
         return strategy.createFileName(metadataExtractor.getJavaClass());
     }
-
 }

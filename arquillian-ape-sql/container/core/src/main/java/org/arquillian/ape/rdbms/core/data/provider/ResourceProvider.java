@@ -17,15 +17,6 @@
  */
 package org.arquillian.ape.rdbms.core.data.provider;
 
-import org.arquillian.ape.rdbms.ApplyScriptBefore;
-import org.arquillian.ape.rdbms.UsingDataSet;
-import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
-import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
-import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
-import org.arquillian.ape.rdbms.core.util.Strings;
-import org.jboss.arquillian.test.spi.TestClass;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
@@ -35,13 +26,23 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.arquillian.ape.rdbms.ApplyScriptBefore;
+import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
+import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
+import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
+import org.arquillian.ape.rdbms.core.util.Strings;
+import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  * Handles metadata extraction from given test class or test method and provides
  * {@link ResourceDescriptor descriptors} for resources defined in given annotation type
  * (such as {@link UsingDataSet} or {@link ApplyScriptBefore}).
  *
- * @param <T> Concrete implementation of {@link ResourceDescriptor} providing necessary information for given resource type.
+ * @param <T>
+ *     Concrete implementation of {@link ResourceDescriptor} providing necessary information for given resource type.
+ *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
@@ -58,9 +59,6 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
     /**
      * Returns all resources defined for this test class
      * including those defined on the test method level.
-     *
-     * @param testClass
-     * @return
      */
     public Collection<T> getDescriptors(TestClass testClass) {
         final List<T> descriptors = new ArrayList<T>();
@@ -98,8 +96,8 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
 
         try {
             final String[] values = (String[]) classLevelAnnotation.annotationType()
-                    .getMethod("value")
-                    .invoke(classLevelAnnotation);
+                .getMethod("value")
+                .invoke(classLevelAnnotation);
 
             final List<String> resources = new ArrayList<String>(Arrays.asList(values));
 
@@ -112,7 +110,6 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
             for (String dataFileName : resources) {
                 descriptors.add(createDescriptor(dataFileName));
             }
-
         } catch (Exception e) {
             throw new MetadataProcessingException("Unable to evaluate annotation value", e);
         }
@@ -141,7 +138,7 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
 
         if (!existsInGivenLocation(location)) {
             throw new InvalidResourceLocation("Unable to locate " + location + ". " +
-                    "File does not exist also in default location " + defaultLocation());
+                "File does not exist also in default location " + defaultLocation());
         }
 
         return location;
@@ -168,5 +165,4 @@ public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
     private URL load(String resourceLocation) throws URISyntaxException {
         return Thread.currentThread().getContextClassLoader().getResource(resourceLocation);
     }
-
 }

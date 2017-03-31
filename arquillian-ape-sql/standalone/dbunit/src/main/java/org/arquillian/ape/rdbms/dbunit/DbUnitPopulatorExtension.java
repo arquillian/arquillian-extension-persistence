@@ -9,6 +9,6 @@ public class DbUnitPopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, DbUnitPopulatorService.class)
-                .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
+            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
     }
 }

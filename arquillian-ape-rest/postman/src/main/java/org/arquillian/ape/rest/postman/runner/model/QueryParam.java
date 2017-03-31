@@ -17,5 +17,4 @@ public class QueryParam {
     public String asString() {
         return URLEncoder.encode(this.getKey()) + "=" + URLEncoder.encode(this.getValue());
     }
-
 }

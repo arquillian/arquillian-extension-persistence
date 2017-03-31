@@ -54,5 +54,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface UsingDataSet {
 
     String[] value() default "";
-
 }

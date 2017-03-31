@@ -36,8 +36,10 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
     public void should_cleanup_using_script_when_defined_on_method_level() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnMethodLevelSettings(),
-                CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
-        PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
+        PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();
@@ -82,7 +84,5 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
 
         public void shouldPassUsingDefaults() {
         }
-
     }
-
 }

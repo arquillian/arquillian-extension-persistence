@@ -21,7 +21,7 @@ public class Domain {
 
         if (domain == null) {
             return domainList.stream()
-                    .collect(Collectors.joining("."));
+                .collect(Collectors.joining("."));
         } else {
             return domain;
         }

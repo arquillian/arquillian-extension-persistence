@@ -1,7 +1,5 @@
 package org.arquillian.ape.rdbms.core;
 
-import org.arquillian.ape.core.Populator;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.arquillian.ape.core.Populator;
 
 public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurator {
 
@@ -44,7 +43,9 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Register a new dataset for populating data.
      *
-     * @param dataset to use.
+     * @param dataset
+     *     to use.
+     *
      * @return this instance.
      */
     public RdbmsPopulatorConfigurator usingDataSet(String dataset) {
@@ -55,7 +56,9 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Register new datasets for populating data.
      *
-     * @param datasets to use.
+     * @param datasets
+     *     to use.
+     *
      * @return this instance.
      */
     public RdbmsPopulatorConfigurator usingDataSets(String... datasets) {
@@ -66,9 +69,13 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Set custom options.
      *
-     * @param key      name.
-     * @param value    of property.
-     * @param elements pair key, value. Even elements are keys, odd ones values.
+     * @param key
+     *     name.
+     * @param value
+     *     of property.
+     * @param elements
+     *     pair key, value. Even elements are keys, odd ones values.
+     *
      * @return this instance.
      */
     public RdbmsPopulatorConfigurator withOption(String key, String value, String... elements) {
@@ -89,7 +96,9 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Set custom options as map.
      *
-     * @param options to set.
+     * @param options
+     *     to set.
+     *
      * @return this instance.
      */
     public RdbmsPopulatorConfigurator withOptions(Map<String, Object> options) {

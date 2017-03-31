@@ -17,6 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.configuration;
 
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
 import org.jboss.arquillian.container.test.api.Testable;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
@@ -24,11 +28,6 @@ import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
-
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -41,7 +40,6 @@ public class PersistenceDescriptorExtractor {
      * Returns open stream of persistence.xml found in the archive, but
      * only if single file have been found.
      *
-     * @param archive
      * @return Input stream of persistence.xml found or null if zero or multiple found in the archive.
      */
     public InputStream getAsStream(final Archive<?> archive) {
@@ -57,7 +55,6 @@ public class PersistenceDescriptorExtractor {
     /**
      * Inspects archive in order to find nested testable archive, assuming
      *
-     * @param archive
      * @return testable archive or passed one if nothing found
      */
     private Archive<?> findTestableArchive(final Archive<?> archive) {
@@ -80,9 +77,6 @@ public class PersistenceDescriptorExtractor {
 
     /**
      * Recursively scans archive content (including sub archives) for persistence.xml descriptors.
-     *
-     * @param archive
-     * @return
      */
     private Collection<Node> collectPersistenceXml(final Archive<?> archive) {
         final Collection<Node> nodes = new LinkedList<Node>(getPersistenceDescriptors(archive));

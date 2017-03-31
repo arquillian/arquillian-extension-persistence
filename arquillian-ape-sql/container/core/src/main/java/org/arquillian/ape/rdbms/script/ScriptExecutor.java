@@ -17,15 +17,14 @@
  */
 package org.arquillian.ape.rdbms.script;
 
-import org.arquillian.ape.rdbms.core.exception.ScriptExecutionException;
-import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-import org.arquillian.ape.spi.script.StatementSplitter;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Logger;
+import org.arquillian.ape.rdbms.core.exception.ScriptExecutionException;
+import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
+import org.arquillian.ape.spi.script.StatementSplitter;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -40,7 +39,8 @@ public class ScriptExecutor {
 
     private final StatementSplitter statementSplitter;
 
-    public ScriptExecutor(final Connection connection, final ScriptingConfiguration scriptingConfiguration, final StatementSplitter statementSplitter) {
+    public ScriptExecutor(final Connection connection, final ScriptingConfiguration scriptingConfiguration,
+        final StatementSplitter statementSplitter) {
         this.connection = connection;
         this.scriptingConfiguration = scriptingConfiguration;
         this.statementSplitter = statementSplitter;
@@ -75,5 +75,4 @@ public class ScriptExecutor {
             }
         }
     }
-
 }

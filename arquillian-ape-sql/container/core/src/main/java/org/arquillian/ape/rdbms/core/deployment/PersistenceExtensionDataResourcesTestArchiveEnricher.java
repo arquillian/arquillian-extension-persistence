@@ -16,6 +16,11 @@
  */
 package org.arquillian.ape.rdbms.core.deployment;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -34,13 +39,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -71,10 +69,16 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
     private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass) {
         final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
-        final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testClass, scriptingConfigurationInstance.get());
-        final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testClass, scriptingConfigurationInstance.get());
-        final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(testClass, scriptingConfigurationInstance.get());
-        final SqlScriptProvider<CreateSchema> createSchemaScripts = SqlScriptProvider.createProviderForCreateSchemaScripts(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<ApplyScriptBefore> scriptsAppliedBeforeTestProvider =
+            SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(testClass,
+                scriptingConfigurationInstance.get());
+        final SqlScriptProvider<ApplyScriptAfter> scriptsAppliedAfterTestProvider =
+            SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testClass,
+                scriptingConfigurationInstance.get());
+        final SqlScriptProvider<CleanupUsingScript> cleanupScriptsProvider =
+            SqlScriptProvider.createProviderForCleanupScripts(testClass, scriptingConfigurationInstance.get());
+        final SqlScriptProvider<CreateSchema> createSchemaScripts =
+            SqlScriptProvider.createProviderForCreateSchemaScripts(testClass, scriptingConfigurationInstance.get());
 
         allDataSets.addAll(scriptsAppliedBeforeTestProvider.getDescriptors(testClass));
         allDataSets.addAll(scriptsAppliedAfterTestProvider.getDescriptors(testClass));
@@ -123,5 +127,4 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricher implements App
 
         return paths;
     }
-
 }

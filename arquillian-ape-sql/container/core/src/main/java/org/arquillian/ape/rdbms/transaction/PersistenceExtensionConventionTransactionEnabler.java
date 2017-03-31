@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.transaction;
 
+import java.lang.reflect.Method;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.core.api.Instance;
@@ -24,8 +25,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
-
-import java.lang.reflect.Method;
 
 public class PersistenceExtensionConventionTransactionEnabler implements TransactionEnabler {
 
@@ -61,36 +60,36 @@ public class PersistenceExtensionConventionTransactionEnabler implements Transac
 
     private boolean shouldWrapTestMethodInTransaction(final Method method) {
         return (hasDataSetAnnotation(method) || hasApplyScriptAnnotation(method)
-                || hasJpaCacheEvictionAnnotation(method)
-                || hasCleanupAnnotation(method)
-                || hasCleanupUsingScriptAnnotation(method));
+            || hasJpaCacheEvictionAnnotation(method)
+            || hasCleanupAnnotation(method)
+            || hasCleanupUsingScriptAnnotation(method));
     }
 
     private boolean hasTransactionMetadataDefinedOnClassLevel() {
         return (hasDataSetAnnotationOnClass() || hasApplyScriptAnnotationOnClass()
-                || hasPersistenceTestAnnotationOnClass() || hasJpaCacheEvictionAnnotationOnClass()
-                || hasCreateSchemaAnnotationOnClass() || hasCleanupAnnotationOnClass()
-                || hasCleanupUsingScriptAnnotationOnClass());
+            || hasPersistenceTestAnnotationOnClass() || hasJpaCacheEvictionAnnotationOnClass()
+            || hasCreateSchemaAnnotationOnClass() || hasCleanupAnnotationOnClass()
+            || hasCleanupUsingScriptAnnotationOnClass());
     }
 
     private boolean hasDataSetAnnotationOnClass() {
         return metadataExtractor.get().usingDataSet().isDefinedOnClassLevel()
-                || metadataExtractor.get().shouldMatchDataSet().isDefinedOnClassLevel();
+            || metadataExtractor.get().shouldMatchDataSet().isDefinedOnClassLevel();
     }
 
     private boolean hasDataSetAnnotation(final Method method) {
         return metadataExtractor.get().usingDataSet().isDefinedOn(method)
-                || metadataExtractor.get().shouldMatchDataSet().isDefinedOn(method);
+            || metadataExtractor.get().shouldMatchDataSet().isDefinedOn(method);
     }
 
     private boolean hasApplyScriptAnnotation(final Method method) {
         return metadataExtractor.get().applyScriptBefore().isDefinedOn(method)
-                || metadataExtractor.get().applyScriptAfter().isDefinedOn(method);
+            || metadataExtractor.get().applyScriptAfter().isDefinedOn(method);
     }
 
     private boolean hasApplyScriptAnnotationOnClass() {
         return metadataExtractor.get().applyScriptBefore().isDefinedOnClassLevel()
-                || metadataExtractor.get().applyScriptAfter().isDefinedOnClassLevel();
+            || metadataExtractor.get().applyScriptAfter().isDefinedOnClassLevel();
     }
 
     private boolean hasPersistenceTestAnnotationOnClass() {
@@ -124,6 +123,4 @@ public class PersistenceExtensionConventionTransactionEnabler implements Transac
     private boolean hasCleanupUsingScriptAnnotation(final Method method) {
         return metadataExtractor.get().cleanupUsingScript().isDefinedOn(method);
     }
-
-
 }

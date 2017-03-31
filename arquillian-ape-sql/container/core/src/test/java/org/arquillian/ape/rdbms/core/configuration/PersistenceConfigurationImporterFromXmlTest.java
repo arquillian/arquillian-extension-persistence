@@ -30,7 +30,8 @@ public class PersistenceConfigurationImporterFromXmlTest {
     public void should_extract_default_data_source_from_external_configuration_file() throws Exception {
         // given
         String expectedDataSource = "Ike";
-        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
+        ArquillianDescriptor descriptor =
+            TestConfigurationLoader.createArquillianDescriptorFromDefaultConfigurationFile();
         PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when
@@ -58,7 +59,8 @@ public class PersistenceConfigurationImporterFromXmlTest {
     public void should_have_commit_as_default_transaction_mode_if_not_defined_in_configuration_file() throws Exception {
         // given
         TransactionMode expectedMode = TransactionMode.COMMIT;
-        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        ArquillianDescriptor descriptor =
+            TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
         PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when
@@ -84,7 +86,8 @@ public class PersistenceConfigurationImporterFromXmlTest {
     @Test
     public void should_have_database_dumps_disabled_by_default() throws Exception {
         // given
-        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        ArquillianDescriptor descriptor =
+            TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
         PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when
@@ -98,7 +101,8 @@ public class PersistenceConfigurationImporterFromXmlTest {
     public void should_have_system_temp_dir_defined_as_default_dump_directory() throws Exception {
         // given
         String systemTmpDir = System.getProperty("java.io.tmpdir");
-        ArquillianDescriptor descriptor = TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
+        ArquillianDescriptor descriptor =
+            TestConfigurationLoader.createArquillianDescriptor("arquillian-without-persistence-properties.xml");
         PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when
@@ -121,5 +125,4 @@ public class PersistenceConfigurationImporterFromXmlTest {
         // then
         assertThat(configuration.getDumpDirectory()).isEqualTo(dumpDirectory);
     }
-
 }

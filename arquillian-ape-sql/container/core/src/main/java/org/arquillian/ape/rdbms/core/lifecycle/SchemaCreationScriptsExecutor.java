@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.core.lifecycle;
 
+import java.util.Collection;
 import org.arquillian.ape.rdbms.core.command.SchemaCreationControlCommand;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.event.ExecuteScripts;
@@ -31,8 +32,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-import java.util.Collection;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -53,7 +52,9 @@ public class SchemaCreationScriptsExecutor {
     public void createSchema(@Observes(precedence = 10) EventContext<BeforePersistenceTest> context) {
         final BeforePersistenceTest beforePersistenceTest = context.getEvent();
         if (persistenceExtensionFeatureResolver.get().shouldCreateSchema() && !schemaCreated(beforePersistenceTest)) {
-            final Collection<SqlScriptResourceDescriptor> schemaDescriptors = SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(), configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
+            final Collection<SqlScriptResourceDescriptor> schemaDescriptors =
+                SqlScriptProvider.createProviderForCreateSchemaScripts(beforePersistenceTest.getTestClass(),
+                    configuration.get()).getDescriptors(beforePersistenceTest.getTestClass());
             if (!schemaDescriptors.isEmpty()) {
                 executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, schemaDescriptors));
             }
@@ -64,6 +65,8 @@ public class SchemaCreationScriptsExecutor {
     // Private methods
 
     private boolean schemaCreated(final TestEvent beforePersistenceTest) {
-        return commandService.get().execute(new SchemaCreationControlCommand(beforePersistenceTest.getTestInstance().getClass().getSimpleName()));
+        return commandService.get()
+            .execute(
+                new SchemaCreationControlCommand(beforePersistenceTest.getTestInstance().getClass().getSimpleName()));
     }
 }

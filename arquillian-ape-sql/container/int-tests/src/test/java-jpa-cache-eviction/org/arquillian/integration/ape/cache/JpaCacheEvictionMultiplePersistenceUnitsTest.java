@@ -17,6 +17,9 @@
  */
 package org.jboss.arquillian.integration.persistence.jpa.cache;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import org.arquillian.persistence.JpaCacheEviction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -26,10 +29,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,9 +49,9 @@ public class JpaCacheEvictionMultiplePersistenceUnitsTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "JpaCacheEvictionMultiplePersistenceUnitsTest.war")
-                .addClasses(Platform.class, Game.class, GameBeanDoublePersistenceContext.class)
-                .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            .addClasses(Platform.class, Game.class, GameBeanDoublePersistenceContext.class)
+            .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Test
@@ -77,14 +76,16 @@ public class JpaCacheEvictionMultiplePersistenceUnitsTest {
     @InSequence(value = 2)
     public void should_evict_cache_before_test_method() {
         assertThat(isGameEntityCached(cacheEviction, 1L)).as("Expected: Second level cache cache was evicted").isFalse();
-        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isTrue();
+        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted")
+            .isTrue();
     }
 
     @Test
     @InSequence(value = 3)
     @JpaCacheEviction(entityManager = {"embedded", "jpacacheeviction"})
     public void should_evict_both_cache_before_test_method() {
-        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted").isFalse();
+        assertThat(isPlatformEntityCached(embedded, 1L)).as("Expected: Second level cache cache was not evicted")
+            .isFalse();
     }
 
     // Private helper methods
@@ -96,5 +97,4 @@ public class JpaCacheEvictionMultiplePersistenceUnitsTest {
     private boolean isPlatformEntityCached(EntityManagerFactory emf, Long id) {
         return emf.getCache().contains(Platform.class, id);
     }
-
 }

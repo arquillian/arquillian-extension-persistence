@@ -14,5 +14,4 @@ public class Variable {
     public String getValue() {
         return value;
     }
-
 }

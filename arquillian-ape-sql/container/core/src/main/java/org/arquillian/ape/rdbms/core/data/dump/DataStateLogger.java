@@ -32,5 +32,4 @@ public interface DataStateLogger<P extends DataEvent> {
     void aroundCleanup(EventContext<CleanupData> context);
 
     void beforePersistenceTest(EventContext<BeforePersistenceTest> context);
-
 }

@@ -17,15 +17,14 @@
  */
 package org.arquillian.ape.rdbms.core.client;
 
-import org.arquillian.ape.rdbms.core.command.DumpDataCommand;
-import org.arquillian.ape.rdbms.core.data.dump.DataDump;
-import org.arquillian.ape.rdbms.core.exception.DatabaseDumpException;
-import org.jboss.arquillian.core.api.annotation.Observes;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import org.arquillian.ape.rdbms.core.command.DumpDataCommand;
+import org.arquillian.ape.rdbms.core.data.dump.DataDump;
+import org.arquillian.ape.rdbms.core.exception.DatabaseDumpException;
+import org.jboss.arquillian.core.api.annotation.Observes;
 
 /**
  * Writes database state dumped during in-container test execution
@@ -53,5 +52,4 @@ public class DatabaseStateDumper {
             }
         }
     }
-
 }

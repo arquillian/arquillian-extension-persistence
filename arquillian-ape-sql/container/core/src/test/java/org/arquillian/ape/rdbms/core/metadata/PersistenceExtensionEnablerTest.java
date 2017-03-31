@@ -32,7 +32,7 @@ public class PersistenceExtensionEnablerTest {
     public void should_not_accept_class_without_data_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new NonPersistenceTest(),
-                NonPersistenceTest.class.getMethod("shouldPass"));
+            NonPersistenceTest.class.getMethod("shouldPass"));
         PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
         // when
@@ -46,7 +46,7 @@ public class PersistenceExtensionEnablerTest {
     public void should_accept_class_with_persistence_test_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new PersistenceTestClass(),
-                PersistenceTestClass.class.getMethod("shouldPass"));
+            PersistenceTestClass.class.getMethod("shouldPass"));
         PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
         // when
@@ -60,7 +60,7 @@ public class PersistenceExtensionEnablerTest {
     public void should_accept_class_with_script_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new PersistenceTestWithScriptAnnotation(),
-                PersistenceTestWithScriptAnnotation.class.getMethod("shouldPass"));
+            PersistenceTestWithScriptAnnotation.class.getMethod("shouldPass"));
         PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
         // when
@@ -74,7 +74,7 @@ public class PersistenceExtensionEnablerTest {
     public void should_accept_class_with_expected_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new PersistenceTestWithExpectedAnnotation(),
-                PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
+            PersistenceTestWithExpectedAnnotation.class.getMethod("shouldPass"));
         PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
         // when
@@ -88,7 +88,7 @@ public class PersistenceExtensionEnablerTest {
     public void shoul_accept_class_without_data_source_annotation_but_defined_in_properties() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
         PersistenceExtensionEnabler metadataProvider = new PersistenceExtensionEnabler(testEvent.getTestClass());
 
         // when

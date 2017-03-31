@@ -22,5 +22,4 @@ public class Query {
     public static String selectAllInJPQL(final Class<?> c) {
         return "SELECT entity FROM " + c.getSimpleName() + " entity";
     }
-
 }

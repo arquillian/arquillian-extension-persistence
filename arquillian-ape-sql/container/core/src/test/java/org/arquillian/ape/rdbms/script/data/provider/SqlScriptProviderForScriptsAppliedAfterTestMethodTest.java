@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
@@ -26,15 +29,12 @@ import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
 
-    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = "after-" + ApplyScriptAfterAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
+    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD =
+        "after-" + ApplyScriptAfterAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
 
     private static final String SQL_DATA_SET_ON_CLASS_LEVEL = "scripts/class-level.sql";
 
@@ -43,7 +43,8 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
 
     private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedClass(), ApplyScriptAfterAnnotatedClass.class.getMethod(testMethod));
+        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedClass(),
+            ApplyScriptAfterAnnotatedClass.class.getMethod(testMethod));
         return testEvent;
     }
 
@@ -54,12 +55,12 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptors(testEvent.getTestClass());
 
         // then
         SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,
-                SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
-
+            SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
     }
 
     @Test
@@ -108,7 +109,8 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     public void should_provide_default_file_name_when_not_specified_in_annotation_on_class_level() throws Exception {
         // given
         String expectedFileName = "after-" + ApplyScriptAfterAnnotatedOnClassLevelOnly.class.getName() + ".sql";
-        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedOnClassLevelOnly(), ApplyScriptAfterAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
+        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedOnClassLevelOnly(),
+            ApplyScriptAfterAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
@@ -121,14 +123,19 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     @Test
     public void should_extract_all_scirpts() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
-        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedClass(), ApplyScriptAfterAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
+        FileSqlScriptResourceDescriptor one =
+            new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor two =
+            new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor three =
+            new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
+        TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedClass(),
+            ApplyScriptAfterAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -138,11 +145,12 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     public void should_throw_exception_for_non_existing_file_infered_from_class_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new ApplyScriptAfterAnnotatedOnClassLevelOnlyNonExistingFile(),
-                ApplyScriptAfterAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
+            ApplyScriptAfterAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
         // then
         // exception should be thrown
@@ -152,11 +160,13 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     public void should_throw_exception_for_non_existing_file_defined_on_method_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
+            ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                "shouldFailForNonExistingFile"));
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
         // then
         // exception should be thrown
@@ -167,20 +177,25 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
     @Test
     public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(
+            defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql",
+            defaultConfiguration.getCharset());
         TestEvent testEvent = new TestEvent(new ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
+            ApplyScriptAfterOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                "shouldPassForFileStoredInDefaultLocation"));
         SqlScriptProvider<ApplyScriptAfter> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(dataSetDescriptors).containsOnly(expectedFile);
     }
 
     private SqlScriptProvider<ApplyScriptAfter> createSqlScriptProviderFor(TestEvent testEvent) {
-        return SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testEvent.getTestClass(), defaultConfiguration);
+        return SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(testEvent.getTestClass(),
+            defaultConfiguration);
     }
 
     @ApplyScriptAfter(SQL_DATA_SET_ON_CLASS_LEVEL)
@@ -199,7 +214,6 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
         @ApplyScriptAfter({"one.sql", "two.sql", "three.sql"})
         public void shouldPassWithMultipleFilesDefined() {
         }
-
     }
 
     private static class UsingScriptAnnotationWithUnsupportedFormat {
@@ -228,7 +242,5 @@ public class SqlScriptProviderForScriptsAppliedAfterTestMethodTest {
         @ApplyScriptAfter("tables-in-scripts-folder.sql")
         public void shouldPassForFileStoredInDefaultLocation() {
         }
-
     }
-
 }

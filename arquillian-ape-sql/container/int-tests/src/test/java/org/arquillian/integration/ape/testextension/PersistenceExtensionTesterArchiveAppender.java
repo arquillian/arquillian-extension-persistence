@@ -29,12 +29,11 @@ public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryA
     @Override
     protected Archive<?> buildArchive() {
         return ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-tester.jar")
-                .addPackages(true,
-                        Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
-                                PersistenceExtensionTester.class),
-                        this.getClass().getPackage())
-                .addPackages(true, "org.assertj.core")
-                .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
+            .addPackages(true,
+                Filters.exclude(PersistenceExtensionTesterArchiveAppender.class,
+                    PersistenceExtensionTester.class),
+                this.getClass().getPackage())
+            .addPackages(true, "org.assertj.core")
+            .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
     }
-
 }

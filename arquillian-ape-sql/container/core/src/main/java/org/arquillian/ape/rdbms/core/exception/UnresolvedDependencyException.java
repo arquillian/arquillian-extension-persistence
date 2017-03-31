@@ -34,5 +34,4 @@ public class UnresolvedDependencyException extends RuntimeException {
     public UnresolvedDependencyException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

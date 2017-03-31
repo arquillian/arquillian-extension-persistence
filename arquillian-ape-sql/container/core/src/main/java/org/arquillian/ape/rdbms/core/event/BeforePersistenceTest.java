@@ -24,5 +24,4 @@ public class BeforePersistenceTest extends TestEvent {
     public BeforePersistenceTest(TestEvent testEvent) {
         super(testEvent.getTestInstance(), testEvent.getTestMethod());
     }
-
 }

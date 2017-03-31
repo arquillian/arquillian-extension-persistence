@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.Cleanup;
@@ -29,10 +32,6 @@ import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.arquillian.test.spi.TestClass;
-
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -106,5 +105,4 @@ public class MetadataExtractor {
     public Class<?> getJavaClass() {
         return testClass.getJavaClass();
     }
-
 }

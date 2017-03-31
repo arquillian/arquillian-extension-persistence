@@ -36,11 +36,10 @@ public class CreatingSchemaUsingCustomScriptTest extends NonDeployableUserPersis
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence-no-generate.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence-no-generate.xml", "persistence.xml");
     }
-
 }

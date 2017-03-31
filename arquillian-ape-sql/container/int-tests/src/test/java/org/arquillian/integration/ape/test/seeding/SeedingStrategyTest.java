@@ -1,5 +1,8 @@
 package org.arquillian.integration.ape.test.seeding;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.DataSeedStrategy;
 import org.arquillian.ape.rdbms.SeedDataUsing;
@@ -15,10 +18,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -30,11 +29,11 @@ public class SeedingStrategyTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
     private static void assertUserAccountsAreEqual(UserAccount actual, UserAccount expected) {
@@ -108,5 +107,4 @@ public class SeedingStrategyTest {
         assertUserAccountsAreEqual(lexLuthor, updatedLex);
         assertThat(userAccounts).hasSize(3);
     }
-
 }

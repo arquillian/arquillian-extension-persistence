@@ -17,13 +17,12 @@
  */
 package org.arquillian.ape.rdbms.script;
 
-import org.arquillian.ape.rdbms.core.exception.ScriptLoadingException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import org.arquillian.ape.rdbms.core.exception.ScriptLoadingException;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -42,7 +41,7 @@ public final class ScriptLoader {
             reader = new BufferedReader(new InputStreamReader(inputStream, charset));
             while ((line = reader.readLine()) != null) {
                 builder.append(line)
-                        .append("\r\n");
+                    .append("\r\n");
             }
         } catch (Exception e) {
             throw new ScriptLoadingException("Failed loading script " + location, e);
@@ -65,5 +64,4 @@ public final class ScriptLoader {
         }
         return script.endsWith(".sql");
     }
-
 }

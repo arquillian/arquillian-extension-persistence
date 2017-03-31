@@ -25,12 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ExpectedDataSetFileNamingStrategyTest {
 
     @Test
-    public void should_produce_default_file_name_of_expected_data_set_for_test_using_full_class_name_and_method_name() throws Exception {
+    public void should_produce_default_file_name_of_expected_data_set_for_test_using_full_class_name_and_method_name()
+        throws Exception {
         // given
         ExpectedDataSetFileNamingStrategy defaultFileNamingStrategy = new ExpectedDataSetFileNamingStrategy(Format.XML);
 
         // when
-        String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        String fileName =
+            defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
         assertThat(fileName).isEqualTo("expected-org.arquillian.ape.rdbms.dbunit.data.naming.DummyClass#shouldPass.xml");
@@ -47,5 +49,4 @@ public class ExpectedDataSetFileNamingStrategyTest {
         // then
         assertThat(fileExtension).isEqualTo("xml");
     }
-
 }

@@ -27,5 +27,4 @@ public class PostgreSqlDataSourceExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDataSourceArchiveCreator.class);
         builder.service(AuxiliaryArchiveAppender.class, PostgreSqlDriverArchiveAppender.class);
     }
-
 }

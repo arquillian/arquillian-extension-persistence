@@ -17,10 +17,9 @@
  */
 package org.arquillian.ape.rdbms.script.splitter.oracle;
 
+import java.util.List;
 import org.arquillian.ape.rdbms.testutils.FileLoader;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,25 +45,23 @@ public class OracleStatementSplitterTest {
 
         // when
         final List<String> statements = splitter.splitStatements("DECLARE\n" +
-                "  l_message  \n" +
-                "  VARCHAR2 (100) := 'Hello';\n" +
-                "BEGIN\n" +
-                "  DECLARE\n" +
-                "    l_message2     VARCHAR2 (100) := \n" +
-                "      l_message || ' World!'; \n" +
-                "  BEGIN\n" +
-                "    DBMS_OUTPUT.put_line (l_message2);\n" +
-                "  END;\n" +
-                "EXCEPTION\n" +
-                "  WHEN OTHERS\n" +
-                "  THEN\n" +
-                "    DBMS_OUTPUT.put_line \n" +
-                "   (DBMS_UTILITY.format_error_stack);\n" +
-                "END;");
+            "  l_message  \n" +
+            "  VARCHAR2 (100) := 'Hello';\n" +
+            "BEGIN\n" +
+            "  DECLARE\n" +
+            "    l_message2     VARCHAR2 (100) := \n" +
+            "      l_message || ' World!'; \n" +
+            "  BEGIN\n" +
+            "    DBMS_OUTPUT.put_line (l_message2);\n" +
+            "  END;\n" +
+            "EXCEPTION\n" +
+            "  WHEN OTHERS\n" +
+            "  THEN\n" +
+            "    DBMS_OUTPUT.put_line \n" +
+            "   (DBMS_UTILITY.format_error_stack);\n" +
+            "END;");
 
         // then
         assertThat(statements).hasSize(1);
     }
-
-
 }

@@ -36,5 +36,4 @@ public class UnsupportedDataFormatException extends RuntimeException {
     public UnsupportedDataFormatException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

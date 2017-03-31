@@ -17,13 +17,12 @@
  */
 package org.arquillian.ape.rdbms.core.dbunit.dataset.json;
 
+import java.io.InputStream;
 import org.arquillian.ape.rdbms.core.testutils.DataSetAssert;
 import org.arquillian.ape.rdbms.core.testutils.FileLoader;
 import org.arquillian.ape.rdbms.core.testutils.TableAssert;
 import org.junit.After;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 public class JsonDataSetTest {
 
@@ -55,7 +54,8 @@ public class JsonDataSetTest {
         JsonDataSet jsonDataSet = new JsonDataSet(input);
 
         // then
-        TableAssert.assertThat(jsonDataSet.getTable("useraccount")).hasColumns("id", "firstname", "lastname", "username", "password", "email");
+        TableAssert.assertThat(jsonDataSet.getTable("useraccount"))
+            .hasColumns("id", "firstname", "lastname", "username", "password", "email");
     }
 
     @Test
@@ -80,8 +80,9 @@ public class JsonDataSetTest {
 
         // then
         TableAssert.assertThat(jsonDataSet.getTable("useraccount"))
-                .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
-                .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite", "email: arquillian@jboss.org");
+            .hasRow("id: 1", "firstname: John", "lastname: Smith", "username: doovde", "password: password")
+            .hasRow("id: 2", "firstname: Clark", "lastname: Kent", "username: superman", "password: kryptonite",
+                "email: arquillian@jboss.org");
     }
 
     @Test
@@ -95,5 +96,4 @@ public class JsonDataSetTest {
         // then
         DataSetAssert.assertThat(jsonDataSet).hasTables("useraccount", "testtable");
     }
-
 }

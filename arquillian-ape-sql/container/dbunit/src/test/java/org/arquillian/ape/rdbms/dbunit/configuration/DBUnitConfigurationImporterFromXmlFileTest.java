@@ -17,9 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
-import org.arquillian.ape.testutils.TestConfigurationLoader;
-
 import java.io.IOException;
+import org.arquillian.ape.testutils.TestConfigurationLoader;
 
 public class DBUnitConfigurationImporterFromXmlFileTest extends DBUnitConfigurationImporterFromFileAbstractTestCase {
 
@@ -27,5 +26,4 @@ public class DBUnitConfigurationImporterFromXmlFileTest extends DBUnitConfigurat
     protected DBUnitConfiguration loadFromFile() throws IOException {
         return TestConfigurationLoader.createDefaultDBUnitConfiguration();
     }
-
 }

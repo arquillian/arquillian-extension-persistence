@@ -38,7 +38,10 @@ public class ErrorObserver {
         if (shouldFailWith != null) {
             final AssertionErrorCollector errorCollector = assertionErrorCollectorInstance.get();
             final Class<? extends Throwable> expectedError = shouldFailWith.value();
-            assertThat(errorCollector.contains(expectedError)).describedAs("Expected " + expectedError.getName() + ", but instead got following errors: " + errorCollector.showAllErrors()).isTrue();
+            assertThat(errorCollector.contains(expectedError)).describedAs("Expected "
+                + expectedError.getName()
+                + ", but instead got following errors: "
+                + errorCollector.showAllErrors()).isTrue();
             errorCollector.clear();
         }
     }

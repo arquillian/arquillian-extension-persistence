@@ -1,6 +1,5 @@
 package org.arquillian.ape.spi;
 
-
 /**
  * Base class tha all integrations with Populator must implements.
  */
@@ -13,5 +12,4 @@ public interface PopulatorService<T> {
      * @return Annotation used for identifying this service.
      */
     Class<T> getPopulatorAnnotation();
-
 }

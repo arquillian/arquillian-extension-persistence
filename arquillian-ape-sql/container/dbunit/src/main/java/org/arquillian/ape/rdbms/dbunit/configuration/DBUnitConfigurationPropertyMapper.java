@@ -17,15 +17,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
-import org.arquillian.ape.rdbms.core.util.Strings;
-import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;
-import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Property;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import org.arquillian.ape.rdbms.core.util.Strings;
+import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;
+import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Property;
 
 public class DBUnitConfigurationPropertyMapper {
 
@@ -61,7 +59,8 @@ public class DBUnitConfigurationPropertyMapper {
     }
 
     private void mapProperties(DBUnitConfiguration configuration, final Map<String, Object> convertedProperties) {
-        final List<Field> properties = ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Property.class);
+        final List<Field> properties =
+            ReflectionHelper.getFieldsWithAnnotation(DBUnitConfiguration.class, Property.class);
         try {
             for (Field property : properties) {
                 String propertyPrefix = PROPERTY_PREFIX;
@@ -79,5 +78,4 @@ public class DBUnitConfigurationPropertyMapper {
             throw new DBUnitConfigurationDefinitionException("Unable to map DBUnit settings.", e);
         }
     }
-
 }

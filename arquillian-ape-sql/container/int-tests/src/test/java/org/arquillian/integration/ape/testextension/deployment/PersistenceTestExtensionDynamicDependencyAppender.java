@@ -16,6 +16,9 @@
  */
 package org.arquillian.integration.ape.testextension.deployment;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.deployment.ResourceAppender;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
@@ -31,10 +34,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public class PersistenceTestExtensionDynamicDependencyAppender implements ApplicationArchiveProcessor {
 
     @Inject
@@ -47,7 +46,8 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
             return;
         }
 
-        final CleanupVerificationDataSetProvider dataSetProvider = new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
+        final CleanupVerificationDataSetProvider dataSetProvider =
+            new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
         final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
         if (!dataSets.isEmpty()) {
             ResourceAppender.addResources(applicationArchive, toJavaArchive(dataSets));
@@ -75,5 +75,4 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
 
         return dataSetsArchive;
     }
-
 }

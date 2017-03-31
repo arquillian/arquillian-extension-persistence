@@ -37,9 +37,9 @@ public class SeedingDatabaseByApplyingCustomScriptTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
     @Test

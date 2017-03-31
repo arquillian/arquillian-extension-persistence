@@ -27,7 +27,6 @@ public class Oracle11gDataSourceArchiveCreator implements AuxiliaryArchiveAppend
     @Override
     public Archive<?> createAuxiliaryArchive() {
         return ShrinkWrap.create(JavaArchive.class, "arquillian-oracle-datasource.jar")
-                .addClass(Oracle11gDataSource.class);
+            .addClass(Oracle11gDataSource.class);
     }
-
 }

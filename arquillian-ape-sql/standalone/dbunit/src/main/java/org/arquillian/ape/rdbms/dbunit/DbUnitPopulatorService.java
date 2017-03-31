@@ -1,21 +1,17 @@
 package org.arquillian.ape.rdbms.dbunit;
 
-import org.arquillian.ape.core.DataSetLoader;
-import org.arquillian.ape.rdbms.core.RdbmsPopulatorService;
-import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
-import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
-
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import org.arquillian.ape.rdbms.core.RdbmsPopulatorService;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
+import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
 
 public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
 
@@ -24,7 +20,8 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     @Override
     public void connect(URI jdbc, String username, String password, Class<?> driver, Map<String, Object> customOptions) {
         try {
-            final JdbcDatabaseTester jdbcDatabaseTester = new JdbcDatabaseTester(driver.getName(), jdbc.toString(), username, password);
+            final JdbcDatabaseTester jdbcDatabaseTester =
+                new JdbcDatabaseTester(driver.getName(), jdbc.toString(), username, password);
 
             // TODO add custom option to get the schema to use
             //jdbcDatabaseTester.setSchema("");
@@ -59,13 +56,13 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
 
     private void executeDataSetOperation(List<String> resources, BiConsumer<IDatabaseConnection, IDataSet> predicate) {
         resources.stream()
-                .map(resource -> {
-                    final Format format = Format.inferFromFile(resource);
-                    return DataSetBuilder.builderFor(format).build(resource);
-                })
-                .forEach(dataset -> {
-                    predicate.accept(databaseConnection, dataset);
-                });
+            .map(resource -> {
+                final Format format = Format.inferFromFile(resource);
+                return DataSetBuilder.builderFor(format).build(resource);
+            })
+            .forEach(dataset -> {
+                predicate.accept(databaseConnection, dataset);
+            });
     }
 
     @Override

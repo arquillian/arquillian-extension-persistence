@@ -52,5 +52,4 @@ public abstract class Configuration implements Serializable {
     public String toString() {
         return super.toString() + "[qualifier=" + qualifier + "]";
     }
-
 }

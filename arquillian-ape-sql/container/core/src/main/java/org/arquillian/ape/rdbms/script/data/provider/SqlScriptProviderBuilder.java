@@ -16,12 +16,11 @@
  */
 package org.arquillian.ape.rdbms.script.data.provider;
 
+import java.lang.annotation.Annotation;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.ValueExtractor;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-
-import java.lang.annotation.Annotation;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -79,8 +78,7 @@ public class SqlScriptProviderBuilder<K extends Annotation> {
 
         public SqlScriptProvider<K> build(ValueExtractor<K> extractor) {
             return new SqlScriptProvider<K>(builder.annotation, builder.metadataExtractor,
-                    extractor, builder.scriptFileNamingStrategy, builder.configuration);
+                extractor, builder.scriptFileNamingStrategy, builder.configuration);
         }
     }
-
 }

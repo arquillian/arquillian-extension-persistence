@@ -2,16 +2,15 @@ package org.arquillian.ape.nosql.redis;
 
 import com.lordofthejars.nosqlunit.redis.DefaultRedisInsertionStrategy;
 import com.lordofthejars.nosqlunit.redis.RedisConnectionCallback;
-import org.arquillian.ape.core.DataSetLoader;
-import org.arquillian.ape.nosql.NoSqlPopulatorService;
-import redis.clients.jedis.BinaryJedisCommands;
-import redis.clients.jedis.Jedis;
-
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.arquillian.ape.core.DataSetLoader;
+import org.arquillian.ape.nosql.NoSqlPopulatorService;
+import redis.clients.jedis.BinaryJedisCommands;
+import redis.clients.jedis.Jedis;
 
 /**
  * Integration to NoSqlUnit Redis module.
@@ -60,14 +59,14 @@ class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
         };
 
         resources.stream()
-                .map(DataSetLoader::resolve)
-                .forEach(dataset -> {
-                    try {
-                        redisInsertionStrategy.insert(connection, dataset);
-                    } catch (Throwable throwable) {
-                        throw new IllegalStateException(throwable);
-                    }
-                });
+            .map(DataSetLoader::resolve)
+            .forEach(dataset -> {
+                try {
+                    redisInsertionStrategy.insert(connection, dataset);
+                } catch (Throwable throwable) {
+                    throw new IllegalStateException(throwable);
+                }
+            });
     }
 
     @Override

@@ -25,15 +25,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DataSetFileNamingStrategyTest {
 
     @Test
-    public void should_produce_default_file_name_of_data_set_for_test_using_full_class_name_and_method_name() throws Exception {
+    public void should_produce_default_file_name_of_data_set_for_test_using_full_class_name_and_method_name()
+        throws Exception {
         // given
         DataSetFileNamingStrategy defaultFileNamingStrategy = new DataSetFileNamingStrategy(Format.XML);
 
         // when
-        String fileName = defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
+        String fileName =
+            defaultFileNamingStrategy.createFileName(DummyClass.class, DummyClass.class.getMethod("shouldPass"));
 
         // then
         assertThat(fileName).isEqualTo("org.arquillian.ape.rdbms.dbunit.data.naming.DummyClass#shouldPass.xml");
     }
-
 }

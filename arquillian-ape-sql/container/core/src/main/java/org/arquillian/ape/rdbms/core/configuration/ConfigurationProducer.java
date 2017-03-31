@@ -30,5 +30,4 @@ public abstract class ConfigurationProducer<T extends Configuration> {
         Configuration.importTo(configuration).from(descriptor);
         return configuration;
     }
-
 }

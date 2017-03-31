@@ -69,5 +69,4 @@ public @interface ShouldMatchDataSet {
      * Alternatively can be defined for all tests in <code>arquillian.xml</code>.
      */
     String[] excludeColumns() default "";
-
 }

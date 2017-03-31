@@ -26,5 +26,4 @@ public class PostgreSqlDriverArchiveAppender extends JdbcDriverArchiveAppender {
         // Version needs to be specified explicitly because the artifact is defined for the profile
         return "org.postgresql:postgresql:9.3-1102-jdbc41";
     }
-
 }

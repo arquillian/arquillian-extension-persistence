@@ -17,14 +17,13 @@
  */
 package org.arquillian.ape.rdbms.core.dbunit.dataset.yaml;
 
-import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.DataSetException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import org.dbunit.dataset.CachedDataSet;
+import org.dbunit.dataset.DataSetException;
 
 /**
  * DBUnit data set produced from YAML format. Each table has its own
@@ -76,5 +75,4 @@ public class YamlDataSet extends CachedDataSet {
     public YamlDataSet(InputStream inputStream, boolean caseSensitiveTableNames) throws DataSetException {
         this(new YamlDataSetProducer(inputStream), caseSensitiveTableNames);
     }
-
 }

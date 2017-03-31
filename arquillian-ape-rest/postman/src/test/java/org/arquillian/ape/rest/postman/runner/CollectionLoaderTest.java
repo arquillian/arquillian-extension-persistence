@@ -1,6 +1,9 @@
 package org.arquillian.ape.rest.postman.runner;
 
-
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import org.arquillian.ape.rest.postman.runner.model.Body;
 import org.arquillian.ape.rest.postman.runner.model.Collection;
 import org.arquillian.ape.rest.postman.runner.model.Folder;
@@ -12,11 +15,6 @@ import org.arquillian.ape.rest.postman.runner.model.Mode;
 import org.arquillian.ape.rest.postman.runner.model.Request;
 import org.arquillian.ape.rest.postman.runner.model.Url;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -32,10 +30,12 @@ public class CollectionLoaderTest {
         final Collection collection = collectionLoader.load("/SimpleRequest.json", new HashMap<>());
 
         // then
-        Information expectedInformation = new Information("book", new URL("https://schema.getpostman.com/json/collection/v2.0.0/collection.json"), null);
+        Information expectedInformation =
+            new Information("book", new URL("https://schema.getpostman.com/json/collection/v2.0.0/collection.json"),
+                null);
         assertThat(collection.getInfo())
-                .isNotNull()
-                .isEqualToIgnoringNullFields(expectedInformation);
+            .isNotNull()
+            .isEqualToIgnoringNullFields(expectedInformation);
     }
 
     @Test
@@ -48,9 +48,9 @@ public class CollectionLoaderTest {
 
         // then
         assertThat(collection.getItem()).extracting("name", "request")
-                .containsExactly(
-                        tuple("This is one request", new URL("http://localhost:8080"))
-                );
+            .containsExactly(
+                tuple("This is one request", new URL("http://localhost:8080"))
+            );
     }
 
     @Test
@@ -75,7 +75,6 @@ public class CollectionLoaderTest {
         expectedItemItem.setRequestObject(expectedRequest);
 
         assertThat(itemItem).isEqualToComparingFieldByFieldRecursively(expectedItemItem);
-
     }
 
     @Test
@@ -136,8 +135,8 @@ public class CollectionLoaderTest {
 
         assertThat(itemItem.getRequestObject().getBody().getMode()).isEqualTo(Mode.formdata);
         assertThat(itemItem.getRequestObject().getBody().getFormdata())
-                .extracting(FormParameter::getKey, FormParameter::getValue)
-                .contains(tuple("username", "aaa"));
+            .extracting(FormParameter::getKey, FormParameter::getValue)
+            .contains(tuple("username", "aaa"));
     }
 
     @Test
@@ -152,10 +151,10 @@ public class CollectionLoaderTest {
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
         assertThat(itemItem.getRequestObject().getUrl().asNativeUrl())
-                .hasProtocol("http")
-                .hasHost("192.168.99.100")
-                .hasPath("/path/path2")
-                .hasQuery("a=b");
+            .hasProtocol("http")
+            .hasHost("192.168.99.100")
+            .hasPath("/path/path2")
+            .hasQuery("a=b");
     }
 
     @Test
@@ -170,13 +169,13 @@ public class CollectionLoaderTest {
         assertThat(collection.getItem()).hasSize(1);
         final ItemItem itemItem = (ItemItem) collection.getItem().get(0);
         assertThat(itemItem.getRequestObject().getUrl().asNativeUrl())
-                .hasHost("localhost");
+            .hasHost("localhost");
 
         final Map<String, String> headers = itemItem.getRequestObject().getHeaders();
         assertThat(headers).hasSize(1);
 
         assertThat(headers)
-                .containsValue("Basic XXX");
+            .containsValue("Basic XXX");
     }
 
     @Test
@@ -194,5 +193,4 @@ public class CollectionLoaderTest {
         assertThat(folder.getName()).isEqualTo("Folder");
         assertThat(folder.getItem()).hasSize(1);
     }
-
 }

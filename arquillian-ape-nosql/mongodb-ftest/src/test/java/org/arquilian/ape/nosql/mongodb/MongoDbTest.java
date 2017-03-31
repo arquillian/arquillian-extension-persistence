@@ -31,9 +31,9 @@ public class MongoDbTest {
     @Test
     public void should_populate_mongodb() {
         populator.forServer(hostIp, port)
-                .withStorage("test")
-                .usingDataSet("books.json")
-                .execute();
+            .withStorage("test")
+            .usingDataSet("books.json")
+            .execute();
 
         MongoClient mongoClient = new MongoClient(hostIp, port);
         final MongoDatabase database = mongoClient.getDatabase("test");
@@ -41,16 +41,14 @@ public class MongoDbTest {
         final FindIterable<Document> documents = book.find();
 
         assertThat(documents.first())
-                .containsEntry("title", "The Hobbit")
-                .containsEntry("numberOfPages", 293);
-
+            .containsEntry("title", "The Hobbit")
+            .containsEntry("numberOfPages", 293);
     }
 
     @After
     public void cleanDatabase() {
         populator.forServer(hostIp, port)
-                .withStorage("test")
-                .clean();
+            .withStorage("test")
+            .clean();
     }
-
 }

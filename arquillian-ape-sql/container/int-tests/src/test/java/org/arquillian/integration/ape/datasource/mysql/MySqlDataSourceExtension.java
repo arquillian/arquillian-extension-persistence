@@ -27,5 +27,4 @@ public class MySqlDataSourceExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, MySqlDataSourceArchiveCreator.class);
         builder.service(AuxiliaryArchiveAppender.class, MySqlDriverArchiveAppender.class);
     }
-
 }

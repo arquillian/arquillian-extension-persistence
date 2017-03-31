@@ -22,5 +22,4 @@ public class Strings {
     public static boolean isEmpty(final String string) {
         return string == null || "".equals(string);
     }
-
 }

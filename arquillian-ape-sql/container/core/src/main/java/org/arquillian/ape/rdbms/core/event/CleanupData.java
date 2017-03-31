@@ -28,5 +28,4 @@ public class CleanupData extends TestEvent implements PersistenceEvent {
         super(testEvent.getTestInstance(), testEvent.getTestMethod());
         this.cleanupStrategy = cleanupStrategy;
     }
-
 }

@@ -39,5 +39,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface CreateSchema {
 
     String[] value() default "";
-
 }

@@ -16,6 +16,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.arquillian.ape.rdbms.dbunit.client.DBUnitExtension;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.container.RemoteDBUnitExtension;
@@ -31,10 +34,6 @@ import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Creates <code>arquillian-persistence-dbunit.jar</code> archive
  * to run Persistence Extension with DBUnit. Includes all dependencies required
@@ -49,17 +48,19 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
     @Override
     public Archive<?> createAuxiliaryArchive() {
 
-        final JavaArchive dbUnitExtensionArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit.jar")
+        final JavaArchive dbUnitExtensionArchive =
+            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit.jar")
                 .addPackages(true,
-                        // exclude client package
-                        Filters.exclude(DBUnitExtension.class.getPackage()),
-                        "org.arquillian.ape")
+                    // exclude client package
+                    Filters.exclude(DBUnitExtension.class.getPackage()),
+                    "org.arquillian.ape")
                 .addPackages(true,
-                        // Avoid slf4j implementation in case different impl is chosen in @Deployment
-                        Filters.exclude(".*/org/slf4j/impl/.*"),
-                        requiredLibraries())
+                    // Avoid slf4j implementation in case different impl is chosen in @Deployment
+                    Filters.exclude(".*/org/slf4j/impl/.*"),
+                    requiredLibraries())
                 .addAsServiceProvider(RemoteLoadableExtension.class, RemoteDBUnitExtension.class)
-                .addAsServiceProvider(TableFilterProvider.class, DefaultDatabaseSequenceFilterProvider.class, OracleDatabaseSequenceFilterProvider.class);
+                .addAsServiceProvider(TableFilterProvider.class, DefaultDatabaseSequenceFilterProvider.class,
+                    OracleDatabaseSequenceFilterProvider.class);
 
         return dbUnitExtensionArchive;
     }
@@ -68,12 +69,12 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
 
     private String[] requiredLibraries() {
         List<String> libraries = new ArrayList<String>(Arrays.asList(
-                "org.dbunit",
-                "org.apache.commons",
-                "org.apache.log4j",
-                "org.slf4j",
-                "org.yaml",
-                "org.codehaus.jackson"
+            "org.dbunit",
+            "org.apache.commons",
+            "org.apache.log4j",
+            "org.slf4j",
+            "org.yaml",
+            "org.codehaus.jackson"
         ));
 
         if (!dbunitConfigurationInstance.get().isExcludePoi()) {
@@ -82,5 +83,4 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
 
         return libraries.toArray(new String[libraries.size()]);
     }
-
 }

@@ -30,16 +30,15 @@ public class CompleteUrl {
         StringBuilder file = new StringBuilder();
 
         final String fullPath = path.getPath().stream()
-                .map(path -> {
-                    if (path.startsWith(":")) {
-                        return variablesAsMap.get(path.substring(1)).toString();
-                    } else {
-                        return path;
-                    }
-
-                })
-                .map(URLEncoder::encode)
-                .collect(Collectors.joining("/"));
+            .map(path -> {
+                if (path.startsWith(":")) {
+                    return variablesAsMap.get(path.substring(1)).toString();
+                } else {
+                    return path;
+                }
+            })
+            .map(URLEncoder::encode)
+            .collect(Collectors.joining("/"));
 
         if (!fullPath.startsWith("/")) {
             file.append("/");
@@ -49,8 +48,8 @@ public class CompleteUrl {
 
         if (!query.isEmpty()) {
             final String fullQuery = query.stream()
-                    .map(QueryParam::asString)
-                    .collect(Collectors.joining("&"));
+                .map(QueryParam::asString)
+                .collect(Collectors.joining("&"));
             file.append("?").append(fullQuery);
         }
 
@@ -63,7 +62,6 @@ public class CompleteUrl {
 
     private Map<String, Object> getVariablesAsMap() {
         return variable.stream()
-                .collect(Collectors.toMap(Variable::getId, Variable::getValue));
+            .collect(Collectors.toMap(Variable::getId, Variable::getValue));
     }
-
 }

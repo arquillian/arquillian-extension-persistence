@@ -25,7 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ScriptAppliedAfterTestFileNamingStrategyTest {
 
     @Test
-    public void should_create_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name() throws Exception {
+    public void should_create_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name()
+        throws Exception {
         // given
         PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("after-", "sql");
 
@@ -37,7 +38,8 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest {
     }
 
     @Test
-    public void should_produce_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name() throws Exception {
+    public void should_produce_default_file_name_for_script_applied_after_test_using_full_class_name_and_method_name()
+        throws Exception {
         // given
         PrefixedScriptFileNamingStrategy fileNamingStrategy = new PrefixedScriptFileNamingStrategy("after-", "sql");
 
@@ -47,5 +49,4 @@ public class ScriptAppliedAfterTestFileNamingStrategyTest {
         // then
         assertThat(fileName).isEqualTo("after-org.arquillian.ape.rdbms.testutils.DummyClass#shouldPass.sql");
     }
-
 }

@@ -17,16 +17,16 @@
  */
 package org.arquillian.ape.rdbms.dbunit.filter;
 
+import java.sql.SQLException;
 import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 
-import java.sql.SQLException;
-
 public class OracleDatabaseSequenceFilter extends DatabaseSequenceFilter {
 
-    public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames) throws DataSetException, SQLException {
+    public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames)
+        throws DataSetException, SQLException {
         super(connection, DataSetUtils.tableNamesInUpperCase(tableNames));
     }
 

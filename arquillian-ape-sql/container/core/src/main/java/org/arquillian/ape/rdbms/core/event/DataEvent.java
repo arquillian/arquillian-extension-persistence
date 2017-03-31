@@ -17,11 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.event;
 
-import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 
 public class DataEvent<T extends ResourceDescriptor<?>> implements PersistenceEvent {
 

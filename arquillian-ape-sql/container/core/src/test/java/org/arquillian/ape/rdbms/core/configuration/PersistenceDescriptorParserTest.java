@@ -17,11 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.configuration;
 
+import java.io.InputStream;
 import org.arquillian.ape.rdbms.core.exception.MultiplePersistenceUnitsException;
 import org.arquillian.ape.rdbms.testutils.FileLoader;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,5 +63,4 @@ public class PersistenceDescriptorParserTest {
         // then
         // exception should be thrown
     }
-
 }

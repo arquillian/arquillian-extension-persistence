@@ -34,16 +34,14 @@ public class PostmanTest {
     public void should_get_messages() {
 
         populator.forServer(hostIp, port)
-                .usingDataSets("/message.json")
-                .execute();
+            .usingDataSets("/message.json")
+            .execute();
 
         given()
-                .spec(requestSpecBuilder.build())
-                .when()
-                .get("/message")
-                .then()
-                .assertThat().body(is("Hello From Populator Test"));
-
+            .spec(requestSpecBuilder.build())
+            .when()
+            .get("/message")
+            .then()
+            .assertThat().body(is("Hello From Populator Test"));
     }
-
 }

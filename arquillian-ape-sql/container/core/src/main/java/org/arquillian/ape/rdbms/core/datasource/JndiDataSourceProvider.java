@@ -17,15 +17,14 @@
  */
 package org.arquillian.ape.rdbms.core.datasource;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import org.arquillian.ape.rdbms.core.exception.ContextNotAvailableException;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotFoundException;
 import org.arquillian.ape.spi.datasource.DataSourceProvider;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 /**
  * The JNDI data source provider, that obtains the data source from the JNDI context based on the specified name.

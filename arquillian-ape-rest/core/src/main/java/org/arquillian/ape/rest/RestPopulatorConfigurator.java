@@ -1,7 +1,5 @@
 package org.arquillian.ape.rest;
 
-import org.arquillian.ape.core.Populator;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.arquillian.ape.core.Populator;
 
 public class RestPopulatorConfigurator implements Populator.PopulatorConfigurator {
 
@@ -46,7 +45,9 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     /**
      * Set variables to be used in script.
      *
-     * @param variables map.
+     * @param variables
+     *     map.
+     *
      * @return this instance.
      */
     public RestPopulatorConfigurator withVariables(Map<String, String> variables) {
@@ -57,9 +58,13 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
     /**
      * Set variables to be used in script.
      *
-     * @param key      name.
-     * @param value    of property.
-     * @param elements pair key, value. Even elements are keys, odd ones values.
+     * @param key
+     *     name.
+     * @param value
+     *     of property.
+     * @param elements
+     *     pair key, value. Even elements are keys, odd ones values.
+     *
      * @return this instance.
      */
     public RestPopulatorConfigurator withVariables(String key, String value, String... elements) {
@@ -86,10 +91,11 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
                 this.bindPort = uri.getPort();
             }
 
-            this.populatorService.execute(host, bindPort, Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
-
+            this.populatorService.execute(host, bindPort, Collections.unmodifiableList(this.datasets),
+                Collections.unmodifiableMap(variables));
         } else {
-            this.populatorService.execute(Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
+            this.populatorService.execute(Collections.unmodifiableList(this.datasets),
+                Collections.unmodifiableMap(variables));
         }
     }
 
@@ -102,10 +108,11 @@ public class RestPopulatorConfigurator implements Populator.PopulatorConfigurato
                 this.bindPort = uri.getPort();
             }
 
-            this.populatorService.clean(this.host, this.bindPort, Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
-
+            this.populatorService.clean(this.host, this.bindPort, Collections.unmodifiableList(this.datasets),
+                Collections.unmodifiableMap(variables));
         } else {
-            this.populatorService.clean(Collections.unmodifiableList(this.datasets), Collections.unmodifiableMap(variables));
+            this.populatorService.clean(Collections.unmodifiableList(this.datasets),
+                Collections.unmodifiableMap(variables));
         }
     }
 }

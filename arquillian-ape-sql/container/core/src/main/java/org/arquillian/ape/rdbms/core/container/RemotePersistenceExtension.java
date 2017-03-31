@@ -44,18 +44,18 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension {
         registerThirdPartyServices(builder);
 
         builder.observer(PersistenceConfigurationRemoteProducer.class)
-                .observer(ScriptingConfigurationRemoteProducer.class)
-                .observer(CommandServiceProducer.class)
-                .observer(JpaCacheEvictionHandler.class);
+            .observer(ScriptingConfigurationRemoteProducer.class)
+            .observer(CommandServiceProducer.class)
+            .observer(JpaCacheEvictionHandler.class);
     }
 
     private void registerTestLifecycleHandlers(ExtensionBuilder builder) {
         builder.observer(PersistenceTestTrigger.class)
-                .observer(ErrorCollectorHandler.class)         // Order of execution Before / after test
-                .observer(SchemaCreationScriptsExecutor.class) // Wraps around BeforePersistenceTest
-                .observer(CustomScriptsExecutor.class)         // 50 / 10
-                .observer(DataCleanupHandler.class)            // 40 / 20
-                .observer(DataScriptsHandler.class);           // 30 / 40
+            .observer(ErrorCollectorHandler.class)         // Order of execution Before / after test
+            .observer(SchemaCreationScriptsExecutor.class) // Wraps around BeforePersistenceTest
+            .observer(CustomScriptsExecutor.class)         // 50 / 10
+            .observer(DataCleanupHandler.class)            // 40 / 20
+            .observer(DataScriptsHandler.class);           // 30 / 40
     }
 
     private void registerThirdPartyServices(ExtensionBuilder builder) {

@@ -46,5 +46,4 @@ public class GameBean {
     public boolean isCached(long id) {
         return em.getEntityManagerFactory().getCache().contains(Game.class, id);
     }
-
 }

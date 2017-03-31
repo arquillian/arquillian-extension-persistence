@@ -16,6 +16,7 @@
  */
 package org.arquillian.ape.rdbms.core.deployment;
 
+import java.util.Map;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
@@ -34,19 +35,18 @@ import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
 public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
 
-    private PersistenceExtensionDataResourcesTestArchiveEnricher enricher = new PersistenceExtensionDataResourcesTestArchiveEnricher();
+    private PersistenceExtensionDataResourcesTestArchiveEnricher enricher =
+        new PersistenceExtensionDataResourcesTestArchiveEnricher();
 
     private static void assertThatContainsOnly(Archive<?> archive, String path) {
         final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
         assertThat(content).hasSize(1)
-                .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+            .contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
     }
 
     @Before
@@ -92,7 +92,6 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
         @ApplyScriptAfter("two-inserts.sql")
         public void should_work() throws Exception {
         }
-
     }
 
     private static class DatasetOnMethodLevel {
@@ -100,6 +99,5 @@ public class PersistenceExtensionDataResourcesTestArchiveEnricherTest {
         @ShouldMatchDataSet("users.json")
         public void should_work() throws Exception {
         }
-
     }
 }

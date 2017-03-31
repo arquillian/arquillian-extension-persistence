@@ -10,6 +10,6 @@ class CouchbasePopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, CouchbasePopulatorService.class)
-                .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
+            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
     }
 }

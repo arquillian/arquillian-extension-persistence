@@ -103,7 +103,5 @@ public class CouchbaseOptions implements Map<String, Object> {
         public CouchbaseOptions build() {
             return couchbaseOptions;
         }
-
     }
-
 }

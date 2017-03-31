@@ -16,6 +16,10 @@
  */
 package org.arquillian.integration.ape.testextension.data;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
@@ -27,11 +31,6 @@ import org.arquillian.ape.rdbms.dbunit.data.naming.ExpectedDataSetFileNamingStra
 import org.arquillian.integration.ape.testextension.data.annotation.DatabaseShouldContainAfterTest;
 import org.jboss.arquillian.test.spi.TestClass;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
@@ -41,10 +40,12 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
 
     private final DBUnitConfiguration configuration;
 
-    public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
+    public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor,
+        DBUnitConfiguration configuration) {
         super(DatabaseShouldContainAfterTest.class, metadataExtractor);
         this.configuration = configuration;
-        this.annotationInspector = new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
+        this.annotationInspector =
+            new AnnotationInspector<DatabaseShouldContainAfterTest>(testClass, DatabaseShouldContainAfterTest.class);
     }
 
     @Override
@@ -60,7 +61,8 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
     @Override
     protected String defaultFileName() {
         Format format = configuration.getDefaultDataSetFormat();
-        String defaultFileName = new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
+        String defaultFileName =
+            new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
         return defaultFileName;
     }
 
@@ -92,10 +94,10 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
         Format format = configuration.getDefaultDataSetFormat();
 
         if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod)) {
-            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(),
+                testMethod);
         }
 
         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
     }
-
 }

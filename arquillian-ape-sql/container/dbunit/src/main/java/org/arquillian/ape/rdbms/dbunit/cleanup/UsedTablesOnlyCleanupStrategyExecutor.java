@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.dbunit.cleanup;
 
+import java.util.logging.Logger;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
@@ -29,8 +30,6 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.operation.DatabaseOperation;
 
-import java.util.logging.Logger;
-
 public class UsedTablesOnlyCleanupStrategyExecutor implements CleanupStrategyExecutor {
 
     private static final Logger LOG = Logger.getLogger(UsedTablesOnlyCleanupStrategyExecutor.class.getName());
@@ -41,7 +40,8 @@ public class UsedTablesOnlyCleanupStrategyExecutor implements CleanupStrategyExe
 
     private final DBUnitConfiguration dbUnitConfiguration;
 
-    public UsedTablesOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister, DBUnitConfiguration dbUnitConfiguration) {
+    public UsedTablesOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister,
+        DBUnitConfiguration dbUnitConfiguration) {
         this.connection = connection;
         this.dataSetRegister = dataSetRegister;
         this.dbUnitConfiguration = dbUnitConfiguration;

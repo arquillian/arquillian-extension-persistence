@@ -22,7 +22,6 @@ import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
 import org.dbunit.dataset.IDataSet;
 
-
 /**
  * Contains information about the file - it's location and {@link Format format} inferred from it's name.
  *
@@ -69,5 +68,4 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet> {
         result = prime * result + ((format == null) ? 0 : format.hashCode());
         return result;
     }
-
 }

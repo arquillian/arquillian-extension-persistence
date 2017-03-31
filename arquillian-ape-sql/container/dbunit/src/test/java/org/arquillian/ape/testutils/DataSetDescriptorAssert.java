@@ -16,15 +16,14 @@
  */
 package org.arquillian.ape.testutils;
 
-import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
-import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.IterableAssert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
 
 public class DataSetDescriptorAssert extends IterableAssert<DataSetResourceDescriptor> {
 
@@ -65,5 +64,4 @@ public class DataSetDescriptorAssert extends IterableAssert<DataSetResourceDescr
         }
         return fileNames;
     }
-
 }

@@ -16,13 +16,6 @@
  */
 package org.arquillian.ape.rdbms.core.configuration;
 
-import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,6 +24,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
+import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +48,8 @@ public class PersistenceConfigurationExporterToPropertyFilesTest {
     public void should_export_persistence_configuration_to_property_file() throws Exception {
         // given
         Properties expectedProperties = expectedProperties("properties/basic.arquillian.persistence.properties");
-        expectedProperties.setProperty("arquillian.extension.persistence.dump.directory", System.getProperty("java.io.tmpdir"));
+        expectedProperties.setProperty("arquillian.extension.persistence.dump.directory",
+            System.getProperty("java.io.tmpdir"));
 
         PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
         persistenceConfiguration.setDefaultDataSource("DefaultDS");
@@ -57,7 +57,7 @@ public class PersistenceConfigurationExporterToPropertyFilesTest {
 
         // when
         Configuration.exportUsing(persistenceConfiguration)
-                .toProperties(new FileOutputStream(tmpPropertyFile));
+            .toProperties(new FileOutputStream(tmpPropertyFile));
 
         // then
         assertThat(createdProperties()).isEqualTo(expectedProperties);
@@ -67,11 +67,12 @@ public class PersistenceConfigurationExporterToPropertyFilesTest {
     public void should_export_custom_persistence_configuration_loaded_from_xml_to_property_file() throws Exception {
         // given
         Properties expectedProperties = expectedProperties("properties/custom.arquillian.persistence.properties");
-        PersistenceConfiguration persistenceConfiguration = TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian.xml");
+        PersistenceConfiguration persistenceConfiguration =
+            TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian.xml");
 
         // when
         Configuration.exportUsing(persistenceConfiguration)
-                .toProperties(new FileOutputStream(tmpPropertyFile));
+            .toProperties(new FileOutputStream(tmpPropertyFile));
 
         // then
         assertThat(createdProperties()).isEqualTo(expectedProperties);
@@ -86,14 +87,13 @@ public class PersistenceConfigurationExporterToPropertyFilesTest {
     }
 
     private Properties expectedProperties(String expectedPropertiesFileName) throws IOException,
-            FileNotFoundException, URISyntaxException {
+        FileNotFoundException, URISyntaxException {
         final Properties expectedProperties = new Properties();
         final URI expectedPropertiesUri = Thread.currentThread()
-                .getContextClassLoader()
-                .getResource(expectedPropertiesFileName)
-                .toURI();
+            .getContextClassLoader()
+            .getResource(expectedPropertiesFileName)
+            .toURI();
         expectedProperties.load(new FileInputStream(new File(expectedPropertiesUri)));
         return expectedProperties;
     }
-
 }

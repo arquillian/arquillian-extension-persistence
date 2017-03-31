@@ -1,5 +1,8 @@
 package org.arquillian.ape.rdbms.dbunit;
 
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.sql.SQLException;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.assertj.db.type.Source;
 import org.assertj.db.type.Table;
@@ -11,15 +14,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.sql.SQLException;
-
 import static org.assertj.db.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 public class PersonTest {
-
 
     @DbUnit
     @ArquillianResource
@@ -30,24 +28,23 @@ public class PersonTest {
         // H2 tool for creating schema
 
         RunScript.execute("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-                "sa", "", "src/test/resources/schema.sql", Charset.forName("UTF-8"), false);
+            "sa", "", "src/test/resources/schema.sql", Charset.forName("UTF-8"), false);
     }
 
     @Test
     public void should_find_all_persons() {
         rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
-                .withDriver(Driver.class)
-                .withUsername("sa")
-                .withPassword("")
-                .usingDataSet("person.xml")
-                .execute();
-
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("person.xml")
+            .execute();
 
         Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
         assertThat(table).column("name")
-                .value().isEqualTo("Bob")
-                .value().isEqualTo("Alice")
-                .value().isEqualTo("Charlie");
+            .value().isEqualTo("Bob")
+            .value().isEqualTo("Alice")
+            .value().isEqualTo("Charlie");
 
         rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
             .withDriver(Driver.class)
@@ -65,7 +62,6 @@ public class PersonTest {
             .withPassword("")
             .usingDataSet("heroes.yml")
             .execute();
-
 
         Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
         assertThat(table).column("name")
@@ -89,7 +85,6 @@ public class PersonTest {
             .usingDataSet("captains.json")
             .execute();
 
-
         Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
         assertThat(table).column("name")
             .value().isEqualTo("Jean-Luc")
@@ -102,5 +97,4 @@ public class PersonTest {
             .usingDataSet("captains.json")
             .clean();
     }
-
 }

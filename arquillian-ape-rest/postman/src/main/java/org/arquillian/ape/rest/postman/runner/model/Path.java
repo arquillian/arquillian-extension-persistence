@@ -23,5 +23,4 @@ public class Path {
             return this.paths;
         }
     }
-
 }

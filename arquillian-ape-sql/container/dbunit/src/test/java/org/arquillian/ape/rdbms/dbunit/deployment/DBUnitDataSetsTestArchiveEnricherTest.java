@@ -17,6 +17,7 @@
 
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
+import java.util.Map;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
@@ -34,8 +35,6 @@ import org.jboss.shrinkwrap.impl.base.NodeImpl;
 import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
@@ -86,7 +85,6 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             // when
             // then
         }
-
     }
 
     private static class DatasetOnMethodLevel {
@@ -97,6 +95,5 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             // when
             // then
         }
-
     }
 }

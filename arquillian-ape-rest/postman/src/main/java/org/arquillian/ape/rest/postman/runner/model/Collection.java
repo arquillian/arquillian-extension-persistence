@@ -24,5 +24,4 @@ public class Collection {
     public void setItem(List<Item> item) {
         this.item = item;
     }
-
 }

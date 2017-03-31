@@ -47,5 +47,4 @@ public final class FileLoader {
     public static InputStream load(final String filename) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
     }
-
 }

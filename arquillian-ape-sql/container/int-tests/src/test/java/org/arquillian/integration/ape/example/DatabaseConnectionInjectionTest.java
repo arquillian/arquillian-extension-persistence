@@ -48,17 +48,16 @@ public class DatabaseConnectionInjectionTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
 
     @Test
     public void should_inject_dbunit_database_connection() throws Exception {
         assertThat(databaseConnection).isNotNull();
     }
-
 }

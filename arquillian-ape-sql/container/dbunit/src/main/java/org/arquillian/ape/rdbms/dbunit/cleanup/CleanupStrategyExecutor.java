@@ -20,5 +20,4 @@ package org.arquillian.ape.rdbms.dbunit.cleanup;
 public interface CleanupStrategyExecutor {
 
     void cleanupDatabase(String... tablesToExclude);
-
 }

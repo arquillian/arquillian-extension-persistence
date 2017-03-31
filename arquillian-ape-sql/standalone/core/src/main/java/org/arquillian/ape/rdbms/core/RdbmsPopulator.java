@@ -16,5 +16,4 @@ public class RdbmsPopulator extends Populator<RdbmsPopulatorService, RdbmsPopula
             throw new IllegalArgumentException("For SQL case use forUri method to set JDBC Url");
         }
     }
-
 }

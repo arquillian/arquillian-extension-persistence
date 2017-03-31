@@ -35,9 +35,8 @@ public class DBUnitExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.service(AuxiliaryArchiveAppender.class, DBUnitArchiveAppender.class)
-                .service(ApplicationArchiveProcessor.class, DBUnitConfigurationTestArchiveEnricher.class)
-                .service(ApplicationArchiveProcessor.class, DBUnitDataSetsTestArchiveEnricher.class)
-                .observer(DBUnitConfigurationClientSideProducer.class);
+            .service(ApplicationArchiveProcessor.class, DBUnitConfigurationTestArchiveEnricher.class)
+            .service(ApplicationArchiveProcessor.class, DBUnitDataSetsTestArchiveEnricher.class)
+            .observer(DBUnitConfigurationClientSideProducer.class);
     }
-
 }

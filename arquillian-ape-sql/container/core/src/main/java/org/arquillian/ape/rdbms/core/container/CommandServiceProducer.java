@@ -50,5 +50,4 @@ public class CommandServiceProducer {
 
         commandServiceProducer.set(commandService);
     }
-
 }

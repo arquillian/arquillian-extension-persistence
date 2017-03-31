@@ -17,11 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.client;
 
-import org.arquillian.ape.rdbms.core.command.SchemaCreationControlCommand;
-import org.jboss.arquillian.core.api.annotation.Observes;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.arquillian.ape.rdbms.core.command.SchemaCreationControlCommand;
+import org.jboss.arquillian.core.api.annotation.Observes;
 
 /**
  * Observer responsible for determining if schema has been already
@@ -42,5 +41,4 @@ public class SchemaCreationCoordinator {
             command.setResult(createdSchemas.get(key));
         }
     }
-
 }

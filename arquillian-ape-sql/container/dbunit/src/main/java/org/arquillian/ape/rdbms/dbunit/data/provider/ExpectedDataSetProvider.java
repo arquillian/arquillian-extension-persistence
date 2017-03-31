@@ -16,6 +16,12 @@
  */
 package org.arquillian.ape.rdbms.dbunit.data.provider;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
@@ -24,13 +30,6 @@ import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.rdbms.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -96,10 +95,10 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
         Format format = configuration.getDefaultDataSetFormat();
 
         if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod)) {
-            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(),
+                testMethod);
         }
 
         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
     }
-
 }

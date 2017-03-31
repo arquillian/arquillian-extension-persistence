@@ -42,7 +42,7 @@ public class JpaCacheEvictionConfiguration extends Configuration {
 
     public JpaCacheEvictionConfiguration() {
         super("persistence-jpacacheeviction",
-                "arquillian.extension.persistence.jpacacheeviction.");
+            "arquillian.extension.persistence.jpacacheeviction.");
     }
 
     public TestExecutionPhase getDefaultPhase() {
@@ -50,7 +50,8 @@ public class JpaCacheEvictionConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultPhase Default cache eviction phase.
+     * @param defaultPhase
+     *     Default cache eviction phase.
      */
     public void setDefaultPhase(TestExecutionPhase defaultPhase) {
         this.defaultPhase = defaultPhase;
@@ -61,7 +62,8 @@ public class JpaCacheEvictionConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultEntityManager Default JNDI name of entity manager.
+     * @param defaultEntityManager
+     *     Default JNDI name of entity manager.
      */
     public void setDefaultEntityManager(String defaultEntityManager) {
         this.defaultEntityManager = defaultEntityManager;
@@ -72,10 +74,10 @@ public class JpaCacheEvictionConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultStrategy Strategy how to evict cache.
+     * @param defaultStrategy
+     *     Strategy how to evict cache.
      */
     public void setDefaultStrategy(Class<? extends JpaCacheEvictionStrategy> defaultStrategy) {
         this.defaultStrategy = defaultStrategy;
     }
-
 }

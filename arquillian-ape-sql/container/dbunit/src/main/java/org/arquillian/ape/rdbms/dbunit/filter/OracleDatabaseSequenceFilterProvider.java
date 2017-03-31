@@ -17,12 +17,11 @@
  */
 package org.arquillian.ape.rdbms.dbunit.filter;
 
+import java.sql.SQLException;
 import org.arquillian.ape.spi.dbunit.filter.TableFilterProvider;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.ITableFilter;
-
-import java.sql.SQLException;
 
 public class OracleDatabaseSequenceFilterProvider implements TableFilterProvider {
 
@@ -32,12 +31,12 @@ public class OracleDatabaseSequenceFilterProvider implements TableFilterProvider
     }
 
     @Override
-    public ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException {
+    public ITableFilter provide(IDatabaseConnection connection, String[] tableNames)
+        throws SQLException, DataSetException {
         return new OracleDatabaseSequenceFilter(connection, tableNames);
     }
 
     public String simpleName() {
         return "oracle";
     }
-
 }

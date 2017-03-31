@@ -32,5 +32,4 @@ public class DBUnitConnectionException extends RuntimeException {
     public DBUnitConnectionException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

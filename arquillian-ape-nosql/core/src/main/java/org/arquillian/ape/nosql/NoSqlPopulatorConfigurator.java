@@ -1,8 +1,5 @@
 package org.arquillian.ape.nosql;
 
-
-import org.arquillian.ape.core.Populator;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.arquillian.ape.core.Populator;
 
 /**
  * Implementation of NoSql DSL configurator.
@@ -39,7 +37,9 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Sets database name.
      *
-     * @param database name.
+     * @param database
+     *     name.
+     *
      * @return this instance.
      */
     public NoSqlPopulatorConfigurator withStorage(String database) {
@@ -50,7 +50,9 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Register a new dataset for populating data.
      *
-     * @param dataset to use.
+     * @param dataset
+     *     to use.
+     *
      * @return this instance.
      */
     public NoSqlPopulatorConfigurator usingDataSet(String dataset) {
@@ -61,7 +63,9 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Register new datasets for populating data.
      *
-     * @param datasets to use.
+     * @param datasets
+     *     to use.
+     *
      * @return this instance.
      */
     public NoSqlPopulatorConfigurator usingDataSets(String... datasets) {
@@ -72,9 +76,13 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Set custom options.
      *
-     * @param key      name.
-     * @param value    of property.
-     * @param elements pair key, value. Even elements are keys, odd ones values.
+     * @param key
+     *     name.
+     * @param value
+     *     of property.
+     * @param elements
+     *     pair key, value. Even elements are keys, odd ones values.
+     *
      * @return this instance.
      */
     public NoSqlPopulatorConfigurator withOption(String key, String value, String... elements) {
@@ -95,7 +103,9 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
     /**
      * Set custom options as map.
      *
-     * @param options to set.
+     * @param options
+     *     to set.
+     *
      * @return this instance.
      */
     public NoSqlPopulatorConfigurator withOptions(Map<String, Object> options) {

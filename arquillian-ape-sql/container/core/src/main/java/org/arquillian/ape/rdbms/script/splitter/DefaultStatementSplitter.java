@@ -32,16 +32,15 @@
  */
 package org.arquillian.ape.rdbms.script.splitter;
 
-import org.arquillian.ape.rdbms.script.SpecialCharactersReplacer;
-import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
-import org.arquillian.ape.spi.script.StatementSplitter;
-
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.arquillian.ape.rdbms.script.SpecialCharactersReplacer;
+import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
+import org.arquillian.ape.spi.script.StatementSplitter;
 
 /**
  * Splits SQL script into executable sql parts.

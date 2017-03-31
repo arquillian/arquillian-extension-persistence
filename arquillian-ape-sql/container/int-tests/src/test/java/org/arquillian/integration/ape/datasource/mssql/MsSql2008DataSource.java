@@ -22,10 +22,10 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 @DataSourceDefinition(name = "java:app/datasources/mssql_ds",
-        className = "com.microsoft.sqlserver.jdbc.SQLServerDataSource",
-        url = "jdbc:sqlserver://mssql:1433;databaseName=test;instanceName=MSSQL2008_EXP",
-        user = "sa",
-        password = "letmein")
+    className = "com.microsoft.sqlserver.jdbc.SQLServerDataSource",
+    url = "jdbc:sqlserver://mssql:1433;databaseName=test;instanceName=MSSQL2008_EXP",
+    user = "sa",
+    password = "letmein")
 @Singleton
 @Startup
 public class MsSql2008DataSource {

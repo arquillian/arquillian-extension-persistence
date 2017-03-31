@@ -22,5 +22,4 @@ public class NoSqlPopulator extends Populator<NoSqlPopulatorService, NoSqlPopula
             return new NoSqlPopulatorConfigurator(this.host, this.bindPort, this.populatorService);
         }
     }
-
 }

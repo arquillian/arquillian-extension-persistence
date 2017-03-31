@@ -69,5 +69,4 @@ public class InlineSqlScriptResourceDescriptor extends SqlScriptResourceDescript
     public String toString() {
         return super.toString() + "\n content {" + content + "}";
     }
-
 }

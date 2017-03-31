@@ -27,5 +27,4 @@ public interface DataHandler<P extends DataEvent, C extends DataEvent> {
     void compare(C compareDataEvent);
 
     void cleanup(CleanupData cleanupDataEvent);
-
 }

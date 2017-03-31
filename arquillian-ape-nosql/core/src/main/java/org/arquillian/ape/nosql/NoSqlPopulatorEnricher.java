@@ -1,6 +1,5 @@
 package org.arquillian.ape.nosql;
 
-
 import org.arquillian.ape.core.Populator;
 import org.arquillian.ape.core.PopulatorEnricher;
 

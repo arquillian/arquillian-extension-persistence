@@ -35,5 +35,4 @@ public class DatabaseDumpException extends RuntimeException {
     public DatabaseDumpException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

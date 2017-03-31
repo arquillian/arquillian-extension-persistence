@@ -25,9 +25,9 @@ public class CouchbaseTest {
     @Test
     public void should_find_books() {
         populator.forServer(hostIp, 0)
-                .withStorage("travel-sample")
-                .usingDataSet("airlines.json")
-                .execute();
+            .withStorage("travel-sample")
+            .usingDataSet("airlines.json")
+            .execute();
 
         CouchbaseCluster couchbaseCluster = CouchbaseCluster.create(hostIp);
         final Bucket books = couchbaseCluster.openBucket("travel-sample");
@@ -36,5 +36,4 @@ public class CouchbaseTest {
 
         assertThat(vuelingObject.getString("name")).isEqualTo("Vueling Airlines");
     }
-
 }

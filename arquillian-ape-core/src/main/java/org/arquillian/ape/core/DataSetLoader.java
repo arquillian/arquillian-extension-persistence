@@ -13,7 +13,5 @@ public class DataSetLoader {
         }
 
         return DataSetLoader.class.getResourceAsStream(location);
-
     }
-
 }

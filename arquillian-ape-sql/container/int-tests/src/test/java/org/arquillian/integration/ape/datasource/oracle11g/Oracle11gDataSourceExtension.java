@@ -24,9 +24,7 @@ public class Oracle11gDataSourceExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder builder) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> KURWA");
         builder.service(AuxiliaryArchiveAppender.class, Oracle11gDataSourceArchiveCreator.class);
         builder.service(AuxiliaryArchiveAppender.class, Oracle11gDriverArchiveAppender.class);
     }
-
 }

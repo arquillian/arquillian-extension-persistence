@@ -9,6 +9,6 @@ class RedisPopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, RedisPopulatorService.class)
-                .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
+            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
     }
 }

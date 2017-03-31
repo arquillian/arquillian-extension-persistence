@@ -17,10 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit.data.naming;
 
+import java.lang.reflect.Method;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
-
-import java.lang.reflect.Method;
 
 public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format> {
 
@@ -45,5 +44,4 @@ public class ExpectedDataSetFileNamingStrategy extends FileNamingStrategy<Format
     public String getFileExtension() {
         return dataSetFileNamingStrategy.getFileExtension();
     }
-
 }

@@ -17,11 +17,6 @@
  */
 package org.arquillian.ape.rdbms.core.configuration;
 
-import org.arquillian.ape.rdbms.core.exception.PersistenceExtensionInitializationException;
-import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
-import org.jboss.shrinkwrap.descriptor.api.Descriptors;
-
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +30,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
+import org.arquillian.ape.rdbms.core.exception.PersistenceExtensionInitializationException;
+import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
+import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 
 /**
  * Fetches persistence-related configuration from <code>arquillian.xml</code> or
@@ -54,13 +53,16 @@ public class ConfigurationImporter<T extends Configuration> {
     }
 
     public void loadFromArquillianXml(String arquillianXmlFilename) {
-        final InputStream arqXmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(arquillianXmlFilename);
-        final ArquillianDescriptor arquillianDescriptor = Descriptors.importAs(ArquillianDescriptor.class).fromStream(arqXmlStream);
+        final InputStream arqXmlStream =
+            Thread.currentThread().getContextClassLoader().getResourceAsStream(arquillianXmlFilename);
+        final ArquillianDescriptor arquillianDescriptor =
+            Descriptors.importAs(ArquillianDescriptor.class).fromStream(arqXmlStream);
         from(arquillianDescriptor);
     }
 
     public void from(ArquillianDescriptor descriptor) {
-        final Map<String, String> extensionProperties = extractPropertiesFromDescriptor(configuration.getQualifier(), descriptor);
+        final Map<String, String> extensionProperties =
+            extractPropertiesFromDescriptor(configuration.getQualifier(), descriptor);
         createConfiguration(extensionProperties);
     }
 
@@ -72,13 +74,15 @@ public class ConfigurationImporter<T extends Configuration> {
             properties.load(propertiesStream);
             from(properties);
         } catch (Exception e) {
-            throw new PersistenceExtensionInitializationException("Unable to load Arquillian properties in container. Missing file " + propertyFilename, e);
+            throw new PersistenceExtensionInitializationException(
+                "Unable to load Arquillian properties in container. Missing file " + propertyFilename, e);
         } finally {
             if (propertiesStream != null) {
                 try {
                     propertiesStream.close();
                 } catch (IOException e) {
-                    throw new PersistenceExtensionInitializationException("Failed to close the stream for file " + propertyFilename, e);
+                    throw new PersistenceExtensionInitializationException(
+                        "Failed to close the stream for file " + propertyFilename, e);
                 }
             }
         }
@@ -95,7 +99,6 @@ public class ConfigurationImporter<T extends Configuration> {
             final String key = String.valueOf(property.getKey());
             final String value = String.valueOf(property.getValue());
             convertedFieldsWithValues.put(convertFromPropertyKey(key), value);
-
         }
         return convertedFieldsWithValues;
     }
@@ -127,25 +130,27 @@ public class ConfigurationImporter<T extends Configuration> {
                     final Class<?> boxedFieldType = typeConverter.box(fieldType);
                     final Object convertedValue = typeConverter.convert(value, boxedFieldType);
                     if (convertedValue != null && boxedFieldType.isAssignableFrom(convertedValue.getClass())) {
-                        final Method setter = new PropertyDescriptor(fieldName, configuration.getClass()).getWriteMethod();
+                        final Method setter =
+                            new PropertyDescriptor(fieldName, configuration.getClass()).getWriteMethod();
                         setter.invoke(configuration, convertedValue);
                     }
                 } catch (Exception e) {
-                    throw new PersistenceExtensionInitializationException("Unable to create persistence configuration.", e);
+                    throw new PersistenceExtensionInitializationException("Unable to create persistence configuration.",
+                        e);
                 }
             }
         }
         if (!fieldsWithValues.keySet().isEmpty()) {
             reportNonExistingFields(fieldsWithValues, fields);
         }
-
     }
 
     private void reportNonExistingFields(final Map<String, String> fieldsWithValues, final Collection<Field> fields) {
         String[] knownFields = extractFieldNames(fields);
-        log.warning(configuration + " does not support properties provided '" + Arrays.toString(fieldsWithValues.keySet().toArray())
-                + ". Possible values: " + Arrays.toString(knownFields) + "'. Please revise your arquillian.xml. "
-                + "For more details you can refer to the official documentation https://docs.jboss.org/author/display/ARQ/Persistence");
+        log.warning(configuration + " does not support properties provided '" + Arrays.toString(
+            fieldsWithValues.keySet().toArray())
+            + ". Possible values: " + Arrays.toString(knownFields) + "'. Please revise your arquillian.xml. "
+            + "For more details you can refer to the official documentation https://docs.jboss.org/author/display/ARQ/Persistence");
     }
 
     private Map<String, String> extractPropertiesFromDescriptor(String extensionName, ArquillianDescriptor descriptor) {
@@ -166,5 +171,4 @@ public class ConfigurationImporter<T extends Configuration> {
         }
         return knownFields;
     }
-
 }

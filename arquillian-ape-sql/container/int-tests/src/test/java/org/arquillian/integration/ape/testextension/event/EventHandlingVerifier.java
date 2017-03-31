@@ -17,12 +17,11 @@
  */
 package org.arquillian.integration.ape.testextension.event;
 
-import org.arquillian.ape.rdbms.TestExecutionPhase;
-import org.arquillian.ape.rdbms.core.event.PersistenceEvent;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.rdbms.core.event.PersistenceEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,7 +83,7 @@ public class EventHandlingVerifier {
     public void verifyPhaseWhenEventWasTriggered() {
         if (verificationRequested) {
             assertThat(phase).describedAs("Verifying event test phase of [" + event.getCanonicalName() + "]")
-                    .isEqualTo(expectedPhase);
+                .isEqualTo(expectedPhase);
         }
     }
 
@@ -123,7 +122,6 @@ public class EventHandlingVerifier {
                 registerEventNotTriggedExpectation(verifier);
                 map.put(event, verifier);
             }
-
         }
 
         private void registerEventNotTriggedExpectation(EventHandlingVerifier verifier) {
@@ -143,7 +141,6 @@ public class EventHandlingVerifier {
                 default:
                     throw new IllegalArgumentException("Unsupported test phase " + phase);
             }
-
         }
 
         private TestExecutionPhase extractPhase(Method method) {
@@ -153,7 +150,6 @@ public class EventHandlingVerifier {
             } catch (Exception e) {
                 throw new RuntimeException("Unable to fetch test execution phase for " + annotation, e);
             }
-
         }
 
         private boolean expectedToBeCalled(Method method) {
@@ -163,8 +159,5 @@ public class EventHandlingVerifier {
         public boolean notExpectedToBeCalled(Method method) {
             return method.getAnnotation(eventNotExpectedToBeTriggeredAnnotation) != null;
         }
-
     }
-
-
 }

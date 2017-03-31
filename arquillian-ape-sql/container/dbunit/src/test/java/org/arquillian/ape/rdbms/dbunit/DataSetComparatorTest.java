@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
@@ -27,10 +30,6 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Set;
 
 import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,40 +44,46 @@ public class DataSetComparatorTest {
     @Test
     public void should_map_columns_associated_with_particular_table() throws Exception {
         // given
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"table1.id", "table2.name", "table1.test"}, noCustomFilters());
+        DataSetComparator dataSetComparator =
+            new DataSetComparator(new String[] {}, new String[] {"table1.id", "table2.name", "table1.test"},
+                noCustomFilters());
 
         // then
-        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")), entry("table2", Collections.singletonList("name")))
-                .hasSize(2);
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table1", Arrays.asList("id", "test")),
+            entry("table2", Collections.singletonList("name")))
+            .hasSize(2);
     }
 
     @Test
     public void should_map_columns_associated_with_any_table() throws Exception {
         // given
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"id", "name"}, noCustomFilters());
+        DataSetComparator dataSetComparator =
+            new DataSetComparator(new String[] {}, new String[] {"id", "name"}, noCustomFilters());
 
         // then
         assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
-                .hasSize(2);
+            .hasSize(2);
     }
 
     @Test
     public void should_map_columns_used_for_all_filtering_and_associated_with_given_table() throws Exception {
         // given
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{"id", "name", "table.test"}, noCustomFilters());
+        DataSetComparator dataSetComparator =
+            new DataSetComparator(new String[] {}, new String[] {"id", "name", "table.test"}, noCustomFilters());
 
         // then
         assertThat(dataSetComparator.toExclude.global).containsOnly("id", "name")
-                .hasSize(2);
-        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(entry("table", Collections.singletonList("test")))
-                .hasSize(1);
+            .hasSize(2);
+        assertThat(dataSetComparator.toExclude.columnsPerTable).contains(
+            entry("table", Collections.singletonList("test")))
+            .hasSize(1);
     }
 
     @Test
     public void should_find_all_differences_between_datasets() throws Exception {
         // given
         final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
         IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
         IDataSet usersYaml = DataSetBuilder.builderFor(Format.YAML).build("datasets/users-modified.yml");
 
@@ -93,7 +98,7 @@ public class DataSetComparatorTest {
     public void should_find_no_differences_between_identical_datasets() throws Exception {
         // given
         final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
         IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
         IDataSet usersYaml = DataSetBuilder.builderFor(Format.JSON).build("datasets/users.json");
 
@@ -108,7 +113,7 @@ public class DataSetComparatorTest {
     public void should_find_no_differences_comparing_the_same_dataset() throws Exception {
         // given
         final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, noCustomFilters());
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {}, noCustomFilters());
         IDataSet usersXml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
         IDataSet usersYaml = DataSetBuilder.builderFor(Format.XML).build("datasets/users.xml");
 
@@ -123,7 +128,8 @@ public class DataSetComparatorTest {
     public void should_sort_data_using_data_type_of_current_dataset() throws Exception {
         // given
         final AssertionErrorCollector errorCollector = new AssertionErrorCollector();
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{"id"}, new String[]{"username"}, noCustomFilters());
+        DataSetComparator dataSetComparator =
+            new DataSetComparator(new String[] {"id"}, new String[] {"username"}, noCustomFilters());
         IDataSet current = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
         IDataSet expected = DataSetBuilder.builderFor(Format.YAML).build("datasets/three-users.yml");
 
@@ -152,5 +158,4 @@ public class DataSetComparatorTest {
     private Set<Class<? extends IColumnFilter>> noCustomFilters() {
         return emptySet();
     }
-
 }

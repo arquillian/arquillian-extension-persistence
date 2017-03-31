@@ -24,6 +24,4 @@ public class Oracle11gDriverArchiveAppender extends JdbcDriverArchiveAppender {
     public String getDriverCoordinates() {
         return "com.oracle:ojdbc6:11.2.0.2.0";
     }
-
-
 }

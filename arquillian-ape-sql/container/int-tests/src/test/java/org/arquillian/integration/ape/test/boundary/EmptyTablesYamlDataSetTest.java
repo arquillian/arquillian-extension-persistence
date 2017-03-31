@@ -1,5 +1,7 @@
 package org.arquillian.integration.ape.test.boundary;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
@@ -17,9 +19,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class EmptyTablesYamlDataSetTest {
@@ -30,12 +29,12 @@ public class EmptyTablesYamlDataSetTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClasses(Query.class, UserPersistenceAssertion.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClasses(Query.class, UserPersistenceAssertion.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
 
     @Test
@@ -52,5 +51,4 @@ public class EmptyTablesYamlDataSetTest {
     public void should_clean_when_yaml_with_empty_tables_provided() throws Exception {
         new UserPersistenceAssertion(em).assertNoUserAccountsStored();
     }
-
 }

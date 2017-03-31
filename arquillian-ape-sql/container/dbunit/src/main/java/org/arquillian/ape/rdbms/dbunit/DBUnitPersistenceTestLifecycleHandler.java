@@ -17,6 +17,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+import javax.sql.DataSource;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.core.dbunit.exception.DBUnitInitializationException;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
@@ -40,14 +47,6 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
-
-import javax.sql.DataSource;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -78,7 +77,8 @@ public class DBUnitPersistenceTestLifecycleHandler {
     // Intercepting data handling events
     // ------------------------------------------------------------------------------------------------
 
-    public void provideDatabaseConnectionAroundBeforePersistenceTest(@Observes(precedence = 100000) EventContext<BeforePersistenceTest> context) {
+    public void provideDatabaseConnectionAroundBeforePersistenceTest(
+        @Observes(precedence = 100000) EventContext<BeforePersistenceTest> context) {
         createDatabaseConnection();
         context.proceed();
     }
@@ -94,14 +94,17 @@ public class DBUnitPersistenceTestLifecycleHandler {
     public void createDatasets(@Observes(precedence = 1000) EventContext<BeforePersistenceTest> context) {
         final Method testMethod = context.getEvent().getTestMethod();
 
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = persistenceExtensionFeatureResolverInstance.get();
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            persistenceExtensionFeatureResolverInstance.get();
         if (persistenceExtensionFeatureResolver.shouldSeedData()) {
-            DataSetProvider dataSetProvider = new DataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+            DataSetProvider dataSetProvider =
+                new DataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
             createInitialDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
         }
 
         if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest()) {
-            final ExpectedDataSetProvider dataSetProvider = new ExpectedDataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
+            final ExpectedDataSetProvider dataSetProvider =
+                new ExpectedDataSetProvider(metadataExtractorInstance.get(), dbUnitConfigurationInstance.get());
             createExpectedDataSets(dataSetProvider.getDescriptorsDefinedFor(testMethod));
         }
 
@@ -115,7 +118,6 @@ public class DBUnitPersistenceTestLifecycleHandler {
         if (databaseConnectionProducer.get() == null) {
             configureDatabaseConnection();
         }
-
     }
 
     private void configureDatabaseConnection() {
@@ -128,7 +130,8 @@ public class DBUnitPersistenceTestLifecycleHandler {
             final DatabaseConfig dbUnitConfig = databaseConnection.getConfig();
             dbUnitConfig.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new DefaultDataTypeFactory());
 
-            final Map<String, Object> properties = new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
+            final Map<String, Object> properties =
+                new DBUnitConfigurationPropertyMapper().map(dbUnitConfigurationInstance.get());
             for (Entry<String, Object> property : properties.entrySet()) {
                 dbUnitConfig.setProperty(property.getKey(), property.getValue());
             }
@@ -138,7 +141,7 @@ public class DBUnitPersistenceTestLifecycleHandler {
     }
 
     public DatabaseConnection createDatabaseConnection(final DataSource dataSource, final String schema)
-            throws DatabaseUnitException, SQLException {
+        throws DatabaseUnitException, SQLException {
         DatabaseConnection databaseConnection;
         if (schema != null && schema.length() > 0) {
             databaseConnection = new DatabaseConnection(dataSource.getConnection(), schema);
@@ -158,7 +161,6 @@ public class DBUnitPersistenceTestLifecycleHandler {
         } catch (Exception e) {
             throw new DBUnitConnectionException("Unable to close connection.", e);
         }
-
     }
 
     private void createInitialDataSets(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
@@ -184,6 +186,4 @@ public class DBUnitPersistenceTestLifecycleHandler {
         }
         return dataSetRegister;
     }
-
-
 }

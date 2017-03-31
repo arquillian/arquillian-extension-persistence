@@ -36,12 +36,11 @@ public class PersistenceExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
-                .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
-                .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
-                .observer(PersistenceConfigurationClientSideProducer.class)
-                .observer(ScriptingConfigurationClientSideProducer.class)
-                .observer(SchemaCreationCoordinator.class)
-                .observer(DatabaseStateDumper.class);
+            .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
+            .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
+            .observer(PersistenceConfigurationClientSideProducer.class)
+            .observer(ScriptingConfigurationClientSideProducer.class)
+            .observer(SchemaCreationCoordinator.class)
+            .observer(DatabaseStateDumper.class);
     }
-
 }

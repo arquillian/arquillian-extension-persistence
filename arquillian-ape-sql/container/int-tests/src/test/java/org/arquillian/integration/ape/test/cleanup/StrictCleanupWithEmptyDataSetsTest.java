@@ -17,6 +17,9 @@
  */
 package org.arquillian.integration.ape.test.cleanup;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
@@ -31,10 +34,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(Arquillian.class)
 @CreateSchema({"schema/create.sql", "schema/additional-audit-useraccount.sql",
-        "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
+    "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class StrictCleanupWithEmptyDataSetsTest {
 
@@ -54,12 +53,12 @@ public class StrictCleanupWithEmptyDataSetsTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
     }
 
     @Test
@@ -77,8 +76,8 @@ public class StrictCleanupWithEmptyDataSetsTest {
     }
 
     private void assertNoUserAccountAuditStored() {
-        final Long amount = Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
+        final Long amount =
+            Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
         assertThat(amount).isZero();
     }
-
 }

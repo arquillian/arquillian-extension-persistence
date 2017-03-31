@@ -17,11 +17,10 @@
  */
 package org.arquillian.ape.rdbms.script.configuration;
 
+import java.nio.charset.Charset;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.script.splitter.DefaultStatementSplitter;
-
-import java.nio.charset.Charset;
 
 import static org.arquillian.ape.rdbms.util.Arrays.copy;
 
@@ -61,8 +60,9 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param scriptsToExecuteBeforeTest Ad-hoc scripts or file location to be used before every test.
-     *                                   Might be handy for turning off integrity checks.
+     * @param scriptsToExecuteBeforeTest
+     *     Ad-hoc scripts or file location to be used before every test.
+     *     Might be handy for turning off integrity checks.
      */
     public void setScriptsToExecuteBeforeTest(String[] scriptsToExecuteBeforeTest) {
         this.scriptsToExecuteBeforeTest = copy(scriptsToExecuteBeforeTest);
@@ -73,8 +73,9 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param scriptsToExecuteAfterTest Ad-hoc scripts or file location to be used after every test.
-     *                                  Could be used to revert operations applied by {@link #scriptsToExecuteBeforeTest}
+     * @param scriptsToExecuteAfterTest
+     *     Ad-hoc scripts or file location to be used after every test.
+     *     Could be used to revert operations applied by {@link #scriptsToExecuteBeforeTest}
      */
     public void setScriptsToExecuteAfterTest(String[] scriptsToExecuteAfterTest) {
         this.scriptsToExecuteAfterTest = scriptsToExecuteAfterTest;
@@ -85,8 +86,9 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultSqlScriptLocation Folder where all custom SQL scripts are located.
-     *                                 Default value is <code>scripts</code>
+     * @param defaultSqlScriptLocation
+     *     Folder where all custom SQL scripts are located.
+     *     Default value is <code>scripts</code>
      */
     public void setDefaultSqlScriptLocation(String defaultSqlScriptLocation) {
         this.defaultSqlScriptLocation = defaultSqlScriptLocation;
@@ -97,8 +99,9 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultCleanupUsingScriptPhase Defines default cleanup phase for custom SQL scripts.
-     *                                       If not specified it's assumed to be AFTER test method.
+     * @param defaultCleanupUsingScriptPhase
+     *     Defines default cleanup phase for custom SQL scripts.
+     *     If not specified it's assumed to be AFTER test method.
      */
     public void setDefaultCleanupUsingScriptPhase(TestExecutionPhase defaultCleanupUsingScriptPhase) {
         this.defaultCleanupUsingScriptPhase = defaultCleanupUsingScriptPhase;
@@ -109,7 +112,8 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param sqlStatementDelimiter Defines char sequence indicating end of SQL statement. Default value: ';'
+     * @param sqlStatementDelimiter
+     *     Defines char sequence indicating end of SQL statement. Default value: ';'
      */
     public void setSqlStatementDelimiter(String sqlStatementDelimiter) {
         this.sqlStatementDelimiter = sqlStatementDelimiter;
@@ -120,22 +124,22 @@ public class ScriptingConfiguration extends Configuration {
     }
 
     /**
-     * @param showSql Defines if each SQL statements should be logged when executing.
+     * @param showSql
+     *     Defines if each SQL statements should be logged when executing.
      */
     public void setShowSql(boolean showSql) {
         this.showSql = showSql;
     }
-
 
     public String getSqlDialect() {
         return sqlDialect;
     }
 
     /**
-     * Defines which SQL-specific implementation of {@link org.arquillian.persistence.spi.script.StatementSplitter} (parser)
-     * should be used when splitting sql script into separated statements. Default value is "default" and {@link DefaultStatementSplitter} is used.
-     *
-     * @param sqlDialect
+     * Defines which SQL-specific implementation of {@link org.arquillian.persistence.spi.script.StatementSplitter}
+     * (parser)
+     * should be used when splitting sql script into separated statements. Default value is "default" and {@link
+     * DefaultStatementSplitter} is used.
      */
     public void setSqlDialect(String sqlDialect) {
         this.sqlDialect = sqlDialect;
@@ -159,8 +163,6 @@ public class ScriptingConfiguration extends Configuration {
      * </ul>
      * <br/>
      * which are guaranteed to be supported by all Java platform implementations.
-     *
-     * @param charset
      */
     public void setCharset(Charset charset) {
         this.charset = charset;

@@ -17,6 +17,8 @@
  */
 package org.arquillian.integration.ape.test.customscripts;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
@@ -31,9 +33,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 @RunWith(Arquillian.class)
 public class ApplyingCustomScriptsTest {
 
@@ -43,9 +42,9 @@ public class ApplyingCustomScriptsTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
     @Test
@@ -56,13 +55,13 @@ public class ApplyingCustomScriptsTest {
     }
 
     @Test
-    @ApplyScriptBefore({"INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
-            "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')"})
+    @ApplyScriptBefore({
+        "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (1, 'John', 'Smith', 'doovde', 'password')",
+        "INSERT INTO useraccount (id, firstname, lastname, username, password) VALUES (2, 'Clark', 'Kent', 'superman', 'kryptonite')"})
     @ShouldMatchDataSet(value = "two-users.yml", excludeColumns = "id")
     @ExecuteScriptsShouldBeTriggered(TestExecutionPhase.BEFORE)
     public void should_add_users_before_test_using_inline_script() throws Exception {
     }
-
 
     @Test
     @ApplyScriptBefore("clark-kent.sql")
@@ -79,5 +78,4 @@ public class ApplyingCustomScriptsTest {
         // superman should be added before test execution
         // and data should be compared using dataset defined in @ShouldMatchDataSet
     }
-
 }

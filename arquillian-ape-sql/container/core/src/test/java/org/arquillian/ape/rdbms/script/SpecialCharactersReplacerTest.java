@@ -52,12 +52,12 @@ public class SpecialCharactersReplacerTest {
 
     private Object[] specialCharacters() {
         return $(
-                $("&amp; & &nbsp;;;; &123asdBDS;", "ape_special[amp] & ape_special[nbsp];;; ape_special[123asdBDS]"),
-                $("", ""),
-                $("normal text", "normal text"),
-                $("&amp", "&amp"),
-                $("&test;", "ape_special[test]"),
-                $("    ", "    ")
+            $("&amp; & &nbsp;;;; &123asdBDS;", "ape_special[amp] & ape_special[nbsp];;; ape_special[123asdBDS]"),
+            $("", ""),
+            $("normal text", "normal text"),
+            $("&amp", "&amp"),
+            $("&test;", "ape_special[test]"),
+            $("    ", "    ")
         );
     }
 }

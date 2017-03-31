@@ -17,10 +17,10 @@
  */
 package org.arquillian.integration.ape.jpa.cache;
 
+import java.io.Serializable;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 /**
  * @author <a href="mailto:thradec@gmail.com">Tomas Hradec</a>
@@ -93,5 +93,4 @@ public class Game implements Serializable {
     public String toString() {
         return "Game@" + hashCode() + "[id = " + id + "; title = " + title + "]";
     }
-
 }

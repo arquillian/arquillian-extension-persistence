@@ -34,5 +34,4 @@ public class InvalidResourceLocation extends RuntimeException {
     public InvalidResourceLocation(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

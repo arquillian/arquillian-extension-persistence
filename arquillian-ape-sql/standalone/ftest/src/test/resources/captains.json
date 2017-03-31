@@ -1,15 +1,14 @@
 {
-  "person":
-  [
+  "person": [
     {
       "id": "1",
-      "name" : "Jean-Luc",
-      "last_name" : "Picard"
+      "name": "Jean-Luc",
+      "last_name": "Picard"
     },
     {
       "id": "2",
-      "name" : "James",
-      "last_name" : "Kirk"
+      "name": "James",
+      "last_name": "Kirk"
     }
   ]
 }

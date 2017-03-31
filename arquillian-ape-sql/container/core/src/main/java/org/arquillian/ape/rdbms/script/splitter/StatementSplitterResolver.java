@@ -17,11 +17,10 @@
  */
 package org.arquillian.ape.rdbms.script.splitter;
 
+import java.util.Collection;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.util.JavaSPIExtensionLoader;
 import org.arquillian.ape.spi.script.StatementSplitter;
-
-import java.util.Collection;
 
 public class StatementSplitterResolver {
 
@@ -34,11 +33,13 @@ public class StatementSplitterResolver {
     public StatementSplitter resolve() {
         final String sqlDialect = scriptingConfiguration.getSqlDialect();
         StatementSplitter resolved = null;
-        final Collection<StatementSplitter> statementSplitters = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
+        final Collection<StatementSplitter> statementSplitters =
+            new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), StatementSplitter.class);
         for (StatementSplitter statementSplitter : statementSplitters) {
             if (statementSplitter.supports().equalsIgnoreCase(sqlDialect)) {
                 if (resolved != null) {
-                    throw new IllegalStateException("Found multiple implementations of " + StatementSplitter.class.getName()
+                    throw new IllegalStateException(
+                        "Found multiple implementations of " + StatementSplitter.class.getName()
                             + " for specified dialect " + sqlDialect);
                 }
                 resolved = statementSplitter;
@@ -47,10 +48,12 @@ public class StatementSplitterResolver {
         }
 
         if (resolved == null) {
-            throw new IllegalStateException("Unresolvable implementation of " + StatementSplitter.class.getName() + " for specified dialect " + sqlDialect);
+            throw new IllegalStateException("Unresolvable implementation of "
+                + StatementSplitter.class.getName()
+                + " for specified dialect "
+                + sqlDialect);
         }
 
         return resolved;
     }
-
 }

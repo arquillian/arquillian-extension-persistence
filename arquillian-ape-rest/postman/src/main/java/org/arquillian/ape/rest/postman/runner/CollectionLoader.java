@@ -9,18 +9,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import org.arquillian.ape.rest.postman.runner.model.Body;
-import org.arquillian.ape.rest.postman.runner.model.Collection;
-import org.arquillian.ape.rest.postman.runner.model.CompleteUrl;
-import org.arquillian.ape.rest.postman.runner.model.Domain;
-import org.arquillian.ape.rest.postman.runner.model.Folder;
-import org.arquillian.ape.rest.postman.runner.model.Item;
-import org.arquillian.ape.rest.postman.runner.model.ItemItem;
-import org.arquillian.ape.rest.postman.runner.model.Method;
-import org.arquillian.ape.rest.postman.runner.model.Path;
-import org.arquillian.ape.rest.postman.runner.model.Request;
-import org.arquillian.ape.rest.postman.runner.model.Url;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +21,17 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.arquillian.ape.rest.postman.runner.model.Body;
+import org.arquillian.ape.rest.postman.runner.model.Collection;
+import org.arquillian.ape.rest.postman.runner.model.CompleteUrl;
+import org.arquillian.ape.rest.postman.runner.model.Domain;
+import org.arquillian.ape.rest.postman.runner.model.Folder;
+import org.arquillian.ape.rest.postman.runner.model.Item;
+import org.arquillian.ape.rest.postman.runner.model.ItemItem;
+import org.arquillian.ape.rest.postman.runner.model.Method;
+import org.arquillian.ape.rest.postman.runner.model.Path;
+import org.arquillian.ape.rest.postman.runner.model.Request;
+import org.arquillian.ape.rest.postman.runner.model.Url;
 
 class CollectionLoader {
 
@@ -45,7 +44,8 @@ class CollectionLoader {
             final Map<String, String> variables = new HashMap<>();
 
             final JsonParser jsonParser = new JsonParser();
-            final JsonObject collectionJsonDocument = jsonParser.parse(new InputStreamReader(collection)).getAsJsonObject();
+            final JsonObject collectionJsonDocument =
+                jsonParser.parse(new InputStreamReader(collection)).getAsJsonObject();
             variables.putAll(loadVariables(collectionJsonDocument));
             variables.putAll(externalVariables);
             variables.putAll(System.getenv());
@@ -59,7 +59,6 @@ class CollectionLoader {
 
             return gsonBuilder.create().fromJson(collectionJsonDocument, Collection.class);
         }
-
     }
 
     private Map<String, String> loadVariables(JsonObject collectionJsonDocument) {
@@ -91,7 +90,8 @@ class CollectionLoader {
         }
 
         @Override
-        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
 
             if (json.isJsonPrimitive()) {
                 return VariablesParser.parseExpressions(json.getAsString(), variables);
@@ -141,7 +141,6 @@ class CollectionLoader {
             joiner.add(buffer);
 
             return joiner.toString();
-
         }
 
         private static String resolve(String variable, Map<String, String> values) {
@@ -156,7 +155,8 @@ class CollectionLoader {
     private class RequestDeserializer implements JsonDeserializer<Request> {
 
         @Override
-        public Request deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Request deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(Url.class, new UrlDeserializer());
@@ -189,11 +189,10 @@ class CollectionLoader {
                 headerJsonArray.forEach(header -> {
                     final JsonObject headerJsonObject = header.getAsJsonObject();
                     headers.put(
-                            applyVariables(headerJsonObject.get("key").getAsString()),
-                            applyVariables(headerJsonObject.get("value").getAsString()));
+                        applyVariables(headerJsonObject.get("key").getAsString()),
+                        applyVariables(headerJsonObject.get("value").getAsString()));
                 });
                 request.setHeaders(headers);
-
             }
         }
     }
@@ -201,12 +200,13 @@ class CollectionLoader {
     private class PathDeserializer implements JsonDeserializer<Path> {
 
         @Override
-        public Path deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Path deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
             if (json.isJsonArray()) {
                 final List<String> domain = StreamSupport.stream(json.getAsJsonArray().spliterator(), false)
-                        .map(JsonElement::getAsString)
-                        .map(CollectionLoader.this::applyVariables)
-                        .collect(Collectors.toList());
+                    .map(JsonElement::getAsString)
+                    .map(CollectionLoader.this::applyVariables)
+                    .collect(Collectors.toList());
                 return new Path(domain);
             } else {
                 return new Path(applyVariables(json.getAsString()));
@@ -217,13 +217,14 @@ class CollectionLoader {
     private class DomainDeserializer implements JsonDeserializer<Domain> {
 
         @Override
-        public Domain deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Domain deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
 
             if (json.isJsonArray()) {
                 final List<String> domain = StreamSupport.stream(json.getAsJsonArray().spliterator(), false)
-                        .map(JsonElement::getAsString)
-                        .map(CollectionLoader.this::applyVariables)
-                        .collect(Collectors.toList());
+                    .map(JsonElement::getAsString)
+                    .map(CollectionLoader.this::applyVariables)
+                    .collect(Collectors.toList());
                 return new Domain(domain);
             } else {
                 return new Domain(applyVariables(json.getAsString()));
@@ -234,7 +235,8 @@ class CollectionLoader {
     private class UrlDeserializer implements JsonDeserializer<Url> {
 
         @Override
-        public Url deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Url deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(Domain.class, new DomainDeserializer());
             gsonBuilder.registerTypeAdapter(Path.class, new PathDeserializer());
@@ -259,7 +261,8 @@ class CollectionLoader {
     private class ItemDeserializer implements JsonDeserializer<Item> {
 
         @Override
-        public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(Request.class, new RequestDeserializer());
@@ -303,5 +306,4 @@ class CollectionLoader {
             }
         }
     }
-
 }

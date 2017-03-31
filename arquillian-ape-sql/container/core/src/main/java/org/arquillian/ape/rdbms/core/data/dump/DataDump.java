@@ -41,5 +41,4 @@ public class DataDump implements Serializable {
     public String getPath() {
         return path;
     }
-
 }

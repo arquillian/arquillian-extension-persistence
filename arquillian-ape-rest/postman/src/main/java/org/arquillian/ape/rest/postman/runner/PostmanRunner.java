@@ -1,5 +1,11 @@
 package org.arquillian.ape.rest.postman.runner;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -15,13 +21,6 @@ import org.arquillian.ape.rest.postman.runner.model.ItemItem;
 import org.arquillian.ape.rest.postman.runner.model.ItemType;
 import org.arquillian.ape.rest.postman.runner.model.Request;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 public class PostmanRunner {
 
     private final OkHttpClient client;
@@ -29,15 +28,16 @@ public class PostmanRunner {
 
     public PostmanRunner() {
         this.client = new OkHttpClient.Builder()
-                .addInterceptor(new RetryInterceptor())
-                .build();
+            .addInterceptor(new RetryInterceptor())
+            .build();
     }
 
     public void executeCalls(Map<String, String> variables, String... collectionsLocation) {
         this.executeCalls(new HostPortOverride(), variables, collectionsLocation);
     }
 
-    public void executeCalls(HostPortOverride hostPortOverride, Map<String, String> variables, String... collectionsLocation) {
+    public void executeCalls(HostPortOverride hostPortOverride, Map<String, String> variables,
+        String... collectionsLocation) {
         for (String collectionLocation : collectionsLocation) {
             try {
                 executeCall(hostPortOverride, variables, collectionLocation);
@@ -47,7 +47,8 @@ public class PostmanRunner {
         }
     }
 
-    private void executeCall(HostPortOverride hostPortOverride, Map<String, String> variables, String collectionLocation) throws IOException {
+    private void executeCall(HostPortOverride hostPortOverride, Map<String, String> variables, String collectionLocation)
+        throws IOException {
         final Collection collection = collectionLoader.load(collectionLocation, variables);
 
         final List<ItemItem> items = getAllItemsItem(collection.getItem());
@@ -57,34 +58,33 @@ public class PostmanRunner {
             if (itemItem.isRequestAsString()) {
                 // Simple URL, so GET to given url.
 
-                URL requestUrl = hostPortOverride == null ? itemItem.getRequest() : hostPortOverride.override(itemItem.getRequest());
+                URL requestUrl =
+                    hostPortOverride == null ? itemItem.getRequest() : hostPortOverride.override(itemItem.getRequest());
 
                 okhttp3.Request request = new okhttp3.Request.Builder()
-                        .url(requestUrl)
-                        .build();
+                    .url(requestUrl)
+                    .build();
 
                 Response response = client.newCall(request).execute();
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
             } else {
 
                 // Complex Request
                 final Request requestObject = itemItem.getRequestObject();
 
-                URL requestUrl = hostPortOverride == null ? requestObject.getUrl().asNativeUrl() : hostPortOverride.override(requestObject.getUrl().asNativeUrl());
+                URL requestUrl = hostPortOverride == null ? requestObject.getUrl().asNativeUrl()
+                    : hostPortOverride.override(requestObject.getUrl().asNativeUrl());
 
                 final okhttp3.Request.Builder builder = new okhttp3.Request.Builder()
-                        .url(requestUrl);
+                    .url(requestUrl);
 
                 configureConnection(requestObject.getMethod().name(), builder, requestObject);
                 configureHeaders(builder, requestObject);
 
                 Response response = client.newCall(builder.build()).execute();
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
             }
         }
-
     }
 
     private void configureConnection(String method, okhttp3.Request.Builder builder, Request requestObject) {
@@ -97,21 +97,22 @@ public class PostmanRunner {
             switch (body.getMode()) {
                 case raw: {
                     requestBody = RequestBody.create(
-                            getMediaType(requestObject.getHeaders()),
-                            body.getRaw());
+                        getMediaType(requestObject.getHeaders()),
+                        body.getRaw());
                     break;
                 }
                 case formdata: {
                     final FormBody.Builder formBuilder = new FormBody.Builder();
                     body.getFormdata()
-                            .forEach(formParameter -> formBuilder.add(formParameter.getKey(), formParameter.getValue()));
+                        .forEach(formParameter -> formBuilder.add(formParameter.getKey(), formParameter.getValue()));
                     requestBody = formBuilder.build();
                     break;
                 }
                 case urlencoded: {
                     final FormBody.Builder formBuilder = new FormBody.Builder();
                     body.getUrlencoded()
-                            .forEach(encodedParameter -> formBuilder.addEncoded(encodedParameter.getKey(), encodedParameter.getValue()));
+                        .forEach(encodedParameter -> formBuilder.addEncoded(encodedParameter.getKey(),
+                            encodedParameter.getValue()));
                     requestBody = formBuilder.build();
                     break;
                 }
@@ -134,9 +135,7 @@ public class PostmanRunner {
 
         final Map<String, String> headers = requestObject.getHeaders();
         builder.headers(Headers.of(headers));
-
     }
-
 
     private List<ItemItem> getAllItemsItem(List<Item> items) {
 
@@ -186,5 +185,4 @@ public class PostmanRunner {
             }
         }
     }
-
 }

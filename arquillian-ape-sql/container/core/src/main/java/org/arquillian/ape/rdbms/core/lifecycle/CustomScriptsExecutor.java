@@ -17,6 +17,9 @@
  */
 package org.arquillian.ape.rdbms.core.lifecycle;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.ApplyScriptsAfterTest;
 import org.arquillian.ape.rdbms.core.event.ApplyScriptsBeforeTest;
@@ -31,10 +34,6 @@ import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -81,12 +80,12 @@ public class CustomScriptsExecutor {
         final List<SqlScriptResourceDescriptor> processedScripts = new ArrayList<SqlScriptResourceDescriptor>();
         for (String script : scripts) {
             if (ScriptLoader.isSqlScriptFile(script)) {
-                processedScripts.add(new FileSqlScriptResourceDescriptor(script, scriptingConfigurationInstance.get().getCharset()));
+                processedScripts.add(
+                    new FileSqlScriptResourceDescriptor(script, scriptingConfigurationInstance.get().getCharset()));
             } else if (!Strings.isEmpty(script)) {
                 processedScripts.add(new InlineSqlScriptResourceDescriptor(script));
             }
         }
         return processedScripts;
     }
-
 }

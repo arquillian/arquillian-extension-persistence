@@ -16,15 +16,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.event;
 
+import java.util.Collection;
 import org.arquillian.ape.rdbms.core.event.DataEvent;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
-
-import java.util.Collection;
 
 public class PrepareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
     public PrepareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
         super(dataSetDescriptors);
     }
-
 }

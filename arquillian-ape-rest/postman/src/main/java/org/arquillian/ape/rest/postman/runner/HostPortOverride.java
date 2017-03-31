@@ -45,8 +45,6 @@ public class HostPortOverride {
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException(e);
             }
-
         }
     }
-
 }

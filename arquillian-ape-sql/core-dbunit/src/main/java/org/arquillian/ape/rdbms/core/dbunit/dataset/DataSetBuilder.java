@@ -17,6 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.dbunit.dataset;
 
+import java.io.IOException;
+import java.io.InputStream;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.json.JsonDataSet;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.xml.DtdResolver;
@@ -29,9 +31,6 @@ import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.yaml.snakeyaml.Yaml;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -87,7 +86,8 @@ public class DataSetBuilder {
         String dtd = new DtdResolver().resolveDtdLocationFullPath(xmlFile);
         if (dtd != null) {
             try {
-                flatXmlDataSetBuilder.setMetaDataSetFromDtd(Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
+                flatXmlDataSetBuilder.setMetaDataSetFromDtd(
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
             } catch (DataSetException e) {
                 throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
             } catch (IOException e) {
@@ -107,7 +107,7 @@ public class DataSetBuilder {
     }
 
     private IDataSet loadYamlDataSet(final String file) throws IOException,
-            DataSetException {
+        DataSetException {
         IDataSet dataSet;
         if (isYamlEmpty(file)) {
             dataSet = new DefaultDataSet();
@@ -120,7 +120,6 @@ public class DataSetBuilder {
         }
         return dataSet;
     }
-
 
     private boolean isYamlEmpty(final String yamlFile) throws IOException {
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
@@ -137,5 +136,4 @@ public class DataSetBuilder {
         replacementDataSet.addReplacementObject("[NULL]", null);
         return replacementDataSet;
     }
-
 }

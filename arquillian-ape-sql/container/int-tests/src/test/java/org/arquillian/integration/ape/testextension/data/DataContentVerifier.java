@@ -17,6 +17,11 @@
  */
 package org.arquillian.integration.ape.testextension.data;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
@@ -37,12 +42,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.test.spi.TestClass;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 public class DataContentVerifier {
 
     @Inject
@@ -58,21 +57,27 @@ public class DataContentVerifier {
     private Instance<AssertionErrorCollector> assertionErrorCollector;
 
     public void verifyDatabaseContentAfterTest(@Observes(precedence = -1000) AfterPersistenceTest afterPersistenceTest) {
-        DataSetComparator dataSetComparator = new DataSetComparator(new String[]{}, new String[]{}, Collections.<Class<? extends IColumnFilter>>emptySet());
-        ShouldMatchDataSet shouldMatchDataSet = afterPersistenceTest.getTestMethod().getAnnotation(ShouldMatchDataSet.class);
+        DataSetComparator dataSetComparator = new DataSetComparator(new String[] {}, new String[] {},
+            Collections.<Class<? extends IColumnFilter>>emptySet());
+        ShouldMatchDataSet shouldMatchDataSet =
+            afterPersistenceTest.getTestMethod().getAnnotation(ShouldMatchDataSet.class);
         if (shouldMatchDataSet != null) {
-            dataSetComparator = new DataSetComparator(shouldMatchDataSet.orderBy(), shouldMatchDataSet.excludeColumns(), Collections.<Class<? extends IColumnFilter>>emptySet());
+            dataSetComparator = new DataSetComparator(shouldMatchDataSet.orderBy(), shouldMatchDataSet.excludeColumns(),
+                Collections.<Class<? extends IColumnFilter>>emptySet());
         }
         try {
             Method testMethod = afterPersistenceTest.getTestMethod();
-            DatabaseShouldBeEmptyAfterTest shouldBeEmptyAfterTest = testMethod.getAnnotation(DatabaseShouldBeEmptyAfterTest.class);
+            DatabaseShouldBeEmptyAfterTest shouldBeEmptyAfterTest =
+                testMethod.getAnnotation(DatabaseShouldBeEmptyAfterTest.class);
             final IDataSet actualContent = databaseConnection.get().createDataSet();
             if (shouldBeEmptyAfterTest != null) {
-                final IDataSet filteredActualContent = DataSetUtils.excludeTables(actualContent, dbunitConfiguration.get().getExcludeTablesFromCleanup());
+                final IDataSet filteredActualContent =
+                    DataSetUtils.excludeTables(actualContent, dbunitConfiguration.get().getExcludeTablesFromCleanup());
                 dataSetComparator.shouldBeEmpty(filteredActualContent, assertionErrorCollector.get());
             }
 
-            DatabaseShouldContainAfterTest databaseShouldContain = testMethod.getAnnotation(DatabaseShouldContainAfterTest.class);
+            DatabaseShouldContainAfterTest databaseShouldContain =
+                testMethod.getAnnotation(DatabaseShouldContainAfterTest.class);
             if (databaseShouldContain != null) {
                 final IDataSet expectedDataSet = createExpectedDataSet(afterPersistenceTest);
                 dataSetComparator.compare(actualContent, expectedDataSet, assertionErrorCollector.get());
@@ -85,7 +90,6 @@ public class DataContentVerifier {
                     dataSetComparator.shouldBeEmpty(expectedDataSet, tableName, assertionErrorCollector.get());
                 }
             }
-
         } catch (Exception e) {
             throw new RuntimeException("Unable to verify database content after test", e);
         }
@@ -93,8 +97,10 @@ public class DataContentVerifier {
 
     private IDataSet createExpectedDataSet(AfterPersistenceTest afterPersistenceTest) throws DataSetException {
         TestClass testClass = afterPersistenceTest.getTestClass();
-        CleanupVerificationDataSetProvider cleanupVerificationDataSetProvider = new CleanupVerificationDataSetProvider(testClass, metadataExtractor.get(), dbunitConfiguration.get());
-        Collection<DataSetResourceDescriptor> descriptors = cleanupVerificationDataSetProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod());
+        CleanupVerificationDataSetProvider cleanupVerificationDataSetProvider =
+            new CleanupVerificationDataSetProvider(testClass, metadataExtractor.get(), dbunitConfiguration.get());
+        Collection<DataSetResourceDescriptor> descriptors =
+            cleanupVerificationDataSetProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod());
         List<IDataSet> dataSets = new ArrayList<IDataSet>(descriptors.size());
         for (DataSetResourceDescriptor dataSetDescriptor : descriptors) {
             dataSets.add(dataSetDescriptor.getContent());
@@ -102,5 +108,4 @@ public class DataContentVerifier {
         IDataSet expectedDataSet = DataSetUtils.mergeDataSets(dataSets);
         return expectedDataSet;
     }
-
 }

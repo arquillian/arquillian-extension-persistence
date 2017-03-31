@@ -65,5 +65,4 @@ public class DBUnitDataSeedStrategyProvider implements StrategyProvider<Database
     public DatabaseOperation defaultStrategy() {
         return DatabaseOperation.INSERT;
     }
-
 }

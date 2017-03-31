@@ -16,6 +16,10 @@
  */
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 import org.arquillian.ape.rdbms.core.configuration.PropertiesSerializer;
 import org.arquillian.ape.rdbms.core.deployment.ResourceAppender;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
@@ -30,11 +34,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -55,7 +54,8 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
         if (!persistenceExtensionEnabler.shouldPersistenceExtensionBeActivated()) {
             return;
         }
-        final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
+        final JavaArchive additionalPersistenceResources =
+            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
         merge(additionalPersistenceResources, dbUnitConfigurationSerializedAsProperties());
         ResourceAppender.addResources(applicationArchive, additionalPersistenceResources);
     }
@@ -70,9 +70,13 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
 
     private JavaArchive dbUnitConfigurationSerializedAsProperties() {
         final DBUnitConfiguration dbUnitConfigurationPrototype = new DBUnitConfiguration();
-        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
-        final ByteArrayOutputStream properties = new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
-        return ShrinkWrap.create(JavaArchive.class).addAsResource(new ByteArrayAsset(properties.toByteArray()), new DBUnitConfiguration().getPrefix() + "properties");
+        final Map<String, String> extensionProperties =
+            extractExtensionProperties(arquillianDescriptorInstance.get(), dbUnitConfigurationPrototype.getQualifier());
+        final ByteArrayOutputStream properties =
+            new PropertiesSerializer(dbUnitConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+        return ShrinkWrap.create(JavaArchive.class)
+            .addAsResource(new ByteArrayAsset(properties.toByteArray()),
+                new DBUnitConfiguration().getPrefix() + "properties");
     }
 
     private Map<String, String> extractExtensionProperties(ArquillianDescriptor descriptor, String qualifier) {
@@ -85,5 +89,4 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
         }
         return extensionProperties;
     }
-
 }

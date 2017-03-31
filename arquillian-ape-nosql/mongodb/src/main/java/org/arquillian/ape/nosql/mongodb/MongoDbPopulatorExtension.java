@@ -10,6 +10,6 @@ class MongoDbPopulatorExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, MongoDbPopulatorService.class)
-                .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
+            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
     }
 }

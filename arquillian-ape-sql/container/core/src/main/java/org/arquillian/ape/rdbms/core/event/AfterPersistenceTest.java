@@ -24,5 +24,4 @@ public class AfterPersistenceTest extends TestEvent {
     public AfterPersistenceTest(TestEvent testEvent) {
         super(testEvent.getTestInstance(), testEvent.getTestMethod());
     }
-
 }

@@ -1,6 +1,5 @@
 package org.arquillian.ape.rest;
 
-
 import org.arquillian.ape.core.Populator;
 import org.arquillian.ape.core.PopulatorEnricher;
 

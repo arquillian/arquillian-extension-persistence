@@ -17,6 +17,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.TableWrapper;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.arquillian.ape.rdbms.dbunit.exception.DBUnitDataSetHandlingException;
@@ -37,14 +44,6 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.filter.IColumnFilter;
 import org.dbunit.dataset.filter.IncludeTableFilter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
 public class DataSetComparator {
 
     private static final String DIFF_ERROR = "%s | In row %d: expected value of %s \"%s\" but was \"%s\".";
@@ -57,7 +56,8 @@ public class DataSetComparator {
 
     final Set<Class<? extends IColumnFilter>> columnFilters;
 
-    public DataSetComparator(final String[] orderBy, final String[] toExclude, Set<Class<? extends IColumnFilter>> columnFilters) {
+    public DataSetComparator(final String[] orderBy, final String[] toExclude,
+        Set<Class<? extends IColumnFilter>> columnFilters) {
         this.toExclude = new ColumnsHolder(toExclude);
         this.orderBy = new ColumnsHolder(orderBy);
         this.columnFilters = columnFilters;
@@ -68,7 +68,7 @@ public class DataSetComparator {
     }
 
     public void compare(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
-            throws DatabaseUnitException {
+        throws DatabaseUnitException {
         if (expectedDataSet.getTableNames().length == 0) {
             shouldBeEmpty(currentDataSet, errorCollector);
         } else {
@@ -77,18 +77,21 @@ public class DataSetComparator {
     }
 
     public void compareContent(IDataSet currentDataSet, IDataSet expectedDataSet, AssertionErrorCollector errorCollector)
-            throws DatabaseUnitException {
+        throws DatabaseUnitException {
         final String[] tableNames = expectedDataSet.getTableNames();
-        final FilteredDataSet filteredCurrentDataSet = new FilteredDataSet(new IncludeTableFilter(tableNames), currentDataSet);
+        final FilteredDataSet filteredCurrentDataSet =
+            new FilteredDataSet(new IncludeTableFilter(tableNames), currentDataSet);
 
         for (String tableName : tableNames) {
-            final List<String> columnsForSorting = defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet, tableName);
+            final List<String> columnsForSorting =
+                defineColumnsForSorting(filteredCurrentDataSet, expectedDataSet, tableName);
 
-            final ITable expectedTable = sort(new TableWrapper(expectedDataSet.getTable(tableName), filteredCurrentDataSet.getTable(tableName).getTableMetaData()), columnsForSorting);
+            final ITable expectedTable = sort(new TableWrapper(expectedDataSet.getTable(tableName),
+                filteredCurrentDataSet.getTable(tableName).getTableMetaData()), columnsForSorting);
             final ITable currentTable = sort(filteredCurrentDataSet.getTable(tableName), columnsForSorting);
 
             final List<String> columnsToIgnore = extractColumnsToBeIgnored(expectedDataSet.getTable(tableName),
-                    filteredCurrentDataSet.getTable(tableName));
+                filteredCurrentDataSet.getTable(tableName));
 
             final DiffCollectingFailureHandler diffCollector = new DiffCollectingFailureHandler();
 
@@ -117,7 +120,7 @@ public class DataSetComparator {
     // -- Private methods
 
     public void shouldBeEmpty(IDataSet dataSet, String tableName, AssertionErrorCollector errorCollector)
-            throws DataSetException {
+        throws DataSetException {
         final SortedTable tableState = new SortedTable(dataSet.getTable(tableName));
         int rowCount = tableState.getRowCount();
         if (rowCount != 0) {
@@ -128,7 +131,8 @@ public class DataSetComparator {
     private void collectErrors(AssertionErrorCollector errorCollector, List<Difference> diffs) {
         for (Difference diff : diffs) {
             final String tableName = diff.getActualTable().getTableMetaData().getTableName();
-            errorCollector.collect(new AssertionError(String.format(DIFF_ERROR, tableName, diff.getRowIndex(), diff.getColumnName(),
+            errorCollector.collect(
+                new AssertionError(String.format(DIFF_ERROR, tableName, diff.getRowIndex(), diff.getColumnName(),
                     diff.getExpectedValue(), diff.getActualValue())));
         }
     }
@@ -145,7 +149,7 @@ public class DataSetComparator {
     }
 
     private List<String> defineColumnsForSorting(IDataSet currentDataSet, IDataSet expectedDataSet, String tableName)
-            throws DataSetException {
+        throws DataSetException {
         final List<String> columnsForSorting = new ArrayList<String>();
         columnsForSorting.addAll(orderBy.global);
         final List<String> columsPerTable = orderBy.columnsPerTable.get(tableName);
@@ -153,23 +157,23 @@ public class DataSetComparator {
             columnsForSorting.addAll(columsPerTable);
         }
         columnsForSorting.addAll(additionalColumnsForSorting(expectedDataSet.getTable(tableName),
-                currentDataSet.getTable(tableName)));
+            currentDataSet.getTable(tableName)));
         return columnsForSorting;
     }
 
     private List<String> additionalColumnsForSorting(final ITable expectedTableState, final ITable currentTableState) {
         final List<String> columnsForSorting = new ArrayList<String>();
         try {
-            final Set<String> allColumns = new HashSet<String>(DataSetUtils.extractColumnNames(expectedTableState.getTableMetaData()
+            final Set<String> allColumns =
+                new HashSet<String>(DataSetUtils.extractColumnNames(expectedTableState.getTableMetaData()
                     .getColumns()));
             final Set<String> columnsToIgnore = new HashSet<String>(extractColumnsToBeIgnored(expectedTableState,
-                    currentTableState));
+                currentTableState));
             for (String column : allColumns) {
                 if (!columnsToIgnore.contains(column)) {
                     columnsForSorting.add(column);
                 }
             }
-
         } catch (DataSetException e) {
             throw new DBUnitDataSetHandlingException("Unable to resolve columns", e);
         }
@@ -178,9 +182,9 @@ public class DataSetComparator {
     }
 
     private List<String> extractColumnsToBeIgnored(final ITable expectedTableState, final ITable currentTableState)
-            throws DataSetException {
+        throws DataSetException {
         final List<String> columnsToIgnore = DataSetUtils.extractColumnsNotSpecifiedInExpectedDataSet(expectedTableState,
-                currentTableState);
+            currentTableState);
         final String tableName = expectedTableState.getTableMetaData().getTableName();
         final List<String> tableColumns = toExclude.columnsPerTable.get(tableName);
 
@@ -191,17 +195,18 @@ public class DataSetComparator {
         }
 
         final List<String> nonExistingColumns = DataSetUtils.extractNonExistingColumns(columnsToIgnore,
-                DataSetUtils.extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+            DataSetUtils.extractColumnNames(currentTableState.getTableMetaData().getColumns()));
 
         if (!nonExistingColumns.isEmpty()) {
             log.warning("Columns which are specified to be filtered out " + Arrays.toString(nonExistingColumns.toArray())
-                    + " are not existing in the table " + tableName);
+                + " are not existing in the table " + tableName);
         }
         return columnsToIgnore;
     }
 
     private ITable filter(final ITable table, final String[] columnsToFilter) throws DataSetException {
-        ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(table, Columns.findColumnsByName(columnsToFilter, table.getTableMetaData()));
+        ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(table,
+            Columns.findColumnsByName(columnsToFilter, table.getTableMetaData()));
         return applyCustomFilters(filteredTable);
     }
 
@@ -217,5 +222,4 @@ public class DataSetComparator {
         }
         return table;
     }
-
 }

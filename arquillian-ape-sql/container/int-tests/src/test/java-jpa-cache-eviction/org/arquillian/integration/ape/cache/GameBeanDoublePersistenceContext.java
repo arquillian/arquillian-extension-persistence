@@ -50,5 +50,4 @@ public class GameBeanDoublePersistenceContext {
     public Platform findByIdInEmbedded(long platformId) {
         return embedded.find(Platform.class, platformId);
     }
-
 }

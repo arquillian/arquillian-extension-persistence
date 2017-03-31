@@ -17,10 +17,9 @@
  */
 package org.arquillian.ape.rdbms.core.data.descriptor;
 
-import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
-
 import java.io.InputStream;
 import java.util.Scanner;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 
 /**
  * Plain text file descriptor.
@@ -65,5 +64,4 @@ public class DtdFileResourceDescriptor extends ResourceDescriptor<String> {
         result = prime * result + ((location == null) ? 0 : location.hashCode());
         return result;
     }
-
 }

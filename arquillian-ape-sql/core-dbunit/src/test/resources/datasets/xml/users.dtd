@@ -1,12 +1,12 @@
 <!ELEMENT dataset (
-    useraccount*)>
+  useraccount*)>
 
-    <!ELEMENT useraccount EMPTY>
-    <!ATTLIST useraccount
-        id CDATA #REQUIRED
-        firstname CDATA #IMPLIED
-        lastname CDATA #IMPLIED
-        username CDATA #IMPLIED
-        nickname CDATA #IMPLIED
-        password CDATA #IMPLIED
-        >
+  <!ELEMENT useraccount EMPTY>
+  <!ATTLIST useraccount
+    id CDATA #REQUIRED
+    firstname CDATA #IMPLIED
+    lastname CDATA #IMPLIED
+    username CDATA #IMPLIED
+    nickname CDATA #IMPLIED
+    password CDATA #IMPLIED
+    >

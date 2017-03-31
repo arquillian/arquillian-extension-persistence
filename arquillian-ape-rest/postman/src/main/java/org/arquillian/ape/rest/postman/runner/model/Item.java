@@ -11,5 +11,4 @@ public interface Item {
      * @return Type of element.
      */
     ItemType getItemType();
-
 }

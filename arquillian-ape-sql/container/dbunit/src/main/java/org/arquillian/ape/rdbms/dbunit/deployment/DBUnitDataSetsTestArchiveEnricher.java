@@ -16,6 +16,11 @@
  */
 package org.arquillian.ape.rdbms.dbunit.deployment;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.arquillian.ape.rdbms.core.data.descriptor.DtdFileResourceDescriptor;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
@@ -38,12 +43,6 @@ import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -76,14 +75,16 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
     // Private helper methods
 
     private void addCustomColumnFilters(Archive<?> applicationArchive, TestClass testClass) {
-        final AnnotationInspector<CustomColumnFilter> inspector = new AnnotationInspector<CustomColumnFilter>(testClass, CustomColumnFilter.class);
+        final AnnotationInspector<CustomColumnFilter> inspector =
+            new AnnotationInspector<CustomColumnFilter>(testClass, CustomColumnFilter.class);
         final Collection<CustomColumnFilter> allCustomAnnotations = inspector.fetchAll();
         if (allCustomAnnotations.isEmpty()) {
             return;
         }
 
         if (applicationArchive instanceof EnterpriseArchive) {
-            final JavaArchive customFiltersArchive = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-custom-filters.jar");
+            final JavaArchive customFiltersArchive =
+                ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-custom-filters.jar");
             for (CustomColumnFilter filter : allCustomAnnotations) {
                 customFiltersArchive.addClasses(filter.value());
                 EnterpriseArchive.class.cast(applicationArchive).addAsLibrary(customFiltersArchive);
@@ -93,14 +94,15 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
                 (ClassContainer.class.cast(applicationArchive)).addClasses(filter.value());
             }
         }
-
     }
 
     private Set<ResourceDescriptor<?>> fetchAllDataResources(TestClass testClass) {
         final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
-        final DataSetProvider dataSetProvider = new DataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
-        final ExpectedDataSetProvider expectedDataSetProvider = new ExpectedDataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
+        final DataSetProvider dataSetProvider =
+            new DataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
+        final ExpectedDataSetProvider expectedDataSetProvider =
+            new ExpectedDataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
 
         allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
         allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));
@@ -159,7 +161,6 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
                 if (dtd != null) {
                     dtds.add(new DtdFileResourceDescriptor(dtd));
                 }
-
             }
         }
         return dtds;

@@ -1,9 +1,8 @@
 package org.arquillian.integration.ape.util;
 
-import org.arquillian.integration.ape.example.UserAccount;
-
-import javax.persistence.EntityManager;
 import java.util.List;
+import javax.persistence.EntityManager;
+import org.arquillian.integration.ape.example.UserAccount;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,5 +26,4 @@ public class UserPersistenceAssertion {
         List<UserAccount> savedUserAccounts = em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
         assertThat(savedUserAccounts).isEmpty();
     }
-
 }

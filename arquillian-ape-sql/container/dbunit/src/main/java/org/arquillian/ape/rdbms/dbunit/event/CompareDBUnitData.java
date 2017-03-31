@@ -16,14 +16,13 @@
  */
 package org.arquillian.ape.rdbms.dbunit.event;
 
-import org.arquillian.ape.rdbms.core.event.DataEvent;
-import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
-import org.dbunit.dataset.filter.IColumnFilter;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.arquillian.ape.rdbms.core.event.DataEvent;
+import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
+import org.dbunit.dataset.filter.IColumnFilter;
 
 import static org.arquillian.ape.rdbms.util.Arrays.copy;
 
@@ -35,7 +34,8 @@ public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
     private final Set<Class<? extends IColumnFilter>> customColumnFilters = new HashSet<Class<? extends IColumnFilter>>();
 
-    public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns, String[] columnsToExclude) {
+    public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns,
+        String[] columnsToExclude) {
         super(dataSetDescriptors);
         this.columnsToExclude = columnsToExclude;
         this.sortByColumns = sortByColumns;
@@ -60,5 +60,4 @@ public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
     public Set<Class<? extends IColumnFilter>> getCustomColumnFilters() {
         return customColumnFilters;
     }
-
 }

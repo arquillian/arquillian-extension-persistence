@@ -60,5 +60,4 @@ public class Table {
     public List<Row> getRows() {
         return Collections.unmodifiableList(rows);
     }
-
 }

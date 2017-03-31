@@ -40,5 +40,4 @@ public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet> {
 
         return this;
     }
-
 }

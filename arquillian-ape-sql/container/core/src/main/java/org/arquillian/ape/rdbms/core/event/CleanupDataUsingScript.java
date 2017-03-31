@@ -17,14 +17,12 @@
  */
 package org.arquillian.ape.rdbms.core.event;
 
-import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
-
 import java.util.Collection;
+import org.arquillian.ape.rdbms.script.data.descriptor.SqlScriptResourceDescriptor;
 
 public class CleanupDataUsingScript extends DataEvent<SqlScriptResourceDescriptor> {
 
     public CleanupDataUsingScript(Collection<SqlScriptResourceDescriptor> descriptors) {
         super(descriptors);
     }
-
 }

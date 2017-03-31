@@ -17,6 +17,9 @@
  */
 package org.arquillian.integration.ape.test.cleanup;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
@@ -39,10 +42,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -54,12 +53,12 @@ public class DataCleanupStrategiesTest {
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
     @Test
@@ -110,11 +109,11 @@ public class DataCleanupStrategiesTest {
     @DatabaseShouldContainAfterTest({"expected-address.yml"})
     @ShouldBeEmptyAfterTest("useraccount")
     public void should_seed_using_both_custom_scripts_and_datasets_and_cleanup_all_tables_defined_in_data_set() {
-        final List<UserAccount> users = (List<UserAccount>) em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
+        final List<UserAccount> users =
+            (List<UserAccount>) em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
         final List<Address> addresses = em.createQuery(Query.selectAllInJPQL(Address.class)).getResultList();
 
         assertThat(users).hasSize(3);
         assertThat(addresses).hasSize(1);
     }
-
 }

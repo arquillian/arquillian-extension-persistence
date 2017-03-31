@@ -21,5 +21,4 @@ class DummyClass {
 
     public void shouldPass() {
     }
-
 }

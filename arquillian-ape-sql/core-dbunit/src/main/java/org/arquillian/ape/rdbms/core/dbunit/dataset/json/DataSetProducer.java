@@ -17,6 +17,13 @@
  */
 package org.arquillian.ape.rdbms.core.dbunit.dataset.json;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.Row;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.Table;
 import org.dbunit.dataset.Column;
@@ -27,14 +34,6 @@ import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
 import org.dbunit.dataset.stream.IDataSetProducer;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Abstract DataSetProducer class with template method for producing data
@@ -82,7 +81,6 @@ public abstract class DataSetProducer implements IDataSetProducer {
         }
 
         consumer.endDataSet();
-
     }
 
     private ITableMetaData createTableMetaData(Table table) {
@@ -132,5 +130,4 @@ public abstract class DataSetProducer implements IDataSetProducer {
     public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames) {
         this.caseSensitiveTableNames = caseSensitiveTableNames;
     }
-
 }

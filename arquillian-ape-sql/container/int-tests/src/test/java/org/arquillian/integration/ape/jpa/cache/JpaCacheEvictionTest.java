@@ -17,6 +17,9 @@
  */
 package org.arquillian.integration.ape.jpa.cache;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -26,10 +29,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,9 +47,9 @@ public class JpaCacheEvictionTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "jpacacheeviction-test.war")
-                .addClasses(Game.class, Platform.class, GameBean.class)
-                .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            .addClasses(Game.class, Platform.class, GameBean.class)
+            .addAsResource("test-jpacacheeviction-persistence.xml", "META-INF/persistence.xml")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Test
@@ -79,5 +78,4 @@ public class JpaCacheEvictionTest {
     private boolean isGameEntityCached() {
         return gameBean.isCached(1L);
     }
-
 }

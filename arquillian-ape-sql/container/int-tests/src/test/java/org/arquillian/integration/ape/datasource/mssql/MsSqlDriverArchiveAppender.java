@@ -24,6 +24,4 @@ public class MsSqlDriverArchiveAppender extends JdbcDriverArchiveAppender {
     public String getDriverCoordinates() {
         return "com.microsoft.sqlserver:sqljdbc4:4.0";
     }
-
-
 }

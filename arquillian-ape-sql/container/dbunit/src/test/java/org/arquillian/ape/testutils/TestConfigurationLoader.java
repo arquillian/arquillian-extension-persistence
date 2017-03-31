@@ -16,16 +16,15 @@
  */
 package org.arquillian.ape.testutils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class TestConfigurationLoader {
 
@@ -42,7 +41,7 @@ public class TestConfigurationLoader {
 
     public static ArquillianDescriptor createArquillianDescriptor(String fileName) {
         return Descriptors.importAs(ArquillianDescriptor.class).fromStream(
-                TestConfigurationLoader.loadArquillianConfiguration(fileName));
+            TestConfigurationLoader.loadArquillianConfiguration(fileName));
     }
 
     public static ArquillianDescriptor createArquillianDescriptorFromDefaultConfigurationFile() {

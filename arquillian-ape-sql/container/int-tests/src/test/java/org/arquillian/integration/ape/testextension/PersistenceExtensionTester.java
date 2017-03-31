@@ -27,7 +27,6 @@ public class PersistenceExtensionTester implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionTesterArchiveAppender.class)
-                .service(ApplicationArchiveProcessor.class, PersistenceTestExtensionDynamicDependencyAppender.class);
+            .service(ApplicationArchiveProcessor.class, PersistenceTestExtensionDynamicDependencyAppender.class);
     }
-
 }
