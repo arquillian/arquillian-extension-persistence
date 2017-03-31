@@ -2,6 +2,8 @@ package org.arquillian.ape.rdbms.dbunit;
 
 import org.arquillian.ape.core.DataSetLoader;
 import org.arquillian.ape.rdbms.core.RdbmsPopulatorService;
+import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
+import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
@@ -58,27 +60,12 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     private void executeDataSetOperation(List<String> resources, BiConsumer<IDatabaseConnection, IDataSet> predicate) {
         resources.stream()
                 .map(resource -> {
-                    String strategy = resource.substring(resource.lastIndexOf('.'));
-                    switch (strategy) {
-                        case "xml": {
-                            return resolveXmlDataSet(resource);
-                        }
-
-                        default:
-                            return resolveXmlDataSet(resource);
-                    }
+                    final Format format = Format.inferFromFile(resource);
+                    return DataSetBuilder.builderFor(format).build(resource);
                 })
                 .forEach(dataset -> {
                     predicate.accept(databaseConnection, dataset);
                 });
-    }
-
-    private IDataSet resolveXmlDataSet(String resource) {
-        try {
-            return new FlatXmlDataSetBuilder().build(DataSetLoader.resolve(resource));
-        } catch (DataSetException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     @Override
