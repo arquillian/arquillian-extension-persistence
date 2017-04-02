@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.core.lifecycle;
 
+import javax.sql.DataSource;
 import org.jboss.arquillian.core.api.Event;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
@@ -41,8 +42,6 @@ import org.jboss.arquillian.test.spi.event.suite.After;
 import org.jboss.arquillian.test.spi.event.suite.Before;
 import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
-import javax.sql.DataSource;
-
 /**
  * Determines if persistence extension should be triggered for the given
  * test class.
@@ -65,7 +64,8 @@ public class PersistenceTestTrigger {
 
     @Inject
     @TestScoped
-    private InstanceProducer<PersistenceExtensionScriptingFeatureResolver> persistenceExtensionScriptingFeatureResolverProvider;
+    private InstanceProducer<PersistenceExtensionScriptingFeatureResolver>
+        persistenceExtensionScriptingFeatureResolverProvider;
 
     @Inject
     @TestScoped
@@ -104,14 +104,17 @@ public class PersistenceTestTrigger {
 
     public void beforeTest(@Observes(precedence = 25) Before beforeTestEvent) {
         PersistenceConfiguration persistenceConfiguration = configurationInstance.get();
-        persistenceExtensionFeatureResolverProvider.set(new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), persistenceConfiguration));
-        persistenceExtensionScriptingFeatureResolverProvider.set(new PersistenceExtensionScriptingFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(), scriptingConfigurationInstance.get()));
+        persistenceExtensionFeatureResolverProvider.set(
+            new PersistenceExtensionFeatureResolver(beforeTestEvent.getTestMethod(), metadataExtractorProducer.get(),
+                persistenceConfiguration));
+        persistenceExtensionScriptingFeatureResolverProvider.set(
+            new PersistenceExtensionScriptingFeatureResolver(beforeTestEvent.getTestMethod(),
+                metadataExtractorProducer.get(), scriptingConfigurationInstance.get()));
 
         if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated()) {
             createDataSource();
             beforePersistenceTestEvent.fire(new BeforePersistenceTest(beforeTestEvent));
         }
-
     }
 
     public void afterTest(@Observes(precedence = -2) After afterTestEvent) {
@@ -128,13 +131,12 @@ public class PersistenceTestTrigger {
     }
 
     /**
-     * @param dataSourceName
-     * @return
-     * @throws IllegalStateException when more than one data source provider exists on the classpath
+     * @throws IllegalStateException
+     *     when more than one data source provider exists on the classpath
      */
     private DataSource loadDataSource(String dataSourceName) {
         final DataSourceProvider dataSourceProvider = serviceLoaderInstance.get()
-                .onlyOne(DataSourceProvider.class, JndiDataSourceProvider.class);
+            .onlyOne(DataSourceProvider.class, JndiDataSourceProvider.class);
 
         return dataSourceProvider.lookupDataSource(dataSourceName);
     }

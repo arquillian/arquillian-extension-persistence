@@ -32,5 +32,4 @@ public class DBUnitDataSetHandlingException extends RuntimeException {
     public DBUnitDataSetHandlingException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

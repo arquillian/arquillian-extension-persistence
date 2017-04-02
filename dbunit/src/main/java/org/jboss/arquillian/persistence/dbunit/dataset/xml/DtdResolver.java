@@ -17,16 +17,15 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -34,7 +33,6 @@ import java.io.StringReader;
 public class DtdResolver {
 
     /**
-     * @param xmlFile
      * @return name of DTD file specified in the !DOCTYPE or null if not specified.
      */
     public String resolveDtdLocation(final String xmlFile) {
@@ -56,11 +54,9 @@ public class DtdResolver {
         } catch (Exception e) {
             throw new RuntimeException("Unable to resolve dtd for " + xmlFile, e);
         }
-
     }
 
     /**
-     * @param xmlFile
      * @return name of DTD file specified in the !DOCTYPE with full path inferred from the file location
      * or null if not specified.
      */
@@ -72,5 +68,4 @@ public class DtdResolver {
         final String path = xml.substring(0, xml.lastIndexOf('/'));
         return path + '/' + dtd;
     }
-
 }

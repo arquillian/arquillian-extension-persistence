@@ -17,13 +17,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
+import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -37,7 +36,8 @@ public class DataSetUtilsTest {
 
     @Test
     @Parameters(method = "columns")
-    public void should_extract_non_existing_columns_defined_in_second_list(List<String> expectedColumns, List<String> actualColumns, List<String> nonExistingColums) throws Exception {
+    public void should_extract_non_existing_columns_defined_in_second_list(List<String> expectedColumns,
+        List<String> actualColumns, List<String> nonExistingColums) throws Exception {
         // when
         List<String> actualNonExistingColumns = DataSetUtils.extractNonExistingColumns(expectedColumns, actualColumns);
 
@@ -48,11 +48,10 @@ public class DataSetUtilsTest {
     @SuppressWarnings("unused")
     private Object[] columns() {
         return $(//   expected    ,   actual             , non existing in actual
-                $(asList("id", "name"), asList("name", "password"), singletonList("id")),
-                $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
-                $(emptyList(), asList("id", "name"), emptyList()),
-                $(emptyList(), emptyList(), emptyList())
+            $(asList("id", "name"), asList("name", "password"), singletonList("id")),
+            $(asList("id", "username", "password"), asList("id", "username", "password"), emptyList()),
+            $(emptyList(), asList("id", "name"), emptyList()),
+            $(emptyList(), emptyList(), emptyList())
         );
     }
-
 }

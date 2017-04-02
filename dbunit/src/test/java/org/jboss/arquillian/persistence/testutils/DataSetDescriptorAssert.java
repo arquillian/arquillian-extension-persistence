@@ -16,15 +16,14 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.IterableAssert;
-import org.jboss.arquillian.persistence.core.data.descriptor.Format;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
+import org.jboss.arquillian.persistence.core.data.descriptor.Format;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 
 public class DataSetDescriptorAssert extends IterableAssert<DataSetResourceDescriptor> {
 
@@ -65,5 +64,4 @@ public class DataSetDescriptorAssert extends IterableAssert<DataSetResourceDescr
         }
         return fileNames;
     }
-
 }

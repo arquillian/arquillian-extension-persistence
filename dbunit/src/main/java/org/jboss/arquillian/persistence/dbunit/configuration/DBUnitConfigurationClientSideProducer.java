@@ -44,5 +44,4 @@ public class DBUnitConfigurationClientSideProducer extends ConfigurationProducer
     public void observe(@Observes ArquillianDescriptor descriptorCreated) {
         configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
     }
-
 }

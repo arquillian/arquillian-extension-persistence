@@ -40,5 +40,4 @@ public class ScriptingConfigurationRemoteProducer {
         Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
         configurationProducer.set(configuration);
     }
-
 }

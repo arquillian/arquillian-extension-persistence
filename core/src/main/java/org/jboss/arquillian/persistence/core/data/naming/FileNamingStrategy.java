@@ -32,7 +32,6 @@ import java.lang.reflect.Method;
  * <i>[fully qualified class name].[provided file extension]</i></li>.
  * </ul>
  *
- * @param <T>
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 public abstract class FileNamingStrategy<T> {
@@ -52,5 +51,4 @@ public abstract class FileNamingStrategy<T> {
     public String createFileName(Class<?> testClass) {
         return testClass.getName() + "." + getFileExtension();
     }
-
 }

@@ -27,5 +27,4 @@ public abstract class SqlScriptResourceDescriptor extends ResourceDescriptor<Str
     public SqlScriptResourceDescriptor(String location) {
         super(location);
     }
-
 }

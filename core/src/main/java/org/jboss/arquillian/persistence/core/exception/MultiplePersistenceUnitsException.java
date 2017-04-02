@@ -34,5 +34,4 @@ public class MultiplePersistenceUnitsException extends RuntimeException {
     public MultiplePersistenceUnitsException(Throwable cause) {
         super(cause);
     }
-
 }

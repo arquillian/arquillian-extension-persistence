@@ -37,5 +37,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface SeedDataUsing {
 
     DataSeedStrategy value() default DataSeedStrategy.DEFAULT;
-
 }

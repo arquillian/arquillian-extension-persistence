@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import java.util.Properties;
 import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
-
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,7 +86,8 @@ public class PersistenceConfigurationImporterFromPropertyFileTest {
     public void should_be_able_to_define_dump_directory_windows() throws Exception {
         // given
         String dumpDirectory = "C:\\Users\\Arq\\AppData\\Local\\Temp";
-        Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/custom.arquillian.persistence.windows.dump.properties");
+        Properties properties = TestConfigurationLoader.createPropertiesFrom(
+            "properties/custom.arquillian.persistence.windows.dump.properties");
         PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when
@@ -100,7 +100,8 @@ public class PersistenceConfigurationImporterFromPropertyFileTest {
     @Test
     public void should_ignore_unknown_property() throws Exception {
         // given
-        final Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/arquillian.persistence.with.unhandled.entries.properties");
+        final Properties properties = TestConfigurationLoader.createPropertiesFrom(
+            "properties/arquillian.persistence.with.unhandled.entries.properties");
         final PersistenceConfiguration configuration = new PersistenceConfiguration();
 
         // when

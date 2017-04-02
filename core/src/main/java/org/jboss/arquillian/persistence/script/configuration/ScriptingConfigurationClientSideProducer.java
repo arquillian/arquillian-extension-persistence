@@ -44,5 +44,4 @@ public class ScriptingConfigurationClientSideProducer extends ConfigurationProdu
     public void observe(@Observes ArquillianDescriptor descriptorCreated) {
         configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
     }
-
 }

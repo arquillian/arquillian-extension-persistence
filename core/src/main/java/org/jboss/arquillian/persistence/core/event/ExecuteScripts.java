@@ -17,15 +17,13 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
+import java.util.Collection;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
-
-import java.util.Collection;
 
 public class ExecuteScripts extends DataEvent<SqlScriptResourceDescriptor> {
 
     public ExecuteScripts(TestEvent testEvent, Collection<SqlScriptResourceDescriptor> dataSetDescriptors) {
         super(dataSetDescriptors);
     }
-
 }

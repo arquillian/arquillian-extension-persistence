@@ -17,11 +17,10 @@
 
 package org.jboss.arquillian.persistence.dbunit.api;
 
-import org.dbunit.dataset.filter.IColumnFilter;
-
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import org.dbunit.dataset.filter.IColumnFilter;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

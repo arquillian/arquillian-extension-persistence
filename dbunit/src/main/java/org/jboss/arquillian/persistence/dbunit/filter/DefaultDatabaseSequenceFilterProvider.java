@@ -17,13 +17,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit.filter;
 
+import java.sql.SQLException;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
-
-import java.sql.SQLException;
 
 public class DefaultDatabaseSequenceFilterProvider implements TableFilterProvider {
 
@@ -33,7 +32,8 @@ public class DefaultDatabaseSequenceFilterProvider implements TableFilterProvide
     }
 
     @Override
-    public ITableFilter provide(IDatabaseConnection connection, String[] tableNames) throws SQLException, DataSetException {
+    public ITableFilter provide(IDatabaseConnection connection, String[] tableNames)
+        throws SQLException, DataSetException {
         return new DatabaseSequenceFilter(connection, tableNames);
     }
 

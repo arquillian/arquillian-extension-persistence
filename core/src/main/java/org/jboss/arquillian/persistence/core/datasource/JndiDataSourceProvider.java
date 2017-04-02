@@ -17,15 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.datasource;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.core.exception.ContextNotAvailableException;
 import org.jboss.arquillian.persistence.core.exception.DataSourceNotFoundException;
 import org.jboss.arquillian.persistence.spi.datasource.DataSourceProvider;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 /**
  * The JNDI data source provider, that obtains the data source from the JNDI context based on the specified name.

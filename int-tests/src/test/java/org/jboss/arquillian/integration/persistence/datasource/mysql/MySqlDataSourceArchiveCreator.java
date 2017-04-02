@@ -27,7 +27,6 @@ public class MySqlDataSourceArchiveCreator implements AuxiliaryArchiveAppender {
     @Override
     public Archive<?> createAuxiliaryArchive() {
         return ShrinkWrap.create(JavaArchive.class, "arquillian-mysql-datasource.jar")
-                .addClass(MySqlDataSource.class);
+            .addClass(MySqlDataSource.class);
     }
-
 }

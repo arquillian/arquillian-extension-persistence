@@ -17,12 +17,17 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.persistence.*;
+import java.lang.reflect.Method;
+import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.jboss.arquillian.persistence.CleanupUsingScript;
+import org.jboss.arquillian.persistence.DataSeedStrategy;
+import org.jboss.arquillian.persistence.DataSource;
+import org.jboss.arquillian.persistence.SeedDataUsing;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
 import org.jboss.arquillian.persistence.core.exception.DataSourceNotDefinedException;
 import org.jboss.arquillian.persistence.core.util.Strings;
-
-import java.lang.reflect.Method;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -35,7 +40,8 @@ public class PersistenceExtensionFeatureResolver {
 
     private final Method testMethod;
 
-    public PersistenceExtensionFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor, PersistenceConfiguration configuration) {
+    public PersistenceExtensionFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor,
+        PersistenceConfiguration configuration) {
         this.metadataExtractor = metadataExtractor;
         this.configuration = configuration;
         this.testMethod = testMethod;
@@ -51,22 +57,22 @@ public class PersistenceExtensionFeatureResolver {
 
     public boolean shouldSeedData() {
         return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
-                || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
+            || metadataExtractor.usingDataSet().isDefinedOn(testMethod);
     }
 
     public boolean shouldCustomScriptBeAppliedBeforeTestRequested() {
         return metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
-                || metadataExtractor.applyScriptBefore().isDefinedOn(testMethod);
+            || metadataExtractor.applyScriptBefore().isDefinedOn(testMethod);
     }
 
     public boolean shouldCustomScriptBeAppliedAfterTestRequested() {
         return metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
-                || metadataExtractor.applyScriptAfter().isDefinedOn(testMethod);
+            || metadataExtractor.applyScriptAfter().isDefinedOn(testMethod);
     }
 
     public boolean shouldVerifyDataAfterTest() {
         return metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
-                || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
+            || metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod);
     }
 
     public TestExecutionPhase getCleanupTestPhase() {
@@ -97,8 +103,10 @@ public class PersistenceExtensionFeatureResolver {
     }
 
     public boolean shouldCleanup() {
-        final CleanupUsingScript cleanupUsingScriptAnnotation = metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
-        return cleanupUsingScriptAnnotation == null || TestExecutionPhase.NONE.equals(cleanupUsingScriptAnnotation.phase());
+        final CleanupUsingScript cleanupUsingScriptAnnotation =
+            metadataExtractor.cleanupUsingScript().fetchUsingFirst(testMethod);
+        return cleanupUsingScriptAnnotation == null || TestExecutionPhase.NONE.equals(
+            cleanupUsingScriptAnnotation.phase());
     }
 
     public boolean shouldCleanupBefore() {
@@ -122,10 +130,10 @@ public class PersistenceExtensionFeatureResolver {
         }
 
         if (Strings.isEmpty(dataSource)) {
-            throw new DataSourceNotDefinedException("DataSource not defined! Please declare it in arquillian.xml or by using @DataSource annotation.");
+            throw new DataSourceNotDefinedException(
+                "DataSource not defined! Please declare it in arquillian.xml or by using @DataSource annotation.");
         }
 
         return dataSource;
     }
-
 }

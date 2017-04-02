@@ -15,9 +15,8 @@
  */
 package org.jboss.arquillian.persistence.script.splitter;
 
-import org.junit.Test;
-
 import java.util.List;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,8 +71,8 @@ public class DefaultStatementSplitterTest {
     public void should_remove_delimiter_on_multiline_statements() {
         // given
         String script = "SELECT * FROM TEST1;\n" +
-                "SELECT * FROM TEST2;\n" +
-                "SELECT * FROM TEST3;\n";
+            "SELECT * FROM TEST2;\n" +
+            "SELECT * FROM TEST3;\n";
 
         DefaultStatementSplitter splitter = new DefaultStatementSplitter();
         splitter.setTrimStatementDelimiter(true);
@@ -84,5 +83,4 @@ public class DefaultStatementSplitterTest {
         // then
         assertThat(statements).containsExactly("SELECT * FROM TEST1", "SELECT * FROM TEST2", "SELECT * FROM TEST3");
     }
-
 }

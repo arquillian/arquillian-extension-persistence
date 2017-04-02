@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset;
 
-import org.dbunit.dataset.IDataSet;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.dbunit.dataset.IDataSet;
 
 /**
  * Stores data sets used to seed database and to verify
@@ -50,5 +49,4 @@ public class DataSetRegister {
     public List<IDataSet> getExpected() {
         return Collections.unmodifiableList(expected);
     }
-
 }

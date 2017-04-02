@@ -17,16 +17,16 @@
  */
 package org.jboss.arquillian.persistence.dbunit.filter;
 
+import java.sql.SQLException;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.jboss.arquillian.persistence.dbunit.DataSetUtils;
 
-import java.sql.SQLException;
-
 public class OracleDatabaseSequenceFilter extends DatabaseSequenceFilter {
 
-    public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames) throws DataSetException, SQLException {
+    public OracleDatabaseSequenceFilter(IDatabaseConnection connection, String[] tableNames)
+        throws DataSetException, SQLException {
         super(connection, DataSetUtils.tableNamesInUpperCase(tableNames));
     }
 

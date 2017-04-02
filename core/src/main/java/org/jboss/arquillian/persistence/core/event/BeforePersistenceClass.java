@@ -25,5 +25,4 @@ public class BeforePersistenceClass extends ClassEvent {
     public BeforePersistenceClass(TestClass testClass) {
         super(testClass);
     }
-
 }

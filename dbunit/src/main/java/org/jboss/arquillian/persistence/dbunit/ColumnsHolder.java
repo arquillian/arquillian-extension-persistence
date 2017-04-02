@@ -41,13 +41,12 @@ public class ColumnsHolder {
         }
     }
 
-
     private void splitTableAndColumn(String columnToExclude) {
         final String[] splittedTableAndColumn = columnToExclude.split("\\.");
 
         if (splittedTableAndColumn.length != 2) {
             throw new IllegalArgumentException("Cannot associated table with column for [" + columnToExclude
-                    + "]. Expected format: 'tableName.columnName'");
+                + "]. Expected format: 'tableName.columnName'");
         }
 
         final String tableName = splittedTableAndColumn[0];
@@ -60,5 +59,4 @@ public class ColumnsHolder {
 
         tableColumns.add(splittedTableAndColumn[1]);
     }
-
 }

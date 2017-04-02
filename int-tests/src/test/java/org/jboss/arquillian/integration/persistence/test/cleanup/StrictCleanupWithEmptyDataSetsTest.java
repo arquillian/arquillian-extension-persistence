@@ -17,6 +17,9 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
@@ -31,10 +34,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,23 +43,23 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(Arquillian.class)
 @CreateSchema({"schema/create.sql", "schema/additional-audit-useraccount.sql",
-        "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
+    "scripts/clark-kent.sql", "scripts/clark-kent-audit.sql"})
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class StrictCleanupWithEmptyDataSetsTest {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence-no-generate.xml", "META-INF/persistence.xml");
     }
-
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     public void should_not_have_any_user_in_database() throws Exception {
@@ -77,8 +76,8 @@ public class StrictCleanupWithEmptyDataSetsTest {
     }
 
     private void assertNoUserAccountAuditStored() {
-        final Long amount = Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
+        final Long amount =
+            Long.valueOf(em.createNativeQuery("SELECT COUNT(*) FROM useraccount_audit").getSingleResult().toString());
         assertThat(amount).isZero();
     }
-
 }

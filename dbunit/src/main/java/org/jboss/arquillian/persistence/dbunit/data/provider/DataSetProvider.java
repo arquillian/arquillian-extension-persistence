@@ -16,6 +16,10 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.provider;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
@@ -24,11 +28,6 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.naming.DataSetFileNamingStrategy;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -102,5 +101,4 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
 
         return new DataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
     }
-
 }

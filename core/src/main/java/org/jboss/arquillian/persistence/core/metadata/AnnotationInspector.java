@@ -17,11 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
-import org.jboss.arquillian.test.spi.TestClass;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>

@@ -40,5 +40,4 @@ public class DBUnitConfigurationRemoteProducer {
         Configuration.importTo(configuration).loadFromPropertyFile(configuration.getPrefix() + "properties");
         configurationProducer.set(configuration);
     }
-
 }

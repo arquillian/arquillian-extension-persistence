@@ -46,5 +46,4 @@ public class SchemaCreationControlCommand extends AbstractCommand<Boolean> {
     public String getKey() {
         return key;
     }
-
 }

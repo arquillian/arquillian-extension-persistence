@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
+import java.util.logging.Logger;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
@@ -29,8 +30,6 @@ import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingEx
 import org.jboss.arquillian.persistence.dbunit.filter.TableFilterResolver;
 import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 
-import java.util.logging.Logger;
-
 public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExecutor {
 
     private static final Logger LOG = Logger.getLogger(SeededDataOnlyCleanupStrategyExecutor.class.getName());
@@ -41,7 +40,8 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
 
     private final DBUnitConfiguration dbUnitConfiguration;
 
-    public SeededDataOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister, DBUnitConfiguration dbUnitConfiguration) {
+    public SeededDataOnlyCleanupStrategyExecutor(DatabaseConnection connection, DataSetRegister dataSetRegister,
+        DBUnitConfiguration dbUnitConfiguration) {
         this.connection = connection;
         this.dataSetRegister = dataSetRegister;
         this.dbUnitConfiguration = dbUnitConfiguration;
@@ -66,5 +66,4 @@ public class SeededDataOnlyCleanupStrategyExecutor implements CleanupStrategyExe
             throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
         }
     }
-
 }

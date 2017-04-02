@@ -17,12 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import java.io.Serializable;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-
-import java.io.Serializable;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -62,8 +61,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param defaultDataSource Name of the default data source used to interact with the database
-     *                          (seeding, comparing etc). Required if not specified by using {@link DataSource} annotation.
+     * @param defaultDataSource
+     *     Name of the default data source used to interact with the database
+     *     (seeding, comparing etc). Required if not specified by using {@link DataSource} annotation.
      */
     public void setDefaultDataSource(String defaultDataSource) {
         this.defaultDataSource = defaultDataSource;
@@ -78,9 +78,11 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param defaultTransactionMode Transaction mode for running the tests if not specified explicitly by using {@link Transactional}.
-     *                               Possible values: {@link TransactionMode#COMMIT}, {@link TransactionMode#ROLLBACK} or {@link TransactionMode#DISABLED}.
-     *                               Default - {@link TransactionMode#COMMIT}
+     * @param defaultTransactionMode
+     *     Transaction mode for running the tests if not specified explicitly by using {@link Transactional}.
+     *     Possible values: {@link TransactionMode#COMMIT}, {@link TransactionMode#ROLLBACK} or {@link
+     *     TransactionMode#DISABLED}.
+     *     Default - {@link TransactionMode#COMMIT}
      */
     public void setDefaultTransactionMode(TransactionMode defaultTransactionMode) {
         this.defaultTransactionMode = defaultTransactionMode;
@@ -91,8 +93,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param dumpData Enables database state dumping in following phases BEFORE_SEED, AFTER_SEED, BEFORE_CLEAN, AFTER_CLEAN.
-     *                 Might be handy for debugging. Default value is <code>false</code>.
+     * @param dumpData
+     *     Enables database state dumping in following phases BEFORE_SEED, AFTER_SEED, BEFORE_CLEAN, AFTER_CLEAN.
+     *     Might be handy for debugging. Default value is <code>false</code>.
      */
     public void setDumpData(boolean dumpData) {
         this.dumpData = dumpData;
@@ -103,8 +106,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param dumpDirectory Folder where all database dumps will be stored.
-     *                      Default value is OS-specific temporary directory defined in property <code>java.io.tmpdir</code>.
+     * @param dumpDirectory
+     *     Folder where all database dumps will be stored.
+     *     Default value is OS-specific temporary directory defined in property <code>java.io.tmpdir</code>.
      */
     public void setDumpDirectory(String dumpDirectory) {
         if (dumpDirectory.endsWith("/")) {
@@ -118,8 +122,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param defaultCleanupPhase Defines default cleanup phase.
-     *                            If not specified it's assumed to be AFTER test method.
+     * @param defaultCleanupPhase
+     *     Defines default cleanup phase.
+     *     If not specified it's assumed to be AFTER test method.
      */
     public void setDefaultCleanupPhase(TestExecutionPhase defaultCleanupPhase) {
         this.defaultCleanupPhase = defaultCleanupPhase;
@@ -130,8 +135,9 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param defaultCleanupStrategy Defines strategy of cleaninig database content for the test.
-     *                               Default value is {@link CleanupStrategy#STRICT}
+     * @param defaultCleanupStrategy
+     *     Defines strategy of cleaninig database content for the test.
+     *     Default value is {@link CleanupStrategy#STRICT}
      */
     public void setDefaultCleanupStrategy(CleanupStrategy defaultCleanupStrategy) {
         this.defaultCleanupStrategy = defaultCleanupStrategy;
@@ -142,21 +148,24 @@ public class PersistenceConfiguration extends Configuration implements Serializa
     }
 
     /**
-     * @param strategy Defines strategy of inserting data to the data store.
-     *                 Default value is {@link DataSeedStrategy#INSERT}
-     * @see DataSeedStrategy
-     */
-    public void setDataSeedStrategy(DataSeedStrategy strategy) {
-        setDefaultDataSeedStrategy(strategy);
-    }
-
-    /**
-     * @param defaultDataSeedStrategy Defines strategy of inserting data to the data store.
-     *                                Default value is {@link DataSeedStrategy#INSERT}
+     * @param defaultDataSeedStrategy
+     *     Defines strategy of inserting data to the data store.
+     *     Default value is {@link DataSeedStrategy#INSERT}
+     *
      * @see DataSeedStrategy
      */
     public void setDefaultDataSeedStrategy(DataSeedStrategy defaultDataSeedStrategy) {
         this.defaultDataSeedStrategy = defaultDataSeedStrategy;
     }
 
+    /**
+     * @param strategy
+     *     Defines strategy of inserting data to the data store.
+     *     Default value is {@link DataSeedStrategy#INSERT}
+     *
+     * @see DataSeedStrategy
+     */
+    public void setDataSeedStrategy(DataSeedStrategy strategy) {
+        setDefaultDataSeedStrategy(strategy);
+    }
 }

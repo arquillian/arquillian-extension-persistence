@@ -17,10 +17,9 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
+import java.io.IOException;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,7 +96,8 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getDatatypeFactory()).isInstanceOf(org.dbunit.ext.hsqldb.HsqldbDataTypeFactory.class);
+        assertThat(dbunitConfiguration.getDatatypeFactory()).isInstanceOf(
+            org.dbunit.ext.hsqldb.HsqldbDataTypeFactory.class);
     }
 
     @Test
@@ -105,15 +105,18 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getStatementFactory()).isInstanceOf(org.dbunit.database.statement.StatementFactory.class);
+        assertThat(dbunitConfiguration.getStatementFactory()).isInstanceOf(
+            org.dbunit.database.statement.StatementFactory.class);
     }
 
     @Test
-    public void should_extract_result_set_table_factory_factory_implementation_from_external_property_file() throws Exception {
+    public void should_extract_result_set_table_factory_factory_implementation_from_external_property_file()
+        throws Exception {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getResultSetTableFactory()).isInstanceOf(org.dbunit.database.ForwardOnlyResultSetTableFactory.class);
+        assertThat(dbunitConfiguration.getResultSetTableFactory()).isInstanceOf(
+            org.dbunit.database.ForwardOnlyResultSetTableFactory.class);
     }
 
     @Test
@@ -121,7 +124,8 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getPrimaryKeyFilter()).isInstanceOf(org.dbunit.dataset.filter.DefaultColumnFilter.class);
+        assertThat(dbunitConfiguration.getPrimaryKeyFilter()).isInstanceOf(
+            org.dbunit.dataset.filter.DefaultColumnFilter.class);
     }
 
     @Test
@@ -129,7 +133,8 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getIdentityColumnFilter()).isInstanceOf(org.dbunit.dataset.filter.DefaultColumnFilter.class);
+        assertThat(dbunitConfiguration.getIdentityColumnFilter()).isInstanceOf(
+            org.dbunit.dataset.filter.DefaultColumnFilter.class);
     }
 
     @Test
@@ -137,7 +142,8 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         DBUnitConfiguration dbunitConfiguration = loadFromFile();
 
         // then
-        assertThat(dbunitConfiguration.getMetadataHandler()).isInstanceOf(org.dbunit.ext.netezza.NetezzaMetadataHandler.class);
+        assertThat(dbunitConfiguration.getMetadataHandler()).isInstanceOf(
+            org.dbunit.ext.netezza.NetezzaMetadataHandler.class);
     }
 
     @Test
@@ -187,5 +193,4 @@ public abstract class DBUnitConfigurationImporterFromFileAbstractTestCase {
         // then
         assertThat(dbunitConfiguration.getSchema()).isEqualTo("ape");
     }
-
 }

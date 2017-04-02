@@ -32,16 +32,15 @@
  */
 package org.jboss.arquillian.persistence.script.splitter;
 
-import org.jboss.arquillian.persistence.script.SpecialCharactersReplacer;
-import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
-
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.jboss.arquillian.persistence.script.SpecialCharactersReplacer;
+import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
+import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
 
 /**
  * Splits SQL script into executable sql parts.
@@ -60,7 +59,7 @@ public class DefaultStatementSplitter implements StatementSplitter {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
     private String statementDelimiter;
-    
+
     private boolean trimStatementDelimiter;
 
     public DefaultStatementSplitter() {
@@ -76,7 +75,7 @@ public class DefaultStatementSplitter implements StatementSplitter {
     public void setStatementDelimiter(String statementDelimiter) {
         this.statementDelimiter = statementDelimiter;
     }
-    
+
     @Override
     public void setTrimStatementDelimiter(boolean trimStatementDelimiter) {
         this.trimStatementDelimiter = trimStatementDelimiter;

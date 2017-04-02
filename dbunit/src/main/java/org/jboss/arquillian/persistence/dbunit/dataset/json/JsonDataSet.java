@@ -17,10 +17,13 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.json;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
-
-import java.io.*;
 
 /**
  * DBUnit data set produced from JSON format.
@@ -87,5 +90,4 @@ public class JsonDataSet extends CachedDataSet {
     public JsonDataSet(InputStream inputStream, boolean caseSensitiveTableNames) throws DataSetException {
         this(new JsonDataSetProducer(inputStream), caseSensitiveTableNames);
     }
-
 }

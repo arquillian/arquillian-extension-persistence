@@ -36,9 +36,9 @@ public class PersistenceExtensionEnabler {
 
     public boolean shouldPersistenceExtensionBeActivated() {
         return (hasDataSetAnnotation() || hasApplyScriptAnnotation()
-                || hasPersistenceTestAnnotation() || hasJpaCacheEvictionAnnotation()
-                || hasCreateSchemaAnnotation() || hasCleanupAnnotation()
-                || hasCleanupUsingScriptAnnotation());
+            || hasPersistenceTestAnnotation() || hasJpaCacheEvictionAnnotation()
+            || hasCreateSchemaAnnotation() || hasCleanupAnnotation()
+            || hasCleanupUsingScriptAnnotation());
     }
 
     // ---------------------------------------------------------------------------------------------------
@@ -47,16 +47,16 @@ public class PersistenceExtensionEnabler {
 
     private boolean hasDataSetAnnotation() {
         return metadataExtractor.usingDataSet().isDefinedOnClassLevel()
-                || metadataExtractor.usingDataSet().isDefinedOnAnyMethod()
-                || metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
-                || metadataExtractor.shouldMatchDataSet().isDefinedOnAnyMethod();
+            || metadataExtractor.usingDataSet().isDefinedOnAnyMethod()
+            || metadataExtractor.shouldMatchDataSet().isDefinedOnClassLevel()
+            || metadataExtractor.shouldMatchDataSet().isDefinedOnAnyMethod();
     }
 
     private boolean hasApplyScriptAnnotation() {
         return metadataExtractor.applyScriptBefore().isDefinedOnClassLevel()
-                || metadataExtractor.applyScriptBefore().isDefinedOnAnyMethod()
-                || metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
-                || metadataExtractor.applyScriptAfter().isDefinedOnAnyMethod();
+            || metadataExtractor.applyScriptBefore().isDefinedOnAnyMethod()
+            || metadataExtractor.applyScriptAfter().isDefinedOnClassLevel()
+            || metadataExtractor.applyScriptAfter().isDefinedOnAnyMethod();
     }
 
     private boolean hasPersistenceTestAnnotation() {
@@ -65,7 +65,7 @@ public class PersistenceExtensionEnabler {
 
     private boolean hasJpaCacheEvictionAnnotation() {
         return metadataExtractor.jpaCacheEviction().isDefinedOnClassLevel()
-                || metadataExtractor.jpaCacheEviction().isDefinedOnAnyMethod();
+            || metadataExtractor.jpaCacheEviction().isDefinedOnAnyMethod();
     }
 
     private boolean hasCreateSchemaAnnotation() {
@@ -74,12 +74,11 @@ public class PersistenceExtensionEnabler {
 
     private boolean hasCleanupAnnotation() {
         return metadataExtractor.cleanup().isDefinedOnClassLevel()
-                || metadataExtractor.cleanup().isDefinedOnAnyMethod();
+            || metadataExtractor.cleanup().isDefinedOnAnyMethod();
     }
 
     private boolean hasCleanupUsingScriptAnnotation() {
         return metadataExtractor.cleanupUsingScript().isDefinedOnClassLevel()
-                || metadataExtractor.cleanupUsingScript().isDefinedOnAnyMethod();
+            || metadataExtractor.cleanupUsingScript().isDefinedOnAnyMethod();
     }
-
 }

@@ -34,8 +34,10 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
     public void should_have_default_data_seeding_strategy() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new DefaultDataSeedSettings(),
-                DefaultDataSeedSettings.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DefaultDataSeedSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -48,8 +50,10 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
     public void should_obtain_data_seeding_strategy_from_class_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new ClassLevelDataSeedCleanInsertSettings(),
-                ClassLevelDataSeedCleanInsertSettings.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            ClassLevelDataSeedCleanInsertSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -62,8 +66,10 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
     public void should_obtain_test_phase_from_method_level() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
-                MethodLevelDataSeedSettings.class.getMethod("shouldPassUpdateStrategy"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelDataSeedSettings.class.getMethod("shouldPassUpdateStrategy"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -75,8 +81,10 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
     public void should_use_class_level_defined_strategy_when_not_defined_for_given_method() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelDataSeedSettings(),
-                MethodLevelDataSeedSettings.class.getMethod("shouldPassUsingClassLevelDefinition"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelDataSeedSettings.class.getMethod("shouldPassUsingClassLevelDefinition"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -107,7 +115,5 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
 
         public void shouldPassUsingClassLevelDefinition() {
         }
-
     }
-
 }

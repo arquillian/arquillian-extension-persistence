@@ -17,6 +17,11 @@
  */
 package org.jboss.arquillian.persistence.jpa.cache;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -31,12 +36,6 @@ import org.jboss.arquillian.persistence.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.persistence.core.event.InitializeConfiguration;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
  * JPA cache eviction handler, which is registered in {@link RemotePersistenceExtension}.
  *
@@ -45,12 +44,10 @@ import java.util.LinkedList;
  */
 public class JpaCacheEvictionHandler {
 
+    private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
     @Inject
     private Instance<Context> ctx;
-
     private JpaCacheEvictionConfiguration jpaCacheEvictionConfiguration;
-
-    private static final String DEFAULT_JNDI_PREFIX = "java:comp/env/";
 
     public JpaCacheEvictionHandler() {
     }
@@ -62,7 +59,8 @@ public class JpaCacheEvictionHandler {
 
     public final void initalizeCacheConfiguration(@Observes InitializeConfiguration event) {
         jpaCacheEvictionConfiguration = new JpaCacheEvictionConfiguration();
-        Configuration.importTo(jpaCacheEvictionConfiguration).loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
+        Configuration.importTo(jpaCacheEvictionConfiguration)
+            .loadFromPropertyFile(jpaCacheEvictionConfiguration.getPrefix() + "properties");
     }
 
     public final void onBeforeTestMethod(@Observes(precedence = 15) BeforePersistenceTest event) {
@@ -135,14 +133,15 @@ public class JpaCacheEvictionHandler {
             try {
                 return lookup(DEFAULT_JNDI_PREFIX + emJndiName);
             } catch (NamingException ne) {
-                throw new RuntimeException("Failed to obtain EntityManager using JNDI name " + emJndiName + ", but also appending it with default prefix " + DEFAULT_JNDI_PREFIX, e);
+                throw new RuntimeException("Failed to obtain EntityManager using JNDI name "
+                    + emJndiName
+                    + ", but also appending it with default prefix "
+                    + DEFAULT_JNDI_PREFIX, e);
             }
-
         }
     }
 
     public EntityManager lookup(String emJndiName) throws NamingException {
         return (EntityManager) ctx.get().lookup(emJndiName);
     }
-
 }

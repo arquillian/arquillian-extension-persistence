@@ -15,5 +15,4 @@ public class DBUnitConfigurationDefinitionException extends RuntimeException {
     public DBUnitConfigurationDefinitionException(Throwable cause) {
         super(cause);
     }
-
 }

@@ -35,5 +35,4 @@ public class PersistenceExtensionInitializationException extends RuntimeExceptio
     public PersistenceExtensionInitializationException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

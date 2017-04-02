@@ -52,5 +52,4 @@ public @interface CleanupUsingScript {
     String[] value() default "";
 
     TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
-
 }

@@ -38,19 +38,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class DatabaseConnectionVerificationTest {
 
+    @ArquillianResource
+    private DatabaseConnection databaseConnection;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }
-
-    @ArquillianResource
-    private DatabaseConnection databaseConnection;
 
     @Test
     @UsingDataSet("users.yml")
@@ -63,5 +63,4 @@ public class DatabaseConnectionVerificationTest {
     public void should_be_able_to_verify_database_state_using_custom_where_clause() throws Exception {
         assertThat(databaseConnection.getRowCount("useraccount", "where username = 'doovde'")).isEqualTo(1);
     }
-
 }

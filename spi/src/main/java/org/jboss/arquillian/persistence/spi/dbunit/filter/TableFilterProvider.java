@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.spi.dbunit.filter;
 
+import java.sql.SQLException;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.filter.ITableFilter;
-
-import java.sql.SQLException;
 
 /**
  * Extension point to define custom implementation of {@link org.dbunit.database.DatabaseSequenceFilter}
@@ -42,5 +41,4 @@ public interface TableFilterProvider {
      * Simple name used in configuration to refer to given implementation of the filter eg. 'default', 'oracle'
      */
     String simpleName();
-
 }

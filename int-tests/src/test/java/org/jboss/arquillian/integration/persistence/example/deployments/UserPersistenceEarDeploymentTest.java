@@ -35,15 +35,14 @@ public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersisten
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackages(true, UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackages(true, UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
 
         return ShrinkWrap.create(EnterpriseArchive.class, "test.ear")
-                .addAsLibrary(javaArchive);
+            .addAsLibrary(javaArchive);
     }
-
 }

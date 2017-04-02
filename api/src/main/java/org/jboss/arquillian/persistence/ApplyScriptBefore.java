@@ -52,5 +52,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface ApplyScriptBefore {
 
     String[] value() default "";
-
 }

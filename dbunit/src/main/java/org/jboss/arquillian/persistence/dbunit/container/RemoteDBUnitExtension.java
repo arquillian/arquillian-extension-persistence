@@ -41,14 +41,13 @@ public class RemoteDBUnitExtension implements RemoteLoadableExtension {
 
     private void registerDBUnitHandlers(ExtensionBuilder builder) {
         builder.observer(DBUnitDataHandler.class)
-                .observer(DBUnitConfigurationRemoteProducer.class)
-                .observer(DBUnitPersistenceTestLifecycleHandler.class)
-                .observer(DBUnitDataStateLogger.class)
-                .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class);
+            .observer(DBUnitConfigurationRemoteProducer.class)
+            .observer(DBUnitPersistenceTestLifecycleHandler.class)
+            .observer(DBUnitDataStateLogger.class)
+            .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class);
     }
 
     private void registerDBUnitTestLifecycleHandlers(ExtensionBuilder builder) {
         builder.observer(DataSetHandler.class);               // 20 / 30
     }
-
 }

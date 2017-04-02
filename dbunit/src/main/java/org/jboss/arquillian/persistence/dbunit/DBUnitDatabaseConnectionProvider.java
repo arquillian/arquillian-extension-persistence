@@ -17,15 +17,14 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
+import java.lang.annotation.Annotation;
+import javax.sql.DataSource;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
-
-import javax.sql.DataSource;
-import java.lang.annotation.Annotation;
 
 /**
  * Injects DBUnit database connection through {@link ArquillianResource} annotation to the test class instance.
@@ -58,5 +57,4 @@ public class DBUnitDatabaseConnectionProvider implements ResourceProvider {
     public Object lookup(ArquillianResource resource, Annotation... qualifiers) {
         return databaseConnectionInstance.get();
     }
-
 }

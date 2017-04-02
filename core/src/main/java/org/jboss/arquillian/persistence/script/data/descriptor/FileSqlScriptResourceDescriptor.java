@@ -17,10 +17,9 @@
  */
 package org.jboss.arquillian.persistence.script.data.descriptor;
 
+import java.nio.charset.Charset;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.script.ScriptLoader;
-
-import java.nio.charset.Charset;
 
 /**
  * SQL script file descriptor.
@@ -66,5 +65,4 @@ public class FileSqlScriptResourceDescriptor extends SqlScriptResourceDescriptor
         result = prime * result + ((location == null) ? 0 : location.hashCode());
         return result;
     }
-
 }

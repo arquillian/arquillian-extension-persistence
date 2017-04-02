@@ -1,5 +1,8 @@
 package org.jboss.arquillian.integration.persistence.test.seeding;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
@@ -15,27 +18,30 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 public class SeedingStrategyTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Deployment
     public static Archive<?> createDeploymentPackage() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                .addPackages(true, "org.assertj.core")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-persistence.xml", "persistence.xml");
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            .addPackages(true, "org.assertj.core")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
 
-    @PersistenceContext
-    EntityManager em;
+    private static void assertUserAccountsAreEqual(UserAccount actual, UserAccount expected) {
+        assertThat(actual.getFirstname()).isEqualTo(expected.getFirstname());
+        assertThat(actual.getLastname()).isEqualTo(expected.getLastname());
+        assertThat(actual.getUsername()).isEqualTo(expected.getUsername());
+        assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
+    }
 
     @Test
     @ApplyScriptBefore("lex-luthor.sql")
@@ -82,6 +88,8 @@ public class SeedingStrategyTest {
         assertUserAccountsAreEqual(lexLuthor, updatedLex);
     }
 
+    // -- Test utility methods
+
     @Test
     @ApplyScriptBefore("lex-luthor.sql")
     @UsingDataSet({"two-users.yml", "updated-lex-luthor.yml"})
@@ -99,14 +107,4 @@ public class SeedingStrategyTest {
         assertUserAccountsAreEqual(lexLuthor, updatedLex);
         assertThat(userAccounts).hasSize(3);
     }
-
-    // -- Test utility methods
-
-    private static void assertUserAccountsAreEqual(UserAccount actual, UserAccount expected) {
-        assertThat(actual.getFirstname()).isEqualTo(expected.getFirstname());
-        assertThat(actual.getLastname()).isEqualTo(expected.getLastname());
-        assertThat(actual.getUsername()).isEqualTo(expected.getUsername());
-        assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
-    }
-
 }

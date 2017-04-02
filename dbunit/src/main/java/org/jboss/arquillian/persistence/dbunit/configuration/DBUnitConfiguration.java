@@ -123,8 +123,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param batchedStatements Enable or disable usage of JDBC batched statement by DBUnit.
-     *                          Default value is <code>false</code>
+     * @param batchedStatements
+     *     Enable or disable usage of JDBC batched statement by DBUnit.
+     *     Default value is <code>false</code>
      */
     public void setBatchedStatements(boolean batchedStatements) {
         this.batchedStatements = batchedStatements;
@@ -135,9 +136,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param caseSensitiveTableNames Enable or disable case sensitive table names.
-     *                                If enabled, DBUnit handles all table names in a case sensitive way.
-     *                                Default value is <code>false</code>.
+     * @param caseSensitiveTableNames
+     *     Enable or disable case sensitive table names.
+     *     If enabled, DBUnit handles all table names in a case sensitive way.
+     *     Default value is <code>false</code>.
      */
     public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames) {
         this.caseSensitiveTableNames = caseSensitiveTableNames;
@@ -148,9 +150,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param qualifiedTableNames Enable or disable multiple schemas support. If enabled, DBUnit access
-     *                            tables with names fully qualified by schema using this format: SCHEMA.TABLE.
-     *                            Default value is <code>false</code>.
+     * @param qualifiedTableNames
+     *     Enable or disable multiple schemas support. If enabled, DBUnit access
+     *     tables with names fully qualified by schema using this format: SCHEMA.TABLE.
+     *     Default value is <code>false</code>.
      */
     public void setQualifiedTableNames(boolean qualifiedTableNames) {
         this.qualifiedTableNames = qualifiedTableNames;
@@ -161,9 +164,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param datatypeWarning Enable or disable the warning message displayed when
-     *                        DBUnit encounters an unsupported data type.
-     *                        Default value is <code>true</code>.
+     * @param datatypeWarning
+     *     Enable or disable the warning message displayed when
+     *     DBUnit encounters an unsupported data type.
+     *     Default value is <code>true</code>.
      */
     public void setDatatypeWarning(boolean datatypeWarning) {
         this.datatypeWarning = datatypeWarning;
@@ -174,12 +178,13 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param skipOracleRecycleBinTables Enable or disable the processing of oracle recycle bin tables (tables starting with BIN$).
-     *                                   Oracle 10g recycle bin tables may break DBUnit's assumption of tables name uniqueness within
-     *                                   a schema since these table are case sensitive. Enable this feature for Oracle 10g databases
-     *                                   until the bug in the oracle driver is fixed, which incorrectly reports this system tables
-     *                                   to DBUnit.
-     *                                   Default value is <code>false</code>.
+     * @param skipOracleRecycleBinTables
+     *     Enable or disable the processing of oracle recycle bin tables (tables starting with BIN$).
+     *     Oracle 10g recycle bin tables may break DBUnit's assumption of tables name uniqueness within
+     *     a schema since these table are case sensitive. Enable this feature for Oracle 10g databases
+     *     until the bug in the oracle driver is fixed, which incorrectly reports this system tables
+     *     to DBUnit.
+     *     Default value is <code>false</code>.
      */
     public void setSkipOracleRecycleBinTables(boolean skipOracleRecycleBinTables) {
         this.skipOracleRecycleBinTables = skipOracleRecycleBinTables;
@@ -190,8 +195,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param allowEmptyFields Allow to call INSERT/UPDATE with empty strings ('').
-     *                         Default value is <code>false</code>.
+     * @param allowEmptyFields
+     *     Allow to call INSERT/UPDATE with empty strings ('').
+     *     Default value is <code>false</code>.
      */
     public void setAllowEmptyFields(boolean allowEmptyFields) {
         this.allowEmptyFields = allowEmptyFields;
@@ -202,13 +208,14 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param escapePattern Allows schema, table and column names escaping. The property value is an escape pattern
-     *                      where the ? is replaced by the name. For example, the pattern "[?]" is expanded as "[MY_TABLE]"
-     *                      for a table named "MY_TABLE". The most common escape pattern is "\"?\"" which surrounds
-     *                      the table name with quotes (for the above example it would result in "\"MY_TABLE\"").
-     *                      As a fallback if no questionmark is in the given String and its length is one it is used
-     *                      to surround the table name on the left and right side. For example the escape pattern "\""
-     *                      will have the same effect as the escape pattern "\"?\"".
+     * @param escapePattern
+     *     Allows schema, table and column names escaping. The property value is an escape pattern
+     *     where the ? is replaced by the name. For example, the pattern "[?]" is expanded as "[MY_TABLE]"
+     *     for a table named "MY_TABLE". The most common escape pattern is "\"?\"" which surrounds
+     *     the table name with quotes (for the above example it would result in "\"MY_TABLE\"").
+     *     As a fallback if no questionmark is in the given String and its length is one it is used
+     *     to surround the table name on the left and right side. For example the escape pattern "\""
+     *     will have the same effect as the escape pattern "\"?\"".
      */
     public void setEscapePattern(String escapePattern) {
         this.escapePattern = escapePattern;
@@ -219,7 +226,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param tableType Used to configure the list of table types recognized by DBUnit.
+     * @param tableType
+     *     Used to configure the list of table types recognized by DBUnit.
+     *
      * @see java.sql.DatabaseMetaData#getTables for possible values.
      */
     public void setTableType(String[] tableType) {
@@ -231,9 +240,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param datatypeFactory Used to configure the DataType factory. You can replace the default factory to
-     *                        add support for non-standard database vendor data types.
-     *                        Default value is {@link DefaultDataTypeFactory}.
+     * @param datatypeFactory
+     *     Used to configure the DataType factory. You can replace the default factory to
+     *     add support for non-standard database vendor data types.
+     *     Default value is {@link DefaultDataTypeFactory}.
      */
     public void setDatatypeFactory(IDataTypeFactory datatypeFactory) {
         this.datatypeFactory = datatypeFactory;
@@ -244,8 +254,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param statementFactory Used to configure the statement factory.
-     *                         Default value is {@link PreparedStatementFactory}.
+     * @param statementFactory
+     *     Used to configure the statement factory.
+     *     Default value is {@link PreparedStatementFactory}.
      */
     public void setStatementFactory(IStatementFactory statementFactory) {
         this.statementFactory = statementFactory;
@@ -256,8 +267,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param resultSetTableFactory Used to configure the ResultSet table factory.
-     *                              Default value is {@link CachedResultSetTableFactory}.
+     * @param resultSetTableFactory
+     *     Used to configure the ResultSet table factory.
+     *     Default value is {@link CachedResultSetTableFactory}.
      */
     public void setResultSetTableFactory(IResultSetTableFactory resultSetTableFactory) {
         this.resultSetTableFactory = resultSetTableFactory;
@@ -268,7 +280,8 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param primaryKeyFilter Use to override primary keys detection.
+     * @param primaryKeyFilter
+     *     Use to override primary keys detection.
      */
     public void setPrimaryKeyFilter(IColumnFilter primaryKeyFilter) {
         this.primaryKeyFilter = primaryKeyFilter;
@@ -279,7 +292,8 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param identityColumnFilter Used to override IDENTITY column detection (MS SQL specific solution).
+     * @param identityColumnFilter
+     *     Used to override IDENTITY column detection (MS SQL specific solution).
      */
     public void setIdentityColumnFilter(IColumnFilter identityColumnFilter) {
         this.identityColumnFilter = identityColumnFilter;
@@ -290,8 +304,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param batchSize The size of batch updates.
-     *                  Default value is <code>100</code>.
+     * @param batchSize
+     *     The size of batch updates.
+     *     Default value is <code>100</code>.
      */
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
@@ -302,8 +317,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param fetchSize The statement fetch size for loading data into a result set table.
-     *                  Default value is <code>100</code>.
+     * @param fetchSize
+     *     The statement fetch size for loading data into a result set table.
+     *     Default value is <code>100</code>.
      */
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
@@ -314,8 +330,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param metadataHandler Used to configure the handler used to control database metadata related methods.
-     *                        Default value is {@link org.dbunit.database.DefaultMetadataHandler}.
+     * @param metadataHandler
+     *     Used to configure the handler used to control database metadata related methods.
+     *     Default value is {@link org.dbunit.database.DefaultMetadataHandler}.
      */
     public void setMetadataHandler(IMetadataHandler metadataHandler) {
         this.metadataHandler = metadataHandler;
@@ -326,9 +343,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param useIdentityInsert Disables MS SQL Server automatic identifier generation for the execution
-     *                          of inserts. For usage with Microsoft driver you should append your JDBC connection with "SelectMethod=cursor".
-     *                          Default value is <code>false</code>
+     * @param useIdentityInsert
+     *     Disables MS SQL Server automatic identifier generation for the execution
+     *     of inserts. For usage with Microsoft driver you should append your JDBC connection with "SelectMethod=cursor".
+     *     Default value is <code>false</code>
      */
     public void setUseIdentityInsert(boolean useIdentityInsert) {
         this.useIdentityInsert = useIdentityInsert;
@@ -339,8 +357,9 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultDataSetLocation Folder where all datasets are located.
-     *                               Default value is <code>datsets<code>.
+     * @param defaultDataSetLocation
+     *     Folder where all datasets are located.
+     *     Default value is <code>datsets<code>.
      */
     public void setDefaultDataSetLocation(String defaultDataSetLocation) {
         this.defaultDataSetLocation = defaultDataSetLocation;
@@ -351,9 +370,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param defaultDataSetFormat Default format of data sets when file name is inferred from test method name,
-     *                             when file is not specified in {@link UsingDataSet} or {@link ShouldMatchDataSet}.
-     *                             Default value is {@link Format.XML}
+     * @param defaultDataSetFormat
+     *     Default format of data sets when file name is inferred from test method name,
+     *     when file is not specified in {@link UsingDataSet} or {@link ShouldMatchDataSet}.
+     *     Default value is {@link Format.XML}
      */
     public void setDefaultDataSetFormat(Format defaultDataSetFormat) {
         this.defaultDataSetFormat = defaultDataSetFormat;
@@ -364,9 +384,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param excludePoi Excludes Apache POI from packaging process, which results in slimier deployment.
-     *                   If you are not using Excel datasets you can safely turn it off.
-     *                   Defalut value is <code>false</false>
+     * @param excludePoi
+     *     Excludes Apache POI from packaging process, which results in slimier deployment.
+     *     If you are not using Excel datasets you can safely turn it off.
+     *     Defalut value is <code>false</false>
      */
     public void setExcludePoi(boolean excludePoi) {
         this.excludePoi = excludePoi;
@@ -377,9 +398,10 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param excludeTablesFromCleanup List of tables to be excluded from cleanup procedure.
-     *                                 Especially handy for sequence tables which are most likely to be cleared
-     *                                 when using STRICT cleanup strategy.
+     * @param excludeTablesFromCleanup
+     *     List of tables to be excluded from cleanup procedure.
+     *     Especially handy for sequence tables which are most likely to be cleared
+     *     when using STRICT cleanup strategy.
      */
     public void setExcludeTablesFromCleanup(String[] excludeTablesFromCleanup) {
         this.excludeTablesFromCleanup = Arrays.copy(excludeTablesFromCleanup);
@@ -390,7 +412,8 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param schema Schema to be used while creating database connection
+     * @param schema
+     *     Schema to be used while creating database connection
      */
     public void setSchema(String schema) {
         this.schema = schema;
@@ -401,7 +424,8 @@ public class DBUnitConfiguration extends Configuration {
     }
 
     /**
-     * @param excludeTablesFromComparisonWhenEmptyExpected list of tables which should not be considered when asserting database content for emptiness.
+     * @param excludeTablesFromComparisonWhenEmptyExpected
+     *     list of tables which should not be considered when asserting database content for emptiness.
      */
     public void setExcludeTablesFromComparisonWhenEmptyExpected(String[] excludeTablesFromComparisonWhenEmptyExpected) {
         this.excludeTablesFromComparisonWhenEmptyExpected = excludeTablesFromComparisonWhenEmptyExpected;
@@ -415,9 +439,8 @@ public class DBUnitConfiguration extends Configuration {
      * Orders tables using dependency information provided by foreign key metadata. Disabled by default.
      * This property is related to {@link #customTableFilter} which is used to specify which implementation of
      * {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider} should be used.
-     * Should be registered using simple name exposed by given implementation {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
-     *
-     * @param filterTables
+     * Should be registered using simple name exposed by given implementation {@link
+     * org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
      */
     public void setFilterTables(boolean filterTables) {
         this.filterTables = filterTables;
@@ -430,8 +453,6 @@ public class DBUnitConfiguration extends Configuration {
     /**
      * Specifies which implementation of {@link org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider}
      * should be used when {@link #filterTables} is enabled.
-     *
-     * @param customTableFilter
      */
     public void setCustomTableFilter(String customTableFilter) {
         this.customTableFilter = customTableFilter;

@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
+import java.net.URI;
+import java.net.URL;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import net.jcip.annotations.NotThreadSafe;
@@ -25,9 +27,6 @@ import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.net.URI;
-import java.net.URL;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -209,7 +208,8 @@ public class ConfigurationTypeConverterTest {
         ConfigurationTypeConverter typeConverter = new ConfigurationTypeConverter();
 
         // when
-        Format convertedFormat = typeConverter.convert("org.jboss.arquillian.persistence.core.data.descriptor.Format.JSON", Format.class);
+        Format convertedFormat =
+            typeConverter.convert("org.jboss.arquillian.persistence.core.data.descriptor.Format.JSON", Format.class);
 
         // then
         assertThat(convertedFormat).isEqualTo(expectedFormat);
@@ -360,15 +360,14 @@ public class ConfigurationTypeConverterTest {
     @SuppressWarnings("unused") // used by @Parameters
     private Object[] primitivesToBeBoxed() {
         return $(
-                $(int.class, Integer.class),
-                $(long.class, Long.class),
-                $(float.class, Float.class),
-                $(double.class, Double.class),
-                $(byte.class, Byte.class),
-                $(short.class, Short.class),
-                $(char.class, Character.class),
-                $(boolean.class, Boolean.class)
+            $(int.class, Integer.class),
+            $(long.class, Long.class),
+            $(float.class, Float.class),
+            $(double.class, Double.class),
+            $(byte.class, Byte.class),
+            $(short.class, Short.class),
+            $(char.class, Character.class),
+            $(boolean.class, Boolean.class)
         );
     }
-
 }

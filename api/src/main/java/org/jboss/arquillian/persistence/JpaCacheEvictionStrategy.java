@@ -32,5 +32,4 @@ public interface JpaCacheEvictionStrategy {
      * Evict JPA second level cache.
      */
     void evictCache(EntityManager em);
-
 }

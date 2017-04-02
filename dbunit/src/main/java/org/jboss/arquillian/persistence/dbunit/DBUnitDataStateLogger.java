@@ -17,6 +17,9 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.lang.reflect.Method;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -36,10 +39,6 @@ import org.jboss.arquillian.persistence.core.event.PersistenceEvent;
 import org.jboss.arquillian.persistence.dbunit.event.PrepareDBUnitData;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitDataSetHandlingException;
 import org.jboss.arquillian.test.spi.TestClass;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Method;
 
 /**
  * Dumps database state during test method invocation, covering
@@ -123,7 +122,8 @@ public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData>
     // Private
 
     private String createFileName(String phaseSuffix) {
-        return String.format(FILENAME_PATTERN, System.currentTimeMillis(), this.testClass.getName(), this.testMethod.getName(), phaseSuffix);
+        return String.format(FILENAME_PATTERN, System.currentTimeMillis(), this.testClass.getName(),
+            this.testMethod.getName(), phaseSuffix);
     }
 
     private void dumpDatabaseState(PersistenceEvent event, Phase phase) {
@@ -162,5 +162,4 @@ public class DBUnitDataStateLogger implements DataStateLogger<PrepareDBUnitData>
         }
 
     }
-
 }

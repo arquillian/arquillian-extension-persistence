@@ -17,14 +17,13 @@
  */
 package org.jboss.arquillian.persistence.script.splitter.oracle;
 
-import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
-
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.jboss.arquillian.persistence.spi.script.StatementSplitter;
 
 /**
  * Original code source available under Apache 2.0 License:
@@ -53,11 +52,11 @@ public class OracleStatementSplitter implements StatementSplitter {
     private static final String IDENTIFIER = "(\\S+|\"[^\"]+\")";
 
     private static final String BLOCK_START = "(^|" + S_N + ")" +
-            "create" + S_N +
-            "(or" + S_N + "replace" + S_N + ")?" +
-            "(function|library|package(" + S_N + "body)?|procedure|trigger|type)" + S_N +
-            IDENTIFIER + S_N +
-            ".*";
+        "create" + S_N +
+        "(or" + S_N + "replace" + S_N + ")?" +
+        "(function|library|package(" + S_N + "body)?|procedure|trigger|type)" + S_N +
+        IDENTIFIER + S_N +
+        ".*";
 
     private final static Pattern BLOCK_START_PATTERN = Pattern.compile(BLOCK_START, Pattern.CASE_INSENSITIVE);
 
@@ -107,8 +106,8 @@ public class OracleStatementSplitter implements StatementSplitter {
                     plSqlMode = false;
                     sqlBuffer.setLength(0);
                 } else if (!plSqlMode && (BLOCK_START_PATTERN.matcher(sqlBuffer).find() ||
-                        "begin".equalsIgnoreCase(line) ||
-                        "declare".equalsIgnoreCase(line))) {
+                    "begin".equalsIgnoreCase(line) ||
+                    "declare".equalsIgnoreCase(line))) {
                     plSqlMode = true;
                     sqlBuffer.append(line);
                     sqlBuffer.append(LINE_SEPARATOR);
@@ -131,5 +130,4 @@ public class OracleStatementSplitter implements StatementSplitter {
 
         return statements;
     }
-
 }

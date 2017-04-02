@@ -17,13 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import org.jboss.arquillian.persistence.core.util.Strings;
-
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import org.jboss.arquillian.persistence.core.util.Strings;
 
 /**
  * @author <a href="kpiwko@redhat.com">Karel Piwko</a>
@@ -34,7 +33,9 @@ class ConfigurationTypeConverter {
     /**
      * A helper boxing method. Returns boxed class for a primitive class
      *
-     * @param primitive A primitive class
+     * @param primitive
+     *     A primitive class
+     *
      * @return Boxed class if class was primitive, unchanged class in other cases
      */
     public Class<?> box(Class<?> primitive) {
@@ -68,9 +69,13 @@ class ConfigurationTypeConverter {
      * <p>
      * Converts string to a class of given type
      *
-     * @param value String value to be converted
-     * @param to    Type of desired value
-     * @param <T>   Type of returned value
+     * @param value
+     *     String value to be converted
+     * @param to
+     *     Type of desired value
+     * @param <T>
+     *     Type of returned value
+     *
      * @return Value converted to the appropriate type
      */
     public <T> T convert(String value, Class<T> to) {
@@ -134,11 +139,11 @@ class ConfigurationTypeConverter {
                     Object instance = Class.forName(value).newInstance();
                     return to.cast(instance);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("Unable to convert value [" + value + "] to a class [" + to.getName() + "].", e);
+                    throw new IllegalArgumentException(
+                        "Unable to convert value [" + value + "] to a class [" + to.getName() + "].", e);
                 }
             }
         }
-
     }
 
     private String extractEnumName(final String value) {
@@ -174,5 +179,4 @@ class ConfigurationTypeConverter {
     private boolean isBlank(String element) {
         return element.trim().length() != 0;
     }
-
 }

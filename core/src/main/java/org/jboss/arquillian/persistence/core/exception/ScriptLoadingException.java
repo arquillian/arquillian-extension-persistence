@@ -35,5 +35,4 @@ public class ScriptLoadingException extends RuntimeException {
     public ScriptLoadingException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

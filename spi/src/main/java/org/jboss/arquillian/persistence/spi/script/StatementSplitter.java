@@ -33,38 +33,26 @@ public interface StatementSplitter {
     /**
      * Defines the name of supported database dialect. Used in the Arquillian scripting configuration
      * to determine which implementation should be used when parsing SQL scripts.
-     *
-     * @return
      */
     String supports();
 
     /**
      * Defines statement delimiter
-     *
-     * @param statementDelimiter
      */
     void setStatementDelimiter(String statementDelimiter);
 
     /**
      * Defines if the statement delimiter should be removed from the parsed statement
-     *
-     * @param trimStatementDelimiter
      */
     void setTrimStatementDelimiter(boolean trimStatementDelimiter);
-    
+
     /**
      * Splits given script into executable statements
-     *
-     * @param script
-     * @return
      */
     List<String> splitStatements(String script);
 
     /**
      * Splits given script into executable statements
-     *
-     * @param reader
-     * @return
      */
     List<String> splitStatements(Reader reader);
 }

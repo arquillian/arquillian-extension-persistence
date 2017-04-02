@@ -27,6 +27,10 @@ public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet> {
         super(actual, DataSetAssert.class);
     }
 
+    public static DataSetAssert assertThat(IDataSet dataSet) {
+        return new DataSetAssert(dataSet);
+    }
+
     public DataSetAssert hasTables(String... tables) {
         try {
             Assertions.assertThat(actual.getTableNames()).contains(tables);
@@ -36,9 +40,4 @@ public class DataSetAssert extends AbstractAssert<DataSetAssert, IDataSet> {
 
         return this;
     }
-
-    public static DataSetAssert assertThat(IDataSet dataSet) {
-        return new DataSetAssert(dataSet);
-    }
-
 }

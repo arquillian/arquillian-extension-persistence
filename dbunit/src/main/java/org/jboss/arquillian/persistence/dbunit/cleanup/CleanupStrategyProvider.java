@@ -30,7 +30,8 @@ public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategy
 
     private final DBUnitConfiguration dbUnitConfiguration;
 
-    public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register, DBUnitConfiguration dbUnitConfiguration) {
+    public CleanupStrategyProvider(DatabaseConnection connection, DataSetRegister register,
+        DBUnitConfiguration dbUnitConfiguration) {
         this.connection = connection;
         this.register = (register != null) ? register : new DataSetRegister();
         this.dbUnitConfiguration = dbUnitConfiguration;
@@ -55,5 +56,4 @@ public class CleanupStrategyProvider implements StrategyProvider<CleanupStrategy
     public CleanupStrategyExecutor defaultStrategy() {
         return new StrictCleanupStrategyExecutor(connection, dbUnitConfiguration);
     }
-
 }

@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.jpa.cache;
 
-import org.jboss.arquillian.persistence.JpaCacheEviction;
-import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
-
 import javax.persistence.Cache;
 import javax.persistence.EntityManager;
+import org.jboss.arquillian.persistence.JpaCacheEviction;
+import org.jboss.arquillian.persistence.JpaCacheEvictionStrategy;
 
 /**
  * Default implementation of {@link JpaCacheEvictionStrategy}, which evict all entities.
@@ -41,5 +40,4 @@ public class FullCacheEvictionStrategy implements JpaCacheEvictionStrategy {
             cache.evictAll();
         }
     }
-
 }

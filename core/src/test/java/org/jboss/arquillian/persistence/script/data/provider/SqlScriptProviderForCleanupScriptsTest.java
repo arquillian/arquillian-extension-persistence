@@ -17,6 +17,9 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.core.exception.InvalidResourceLocation;
@@ -27,21 +30,24 @@ import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SqlScriptProviderForCleanupScriptsTest {
 
-    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD = "cleanup-" + CleanupUsingScriptAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
+    private static final String DEFAULT_FILENAME_FOR_TEST_METHOD =
+        "cleanup-" + CleanupUsingScriptAnnotatedClass.class.getName() + "#shouldPassWithDataFileNotSpecified.sql";
 
     private static final String SQL_DATA_SET_ON_CLASS_LEVEL = "scripts/class-level.sql";
 
     private static final String SQL_DATA_SET_ON_METHOD_LEVEL = "scripts/method-level.sql";
 
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(),
+            CleanupUsingScriptAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
 
     @Test
     public void should_fetch_all_scripts_defined_for_test_class() throws Exception {
@@ -50,12 +56,12 @@ public class SqlScriptProviderForCleanupScriptsTest {
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptors(testEvent.getTestClass());
 
         // then
         SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsOnlyFollowingFiles(SQL_DATA_SET_ON_CLASS_LEVEL,
-                SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
-
+            SQL_DATA_SET_ON_METHOD_LEVEL, DEFAULT_FILENAME_FOR_TEST_METHOD, "one.sql", "two.sql", "three.sql");
     }
 
     @Test
@@ -104,7 +110,8 @@ public class SqlScriptProviderForCleanupScriptsTest {
     public void should_provide_default_file_name_when_not_specified_in_annotation_on_class_level() throws Exception {
         // given
         String expectedFileName = "cleanup-" + CleanupUsingScriptAnnotatedOnClassLevelOnly.class.getName() + ".sql";
-        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedOnClassLevelOnly(), CleanupUsingScriptAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
+        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedOnClassLevelOnly(),
+            CleanupUsingScriptAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
@@ -117,14 +124,19 @@ public class SqlScriptProviderForCleanupScriptsTest {
     @Test
     public void should_extract_all_scirpts() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor one = new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor two = new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
-        FileSqlScriptResourceDescriptor three = new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
-        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(), CleanupUsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
+        FileSqlScriptResourceDescriptor one =
+            new FileSqlScriptResourceDescriptor("one.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor two =
+            new FileSqlScriptResourceDescriptor("two.sql", defaultConfiguration.getCharset());
+        FileSqlScriptResourceDescriptor three =
+            new FileSqlScriptResourceDescriptor("three.sql", defaultConfiguration.getCharset());
+        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(),
+            CleanupUsingScriptAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> scriptDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(scriptDescriptors).containsExactly(one, two, three);
@@ -134,11 +146,12 @@ public class SqlScriptProviderForCleanupScriptsTest {
     public void should_throw_exception_for_non_existing_file_infered_from_class_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedOnClassLevelOnlyNonExistingFile(),
-                CleanupUsingScriptAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
+            CleanupUsingScriptAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
         // then
         // exception should be thrown
@@ -147,41 +160,44 @@ public class SqlScriptProviderForCleanupScriptsTest {
     @Test(expected = InvalidResourceLocation.class)
     public void should_throw_exception_for_non_existing_file_defined_on_method_level_annotation() throws Exception {
         // given
-        TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldFailForNonExistingFile"));
+        TestEvent testEvent =
+            new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+                CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                    "shouldFailForNonExistingFile"));
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod());
 
         // then
         // exception should be thrown
     }
 
+    // ----------------------------------------------------------------------------------------
+
     @Test
     public void should_find_file_in_default_location_if_not_specified_explicitly() throws Exception {
         // given
-        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql", defaultConfiguration.getCharset());
-        TestEvent testEvent = new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
-                CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod("shouldPassForFileStoredInDefaultLocation"));
+        FileSqlScriptResourceDescriptor expectedFile = new FileSqlScriptResourceDescriptor(
+            defaultConfiguration.getDefaultSqlScriptLocation() + "/tables-in-scripts-folder.sql",
+            defaultConfiguration.getCharset());
+        TestEvent testEvent =
+            new TestEvent(new CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation(),
+                CleanupUsingScriptOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
+                    "shouldPassForFileStoredInDefaultLocation"));
         SqlScriptProvider<CleanupUsingScript> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
+        List<SqlScriptResourceDescriptor> dataSetDescriptors = new ArrayList<SqlScriptResourceDescriptor>(
+            scriptsProvider.getDescriptorsDefinedFor(testEvent.getTestMethod()));
 
         // then
         assertThat(dataSetDescriptors).containsOnly(expectedFile);
     }
 
-    // ----------------------------------------------------------------------------------------
-
     private SqlScriptProvider<CleanupUsingScript> createSqlScriptProviderFor(TestEvent testEvent) {
         return SqlScriptProvider.createProviderForCleanupScripts(testEvent.getTestClass(), defaultConfiguration);
-    }
-
-    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new CleanupUsingScriptAnnotatedClass(), CleanupUsingScriptAnnotatedClass.class.getMethod(testMethod));
-        return testEvent;
     }
 
     @CleanupUsingScript(SQL_DATA_SET_ON_CLASS_LEVEL)
@@ -204,7 +220,6 @@ public class SqlScriptProviderForCleanupScriptsTest {
         @CleanupUsingScript({"one.sql", "two.sql", "three.sql"})
         public void shouldPassWithMultipleFilesDefined() {
         }
-
     }
 
     private static class CleanupUsingScriptAnnotationWithUnsupportedFormat {
@@ -233,7 +248,5 @@ public class SqlScriptProviderForCleanupScriptsTest {
         @CleanupUsingScript("tables-in-scripts-folder.sql")
         public void shouldPassForFileStoredInDefaultLocation() {
         }
-
     }
-
 }

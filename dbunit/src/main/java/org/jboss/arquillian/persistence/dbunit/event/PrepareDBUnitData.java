@@ -16,15 +16,13 @@
  */
 package org.jboss.arquillian.persistence.dbunit.event;
 
+import java.util.Collection;
 import org.jboss.arquillian.persistence.core.event.DataEvent;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-
-import java.util.Collection;
 
 public class PrepareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
     public PrepareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors) {
         super(dataSetDescriptors);
     }
-
 }

@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
+import java.lang.reflect.Method;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
-
-import java.lang.reflect.Method;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -34,7 +33,8 @@ public class PersistenceExtensionScriptingFeatureResolver {
 
     private final Method testMethod;
 
-    public PersistenceExtensionScriptingFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor, ScriptingConfiguration configuration) {
+    public PersistenceExtensionScriptingFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor,
+        ScriptingConfiguration configuration) {
         this.metadataExtractor = metadataExtractor;
         this.configuration = configuration;
         this.testMethod = testMethod;
@@ -66,5 +66,4 @@ public class PersistenceExtensionScriptingFeatureResolver {
     public boolean shouldCleanupUsingScriptAfter() {
         return shouldCleanupUsingScript() && TestExecutionPhase.AFTER.equals(getCleanupUsingScriptTestPhase());
     }
-
 }

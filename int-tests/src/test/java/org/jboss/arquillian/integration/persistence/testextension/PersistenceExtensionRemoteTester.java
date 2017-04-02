@@ -26,8 +26,7 @@ public class PersistenceExtensionRemoteTester implements RemoteLoadableExtension
 
     public void register(ExtensionBuilder builder) {
         builder.observer(EventObserver.class)
-                .observer(ErrorObserver.class)
-                .observer(DataContentVerifier.class);
+            .observer(ErrorObserver.class)
+            .observer(DataContentVerifier.class);
     }
-
 }

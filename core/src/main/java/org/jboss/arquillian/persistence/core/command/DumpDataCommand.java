@@ -37,5 +37,4 @@ public class DumpDataCommand extends AbstractCommand<Boolean> {
     public DataDump getDumpData() {
         return dumpData;
     }
-
 }

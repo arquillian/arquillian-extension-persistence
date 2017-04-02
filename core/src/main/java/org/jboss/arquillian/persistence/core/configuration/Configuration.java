@@ -32,14 +32,6 @@ public abstract class Configuration implements Serializable {
         this.prefix = prefix;
     }
 
-    public String getQualifier() {
-        return qualifier;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
     public static <K extends Configuration> ConfigurationImporter<K> importTo(K configuration) {
         return new ConfigurationImporter<K>(configuration);
     }
@@ -48,9 +40,16 @@ public abstract class Configuration implements Serializable {
         return new ConfigurationExporter<K>(configuration);
     }
 
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "[qualifier=" + qualifier + "]";
     }
-
 }

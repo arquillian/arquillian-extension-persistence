@@ -37,5 +37,4 @@ public class ContextNotAvailableException extends RuntimeException {
     public ContextNotAvailableException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

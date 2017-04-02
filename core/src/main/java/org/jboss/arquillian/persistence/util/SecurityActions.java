@@ -79,11 +79,13 @@ final class SecurityActions {
         }
     }
 
-    static <T> T newInstance(final String className, final Class<?>[] argumentTypes, final Object[] arguments, final Class<T> expectedType) {
+    static <T> T newInstance(final String className, final Class<?>[] argumentTypes, final Object[] arguments,
+        final Class<T> expectedType) {
         return newInstance(className, argumentTypes, arguments, expectedType, getThreadContextClassLoader());
     }
 
-    static <T> T newInstance(final String className, final Class<?>[] argumentTypes, final Object[] arguments, final Class<T> expectedType, ClassLoader classLoader) {
+    static <T> T newInstance(final String className, final Class<?>[] argumentTypes, final Object[] arguments,
+        final Class<T> expectedType, ClassLoader classLoader) {
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className, false, classLoader);
@@ -102,12 +104,19 @@ final class SecurityActions {
      * Create a new instance by finding a constructor that matches the argumentTypes signature
      * using the arguments for instantiation.
      *
-     * @param className     Full classname of class to create
-     * @param argumentTypes The constructor argument types
-     * @param arguments     The constructor arguments
+     * @param className
+     *     Full classname of class to create
+     * @param argumentTypes
+     *     The constructor argument types
+     * @param arguments
+     *     The constructor arguments
+     *
      * @return a new instance
-     * @throws IllegalArgumentException if className, argumentTypes, or arguments are null
-     * @throws RuntimeException         if any exceptions during creation
+     *
+     * @throws IllegalArgumentException
+     *     if className, argumentTypes, or arguments are null
+     * @throws RuntimeException
+     *     if any exceptions during creation
      * @author <a href="mailto:aslak@conduct.no">Aslak Knutsen</a>
      * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
      */
@@ -138,13 +147,10 @@ final class SecurityActions {
     /**
      * Obtains the Constructor specified from the given Class and argument types
      *
-     * @param clazz
-     * @param argumentTypes
-     * @return
      * @throws NoSuchMethodException
      */
     static <T> Constructor<T> getConstructor(final Class<T> clazz, final Class<?>... argumentTypes)
-            throws NoSuchMethodException {
+        throws NoSuchMethodException {
         try {
             return AccessController.doPrivileged(new PrivilegedExceptionAction<Constructor<T>>() {
                 public Constructor<T> run() throws NoSuchMethodException {
@@ -174,11 +180,15 @@ final class SecurityActions {
     /**
      * Set a single Field value
      *
-     * @param target    The object to set it on
-     * @param fieldName The field name
-     * @param value     The new value
+     * @param target
+     *     The object to set it on
+     * @param fieldName
+     *     The field name
+     * @param value
+     *     The new value
      */
-    public static void setFieldValue(final Class<?> source, final Object target, final String fieldName, final Object value) throws NoSuchFieldException {
+    public static void setFieldValue(final Class<?> source, final Object target, final String fieldName,
+        final Object value) throws NoSuchFieldException {
         try {
             AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
                 @Override
@@ -211,7 +221,8 @@ final class SecurityActions {
         }
     }
 
-    public static List<Field> getFieldsWithAnnotation(final Class<?> source, final Class<? extends Annotation> annotationClass) {
+    public static List<Field> getFieldsWithAnnotation(final Class<?> source,
+        final Class<? extends Annotation> annotationClass) {
         List<Field> declaredAccessableFields = AccessController.doPrivileged(new PrivilegedAction<List<Field>>() {
             public List<Field> run() {
                 List<Field> foundFields = new ArrayList<Field>();
@@ -233,7 +244,8 @@ final class SecurityActions {
         return declaredAccessableFields;
     }
 
-    public static List<Method> getMethodsWithAnnotation(final Class<?> source, final Class<? extends Annotation> annotationClass) {
+    public static List<Method> getMethodsWithAnnotation(final Class<?> source,
+        final Class<? extends Annotation> annotationClass) {
         List<Method> declaredAccessableMethods = AccessController.doPrivileged(new PrivilegedAction<List<Method>>() {
             public List<Method> run() {
                 List<Method> foundMethods = new ArrayList<Method>();

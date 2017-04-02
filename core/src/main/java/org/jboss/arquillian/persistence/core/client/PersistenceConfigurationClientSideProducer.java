@@ -45,5 +45,4 @@ public class PersistenceConfigurationClientSideProducer extends ConfigurationPro
     public void observe(@Observes ArquillianDescriptor descriptorCreated) {
         configurationProducer.set(configureFromArquillianDescriptor(descriptorCreated));
     }
-
 }

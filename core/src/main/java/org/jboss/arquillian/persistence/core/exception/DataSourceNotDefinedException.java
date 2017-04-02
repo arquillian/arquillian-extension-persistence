@@ -36,5 +36,4 @@ public class DataSourceNotDefinedException extends RuntimeException {
     public DataSourceNotDefinedException(Throwable cause) {
         super(cause);
     }
-
 }

@@ -16,17 +16,32 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
+import java.lang.annotation.Annotation;
 import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.core.metadata.ValueExtractor;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 
-import java.lang.annotation.Annotation;
-
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 public class SqlScriptProviderBuilder<K extends Annotation> {
+
+    private Class<K> annotation;
+    private FileNamingStrategy<String> scriptFileNamingStrategy;
+    private MetadataExtractor metadataExtractor;
+    private ScriptingConfiguration configuration;
+
+    static <K extends Annotation> SqlScriptProviderBuilder<K> create(Class<K> annotation) {
+        final SqlScriptProviderBuilder<K> sqlScriptProviderBuilder = new SqlScriptProviderBuilder<K>();
+        sqlScriptProviderBuilder.annotation = annotation;
+        return sqlScriptProviderBuilder;
+    }
+
+    public SqlScriptProviderBuilder.Extractor<K> usingConfiguration(ScriptingConfiguration configuration) {
+        this.configuration = configuration;
+        return new SqlScriptProviderBuilder.Extractor<K>(this);
+    }
 
     public static class Extractor<K extends Annotation> {
         private final SqlScriptProviderBuilder<K> builder;
@@ -63,27 +78,7 @@ public class SqlScriptProviderBuilder<K extends Annotation> {
 
         public SqlScriptProvider<K> build(ValueExtractor<K> extractor) {
             return new SqlScriptProvider<K>(builder.annotation, builder.metadataExtractor,
-                    extractor, builder.scriptFileNamingStrategy, builder.configuration);
+                extractor, builder.scriptFileNamingStrategy, builder.configuration);
         }
     }
-
-    private Class<K> annotation;
-
-    private FileNamingStrategy<String> scriptFileNamingStrategy;
-
-    private MetadataExtractor metadataExtractor;
-
-    private ScriptingConfiguration configuration;
-
-    static <K extends Annotation> SqlScriptProviderBuilder<K> create(Class<K> annotation) {
-        final SqlScriptProviderBuilder<K> sqlScriptProviderBuilder = new SqlScriptProviderBuilder<K>();
-        sqlScriptProviderBuilder.annotation = annotation;
-        return sqlScriptProviderBuilder;
-    }
-
-    public SqlScriptProviderBuilder.Extractor<K> usingConfiguration(ScriptingConfiguration configuration) {
-        this.configuration = configuration;
-        return new SqlScriptProviderBuilder.Extractor<K>(this);
-    }
-
 }

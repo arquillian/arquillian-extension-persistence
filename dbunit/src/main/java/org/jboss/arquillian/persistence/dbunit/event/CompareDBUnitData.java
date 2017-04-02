@@ -16,14 +16,13 @@
  */
 package org.jboss.arquillian.persistence.dbunit.event;
 
-import org.dbunit.dataset.filter.IColumnFilter;
-import org.jboss.arquillian.persistence.core.event.DataEvent;
-import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.dbunit.dataset.filter.IColumnFilter;
+import org.jboss.arquillian.persistence.core.event.DataEvent;
+import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 
 import static org.jboss.arquillian.persistence.util.Arrays.copy;
 
@@ -35,7 +34,8 @@ public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
 
     private final Set<Class<? extends IColumnFilter>> customColumnFilters = new HashSet<Class<? extends IColumnFilter>>();
 
-    public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns, String[] columnsToExclude) {
+    public CompareDBUnitData(Collection<DataSetResourceDescriptor> dataSetDescriptors, String[] sortByColumns,
+        String[] columnsToExclude) {
         super(dataSetDescriptors);
         this.columnsToExclude = columnsToExclude;
         this.sortByColumns = sortByColumns;
@@ -60,5 +60,4 @@ public class CompareDBUnitData extends DataEvent<DataSetResourceDescriptor> {
     public Set<Class<? extends IColumnFilter>> getCustomColumnFilters() {
         return customColumnFilters;
     }
-
 }

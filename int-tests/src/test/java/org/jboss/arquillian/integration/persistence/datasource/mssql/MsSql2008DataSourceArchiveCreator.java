@@ -27,7 +27,6 @@ public class MsSql2008DataSourceArchiveCreator implements AuxiliaryArchiveAppend
     @Override
     public Archive<?> createAuxiliaryArchive() {
         return ShrinkWrap.create(JavaArchive.class, "arquillian-mssql-datasource.jar")
-                .addClass(MsSql2008DataSource.class);
+            .addClass(MsSql2008DataSource.class);
     }
-
 }

@@ -17,23 +17,22 @@
  */
 package org.jboss.arquillian.persistence.dbunit.configuration;
 
-import org.jboss.arquillian.persistence.core.configuration.Configuration;
-import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
-
 import java.io.IOException;
 import java.util.Properties;
+import org.jboss.arquillian.persistence.core.configuration.Configuration;
+import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 
 public class DBUnitConfigurationImporterFromPropertyFileTest extends DBUnitConfigurationImporterFromFileAbstractTestCase {
 
     @Override
     protected DBUnitConfiguration loadFromFile() throws IOException {
         // given
-        Properties properties = TestConfigurationLoader.createPropertiesFrom("properties/dbunit.custom.arquillian.persistence.properties");
+        Properties properties =
+            TestConfigurationLoader.createPropertiesFrom("properties/dbunit.custom.arquillian.persistence.properties");
         DBUnitConfiguration dbunitConfiguration = new DBUnitConfiguration();
 
         // when
         Configuration.importTo(dbunitConfiguration).from(properties);
         return dbunitConfiguration;
     }
-
 }

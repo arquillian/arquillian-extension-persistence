@@ -17,13 +17,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit.filter;
 
+import java.util.Collection;
+import java.util.logging.Logger;
 import org.jboss.arquillian.persistence.core.util.Strings;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.spi.dbunit.filter.TableFilterProvider;
 import org.jboss.arquillian.persistence.util.JavaSPIExtensionLoader;
-
-import java.util.Collection;
-import java.util.logging.Logger;
 
 public class TableFilterResolver {
 
@@ -41,7 +40,8 @@ public class TableFilterResolver {
         }
 
         TableFilterProvider resolved = null;
-        final Collection<TableFilterProvider> databaseSequenceFilterProviders = new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), TableFilterProvider.class);
+        final Collection<TableFilterProvider> databaseSequenceFilterProviders =
+            new JavaSPIExtensionLoader().all(Thread.currentThread().getContextClassLoader(), TableFilterProvider.class);
 
         for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
             if (databaseSequenceFilterProvider.simpleName().equals(dbUnitConfiguration.getCustomTableFilter())) {
@@ -50,7 +50,9 @@ public class TableFilterResolver {
         }
 
         if (resolved == null) {
-            log.warning("Unable to find sequence filter for " + dbUnitConfiguration.getCustomTableFilter() + ". Using default database sequence filter.");
+            log.warning("Unable to find sequence filter for "
+                + dbUnitConfiguration.getCustomTableFilter()
+                + ". Using default database sequence filter.");
             log.warning("Available filters: " + printFiltersWithNames(databaseSequenceFilterProviders));
             return new OracleDatabaseSequenceFilterProvider();
         }
@@ -63,7 +65,7 @@ public class TableFilterResolver {
         sb.append('[');
         for (TableFilterProvider databaseSequenceFilterProvider : databaseSequenceFilterProviders) {
             sb.append("{name=").append(databaseSequenceFilterProvider.simpleName())
-              .append(", class=").append(databaseSequenceFilterProvider.getClass().getName()).append("},");
+                .append(", class=").append(databaseSequenceFilterProvider.getClass().getName()).append("},");
         }
 
         if (!databaseSequenceFilterProviders.isEmpty()) {
@@ -73,5 +75,4 @@ public class TableFilterResolver {
         }
         return sb.toString();
     }
-
 }

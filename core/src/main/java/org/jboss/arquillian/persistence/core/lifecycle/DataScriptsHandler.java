@@ -56,9 +56,12 @@ public class DataScriptsHandler {
             return;
         }
 
-        SqlScriptProvider<ApplyScriptBefore> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(beforePersistenceTest.getTestClass(), configuration.get());
+        SqlScriptProvider<ApplyScriptBefore> scriptsProvider =
+            SqlScriptProvider.createProviderForScriptsToBeAppliedBeforeTest(beforePersistenceTest.getTestClass(),
+                configuration.get());
 
-        executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest, scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
+        executeScriptsEvent.fire(new ExecuteScripts(beforePersistenceTest,
+            scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
     }
 
     private void executeCustomScriptsAfter(AfterPersistenceTest afterPersistenceTest) {
@@ -66,8 +69,11 @@ public class DataScriptsHandler {
             return;
         }
 
-        SqlScriptProvider<ApplyScriptAfter> scriptsProvider = SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(afterPersistenceTest.getTestClass(), configuration.get());
+        SqlScriptProvider<ApplyScriptAfter> scriptsProvider =
+            SqlScriptProvider.createProviderForScriptsToBeAppliedAfterTest(afterPersistenceTest.getTestClass(),
+                configuration.get());
 
-        executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest, scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
+        executeScriptsEvent.fire(new ExecuteScripts(afterPersistenceTest,
+            scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
     }
 }

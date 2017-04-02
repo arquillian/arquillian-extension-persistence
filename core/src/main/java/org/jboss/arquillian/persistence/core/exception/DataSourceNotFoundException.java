@@ -36,5 +36,4 @@ public class DataSourceNotFoundException extends RuntimeException {
     public DataSourceNotFoundException(Throwable cause) {
         super(cause);
     }
-
 }

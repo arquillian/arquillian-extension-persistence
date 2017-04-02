@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
+import java.util.Collection;
 import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfiguration;
 import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
@@ -24,11 +25,17 @@ import org.jboss.arquillian.persistence.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 
-import java.util.Collection;
-
 public class SqlScriptProviderForSchemaCreationTest {
 
     private ScriptingConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultScriptingConfiguration();
+
+    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
+        TestEvent testEvent =
+            new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
+        return testEvent;
+    }
+
+    // ----------------------------------------------------------------------------------------
 
     @Test
     public void should_fetch_all_scripts_defined_for_test_class_in_defined_order() throws Exception {
@@ -37,22 +44,17 @@ public class SqlScriptProviderForSchemaCreationTest {
         SqlScriptProvider<CreateSchema> scriptsProvider = createSqlScriptProviderFor(testEvent);
 
         // when
-        Collection<SqlScriptResourceDescriptor> scriptDescriptors = scriptsProvider.getDescriptors(testEvent.getTestClass());
+        Collection<SqlScriptResourceDescriptor> scriptDescriptors =
+            scriptsProvider.getDescriptors(testEvent.getTestClass());
 
         // then
 
-        SqlScriptDescriptorAssert.assertThat(scriptDescriptors).containsExactlyFollowingFiles("one.sql", "two.sql", "three.sql");
+        SqlScriptDescriptorAssert.assertThat(scriptDescriptors)
+            .containsExactlyFollowingFiles("one.sql", "two.sql", "three.sql");
     }
-
-    // ----------------------------------------------------------------------------------------
 
     private SqlScriptProvider<CreateSchema> createSqlScriptProviderFor(TestEvent testEvent) {
         return SqlScriptProvider.createProviderForCreateSchemaScripts(testEvent.getTestClass(), defaultConfiguration);
-    }
-
-    private static TestEvent createTestEvent(String testMethod) throws NoSuchMethodException {
-        TestEvent testEvent = new TestEvent(new CreateSchemaAnnotatedClass(), CreateSchemaAnnotatedClass.class.getMethod(testMethod));
-        return testEvent;
     }
 
     @CreateSchema({"one.sql", "two.sql", "three.sql"})
@@ -60,5 +62,4 @@ public class SqlScriptProviderForSchemaCreationTest {
         public void shouldPass() {
         }
     }
-
 }

@@ -39,26 +39,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 @PersistenceTest
 public class DatabaseConnectionInjectionTest {
 
-    @Deployment
-    public static Archive<?> createDeploymentPackage() {
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(UserAccount.class.getPackage())
-                .addClass(Query.class)
-                // required for remote containers in order to run tests with FEST-Asserts
-                .addPackages(true, "org.assertj.core")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
-    }
-
     // Test needs to be "persistence-extension-aware" in order to get this reference.
     // This can be achieved using any of APE annotations such as
     // @PersistenceTest, @UsingDataSet, @ShouldMatchDataSet etc.
     @ArquillianResource
     private DatabaseConnection databaseConnection;
 
+    @Deployment
+    public static Archive<?> createDeploymentPackage() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+            .addPackage(UserAccount.class.getPackage())
+            .addClass(Query.class)
+            // required for remote containers in order to run tests with FEST-Asserts
+            .addPackages(true, "org.assertj.core")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
+    }
+
     @Test
     public void should_inject_dbunit_database_connection() throws Exception {
         assertThat(databaseConnection).isNotNull();
     }
-
 }

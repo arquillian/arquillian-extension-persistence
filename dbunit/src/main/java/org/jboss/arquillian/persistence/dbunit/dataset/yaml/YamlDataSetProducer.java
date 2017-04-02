@@ -17,6 +17,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset.yaml;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import org.dbunit.dataset.Column;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultTableMetaData;
@@ -34,9 +40,6 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
 
-import java.io.InputStream;
-import java.util.*;
-
 /**
  * Produces YAML data set from the given file.
  *
@@ -45,11 +48,9 @@ import java.util.*;
  */
 public class YamlDataSetProducer implements IDataSetProducer {
 
-    private boolean caseSensitiveTableNames;
-
-    private IDataSetConsumer consumer = new DefaultConsumer();
-
     private final InputStream input;
+    private boolean caseSensitiveTableNames;
+    private IDataSetConsumer consumer = new DefaultConsumer();
 
     public YamlDataSetProducer(InputStream inputStream) {
         input = inputStream;
@@ -64,8 +65,8 @@ public class YamlDataSetProducer implements IDataSetProducer {
     public void produce() throws DataSetException {
         consumer.startDataSet();
 
-        @SuppressWarnings("unchecked")
-        final List<Table> tables = createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
+        @SuppressWarnings("unchecked") final List<Table> tables =
+            createTables((Map<String, List<Map<String, String>>>) createYamlReader().load(input));
 
         for (Table table : tables) {
             ITableMetaData tableMetaData = createTableMetaData(table);
@@ -82,24 +83,23 @@ public class YamlDataSetProducer implements IDataSetProducer {
         }
 
         consumer.endDataSet();
-
     }
 
     public Yaml createYamlReader() {
         final Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions(),
-                new Resolver() {
-                    @Override
-                    protected void addImplicitResolvers() {
-                        // Intentionally left TIMESTAMP as string to let DBUnit deal with the conversion
-                        addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
-                        addImplicitResolver(Tag.INT, INT, "-+0123456789");
-                        addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
-                        addImplicitResolver(Tag.MERGE, MERGE, "<");
-                        addImplicitResolver(Tag.NULL, NULL, "~nN\0");
-                        addImplicitResolver(Tag.NULL, EMPTY, null);
-                        addImplicitResolver(Tag.YAML, YAML, "!&*");
-                    }
-                });
+            new Resolver() {
+                @Override
+                protected void addImplicitResolvers() {
+                    // Intentionally left TIMESTAMP as string to let DBUnit deal with the conversion
+                    addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
+                    addImplicitResolver(Tag.INT, INT, "-+0123456789");
+                    addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
+                    addImplicitResolver(Tag.MERGE, MERGE, "<");
+                    addImplicitResolver(Tag.NULL, NULL, "~nN\0");
+                    addImplicitResolver(Tag.NULL, EMPTY, null);
+                    addImplicitResolver(Tag.YAML, YAML, "!&*");
+                }
+            });
         return yaml;
     }
 
@@ -160,5 +160,4 @@ public class YamlDataSetProducer implements IDataSetProducer {
     public void setCaseSensitiveTableNames(boolean caseSensitiveTableNames) {
         this.caseSensitiveTableNames = caseSensitiveTableNames;
     }
-
 }

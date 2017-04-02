@@ -36,8 +36,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_have_default_cleanup_test_phase_set_to_after() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
-                DefaultCleanupSettings.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DefaultCleanupSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -50,8 +52,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_obtain_cleanup_test_phase_from_class_level_annotation() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new ClassLevelCleanupAfterSettings(),
-                ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -64,8 +68,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_obtain_test_phase_from_method_level_annotation_containing_both_phase_and_mode() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -78,8 +84,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_use_default_test_phase_from_method_level_annotation_containing_mode() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -92,8 +100,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_obtain_test_phase_from_method_level_annotation_containing_phase() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassPhaseOnly"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassPhaseOnly"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -106,8 +116,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_cleanup_after_when_no_annotation_defined() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new DefaultCleanupSettings(),
-                DefaultCleanupSettings.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DefaultCleanupSettings.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
@@ -120,8 +132,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_cleanup_after_when_phase_is_defined() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
@@ -134,8 +148,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_have_strict_cleanup_strategy_as_default() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
@@ -148,8 +164,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
     public void should_fetch_cleanup_strategy_from_test() throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new MethodLevelCleanupSettings(),
-                MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
@@ -194,7 +212,5 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
 
         public void shouldPassUsingDefaults() {
         }
-
     }
-
 }

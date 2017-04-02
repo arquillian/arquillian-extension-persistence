@@ -53,5 +53,4 @@ public class StrictCleanupStrategyExecutor implements CleanupStrategyExecutor {
             throw new DBUnitDataSetHandlingException("Unable to clean database.", e);
         }
     }
-
 }

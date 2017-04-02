@@ -16,6 +16,10 @@
  */
 package org.jboss.arquillian.persistence.testutils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.Column;
@@ -24,15 +28,14 @@ import org.dbunit.dataset.ITable;
 import org.jboss.arquillian.persistence.dbunit.dataset.Row;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class TableAssert extends AbstractAssert<TableAssert, ITable> {
 
     protected TableAssert(ITable actual) {
         super(actual, TableAssert.class);
+    }
+
+    public static TableAssert assertThat(ITable table) {
+        return new TableAssert(table);
     }
 
     public TableAssert hasColumns(String... expectedColumnNames) {
@@ -43,8 +46,8 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
 
     public TableAssert hasRow(String... keyValuePairs) {
 
-        @SuppressWarnings("unchecked")
-        final Row expectedRow = new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
+        @SuppressWarnings("unchecked") final Row expectedRow =
+            new Row((Map<String, String>) new Yaml().load(flatten(keyValuePairs)));
 
         List<Row> rows = extractRows();
         Assertions.assertThat(rows).contains(expectedRow);
@@ -55,10 +58,6 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
     public TableAssert hasRows(int amount) {
         Assertions.assertThat(actual.getRowCount()).isEqualTo(amount);
         return this;
-    }
-
-    public static TableAssert assertThat(ITable table) {
-        return new TableAssert(table);
     }
 
     private List<String> extractColumnNames() {
@@ -108,5 +107,4 @@ public class TableAssert extends AbstractAssert<TableAssert, ITable> {
         }
         return flattenedString.toString();
     }
-
 }

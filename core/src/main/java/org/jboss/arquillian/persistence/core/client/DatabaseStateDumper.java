@@ -17,15 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.client;
 
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.core.command.DumpDataCommand;
-import org.jboss.arquillian.persistence.core.data.dump.DataDump;
-import org.jboss.arquillian.persistence.core.exception.DatabaseDumpException;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.persistence.core.command.DumpDataCommand;
+import org.jboss.arquillian.persistence.core.data.dump.DataDump;
+import org.jboss.arquillian.persistence.core.exception.DatabaseDumpException;
 
 /**
  * Writes database state dumped during in-container test execution
@@ -53,5 +52,4 @@ public class DatabaseStateDumper {
             }
         }
     }
-
 }

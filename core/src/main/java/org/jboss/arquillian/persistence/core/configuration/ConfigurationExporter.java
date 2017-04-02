@@ -16,8 +16,6 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import org.jboss.arquillian.persistence.core.exception.ConfigurationExportException;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -25,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.jboss.arquillian.persistence.core.exception.ConfigurationExportException;
 
 public class ConfigurationExporter<T extends Configuration> {
 
@@ -47,14 +46,15 @@ public class ConfigurationExporter<T extends Configuration> {
                 try {
                     output.close();
                 } catch (IOException e) {
-                    throw new ConfigurationExportException("Unable to close stream after serialization of persistence configuration to property file.", e);
+                    throw new ConfigurationExportException(
+                        "Unable to close stream after serialization of persistence configuration to property file.", e);
                 }
             }
         }
     }
 
     private void serializeFieldsToProperties(final OutputStream output)
-            throws IOException, IllegalArgumentException, IllegalAccessException {
+        throws IOException, IllegalArgumentException, IllegalAccessException {
         output.write(propertiesSerializer.serializeToProperties(mapFieldsToProperties()).toByteArray());
     }
 
@@ -83,8 +83,8 @@ public class ConfigurationExporter<T extends Configuration> {
         if (String[].class.isInstance(object)) {
             convertedValue = Arrays.toString((String[]) object);
             convertedValue = convertedValue.replace("[", "")
-                    .replace("]", "")
-                    .replace(", ", ",");
+                .replace("]", "")
+                .replace(", ", ",");
         }
         return convertedValue;
     }
@@ -103,5 +103,4 @@ public class ConfigurationExporter<T extends Configuration> {
 
         return sb.toString();
     }
-
 }

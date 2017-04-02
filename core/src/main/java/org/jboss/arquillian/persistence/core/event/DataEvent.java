@@ -17,11 +17,10 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 
 public class DataEvent<T extends ResourceDescriptor<?>> implements PersistenceEvent {
 

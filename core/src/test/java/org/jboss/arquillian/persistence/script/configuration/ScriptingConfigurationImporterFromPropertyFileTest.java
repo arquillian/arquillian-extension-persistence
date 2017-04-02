@@ -36,5 +36,4 @@ public class ScriptingConfigurationImporterFromPropertyFileTest {
         // then
         assertThat(configuration.getScriptsToExecuteBeforeTest()).containsOnly(expectedInitScript);
     }
-
 }

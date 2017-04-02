@@ -17,9 +17,8 @@
  */
 package org.jboss.arquillian.persistence.script.data.naming;
 
-import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
-
 import java.lang.reflect.Method;
+import org.jboss.arquillian.persistence.core.data.naming.FileNamingStrategy;
 
 /**
  * Strategy for naming sql scripts used before the test.
@@ -49,5 +48,4 @@ public class PrefixedScriptFileNamingStrategy extends FileNamingStrategy<String>
     public String createFileName(Class<?> testClass, Method testMethod) {
         return prefix + super.createFileName(testClass, testMethod);
     }
-
 }

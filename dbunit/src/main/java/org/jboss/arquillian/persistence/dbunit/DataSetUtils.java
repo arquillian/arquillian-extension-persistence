@@ -17,10 +17,18 @@
  */
 package org.jboss.arquillian.persistence.dbunit;
 
-import org.dbunit.dataset.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.FilteredDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.ExcludeTableFilter;
-
-import java.util.*;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -31,21 +39,20 @@ public class DataSetUtils {
         return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));
     }
 
-    public static List<String> extractColumnsNotSpecifiedInExpectedDataSet(final ITable expectedTableState, final ITable currentTableState) throws DataSetException {
-        final Set<String> allColumns = new HashSet<String>(extractColumnNames(currentTableState.getTableMetaData().getColumns()));
-        final Set<String> expectedColumnNames = new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
+    public static List<String> extractColumnsNotSpecifiedInExpectedDataSet(final ITable expectedTableState,
+        final ITable currentTableState) throws DataSetException {
+        final Set<String> allColumns =
+            new HashSet<String>(extractColumnNames(currentTableState.getTableMetaData().getColumns()));
+        final Set<String> expectedColumnNames =
+            new HashSet<String>(extractColumnNames(expectedTableState.getTableMetaData().getColumns()));
         return extractNonExistingColumns(allColumns, expectedColumnNames);
     }
 
     /**
      * Provides list of columns defined in expectedColumns, but not listed in actualColumns.
-     *
-     * @param expectedColumns
-     * @param actualColumns
-     * @return
      */
     public static List<String> extractNonExistingColumns(final Collection<String> expectedColumns,
-                                                         final Collection<String> actualColumns) {
+        final Collection<String> actualColumns) {
         final List<String> columnsNotSpecifiedInExpectedDataSet = new ArrayList<String>();
 
         for (String column : expectedColumns) {

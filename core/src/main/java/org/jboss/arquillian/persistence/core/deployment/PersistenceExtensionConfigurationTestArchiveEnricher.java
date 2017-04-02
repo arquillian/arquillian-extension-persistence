@@ -16,12 +16,21 @@
  */
 package org.jboss.arquillian.persistence.core.deployment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.persistence.core.configuration.*;
+import org.jboss.arquillian.persistence.core.configuration.ConfigurationExporter;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceConfiguration;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorExtractor;
+import org.jboss.arquillian.persistence.core.configuration.PersistenceDescriptorParser;
+import org.jboss.arquillian.persistence.core.configuration.PropertiesSerializer;
 import org.jboss.arquillian.persistence.core.exception.MultiplePersistenceUnitsException;
 import org.jboss.arquillian.persistence.core.metadata.PersistenceExtensionEnabler;
 import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionConfiguration;
@@ -31,14 +40,7 @@ import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Appends all data sets defined for the test class to the test archive.
@@ -47,7 +49,8 @@ import java.util.logging.Logger;
  */
 public class PersistenceExtensionConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor {
 
-    private static final Logger log = Logger.getLogger(PersistenceExtensionConfigurationTestArchiveEnricher.class.getName());
+    private static final Logger log =
+        Logger.getLogger(PersistenceExtensionConfigurationTestArchiveEnricher.class.getName());
 
     @Inject
     Instance<PersistenceConfiguration> configurationInstance;
@@ -66,12 +69,14 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
             return;
         }
         obtainDataSourceFromPersistenceXml(applicationArchive);
-        final JavaArchive additionalPersistenceResources = ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core-additional-resources.jar");
-        merge(additionalPersistenceResources, sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
-                sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),
-                persistenceConfigurationSerializedAsProperties(),
-                scriptingConfigurationSerializedAsProperties(),
-                jpaCacheEvictionConfigurationSerializedAsProperties());
+        final JavaArchive additionalPersistenceResources =
+            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core-additional-resources.jar");
+        merge(additionalPersistenceResources,
+            sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
+            sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),
+            persistenceConfigurationSerializedAsProperties(),
+            scriptingConfigurationSerializedAsProperties(),
+            jpaCacheEvictionConfigurationSerializedAsProperties());
         ResourceAppender.addResources(applicationArchive, additionalPersistenceResources);
     }
 
@@ -89,12 +94,10 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
             try {
                 final String dataSourceName = parser.obtainDataSourceName(persistenceXmlAsStream);
                 configurationInstance.get().setDefaultDataSource(dataSourceName);
-
             } catch (MultiplePersistenceUnitsException e) {
                 log.info("Unable to deduct data source from test's archive persistence.xml. " + e.getMessage());
             }
         }
-
     }
 
     private void merge(final JavaArchive target, final JavaArchive... archivesToMerge) {
@@ -105,30 +108,39 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
 
     private JavaArchive persistenceConfigurationSerializedAsProperties() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()), configurationInstance.get().getPrefix() + "properties");
+            .addAsResource(new ByteArrayAsset(exportPersistenceConfigurationAsProperties().toByteArray()),
+                configurationInstance.get().getPrefix() + "properties");
     }
 
     private ByteArrayOutputStream exportPersistenceConfigurationAsProperties() {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final ConfigurationExporter<PersistenceConfiguration> exporter = new ConfigurationExporter<PersistenceConfiguration>(configurationInstance.get());
+        final ConfigurationExporter<PersistenceConfiguration> exporter =
+            new ConfigurationExporter<PersistenceConfiguration>(configurationInstance.get());
         exporter.toProperties(output);
         return output;
     }
 
     private JavaArchive scriptingConfigurationSerializedAsProperties() {
         final ScriptingConfiguration scriptingConfigurationPrototype = new ScriptingConfiguration();
-        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), scriptingConfigurationPrototype.getQualifier());
-        final ByteArrayOutputStream properties = new PropertiesSerializer(scriptingConfigurationPrototype.getPrefix()).serializeToProperties(extensionProperties);
+        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(),
+            scriptingConfigurationPrototype.getQualifier());
+        final ByteArrayOutputStream properties =
+            new PropertiesSerializer(scriptingConfigurationPrototype.getPrefix()).serializeToProperties(
+                extensionProperties);
         return ShrinkWrap.create(JavaArchive.class)
-                .addAsResource(new ByteArrayAsset(properties.toByteArray()), new ScriptingConfiguration().getPrefix() + "properties");
+            .addAsResource(new ByteArrayAsset(properties.toByteArray()),
+                new ScriptingConfiguration().getPrefix() + "properties");
     }
 
     private JavaArchive jpaCacheEvictionConfigurationSerializedAsProperties() {
         final JpaCacheEvictionConfiguration config = new JpaCacheEvictionConfiguration();
-        final Map<String, String> extensionProperties = extractExtensionProperties(arquillianDescriptorInstance.get(), config.getQualifier());
-        final ByteArrayOutputStream output = new PropertiesSerializer(config.getPrefix()).serializeToProperties(extensionProperties);
+        final Map<String, String> extensionProperties =
+            extractExtensionProperties(arquillianDescriptorInstance.get(), config.getQualifier());
+        final ByteArrayOutputStream output =
+            new PropertiesSerializer(config.getPrefix()).serializeToProperties(extensionProperties);
         return ShrinkWrap.create(JavaArchive.class)
-                .addAsResource(new ByteArrayAsset(output.toByteArray()), new JpaCacheEvictionConfiguration().getPrefix() + "properties");
+            .addAsResource(new ByteArrayAsset(output.toByteArray()),
+                new JpaCacheEvictionConfiguration().getPrefix() + "properties");
     }
 
     private JavaArchive sqlScriptsAsResource(final String... scripts) {
@@ -167,5 +179,4 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
 
         return dataSetsArchive;
     }
-
 }

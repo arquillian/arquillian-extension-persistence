@@ -27,5 +27,4 @@ public class MsSql2008DataSourceExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, MsSql2008DataSourceArchiveCreator.class);
         builder.service(AuxiliaryArchiveAppender.class, MsSqlDriverArchiveAppender.class);
     }
-
 }

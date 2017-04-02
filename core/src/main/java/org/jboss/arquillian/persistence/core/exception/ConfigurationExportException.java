@@ -34,5 +34,4 @@ public class ConfigurationExportException extends RuntimeException {
     public ConfigurationExportException(Throwable cause) {
         super(cause);
     }
-
 }

@@ -16,6 +16,12 @@
  */
 package org.jboss.arquillian.persistence.dbunit.data.provider;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.provider.ResourceProvider;
@@ -24,9 +30,6 @@ import org.jboss.arquillian.persistence.core.metadata.MetadataExtractor;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
-
-import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -92,10 +95,10 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
         Format format = configuration.getDefaultDataSetFormat();
 
         if (metadataExtractor.shouldMatchDataSet().isDefinedOn(testMethod)) {
-            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(), testMethod);
+            return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass(),
+                testMethod);
         }
 
         return new ExpectedDataSetFileNamingStrategy(format).createFileName(metadataExtractor.getJavaClass());
     }
-
 }

@@ -17,7 +17,12 @@
  */
 package org.jboss.arquillian.integration.persistence.example;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -101,11 +106,11 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     public Long getVersion() {
         return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

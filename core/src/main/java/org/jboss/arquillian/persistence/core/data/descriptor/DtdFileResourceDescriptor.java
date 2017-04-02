@@ -63,5 +63,4 @@ public class DtdFileResourceDescriptor extends ResourceDescriptor<String> {
         result = prime * result + ((location == null) ? 0 : location.hashCode());
         return result;
     }
-
 }

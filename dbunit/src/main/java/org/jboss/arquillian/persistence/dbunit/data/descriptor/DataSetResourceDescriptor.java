@@ -22,7 +22,6 @@ import org.jboss.arquillian.persistence.core.data.descriptor.Format;
 import org.jboss.arquillian.persistence.core.data.descriptor.ResourceDescriptor;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetBuilder;
 
-
 /**
  * Contains information about the file - it's location and {@link Format format} inferred from it's name.
  *
@@ -69,5 +68,4 @@ public class DataSetResourceDescriptor extends ResourceDescriptor<IDataSet> {
         result = prime * result + ((format == null) ? 0 : format.hashCode());
         return result;
     }
-
 }

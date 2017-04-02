@@ -37,11 +37,16 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
     private PersistenceConfiguration defaultConfiguration = TestConfigurationLoader.createDefaultConfiguration();
 
     @Test(expected = DataSourceNotDefinedException.class)
-    public void should_thrown_exception_when_test_is_expecting_persistence_feature_but_does_not_have_data_source_defined() throws Exception {
+    public void should_thrown_exception_when_test_is_expecting_persistence_feature_but_does_not_have_data_source_defined()
+        throws Exception {
         // given
         TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()),
+                TestConfigurationLoader.createPersistenceConfigurationFrom(
+                    "arquillian-without-persistence-properties.xml"));
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -55,8 +60,10 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
         // given
         String expectedDataSourceName = DATA_SOURCE_ON_METHOD_LEVEL;
         TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
-                DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -70,8 +77,10 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
         // given
         String expectedDataSourceName = DATA_SOURCE_ON_CLASS_LEVEL;
         TestEvent testEvent = new TestEvent(new DataSourceAnnotated(),
-                DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -85,8 +94,10 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
         // given
         String expectedDataSourceName = "Ike";
         TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -96,12 +107,17 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
     }
 
     @Test(expected = DataSourceNotDefinedException.class)
-    public void should_throw_exception_when_data_source_is_not_defined_in_property_file_and_class_and_method() throws Exception {
+    public void should_throw_exception_when_data_source_is_not_defined_in_property_file_and_class_and_method()
+        throws Exception {
         // given
         String expectedDataSourceName = "Ike";
         TestEvent testEvent = new TestEvent(new DataSourceExpectedFromDefaultConfiguration(),
-                DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
-        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver = new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(), new MetadataExtractor(testEvent.getTestClass()), TestConfigurationLoader.createPersistenceConfigurationFrom("arquillian-without-persistence-properties.xml"));
+            DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
+        PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
+            new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
+                new MetadataExtractor(testEvent.getTestClass()),
+                TestConfigurationLoader.createPersistenceConfigurationFrom(
+                    "arquillian-without-persistence-properties.xml"));
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -128,5 +144,4 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
         public void shouldPass() {
         }
     }
-
 }

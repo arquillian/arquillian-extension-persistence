@@ -17,13 +17,12 @@
  */
 package org.jboss.arquillian.persistence.script.data.provider;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.IterableAssert;
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
+import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceDescriptor> {
 
@@ -56,5 +55,4 @@ public class SqlScriptDescriptorAssert extends IterableAssert<SqlScriptResourceD
         }
         return fileNames;
     }
-
 }

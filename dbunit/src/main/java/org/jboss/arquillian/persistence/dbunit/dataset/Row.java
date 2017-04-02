@@ -66,7 +66,6 @@ public class Row {
         }
 
         return true;
-
     }
 
     @Override
@@ -99,6 +98,4 @@ public class Row {
         }
         return result;
     }
-
-
 }

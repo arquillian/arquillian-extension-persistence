@@ -50,25 +50,32 @@ public class DataCleanupHandler {
 
     public void prepareDatabase(@Observes(precedence = 40) BeforePersistenceTest beforePersistenceTest) {
         if (persistenceExtensionFeatureResolverInstance.get().shouldCleanupBefore()) {
-            cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest, persistenceExtensionFeatureResolverInstance.get().getCleanupStrategy()));
+            cleanUpDataEvent.fire(new CleanupData(beforePersistenceTest,
+                persistenceExtensionFeatureResolverInstance.get().getCleanupStrategy()));
         }
 
         if (persistenceExtensionScriptingFeatureResolverInstance.get().shouldCleanupUsingScriptBefore()) {
-            final SqlScriptProvider<CleanupUsingScript> scriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(beforePersistenceTest.getTestClass(), scriptingConfigurationInstance.get());
-            cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
+            final SqlScriptProvider<CleanupUsingScript> scriptsProvider =
+                SqlScriptProvider.createProviderForCleanupScripts(beforePersistenceTest.getTestClass(),
+                    scriptingConfigurationInstance.get());
+            cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(
+                scriptsProvider.getDescriptorsDefinedFor(beforePersistenceTest.getTestMethod())));
         }
     }
 
     public void verifyDatabase(@Observes(precedence = 20) AfterPersistenceTest afterPersistenceTest) {
 
         if (persistenceExtensionFeatureResolverInstance.get().shouldCleanupAfter()) {
-            cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest, persistenceExtensionFeatureResolverInstance.get().getCleanupStrategy()));
+            cleanUpDataEvent.fire(new CleanupData(afterPersistenceTest,
+                persistenceExtensionFeatureResolverInstance.get().getCleanupStrategy()));
         }
 
         if (persistenceExtensionScriptingFeatureResolverInstance.get().shouldCleanupUsingScriptAfter()) {
-            final SqlScriptProvider<CleanupUsingScript> scriptsProvider = SqlScriptProvider.createProviderForCleanupScripts(afterPersistenceTest.getTestClass(), scriptingConfigurationInstance.get());
-            cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
+            final SqlScriptProvider<CleanupUsingScript> scriptsProvider =
+                SqlScriptProvider.createProviderForCleanupScripts(afterPersistenceTest.getTestClass(),
+                    scriptingConfigurationInstance.get());
+            cleanUpDataUsingScriptEvent.fire(new CleanupDataUsingScript(
+                scriptsProvider.getDescriptorsDefinedFor(afterPersistenceTest.getTestMethod())));
         }
     }
-
 }

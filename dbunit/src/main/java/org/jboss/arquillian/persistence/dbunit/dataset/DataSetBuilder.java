@@ -17,6 +17,8 @@
  */
 package org.jboss.arquillian.persistence.dbunit.dataset;
 
+import java.io.IOException;
+import java.io.InputStream;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.IDataSet;
@@ -30,9 +32,6 @@ import org.jboss.arquillian.persistence.dbunit.dataset.yaml.YamlDataSet;
 import org.jboss.arquillian.persistence.dbunit.exception.DBUnitInitializationException;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
@@ -42,6 +41,10 @@ public class DataSetBuilder {
 
     private DataSetBuilder(Format format) {
         this.format = format;
+    }
+
+    public static DataSetBuilder builderFor(final Format format) {
+        return new DataSetBuilder(format);
     }
 
     public IDataSet build(final String file) {
@@ -70,10 +73,6 @@ public class DataSetBuilder {
         return defineReplaceableExpressions(dataSet);
     }
 
-    public static DataSetBuilder builderFor(final Format format) {
-        return new DataSetBuilder(format);
-    }
-
     // Private methods
 
     private IDataSet loadXmlDataSet(final String xmlFile) throws DataSetException {
@@ -87,7 +86,8 @@ public class DataSetBuilder {
         String dtd = new DtdResolver().resolveDtdLocationFullPath(xmlFile);
         if (dtd != null) {
             try {
-                flatXmlDataSetBuilder.setMetaDataSetFromDtd(Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
+                flatXmlDataSetBuilder.setMetaDataSetFromDtd(
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(dtd));
             } catch (DataSetException e) {
                 throw new DBUnitInitializationException("Unable to attach DTD " + dtd + " defined for " + xmlFile, e);
             } catch (IOException e) {
@@ -107,7 +107,7 @@ public class DataSetBuilder {
     }
 
     private IDataSet loadYamlDataSet(final String file) throws IOException,
-            DataSetException {
+        DataSetException {
         IDataSet dataSet;
         if (isYamlEmpty(file)) {
             dataSet = new DefaultDataSet();
@@ -120,7 +120,6 @@ public class DataSetBuilder {
         }
         return dataSet;
     }
-
 
     private boolean isYamlEmpty(final String yamlFile) throws IOException {
         final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(yamlFile);
@@ -137,5 +136,4 @@ public class DataSetBuilder {
         replacementDataSet.addReplacementObject("[NULL]", null);
         return replacementDataSet;
     }
-
 }

@@ -35,5 +35,4 @@ public class MetadataProcessingException extends RuntimeException {
     public MetadataProcessingException(Throwable cause) {
         super(cause);
     }
-
 }

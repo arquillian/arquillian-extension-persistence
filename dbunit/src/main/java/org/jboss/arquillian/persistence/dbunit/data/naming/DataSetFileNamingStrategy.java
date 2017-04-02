@@ -30,5 +30,4 @@ public class DataSetFileNamingStrategy extends FileNamingStrategy<Format> {
     public String getFileExtension() {
         return extension.extension();
     }
-
 }

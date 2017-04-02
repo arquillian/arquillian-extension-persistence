@@ -17,12 +17,12 @@
  */
 package org.jboss.arquillian.persistence;
 
-import javax.persistence.Cache;
-import javax.persistence.EntityManager;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import javax.persistence.Cache;
+import javax.persistence.EntityManager;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -101,5 +101,4 @@ public @interface JpaCacheEviction {
             throw new UnsupportedOperationException();
         }
     }
-
 }

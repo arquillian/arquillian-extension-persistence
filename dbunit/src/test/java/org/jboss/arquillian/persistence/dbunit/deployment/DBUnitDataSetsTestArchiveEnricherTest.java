@@ -17,12 +17,18 @@
 
 package org.jboss.arquillian.persistence.dbunit.deployment;
 
+import java.util.Map;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.shrinkwrap.api.*;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePath;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.Filters;
+import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.impl.base.NodeImpl;
@@ -30,14 +36,17 @@ import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 
 public class DBUnitDataSetsTestArchiveEnricherTest {
 
     private DBUnitDataSetsTestArchiveEnricher enricher = new DBUnitDataSetsTestArchiveEnricher();
+
+    private static void assertThatContainsOnly(Archive<?> archive, String path) {
+        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
+        assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
+    }
 
     @Before
     public void initializeEnricher() {
@@ -48,6 +57,8 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             }
         };
     }
+
+    //
 
     @Test
     public void should_bundle_resources_as_library_jar_in_enterprise_archive() throws Exception {
@@ -66,13 +77,6 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
         assertThatContainsOnly(library, "/datasets/users.json");
     }
 
-    //
-
-    private static void assertThatContainsOnly(Archive<?> archive, String path) {
-        final Map<ArchivePath, Node> content = archive.getContent(Filters.include(path));
-        assertThat(content).hasSize(1).contains(entry(new BasicPath(path), new NodeImpl(ArchivePaths.create(path))));
-    }
-
     private static class ScriptOnMethodLevel {
 
         @ApplyScriptAfter("two-inserts.sql")
@@ -81,7 +85,6 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             // when
             // then
         }
-
     }
 
     private static class DatasetOnMethodLevel {
@@ -92,6 +95,5 @@ public class DBUnitDataSetsTestArchiveEnricherTest {
             // when
             // then
         }
-
     }
 }

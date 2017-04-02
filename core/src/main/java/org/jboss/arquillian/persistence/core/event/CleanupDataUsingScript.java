@@ -17,14 +17,12 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
-
 import java.util.Collection;
+import org.jboss.arquillian.persistence.script.data.descriptor.SqlScriptResourceDescriptor;
 
 public class CleanupDataUsingScript extends DataEvent<SqlScriptResourceDescriptor> {
 
     public CleanupDataUsingScript(Collection<SqlScriptResourceDescriptor> descriptors) {
         super(descriptors);
     }
-
 }

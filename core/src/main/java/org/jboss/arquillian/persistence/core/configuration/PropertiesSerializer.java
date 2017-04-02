@@ -17,12 +17,11 @@
  */
 package org.jboss.arquillian.persistence.core.configuration;
 
-import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.jboss.arquillian.persistence.core.exception.PersistenceExtensionInitializationException;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
@@ -54,13 +53,11 @@ public class PropertiesSerializer {
     private String serializeAsProperty(Entry<String, String> entry) {
         String serializedAsProperty;
         String sb = prefix +
-                entry.getKey() +
-                "=" +
-                entry.getValue().replace("\\", "\\\\") +
-                '\n';
+            entry.getKey() +
+            "=" +
+            entry.getValue().replace("\\", "\\\\") +
+            '\n';
         serializedAsProperty = sb;
         return serializedAsProperty;
     }
-
-
 }

@@ -18,5 +18,4 @@ public class PersistenceDescriptorParsingException extends RuntimeException {
     public PersistenceDescriptorParsingException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }
