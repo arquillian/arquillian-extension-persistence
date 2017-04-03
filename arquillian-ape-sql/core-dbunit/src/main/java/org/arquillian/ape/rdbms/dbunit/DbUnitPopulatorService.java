@@ -1,45 +1,64 @@
 package org.arquillian.ape.rdbms.dbunit;
 
 import java.net.URI;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import org.arquillian.ape.rdbms.core.RdbmsPopulatorService;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetBuilder;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 
 public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
+
+    private static final Logger log = Logger.getLogger(DbUnitPopulatorService.class.getName());
 
     private IDatabaseConnection databaseConnection;
 
     @Override
     public void connect(URI jdbc, String username, String password, Class<?> driver, Map<String, Object> customOptions) {
         try {
-            final JdbcDatabaseTester jdbcDatabaseTester =
-                new JdbcDatabaseTester(driver.getName(), jdbc.toString(), username, password);
+            this.databaseConnection = lookupDataSourceConnection(jdbc.toString())
+                .orElseGet(() -> connectUsingJdbc(driver.getName(), jdbc.toString(), username, password));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
+    private IDatabaseConnection connectUsingJdbc(String driverName, String jdbcUri, String username, String password)  {
+        try {
+            final JdbcDatabaseTester jdbcDatabaseTester =
+                new JdbcDatabaseTester(driverName, jdbcUri, username, password);
             // TODO add custom option to get the schema to use
             //jdbcDatabaseTester.setSchema("");
-
-            this.databaseConnection = jdbcDatabaseTester.getConnection();
+            return jdbcDatabaseTester.getConnection();
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
     public void disconnect() {
         try {
-            if (!this.databaseConnection.getConnection().isClosed()) {
+            if (this.databaseConnection != null && !this.databaseConnection.getConnection().isClosed()) {
                 this.databaseConnection.close();
             }
         } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -60,9 +79,7 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
                 final Format format = Format.inferFromFile(resource);
                 return DataSetBuilder.builderFor(format).build(resource);
             })
-            .forEach(dataset -> {
-                predicate.accept(databaseConnection, dataset);
-            });
+            .forEach(dataset -> predicate.accept(databaseConnection, dataset));
     }
 
     @Override
@@ -79,5 +96,25 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     @Override
     public Class<DbUnit> getPopulatorAnnotation() {
         return DbUnit.class;
+    }
+
+    // Temporary solution
+
+    @Inject
+    private Instance<Context> contextInstance;
+
+    private Optional<IDatabaseConnection> lookupDataSourceConnection(String dataSourceName) {
+
+        try {
+            final Context context = contextInstance.get();
+            if (context == null) {
+                return Optional.empty();
+            }
+            final Connection connection = ((DataSource) context.lookup(dataSourceName)).getConnection();
+            return Optional.of(new DatabaseConnection(connection));
+        } catch (NamingException | SQLException | DatabaseUnitException e) {
+            log.warning("Failed performing datasource [" + dataSourceName + "] lookup. Cause: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 }
