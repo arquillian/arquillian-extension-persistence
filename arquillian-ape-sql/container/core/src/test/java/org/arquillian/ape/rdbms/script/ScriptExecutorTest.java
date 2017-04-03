@@ -315,4 +315,19 @@ public class ScriptExecutorTest {
                 " values (2, 'John', 'Sharp', 'asdqwe', 'closing only</strong>')"
         );
     }
+
+    @Test
+    public void should_insert_json_tags() throws Exception {
+        // given
+        ArgumentCaptor<String> statementsCaptor = ArgumentCaptor.forClass(String.class);
+
+        // when
+        scriptExecutor.execute(FileLoader.loadAsString("scripts/insert-with-json.sql"));
+
+        // then
+        verify(connection, times(1)).createStatement();
+        verify(connection.createStatement(), times(1)).execute(statementsCaptor.capture());
+        assertThat(statementsCaptor.getAllValues()).containsSequence(
+            "INSERT INTO `com` (`comtxt`) VALUES ('{}');");
+    }
 }

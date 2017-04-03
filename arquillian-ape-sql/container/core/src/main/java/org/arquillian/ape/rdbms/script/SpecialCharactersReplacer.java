@@ -20,10 +20,17 @@ package org.arquillian.ape.rdbms.script;
 public class SpecialCharactersReplacer {
 
     public String escape(String source) {
-        return source.replaceAll("(?m)&(.[a-zA-Z0-9]*);", "ape_special[$1]");
+        String result = source.replaceAll("(?m)&(.[a-zA-Z0-9]*);", "ape_special[$1]");
+        result = result.replace("\\{", "ape_especial_curly_brackets_begin");
+        result = result.replace("\\}", "ape_especial_curly_brackets_end");
+        return result;
     }
 
     public String unescape(String source) {
-        return source.replaceAll("(?m)ape_special\\[(.[a-zA-Z0-9]*)]", "&$1;");
+        String result = source.replaceAll("(?m)ape_special\\[(.[a-zA-Z0-9]*)]", "&$1;");
+        result = result.replace("ape_especial_curly_brackets_begin", "{");
+        result = result.replace("ape_especial_curly_brackets_end", "}");
+
+        return result;
     }
 }
