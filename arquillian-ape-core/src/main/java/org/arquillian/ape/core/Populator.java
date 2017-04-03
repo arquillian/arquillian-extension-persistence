@@ -63,6 +63,19 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
     }
 
     /**
+     * Initial method for Populators DSL
+     *
+     * @param uriAsString
+     *     to connect
+     *
+     * @return Next commands to configure the service.
+     */
+    public R forUri(String uriAsString) {
+        this.uri = URI.create(uriAsString);
+        return createExecutor();
+    }
+
+    /**
      * Populator Configuration interface that all custom DSLs must implements.
      * It defines the DSL terminators.
      */
