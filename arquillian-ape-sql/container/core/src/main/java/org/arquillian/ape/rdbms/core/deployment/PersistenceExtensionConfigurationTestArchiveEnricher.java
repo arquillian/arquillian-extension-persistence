@@ -53,13 +53,13 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
         Logger.getLogger(PersistenceExtensionConfigurationTestArchiveEnricher.class.getName());
 
     @Inject
-    Instance<PersistenceConfiguration> configurationInstance;
+    private Instance<PersistenceConfiguration> configurationInstance;
 
     @Inject
-    Instance<ScriptingConfiguration> scriptingConfigurationInstance;
+    private Instance<ScriptingConfiguration> scriptingConfigurationInstance;
 
     @Inject
-    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
+    private Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
@@ -70,7 +70,7 @@ public class PersistenceExtensionConfigurationTestArchiveEnricher implements App
         }
         obtainDataSourceFromPersistenceXml(applicationArchive);
         final JavaArchive additionalPersistenceResources =
-            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core-additional-resources.jar");
+            ShrinkWrap.create(JavaArchive.class, "arquillian-ape-sql-container-core-additional-resources.jar");
         merge(additionalPersistenceResources,
             sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteAfterTest()),
             sqlScriptsAsResource(scriptingConfigurationInstance.get().getScriptsToExecuteBeforeTest()),

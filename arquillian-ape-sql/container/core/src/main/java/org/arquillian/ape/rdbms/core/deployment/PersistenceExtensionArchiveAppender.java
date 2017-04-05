@@ -43,11 +43,13 @@ public class PersistenceExtensionArchiveAppender implements AuxiliaryArchiveAppe
     public Archive<?> createAuxiliaryArchive() {
 
         final JavaArchive persistenceExtensionArchive =
-            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-core.jar")
+            ShrinkWrap.create(JavaArchive.class, "arquillian-ape-sql-container-core.jar")
                 .addPackages(true,
                     // exclude client package
                     Filters.exclude(PersistenceExtension.class.getPackage()),
-                    "org.arquillian.persistence")
+                    "org.arquillian.ape.rdbms")
+                .addPackages(true,
+                    "org.arquillian.ape.spi", "org.arquillian.ape.core", "org.arquillian.ape.api")
                 .addAsServiceProvider(RemoteLoadableExtension.class, RemotePersistenceExtension.class)
                 .addAsServiceProviderAndClasses(StatementSplitter.class, DefaultStatementSplitter.class,
                     OracleStatementSplitter.class)

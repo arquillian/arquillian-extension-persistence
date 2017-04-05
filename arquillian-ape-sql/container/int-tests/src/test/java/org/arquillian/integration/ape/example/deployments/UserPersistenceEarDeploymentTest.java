@@ -22,7 +22,6 @@ import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.util.Query;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
@@ -33,7 +32,7 @@ import org.junit.runner.RunWith;
 public class UserPersistenceEarDeploymentTest extends NonDeployableUserPersistenceTest {
 
     @Deployment
-    public static Archive<?> createDeploymentPackage() {
+    public static EnterpriseArchive createDeploymentPackage() {
         final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "test.jar")
             .addPackages(true, UserAccount.class.getPackage())
             .addClass(Query.class)

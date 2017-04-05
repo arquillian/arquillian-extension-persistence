@@ -23,9 +23,6 @@ import org.arquillian.ape.rdbms.DataSeedStrategy;
 import org.arquillian.ape.rdbms.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 
-/**
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- */
 public class PersistenceConfiguration extends Configuration implements Serializable {
 
     private static final long serialVersionUID = -6930645145050348980L;

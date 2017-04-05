@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.core.container;
 
+import org.arquillian.ape.rdbms.core.datasource.PersistenceConfigurationEnricher;
 import org.arquillian.ape.rdbms.core.lifecycle.CustomScriptsExecutor;
 import org.arquillian.ape.rdbms.core.lifecycle.DataCleanupHandler;
 import org.arquillian.ape.rdbms.core.lifecycle.DataScriptsHandler;
@@ -27,6 +28,7 @@ import org.arquillian.ape.rdbms.jpa.cache.JpaCacheEvictionHandler;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfigurationRemoteProducer;
 import org.arquillian.ape.rdbms.transaction.PersistenceExtensionConventionTransactionEnabler;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 /**
@@ -47,6 +49,8 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension {
             .observer(ScriptingConfigurationRemoteProducer.class)
             .observer(CommandServiceProducer.class)
             .observer(JpaCacheEvictionHandler.class);
+
+        builder.service(ResourceProvider.class, PersistenceConfigurationEnricher.class);
     }
 
     private void registerTestLifecycleHandlers(ExtensionBuilder builder) {
