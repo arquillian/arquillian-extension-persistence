@@ -1,1 +1,1 @@
-INSERT INTO `com` (`comtxt`) VALUES ('{}');
+INSERT INTO `com` (`comtxt`) VALUES ('\{\}');

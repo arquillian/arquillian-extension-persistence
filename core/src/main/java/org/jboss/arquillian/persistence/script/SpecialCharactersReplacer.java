@@ -22,8 +22,8 @@ public class SpecialCharactersReplacer {
    public String escape(String source)
    {
        String result = source.replaceAll("(?m)&(.[a-zA-Z0-9]*);", "ape_special[$1]");
-       result = result.replace("{", "ape_especial_curly_brackets_begin");
-       result = result.replace("}", "ape_especial_curly_brackets_end");       
+       result = result.replace("\\{", "ape_especial_curly_brackets_begin");
+       result = result.replace("\\}", "ape_especial_curly_brackets_end");       
       return result;
    }
 
