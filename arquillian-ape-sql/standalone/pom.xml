@@ -18,7 +18,9 @@
   <modules>
     <module>core</module>
     <module>dbunit</module>
-    <module>ftest</module>
+    <module>flyway</module>
+    <module>dbunit-ftest</module>
+    <module>flyway-ftest</module>
   </modules>
 
   <dependencyManagement>
@@ -27,6 +29,11 @@
         <groupId>org.dbunit</groupId>
         <artifactId>dbunit</artifactId>
         <version>${version.dbunit}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${version.flyway}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
