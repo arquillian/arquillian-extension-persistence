@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.arquillian.ape</groupId>
+    <artifactId>arquillian-ape-sql-standalone-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>arquillian-ape-sql-standalone-flyway</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Arquillian Ape SQL Standalone Flyway</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-standalone-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+</project>

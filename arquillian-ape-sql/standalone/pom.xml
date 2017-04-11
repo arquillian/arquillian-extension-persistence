@@ -18,7 +18,9 @@
   <modules>
     <module>core</module>
     <module>dbunit</module>
-    <module>ftest</module>
+    <module>flyway</module>
+    <module>dbunit-ftest</module>
+    <module>flyway-ftest</module>
   </modules>
 
   <dependencyManagement>
@@ -28,7 +30,21 @@
         <artifactId>dbunit</artifactId>
         <version>${version.dbunit}</version>
       </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${version.flyway}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-db</artifactId>
+        <version>${version.assertj-db}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  <properties>
+    <version.assertj-db>1.1.1</version.assertj-db>
+  </properties>
 
 </project>
