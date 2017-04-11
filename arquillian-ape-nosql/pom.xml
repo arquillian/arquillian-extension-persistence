@@ -15,7 +15,8 @@
     <version.jedis>2.9.0</version.jedis>
     <version.couchbase>2.4.3</version.couchbase>
     <version.awaitility>2.0.0</version.awaitility>
-    <version.nosqlunit>1.0.0-rc.2</version.nosqlunit>
+    <version.nosqlunit>1.0.0-rc.3</version.nosqlunit>
+    <version.vault>2.0.0</version.vault>
   </properties>
 
   <artifactId>arquillian-ape-nosql-parent</artifactId>
@@ -41,6 +42,11 @@
         <version>${version.nosqlunit}</version>
       </dependency>
       <dependency>
+        <groupId>com.lordofthejars</groupId>
+        <artifactId>nosqlunit-vault</artifactId>
+        <version>${version.nosqlunit}</version>
+      </dependency>
+      <dependency>
         <groupId>org.mongodb</groupId>
         <artifactId>mongodb-driver</artifactId>
         <version>${version.mongodb}</version>
@@ -54,6 +60,11 @@
         <groupId>com.couchbase.client</groupId>
         <artifactId>java-client</artifactId>
         <version>${version.couchbase}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bettercloud</groupId>
+        <artifactId>vault-java-driver</artifactId>
+        <version>${version.vault}</version>
       </dependency>
       <dependency>
         <groupId>org.awaitility</groupId>
@@ -71,6 +82,8 @@
     <module>mongodb-ftest</module>
     <module>redis</module>
     <module>redis-ftest</module>
+    <module>vault</module>
+    <module>vault-ftest</module>
   </modules>
 
 </project>
