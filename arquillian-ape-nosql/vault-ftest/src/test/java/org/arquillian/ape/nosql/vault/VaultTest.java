@@ -5,7 +5,6 @@ import java.util.Map;
 import org.arquillian.ape.nosql.NoSqlPopulator;
 import org.arquillian.cube.docker.impl.client.containerobject.dsl.Container;
 import org.arquillian.cube.docker.impl.client.containerobject.dsl.DockerContainer;
-import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.junit.runner.RunWith;
 
 import static org.arquillian.ape.nosql.vault.VaultOptions.options;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
 
 @RunWith(Arquillian.class)
 public class VaultTest {
