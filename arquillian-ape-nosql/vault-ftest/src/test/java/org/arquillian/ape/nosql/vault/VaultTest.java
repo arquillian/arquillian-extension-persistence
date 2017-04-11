@@ -23,10 +23,10 @@ public class VaultTest {
 
     @DockerContainer
     Container vault = Container.withContainerName("vault")
-                                .fromImage("vault:0.7.0")
-                                .withPortBinding(8200)
-                                .withEnvironment("VAULT_DEV_ROOT_TOKEN_ID", ROOT_TOKEN)
-                                .build();
+        .fromImage("vault:0.7.0")
+        .withPortBinding(8200)
+        .withEnvironment("VAULT_DEV_ROOT_TOKEN_ID", ROOT_TOKEN)
+        .build();
 
     @Test
     public void should_read_secrets_from_vault() throws VaultException {
@@ -34,11 +34,11 @@ public class VaultTest {
         // given
 
         vaultPopulator.forServer("http://" + vault.getIpAddress(), vault.getBindPort(8200))
-                      .usingDataSet("mysecret.yml")
-                      .withOptions(options()
-                                        .token(ROOT_TOKEN)
-                                        .build())
-                      .execute();
+            .usingDataSet("mysecret.yml")
+            .withOptions(options()
+                .token(ROOT_TOKEN)
+                .build())
+            .execute();
 
         // when
 
@@ -48,7 +48,5 @@ public class VaultTest {
         // then
 
         assertThat(data).containsEntry("zip", "zap").containsEntry("a", "b");
-
     }
-
 }
