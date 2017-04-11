@@ -41,7 +41,10 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     }
 
     /**
-     * Register a new dataset for populating data.
+     * Register a new dataset for populating data. The dataset format depends on the provider used under the covers.
+     *
+     * For example in case of using DBUnit, it represents the location of concrete file, meanwhile in case of Flyway
+     * it represents the location where all migration scripts are stored.
      *
      * @param dataset
      *     to use.

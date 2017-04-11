@@ -35,7 +35,16 @@
         <artifactId>flyway-core</artifactId>
         <version>${version.flyway}</version>
       </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-db</artifactId>
+        <version>${version.assertj-db}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  <properties>
+    <version.assertj-db>1.1.1</version.assertj-db>
+  </properties>
 
 </project>
