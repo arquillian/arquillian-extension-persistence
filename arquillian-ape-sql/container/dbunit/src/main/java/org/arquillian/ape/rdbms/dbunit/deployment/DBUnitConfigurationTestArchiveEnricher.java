@@ -19,7 +19,6 @@ package org.arquillian.ape.rdbms.dbunit.deployment;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.arquillian.ape.rdbms.core.configuration.PropertiesSerializer;
 import org.arquillian.ape.rdbms.core.deployment.ResourceAppender;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
@@ -42,10 +41,8 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiveProcessor {
 
-    private static final Logger log = Logger.getLogger(DBUnitConfigurationTestArchiveEnricher.class.getName());
-
     @Inject
-    Instance<ArquillianDescriptor> arquillianDescriptorInstance;
+    private Instance<ArquillianDescriptor> arquillianDescriptorInstance;
 
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
@@ -55,7 +52,7 @@ public class DBUnitConfigurationTestArchiveEnricher implements ApplicationArchiv
             return;
         }
         final JavaArchive additionalPersistenceResources =
-            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit-additional-resources.jar");
+            ShrinkWrap.create(JavaArchive.class, "arquillian-ape-sql-container-dbunit-additional-resources.jar");
         merge(additionalPersistenceResources, dbUnitConfigurationSerializedAsProperties());
         ResourceAppender.addResources(applicationArchive, additionalPersistenceResources);
     }

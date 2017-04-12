@@ -27,6 +27,9 @@
           https://issues.jboss.org/browse/AS7-1696
   -->
   <defaultProtocol type="Servlet 3.0"/>
+  <engine>
+    <property name="deploymentExportPath">target/deployment</property>
+  </engine>
 
   <container qualifier="chameleon" default="true">
     <configuration>

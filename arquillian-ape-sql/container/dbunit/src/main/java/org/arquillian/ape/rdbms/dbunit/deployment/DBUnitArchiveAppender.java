@@ -49,11 +49,11 @@ public class DBUnitArchiveAppender implements AuxiliaryArchiveAppender {
     public Archive<?> createAuxiliaryArchive() {
 
         final JavaArchive dbUnitExtensionArchive =
-            ShrinkWrap.create(JavaArchive.class, "arquillian-persistence-dbunit.jar")
+            ShrinkWrap.create(JavaArchive.class, "arquillian-ape-sql-container-dbunit.jar")
                 .addPackages(true,
                     // exclude client package
                     Filters.exclude(DBUnitExtension.class.getPackage()),
-                    "org.arquillian.ape")
+                    "org.arquillian.ape.rdbms.dbunit")
                 .addPackages(true,
                     // Avoid slf4j implementation in case different impl is chosen in @Deployment
                     Filters.exclude(".*/org/slf4j/impl/.*"),
