@@ -21,6 +21,7 @@
     <module>flyway</module>
     <module>dbunit-ftest</module>
     <module>flyway-ftest</module>
+    <module>dbunit-flyway-ftest</module>
   </modules>
 
   <dependencyManagement>

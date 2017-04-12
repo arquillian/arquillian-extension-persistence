@@ -33,18 +33,21 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     public void connect(URI jdbc, String username, String password, Class<?> driver, Map<String, Object> customOptions) {
         try {
             this.databaseConnection = lookupDataSourceConnection(jdbc.toString())
-                .orElseGet(() -> connectUsingJdbc(driver.getName(), jdbc.toString(), username, password));
+                .orElseGet(() -> connectUsingJdbc(driver.getName(), jdbc.toString(), username, password, customOptions));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private IDatabaseConnection connectUsingJdbc(String driverName, String jdbcUri, String username, String password)  {
+    private IDatabaseConnection connectUsingJdbc(String driverName, String jdbcUri, String username, String password, Map<String, Object> customOptions)  {
         try {
             final JdbcDatabaseTester jdbcDatabaseTester =
                 new JdbcDatabaseTester(driverName, jdbcUri, username, password);
-            // TODO add custom option to get the schema to use
-            //jdbcDatabaseTester.setSchema("");
+
+            if (customOptions.containsKey(DbUnitOptions.SCHEMA)) {
+                   jdbcDatabaseTester.setSchema((String) customOptions.get(DbUnitOptions.SCHEMA));
+            }
+
             return jdbcDatabaseTester.getConnection();
         } catch (Exception e) {
             throw new IllegalStateException(e);
