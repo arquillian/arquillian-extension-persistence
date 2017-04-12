@@ -23,8 +23,9 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
             final JdbcDatabaseTester jdbcDatabaseTester =
                 new JdbcDatabaseTester(driver.getName(), jdbc.toString(), username, password);
 
-            // TODO add custom option to get the schema to use
-            //jdbcDatabaseTester.setSchema("");
+            if (customOptions.containsKey(DbUnitOptions.SCHEMA)) {
+                jdbcDatabaseTester.setSchema((String) customOptions.get(DbUnitOptions.SCHEMA));
+            }
 
             this.databaseConnection = jdbcDatabaseTester.getConnection();
         } catch (Exception e) {
