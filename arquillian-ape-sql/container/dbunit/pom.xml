@@ -34,6 +34,12 @@
 
     <dependency>
       <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-sql-core-dbunit</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.arquillian.ape</groupId>
       <artifactId>arquillian-ape-spi</artifactId>
       <version>${project.version}</version>
     </dependency>
