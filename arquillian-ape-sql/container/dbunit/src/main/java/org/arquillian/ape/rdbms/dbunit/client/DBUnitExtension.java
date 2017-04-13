@@ -20,9 +20,11 @@ import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationClientSi
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitArchiveAppender;
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitConfigurationTestArchiveEnricher;
 import org.arquillian.ape.rdbms.dbunit.deployment.DBUnitDataSetsTestArchiveEnricher;
+import org.arquillian.ape.rdbms.dbunit.enricher.DBUnitConfigurationEnricher;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
 /**
  * Wires persistence extension services which are used to prepare
@@ -37,6 +39,7 @@ public class DBUnitExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, DBUnitArchiveAppender.class)
             .service(ApplicationArchiveProcessor.class, DBUnitConfigurationTestArchiveEnricher.class)
             .service(ApplicationArchiveProcessor.class, DBUnitDataSetsTestArchiveEnricher.class)
+            .service(ResourceProvider.class, DBUnitConfigurationEnricher.class)
             .observer(DBUnitConfigurationClientSideProducer.class);
     }
 }

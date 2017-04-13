@@ -20,10 +20,13 @@ package org.arquillian.ape.rdbms.core.client;
 import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionArchiveAppender;
 import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
 import org.arquillian.ape.rdbms.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
+import org.arquillian.ape.rdbms.core.enricher.PersistenceConfigurationEnricher;
+import org.arquillian.ape.rdbms.core.enricher.ScriptingConfigurationEnricher;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfigurationClientSideProducer;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
 /**
  * Wires persistence extension services which are used to prepare
@@ -38,6 +41,8 @@ public class PersistenceExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
             .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
             .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
+            .service(ResourceProvider.class, PersistenceConfigurationEnricher.class)
+            .service(ResourceProvider.class, ScriptingConfigurationEnricher.class)
             .observer(PersistenceConfigurationClientSideProducer.class)
             .observer(ScriptingConfigurationClientSideProducer.class)
             .observer(SchemaCreationCoordinator.class)

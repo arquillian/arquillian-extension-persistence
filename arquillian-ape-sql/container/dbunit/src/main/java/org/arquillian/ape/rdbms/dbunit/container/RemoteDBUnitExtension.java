@@ -23,6 +23,7 @@ import org.arquillian.ape.rdbms.dbunit.DBUnitDatabaseConnectionProvider;
 import org.arquillian.ape.rdbms.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.arquillian.ape.rdbms.dbunit.DbUnitPopulatorService;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationRemoteProducer;
+import org.arquillian.ape.rdbms.dbunit.enricher.DBUnitConfigurationEnricher;
 import org.arquillian.ape.rdbms.dbunit.lifecycle.DataSetHandler;
 import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
@@ -40,16 +41,21 @@ public class RemoteDBUnitExtension implements RemoteLoadableExtension {
     public void register(ExtensionBuilder builder) {
         registerDBUnitTestLifecycleHandlers(builder);
         registerDBUnitHandlers(builder);
+        registerEnrichers(builder);
+    }
+
+    private void registerEnrichers(ExtensionBuilder builder) {
+        builder.service(ResourceProvider.class, DBUnitConfigurationEnricher.class)
+            .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class)
+            .service(PopulatorService.class, DbUnitPopulatorService.class)
+            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
     }
 
     private void registerDBUnitHandlers(ExtensionBuilder builder) {
         builder.observer(DBUnitDataHandler.class)
             .observer(DBUnitConfigurationRemoteProducer.class)
             .observer(DBUnitPersistenceTestLifecycleHandler.class)
-            .observer(DBUnitDataStateLogger.class)
-            .service(ResourceProvider.class, DBUnitDatabaseConnectionProvider.class)
-            .service(PopulatorService.class, DbUnitPopulatorService.class)
-            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
+            .observer(DBUnitDataStateLogger.class);
     }
 
     private void registerDBUnitTestLifecycleHandlers(ExtensionBuilder builder) {
