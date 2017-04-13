@@ -18,6 +18,9 @@
 package org.jboss.arquillian.persistence.core.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.persistence.core.enricher.PersistenceConfigurationEnricher;
+import org.jboss.arquillian.persistence.core.enricher.ScriptingConfigurationEnricher;
 import org.jboss.arquillian.persistence.core.lifecycle.CustomScriptsExecutor;
 import org.jboss.arquillian.persistence.core.lifecycle.DataCleanupHandler;
 import org.jboss.arquillian.persistence.core.lifecycle.DataScriptsHandler;
@@ -27,13 +30,12 @@ import org.jboss.arquillian.persistence.core.lifecycle.SchemaCreationScriptsExec
 import org.jboss.arquillian.persistence.jpa.cache.JpaCacheEvictionHandler;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationRemoteProducer;
 import org.jboss.arquillian.persistence.transaction.PersistenceExtensionConventionTransactionEnabler;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 import org.jboss.arquillian.transaction.spi.provider.TransactionEnabler;
 
 /**
  * Defines all the bindings for Arquillian extension run in the
  * container.
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 public class RemotePersistenceExtension implements RemoteLoadableExtension {
 
@@ -42,11 +44,17 @@ public class RemotePersistenceExtension implements RemoteLoadableExtension {
 
         registerTestLifecycleHandlers(builder);
         registerThirdPartyServices(builder);
+        registerEnrichers(builder);
 
         builder.observer(PersistenceConfigurationRemoteProducer.class)
             .observer(ScriptingConfigurationRemoteProducer.class)
             .observer(CommandServiceProducer.class)
             .observer(JpaCacheEvictionHandler.class);
+    }
+
+    private void registerEnrichers(ExtensionBuilder builder) {
+        builder.service(ResourceProvider.class, PersistenceConfigurationEnricher.class)
+            .service(ResourceProvider.class, ScriptingConfigurationEnricher.class);
     }
 
     private void registerTestLifecycleHandlers(ExtensionBuilder builder) {

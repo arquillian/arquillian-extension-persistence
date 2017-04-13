@@ -23,7 +23,10 @@ import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionArchiveAppender;
 import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionConfigurationTestArchiveEnricher;
 import org.jboss.arquillian.persistence.core.deployment.PersistenceExtensionDataResourcesTestArchiveEnricher;
+import org.jboss.arquillian.persistence.core.enricher.PersistenceConfigurationEnricher;
+import org.jboss.arquillian.persistence.core.enricher.ScriptingConfigurationEnricher;
 import org.jboss.arquillian.persistence.script.configuration.ScriptingConfigurationClientSideProducer;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
 /**
  * Wires persistence extension services which are used to prepare
@@ -38,6 +41,8 @@ public class PersistenceExtension implements LoadableExtension {
         builder.service(AuxiliaryArchiveAppender.class, PersistenceExtensionArchiveAppender.class)
             .service(ApplicationArchiveProcessor.class, PersistenceExtensionConfigurationTestArchiveEnricher.class)
             .service(ApplicationArchiveProcessor.class, PersistenceExtensionDataResourcesTestArchiveEnricher.class)
+            .service(ResourceProvider.class, PersistenceConfigurationEnricher.class)
+            .service(ResourceProvider.class, ScriptingConfigurationEnricher.class)
             .observer(PersistenceConfigurationClientSideProducer.class)
             .observer(ScriptingConfigurationClientSideProducer.class)
             .observer(SchemaCreationCoordinator.class)

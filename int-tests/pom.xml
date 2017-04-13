@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -135,9 +135,7 @@
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
+          <skip>true</skip>
         </configuration>
         <executions>
           <execution>
@@ -145,12 +143,36 @@
             <goals>
               <goal>integration-test</goal>
             </goals>
+            <configuration>
+              <skip>false</skip>
+              <includes>
+                <include>!%regex[.*ConfigurationEnricherTest.*.class]</include>
+              </includes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>configuration-enricher</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <skip>false</skip>
+              <systemPropertyVariables>
+                <arquillian.xml>arquillian-config-enricher-test.xml</arquillian.xml>
+              </systemPropertyVariables>
+              <includes>
+                <include>%regex[.*ConfigurationEnricherTest.*.class]</include>
+              </includes>
+            </configuration>
           </execution>
           <execution>
             <id>verify</id>
             <goals>
               <goal>verify</goal>
             </goals>
+            <configuration>
+              <skip>false</skip>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -168,7 +190,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
         <configuration>
           <skip>true</skip>
         </configuration>

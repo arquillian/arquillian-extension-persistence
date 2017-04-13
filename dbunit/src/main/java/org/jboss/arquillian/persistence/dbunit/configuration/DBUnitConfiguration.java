@@ -41,8 +41,6 @@ import org.jboss.arquillian.persistence.util.Arrays;
  * Covers all features and properties described in
  * <a href="http://dbunit.sourceforge.net/properties.html">DBUnit documentation</a> as of
  * version 2.5.1
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
 public class DBUnitConfiguration extends Configuration {
 

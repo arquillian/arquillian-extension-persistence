@@ -17,11 +17,13 @@
 package org.jboss.arquillian.persistence.dbunit.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataHandler;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDataStateLogger;
 import org.jboss.arquillian.persistence.dbunit.DBUnitDatabaseConnectionProvider;
 import org.jboss.arquillian.persistence.dbunit.DBUnitPersistenceTestLifecycleHandler;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfigurationRemoteProducer;
+import org.jboss.arquillian.persistence.dbunit.enricher.DBUnitConfigurationEnricher;
 import org.jboss.arquillian.persistence.dbunit.lifecycle.DataSetHandler;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
@@ -37,6 +39,11 @@ public class RemoteDBUnitExtension implements RemoteLoadableExtension {
     public void register(ExtensionBuilder builder) {
         registerDBUnitTestLifecycleHandlers(builder);
         registerDBUnitHandlers(builder);
+        registerEnrichers(builder);
+    }
+
+    private void registerEnrichers(ExtensionBuilder builder) {
+        builder.service(ResourceProvider.class, DBUnitConfigurationEnricher.class);
     }
 
     private void registerDBUnitHandlers(ExtensionBuilder builder) {
