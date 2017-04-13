@@ -70,7 +70,7 @@
     <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
     <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
-    <version.dbunit>2.5.2</version.dbunit>
+    <version.dbunit>2.5.3</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
 
     <!-- Testing dependencies -->
