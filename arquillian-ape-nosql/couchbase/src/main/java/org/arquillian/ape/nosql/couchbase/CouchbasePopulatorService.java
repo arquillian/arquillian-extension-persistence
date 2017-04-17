@@ -15,7 +15,7 @@ import org.arquillian.ape.nosql.NoSqlPopulatorService;
 
 import static org.awaitility.Awaitility.await;
 
-class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
+public class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
 
     private CouchbaseCluster couchbaseCluster;
     private Bucket bucket;

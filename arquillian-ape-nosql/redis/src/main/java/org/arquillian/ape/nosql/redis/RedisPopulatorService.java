@@ -15,7 +15,7 @@ import redis.clients.jedis.Jedis;
 /**
  * Integration to NoSqlUnit Redis module.
  */
-class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
+public class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
 
     private Jedis jedis;
 

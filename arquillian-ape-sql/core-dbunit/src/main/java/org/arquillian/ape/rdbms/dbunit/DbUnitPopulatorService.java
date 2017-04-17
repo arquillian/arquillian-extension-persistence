@@ -109,6 +109,11 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     private Optional<IDatabaseConnection> lookupDataSourceConnection(String dataSourceName) {
 
         try {
+
+            if (contextInstance == null) {
+                // In case of running outside Arquillian Runner
+                return Optional.empty();
+            }
             final Context context = contextInstance.get();
             if (context == null) {
                 return Optional.empty();

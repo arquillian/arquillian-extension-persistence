@@ -6,7 +6,7 @@ import org.arquillian.ape.rest.RestPopulatorService;
 import org.arquillian.ape.rest.postman.runner.HostPortOverride;
 import org.arquillian.ape.rest.postman.runner.PostmanRunner;
 
-class PostmanPopulatorService implements RestPopulatorService<Postman> {
+public class PostmanPopulatorService implements RestPopulatorService<Postman> {
 
     @Override
     public Class<Postman> getPopulatorAnnotation() {
