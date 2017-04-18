@@ -9,7 +9,7 @@ import java.util.Map;
 import org.arquillian.ape.core.DataSetLoader;
 import org.arquillian.ape.nosql.NoSqlPopulatorService;
 
-public class VaultPopulatorService implements NoSqlPopulatorService<Vault>  {
+class VaultPopulatorService implements NoSqlPopulatorService<Vault>  {
 
     private VaultConfig vaultConfig;
 

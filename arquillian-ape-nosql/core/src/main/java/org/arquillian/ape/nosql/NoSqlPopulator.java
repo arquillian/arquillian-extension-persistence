@@ -1,6 +1,6 @@
 package org.arquillian.ape.nosql;
 
-import org.arquillian.ape.core.Populator;
+import org.arquillian.ape.spi.Populator;
 
 /**
  * NoSql Populator that creates the NoSqlPopulatorConfigurator with specific DSL methods related to NoSql engines.

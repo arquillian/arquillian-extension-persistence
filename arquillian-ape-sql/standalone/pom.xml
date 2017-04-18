@@ -22,6 +22,7 @@
     <module>dbunit-ftest</module>
     <module>flyway-ftest</module>
     <module>dbunit-flyway-ftest</module>
+    <module>dbunit-junit-rule-ftest</module>
   </modules>
 
   <dependencyManagement>

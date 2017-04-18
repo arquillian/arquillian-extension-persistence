@@ -2,6 +2,7 @@ package org.arquillian.ape.core;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
+import org.arquillian.ape.spi.Populator;
 import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.spi.ServiceLoader;
@@ -40,7 +41,7 @@ public class PopulatorEnricherTest {
         final Object populator = populatorEnricher.lookup(null, (Annotation) () -> MyBackend.class);
 
         assertThat(populator).isInstanceOf(MyPopulator.class);
-        assertThat(((Populator) populator).populatorService).isInstanceOf(TestPopulatorService.class);
+        assertThat(((Populator) populator).getPopulatorService()).isInstanceOf(TestPopulatorService.class);
     }
 
     public static class TestPopulatorService implements PopulatorService<MyBackend> {

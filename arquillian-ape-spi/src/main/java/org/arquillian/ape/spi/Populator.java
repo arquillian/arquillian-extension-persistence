@@ -1,7 +1,6 @@
-package org.arquillian.ape.core;
+package org.arquillian.ape.spi;
 
 import java.net.URI;
-import org.arquillian.ape.spi.PopulatorService;
 
 /**
  * This class represents base class for all Populators DSL for storing configuration.
@@ -73,6 +72,14 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
     public R forUri(String uriAsString) {
         this.uri = URI.create(uriAsString);
         return createExecutor();
+    }
+
+    /**
+     * To be used for testing purposes.
+     * @return
+     */
+    public T getPopulatorService() {
+        return populatorService;
     }
 
     /**

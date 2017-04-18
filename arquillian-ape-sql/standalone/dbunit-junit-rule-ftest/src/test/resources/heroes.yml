@@ -1,0 +1,12 @@
+person:
+
+  - id: 1
+    name: Clark
+    last_name: Kent
+    age: 35
+
+  - id: 2
+    name: Lex
+    last_name: Luthor
+    age: 0
+
