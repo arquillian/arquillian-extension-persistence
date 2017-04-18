@@ -19,7 +19,7 @@ import org.bson.Document;
 /**
  * Integration to NoSqlUnit MongoDb module.
  */
-public class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
+class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
 
     private MongoClient mongoClient;
     private MongoDatabase database;

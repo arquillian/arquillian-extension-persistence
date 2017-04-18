@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.arquillian.ape.rdbms.core.RdbmsPopulatorService;
 
-public class FlywayPopulatorService implements RdbmsPopulatorService<Flyway> {
+class FlywayPopulatorService implements RdbmsPopulatorService<Flyway> {
 
     private org.flywaydb.core.Flyway flyway = new org.flywaydb.core.Flyway();
 

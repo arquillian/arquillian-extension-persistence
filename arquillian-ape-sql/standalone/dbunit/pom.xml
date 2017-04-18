@@ -32,6 +32,12 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-junit-rule</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.dbunit</groupId>
       <artifactId>dbunit</artifactId>
       <scope>provided</scope>
