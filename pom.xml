@@ -68,7 +68,7 @@
     <!-- Arquillian dependencies -->
     <version.arquillian_core>1.1.13.Final</version.arquillian_core>
     <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
-    <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
+    <version.shrinkwrap.resolver>3.0.0-alpha-4</version.shrinkwrap.resolver>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.3</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
