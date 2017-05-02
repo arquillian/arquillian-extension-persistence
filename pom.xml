@@ -84,7 +84,7 @@
     <version.findbugs.annotations>3.0.1u2</version.findbugs.annotations>
     <version.assertj.core>3.6.2</version.assertj.core>
     <version.mockito>2.7.14</version.mockito>
-    <version.cube>1.1.0</version.cube>
+    <version.cube>1.2.0</version.cube>
     <version.wiremock>2.5.1</version.wiremock>
     <version.restassured>3.0.2</version.restassured>
 
@@ -171,6 +171,12 @@
       <dependency>
         <groupId>org.arquillian.cube</groupId>
         <artifactId>arquillian-cube-docker</artifactId>
+        <version>${version.cube}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-docker-junit-rule</artifactId>
         <version>${version.cube}</version>
         <scope>test</scope>
       </dependency>

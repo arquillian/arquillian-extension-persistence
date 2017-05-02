@@ -40,6 +40,10 @@ class CollectionLoader {
 
     public Collection load(String location, Map<String, String> externalVariables) throws IOException {
 
+        if (location.charAt(0) != '/') {
+            location = "/" + location;
+        }
+
         try (InputStream collection = CollectionLoader.class.getResourceAsStream(location)) {
             final Map<String, String> variables = new HashMap<>();
 

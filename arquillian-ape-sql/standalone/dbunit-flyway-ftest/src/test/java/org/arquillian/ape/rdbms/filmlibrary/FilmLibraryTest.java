@@ -1,38 +1,37 @@
 package org.arquillian.ape.rdbms.filmlibrary;
 
 import java.net.URI;
+import org.arquillian.ape.junit.rule.ArquillianPersistenceRule;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.arquillian.ape.rdbms.dbunit.DbUnit;
-import org.arquillian.ape.rdbms.dbunit.DbUnitOptions;
 import org.arquillian.ape.rdbms.flyway.Flyway;
-import org.arquillian.cube.docker.impl.client.containerobject.dsl.Container;
-import org.arquillian.cube.docker.impl.client.containerobject.dsl.DockerContainer;
+import org.arquillian.cube.docker.junit.rule.ContainerDslRule;
 import org.assertj.db.type.Source;
 import org.assertj.db.type.Table;
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.postgresql.Driver;
 
 import static org.arquillian.ape.rdbms.dbunit.DbUnitOptions.options;
 import static org.assertj.db.api.Assertions.assertThat;
 
-@RunWith(Arquillian.class)
 public class FilmLibraryTest {
 
     public static final String DB = "filmlibrary";
     public static final String USERNAME = "postgres";
     public static final String PASSWORD = "postgres";
 
-    @DockerContainer
-    Container postgresql = Container.withContainerName("postgresql")
-        .fromImage("postgres:9.6.2-alpine")
+    @ClassRule
+    public static ContainerDslRule postgresql = new ContainerDslRule("postgres:9.6.2-alpine")
         .withPortBinding(5432)
         .withEnvironment("POSTGRES_PASSWORD", PASSWORD,
             "POSTGRES_USER", USERNAME,
-            "POSTGRES_DB", DB)
-        .build();
+            "POSTGRES_DB", DB);
+
+    @Rule
+    public ArquillianPersistenceRule arquillianPersistenceRule = new ArquillianPersistenceRule();
 
     @Flyway
     @ArquillianResource
