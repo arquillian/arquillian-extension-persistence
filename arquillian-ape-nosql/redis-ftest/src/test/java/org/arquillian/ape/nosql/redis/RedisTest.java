@@ -25,7 +25,7 @@ public class RedisTest {
     private String hostIp;
 
     @Test
-    public void should_populate_mongodb() {
+    public void should_populate_redis() {
         populator.forServer(hostIp, port)
             .usingDataSet("books.json")
             .execute();

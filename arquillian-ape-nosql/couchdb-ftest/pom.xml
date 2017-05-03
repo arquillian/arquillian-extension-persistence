@@ -9,20 +9,15 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>arquillian-ape-nosql-redis-ftest</artifactId>
+  <artifactId>arquillian-ape-nosql-couchdb-ftest</artifactId>
   <packaging>jar</packaging>
 
-  <name>Arquillian Ape NoSQL Redis Functional Test</name>
+  <name>Arquillian Ape NoSQL CouchDb Functional Test</name>
 
   <dependencies>
     <dependency>
       <groupId>com.lordofthejars</groupId>
-      <artifactId>nosqlunit-redis</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
+      <artifactId>nosqlunit-couchdb</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -32,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.arquillian.ape</groupId>
-      <artifactId>arquillian-ape-nosql-redis</artifactId>
+      <artifactId>arquillian-ape-nosql-couchdb</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -40,6 +35,29 @@
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-standalone</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ektorp</groupId>
+      <artifactId>org.ektorp</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
