@@ -13,6 +13,7 @@
     <version.mongodb>3.4.2</version.mongodb>
     <version.jedis>2.9.0</version.jedis>
     <version.couchbase>2.4.3</version.couchbase>
+    <version.couchdb>1.4.4</version.couchdb>
     <version.awaitility>2.0.0</version.awaitility>
     <version.nosqlunit>1.0.0-rc.3</version.nosqlunit>
     <version.vault>2.0.0</version.vault>
@@ -44,6 +45,16 @@
         <groupId>com.lordofthejars</groupId>
         <artifactId>nosqlunit-vault</artifactId>
         <version>${version.nosqlunit}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.lordofthejars</groupId>
+        <artifactId>nosqlunit-couchdb</artifactId>
+        <version>${version.nosqlunit}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ektorp</groupId>
+        <artifactId>org.ektorp</artifactId>
+        <version>${version.couchdb}</version>
       </dependency>
       <dependency>
         <groupId>org.mongodb</groupId>
@@ -83,6 +94,8 @@
     <module>redis-ftest</module>
     <module>vault</module>
     <module>vault-ftest</module>
+    <module>couchdb</module>
+    <module>couchdb-ftest</module>
   </modules>
 
 </project>
