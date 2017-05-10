@@ -9,7 +9,7 @@ import org.arquillian.ape.spi.PopulatorService;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 
-class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSupport {
+public class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSupport {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, PostmanPopulatorService.class)
