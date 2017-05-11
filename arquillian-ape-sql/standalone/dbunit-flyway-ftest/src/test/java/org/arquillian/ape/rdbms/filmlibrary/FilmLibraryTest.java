@@ -5,6 +5,7 @@ import org.arquillian.ape.junit.rule.ArquillianPersistenceRule;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.arquillian.ape.rdbms.dbunit.DbUnit;
 import org.arquillian.ape.rdbms.flyway.Flyway;
+import org.arquillian.cube.docker.impl.client.containerobject.dsl.AwaitBuilder;
 import org.arquillian.cube.docker.junit.rule.ContainerDslRule;
 import org.assertj.db.type.Source;
 import org.assertj.db.type.Table;
@@ -28,7 +29,8 @@ public class FilmLibraryTest {
         .withPortBinding(5432)
         .withEnvironment("POSTGRES_PASSWORD", PASSWORD,
             "POSTGRES_USER", USERNAME,
-            "POSTGRES_DB", DB);
+            "POSTGRES_DB", DB)
+        .withAwaitStrategy(AwaitBuilder.logAwait("LOG:  autovacuum launcher started", 2));
 
     @Rule
     public ArquillianPersistenceRule arquillianPersistenceRule = new ArquillianPersistenceRule();
