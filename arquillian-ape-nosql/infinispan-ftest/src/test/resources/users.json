@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "key":"alex",
+      "implementation":"org.arquillian.ape.nosql.infinispan.User",
+      "value": {
+        "name":"alex",
+        "age":32
+      }
+    }
+  ]
+}

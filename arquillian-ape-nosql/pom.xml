@@ -52,6 +52,11 @@
         <version>${version.nosqlunit}</version>
       </dependency>
       <dependency>
+        <groupId>com.lordofthejars</groupId>
+        <artifactId>nosqlunit-infinispan</artifactId>
+        <version>${version.nosqlunit}</version>
+      </dependency>
+      <dependency>
         <groupId>org.ektorp</groupId>
         <artifactId>org.ektorp</artifactId>
         <version>${version.couchdb}</version>
@@ -96,6 +101,8 @@
     <module>vault-ftest</module>
     <module>couchdb</module>
     <module>couchdb-ftest</module>
+    <module>infinispan</module>
+    <module>infinispan-ftest</module>
   </modules>
 
 </project>
