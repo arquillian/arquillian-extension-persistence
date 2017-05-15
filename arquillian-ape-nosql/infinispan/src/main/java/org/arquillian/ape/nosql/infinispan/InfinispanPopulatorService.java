@@ -59,7 +59,7 @@ class InfinispanPopulatorService implements NoSqlPopulatorService<Infinispan> {
                 try {
                     defaultInfinispanInsertionStrategy.insert(() -> infinispanBasicCache, dataset);
                 } catch (Throwable e) {
-                    throw new IllegalStateException(e);
+                    throw new IllegalStateException(String.format("Error inserting %s resources.", resources), e);
                 }
             });
     }
