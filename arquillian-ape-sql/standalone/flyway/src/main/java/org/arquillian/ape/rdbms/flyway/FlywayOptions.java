@@ -148,7 +148,7 @@ public class FlywayOptions implements Map<String, Object> {
         }
 
         if (this.options.containsKey(TABLE)) {
-            flyway.setTable((String) this.options.get(SCHEMAS));
+            flyway.setTable((String) this.options.get(TABLE));
         }
 
         if (this.options.containsKey(TARGET)) {
