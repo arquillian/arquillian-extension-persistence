@@ -1,0 +1,230 @@
+[[programmatic-way]]
+=== Programmatic Way
+
+So far you've seen how to use Arquillian Persistence Extension using _declarative way_.
+Just annotating your methods with `@UsingDataSet` and configured database is automatically populated with given dataset.
+
+But since APE 2.0.0, you can also use programmatic way.
+This way instead of using an annotation, you code your test with a DSL so you choose how, when and what is populated.
+
+Also programmatic way offers not only integration to _DBUnit_, but also integration to _Flyway_ for SQL schema migration.
+Moreover support for several NoSQL databases (using NoSQLUnit) and Rest services (using Postman) are provided.
+
+IMPORTANT: Programmatic way is meant to be used in _as-client_ or _standalone_ mode. Currently only
+
+==== SQL
+
+Currently two SQL technologies are supported, _DBUnit_ and _Flyway_.
+Let's see both of them in action:
+
+===== DBUnit
+
+You can use _DBUnit_ scripts (XML, JSON, YAML, Excel) in programmatic approach as it is supported in declarative way.
+
+[source, java]
+.PersonTest.java
+----
+@RunWith(Arquillian.class)
+public class PersonTest {
+
+    @DbUnit
+    @ArquillianResource
+    RdbmsPopulator rdbmsPopulator;
+
+    @Test
+    public void should_find_all_persons() {
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")) // <1>
+           .withDriver(Driver.class)
+           .withUsername("sa")
+           .withPassword("")
+           .usingDataSet("person.yml")
+           .execute(); // <2>
+
+        // Test
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+           .withDriver(Driver.class)
+           .withUsername("sa")
+           .withPassword("")
+           .usingDataSet("person.yml")
+           .clean(); // <3>
+    }
+}
+----
+<1> Configures JDBC connection
+<2> Populates `person.yml` script into DB. Scripts based on classpath.
+<3> Cleans database
+
+TIP: Depending on your persistence tests you can put this code into `@Before @BeforeClass` or `@After @AfterClass` methods.
+
+You need to add `org.arquillian.ape:arquillian-ape-sql-standalone-dbunit` dependency in your build tool in order to use this mode.
+
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-sql/standalone/dbunit-ftest
+
+===== Flyway
+
+You can use _Flyway_ scripts to migrate the schema of a SQL database too.
+
+[source, java]
+.FilmLibraryTest
+----
+@RunWith(Arquillian.class)
+public class FilmLibraryTest {
+
+    @Flyway
+    @ArquillianResource
+    RdbmsPopulator rdbmsPopulator;
+
+    @Test
+    public void should_create_person_table() {
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")) // <1>
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("db/migration") // <2>
+            .execute(); // <3>
+
+        // Test
+
+        rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
+            .withDriver(Driver.class)
+            .withUsername("sa")
+            .withPassword("")
+            .usingDataSet("db/migration")
+            .clean(); // <4>
+
+    }
+}
+----
+<1> Configures JDBC connection
+<2> Sets location of Flyway migration scripts. Scripts based on classpath.
+<3> Migrates the schema
+<4> Cleans database
+
+You need to add `org.arquillian.ape:arquillian-ape-sql-standalone-flyway` dependency in your build tool in order to use this mode.
+
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-sql/standalone/flyway-ftest
+
+==== Rest
+
+Sometimes your backend is not a database but another REST service, in these cases you still need to prepare the environment to execute tests, by executing HTTP calls before and after tests.
+
+===== Postman
+
+To execute HTTP calls one way of doing it is by using Postman Collections.
+*Postman* is a powerful HTTP client for testing web services.
+Postman allows API calls to be organized into groups that can be saved as _collections_.
+
+These collections are the ones used by APE to execute HTTP calls.
+You can read more about Postman and Postman collections at https://www.programmableweb.com/news/review-postman-client-makes-restful-api-exploration-breeze/brief/2014/01/27
+
+To use it:
+
+[source, java]
+.PostmanTest.java
+----
+@RunWith(Arquillian.class)
+public class PostmanTest {
+
+    @Postman
+    @ArquillianResource
+    RestPopulator populator;
+
+    @Test
+    public void should_get_message() {
+
+        populator.forServer(hostIp, port) // <1>
+               .usingDataSets("message.json") // <2>
+               .execute();
+
+
+        // Test
+
+    }
+
+}
+----
+<1> Configures location of service to populate
+<2> Postman collection definition. Scripts based on classpath location.
+
+You need to add `org.arquillian.ape:arquillian-ape-rest-postman` dependency in your build tool in order to use this mode.
+
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-rest/postman-ftest
+
+IMPORTANT: Postman Collection can contain any URL or port. APE will rewrite them to the one configured in `forServer` method.
+
+==== NoSQL
+
+In case of programmatic way, we are also providing integration with NoSQLUnit.
+Currently _Couchbase_, _CouchDB_, _Infinispan_, _MongoDB_, _Redis_ and _Vault_ are supported.
+
+All NoSQL examples are pretty similar, the only difference is the script format which differs in all cases.
+
+For example in case of Couchbase:
+
+[source, java]
+.CouchbaseTest.java
+----
+@RunWith(Arquillian.class)
+public class CouchbaseTest {
+
+    @Couchbase
+    @ArquillianResource
+    NoSqlPopulator populator;
+
+    @Test
+    public void should_find_airlines() {
+        populator.forServer(hostIp, 0)
+            .withStorage("travel-sample")
+            .usingDataSet("airlines.json")
+            .execute();
+    }
+}
+----
+
+You need to add `org.arquillian.ape:arquillian-ape-nosql-couchbase` dependency in your build tool in order to use this mode as well `com.lordofthejars:nosqlunit-couchbase`.
+
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/blob/2.0.0/arquillian-ape-nosql/couchbase-ftest
+
+To use other backend support you need to change annotation to corresponding backend, write script with required format and add the correct dependencies.
+
+[cols="1a, 2a, 2a", options="header"]
+|===
+|Annotation
+|Dependencies
+|Example
+
+|`@Couchbase`
+|* `org.arquillian.ape:arquillian-ape-nosql-couchbase`
+* `com.lordofthejars:nosqlunit-couchbase`
+|https://github.com/arquillian/arquillian-extension-persistence/blob/2.0.0/arquillian-ape-nosql/couchbase-ftest
+
+|`@CouchDb`
+|* `org.arquillian.ape:arquillian-ape-nosql-couchdb`
+* `com.lordofthejars:nosqlunit-couchdb`
+|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/couchdb-ftest
+
+|`@Infinispan`
+|* `org.arquillian.ape:arquillian-ape-nosql-infinispan`
+* `com.lordofthejars:nosqlunit-infinispan`
+|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/infinispan-ftest
+
+|`@MongoDb`
+|* `org.arquillian.ape:arquillian-ape-nosql-mongodb`
+* `com.lordofthejars:nosqlunit-mongodb`
+|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/mongodb-ftest
+
+|`@Redis`
+|* `org.arquillian.ape:arquillian-ape-nosql-redis`
+* `com.lordofthejars:nosqlunit-redis`
+|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/redis-ftest
+
+|`@Vault`
+|* `org.arquillian.ape:arquillian-ape-nosql-vault`
+* `com.lordofthejars:nosqlunit-vault`
+|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/vault-ftest
+
+|===
+
