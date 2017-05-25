@@ -1,4 +1,4 @@
-useraccount:
+USERACCOUNT:
       - id: 1
         firstname: John
         lastname: Smith
