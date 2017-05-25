@@ -48,7 +48,12 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
                    jdbcDatabaseTester.setSchema((String) customOptions.get(DbUnitOptions.SCHEMA));
             }
 
-            return jdbcDatabaseTester.getConnection();
+            final IDatabaseConnection connection = jdbcDatabaseTester.getConnection();
+            DbUnitOptions dbUnitOptions = new DbUnitOptions(customOptions);
+            dbUnitOptions.configure(connection.getConfig());
+
+            return connection;
+
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
