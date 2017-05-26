@@ -2,19 +2,18 @@
 === Programmatic Way
 
 So far you've seen how to use Arquillian Persistence Extension using _declarative way_.
-Just annotating your methods with `@UsingDataSet` and configured database is automatically populated with given dataset.
+Just annotating your methods with `@UsingDataSet` and configured database is automatically populated with the given dataset.
 
-But since APE 2.0.0, you can also use programmatic way.
+But since APE 2.0.0, you can also use the programmatic way.
 This way instead of using an annotation, you code your test with a DSL so you choose how, when and what is populated.
 
-Also programmatic way offers not only integration to _DBUnit_, but also integration to _Flyway_ for SQL schema migration.
-Moreover support for several NoSQL databases (using NoSQLUnit) and Rest services (using Postman) are provided.
+Also programmatic way offers not only integration with _DBUnit_, but also integration with _Flyway_ for SQL schema migration, support for several NoSQL databases (using _NoSQLUnit_) and REST services (using Postman) are provided.
 
-IMPORTANT: Programmatic way is meant to be used in _as-client_ or _standalone_ mode. Currently only
+IMPORTANT: Programmatic way is meant to be used in _as-client_ or _standalone_ mode. Currently only _DBUnit_ can be used in the container (application server).
 
 ==== SQL
 
-Currently two SQL technologies are supported, _DBUnit_ and _Flyway_.
+At the moment we have support for following SQL technologies - _DBUnit_ and _Flyway_.
 Let's see both of them in action:
 
 ===== DBUnit
@@ -41,7 +40,7 @@ public class PersonTest {
            .usingDataSet("person.yml")
            .execute(); // <2>
 
-        // Test
+        // ... test logic goes here
 
         rdbmsPopulator.forUri(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"))
            .withDriver(Driver.class)
@@ -60,11 +59,11 @@ TIP: Depending on your persistence tests you can put this code into `@Before @Be
 
 You need to add `org.arquillian.ape:arquillian-ape-sql-standalone-dbunit` dependency in your build tool in order to use this mode.
 
-You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-sql/standalone/dbunit-ftest
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-sql/standalone/dbunit-ftest
 
 ===== Flyway
 
-You can use _Flyway_ scripts to migrate the schema of a SQL database too.
+You can use _Flyway_ scripts to migrate the schema of a SQL database as well.
 
 [source, java]
 .FilmLibraryTest
@@ -105,9 +104,9 @@ public class FilmLibraryTest {
 
 You need to add `org.arquillian.ape:arquillian-ape-sql-standalone-flyway` dependency in your build tool in order to use this mode.
 
-You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-sql/standalone/flyway-ftest
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-sql/standalone/flyway-ftest
 
-==== Rest
+==== REST
 
 Sometimes your backend is not a database but another REST service, in these cases you still need to prepare the environment to execute tests, by executing HTTP calls before and after tests.
 
@@ -186,7 +185,7 @@ public class CouchbaseTest {
 
 You need to add `org.arquillian.ape:arquillian-ape-nosql-couchbase` dependency in your build tool in order to use this mode as well `com.lordofthejars:nosqlunit-couchbase`.
 
-You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/blob/2.0.0/arquillian-ape-nosql/couchbase-ftest
+You can check full example at: https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/couchbase-ftest
 
 To use other backend support you need to change annotation to corresponding backend, write script with required format and add the correct dependencies.
 
@@ -199,12 +198,12 @@ To use other backend support you need to change annotation to corresponding back
 |`@Couchbase`
 |* `org.arquillian.ape:arquillian-ape-nosql-couchbase`
 * `com.lordofthejars:nosqlunit-couchbase`
-|https://github.com/arquillian/arquillian-extension-persistence/blob/2.0.0/arquillian-ape-nosql/couchbase-ftest
+|https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/couchbase-ftest
 
 |`@CouchDb`
 |* `org.arquillian.ape:arquillian-ape-nosql-couchdb`
 * `com.lordofthejars:nosqlunit-couchdb`
-|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/couchdb-ftest
+|https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/couchdb-ftest
 
 |`@Infinispan`
 |* `org.arquillian.ape:arquillian-ape-nosql-infinispan`
@@ -214,17 +213,17 @@ To use other backend support you need to change annotation to corresponding back
 |`@MongoDb`
 |* `org.arquillian.ape:arquillian-ape-nosql-mongodb`
 * `com.lordofthejars:nosqlunit-mongodb`
-|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/mongodb-ftest
+|https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/infinispan-ftest
 
 |`@Redis`
 |* `org.arquillian.ape:arquillian-ape-nosql-redis`
 * `com.lordofthejars:nosqlunit-redis`
-|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/redis-ftest
+|https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/redis-ftest
 
 |`@Vault`
 |* `org.arquillian.ape:arquillian-ape-nosql-vault`
 * `com.lordofthejars:nosqlunit-vault`
-|https://github.com/arquillian/arquillian-extension-persistence/tree/2.0.0/arquillian-ape-nosql/vault-ftest
+|https://github.com/arquillian/arquillian-extension-persistence/tree/1dbcc26746bee68502422bf822a2ebde34e1bec0/arquillian-ape-nosql/vault-ftest
 
 |===
 
