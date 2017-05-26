@@ -127,4 +127,4 @@ include::{asciidoctor-source}/verifying-database-content.adoc[]
 include::{asciidoctor-source}/data-insert-strategies.adoc[]
 include::{asciidoctor-source}/cleaning-your-data.adoc[]
 include::{asciidoctor-source}/additional-configuration.adoc[]
-
+include::{asciidoctor-source}/programmatic-way.adoc[]
