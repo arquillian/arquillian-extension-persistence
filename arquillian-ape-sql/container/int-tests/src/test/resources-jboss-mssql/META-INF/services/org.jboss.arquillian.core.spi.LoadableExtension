@@ -1,2 +1,2 @@
-org.jboss.arquillian.integration.persistence.testextension.PersistenceExtensionTester
-org.jboss.arquillian.integration.persistence.datasource.mssql.MsSql2008DataSourceExtension
+org.arquillian.integration.ape.testextension.PersistenceExtensionTester
+org.arquillian.integration.ape.mssql.MsSql2008DataSourceExtension

@@ -1,2 +1,2 @@
-org.jboss.arquillian.integration.persistence.testextension.PersistenceExtensionTester
-org.jboss.arquillian.integration.persistence.datasource.oracle11g.Oracle11gDataSourceExtension
+org.arquillian.integration.ape.testextension.PersistenceExtensionTester
+org.arquillian.integration.ape.datasource.oracle11g.Oracle11gDataSourceExtension

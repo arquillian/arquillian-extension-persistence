@@ -84,6 +84,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jboss.arquillian.protocol</groupId>
+      <artifactId>arquillian-protocol-servlet</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-transaction-jta</artifactId>
       <scope>test</scope>

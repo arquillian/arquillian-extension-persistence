@@ -1,2 +1,2 @@
-org.jboss.arquillian.integration.persistence.testextension.PersistenceExtensionTester
-org.jboss.arquillian.integration.persistence.datasource.postgresql.PostgreSqlDataSourceExtension
+org.arquillian.integration.ape.testextension.PersistenceExtensionTester
+org.arquillian.integration.ape.datasource.postgresql.PostgreSqlDataSourceExtension
