@@ -1,5 +1,5 @@
 <dataset>
-  <person id="1" name="Bob" last_name="Doe" age="18"/>
-  <person id="2" name="Alice" last_name="Foo" age="23"/>
-  <person id="3" name="Charlie" last_name="Brown" age="42"/>
+  <PERSON id="1" name="Bob" last_name="Doe" age="18"/>
+  <PERSON id="2" name="Alice" last_name="Foo" age="23"/>
+  <PERSON id="3" name="Charlie" last_name="Brown" age="42"/>
 </dataset>

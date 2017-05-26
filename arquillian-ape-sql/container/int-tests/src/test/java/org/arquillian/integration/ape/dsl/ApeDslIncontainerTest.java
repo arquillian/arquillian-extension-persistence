@@ -8,6 +8,7 @@ import org.arquillian.ape.rdbms.PersistenceTest;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.dbunit.DbUnit;
+import org.arquillian.ape.rdbms.dbunit.DbUnitOptions;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.example.deployments.UserPersistenceWarDeploymentTest;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -90,6 +91,7 @@ public class ApeDslIncontainerTest {
         // given
         db.forUri(persistenceConfiguration.getDefaultDataSource())
             .usingDataSet("datasets/single-user.yml")
+            .withOptions(DbUnitOptions.options().caseSensitiveTableNames(true).build())
             .execute();
         String expectedUsername = "doovde";
 

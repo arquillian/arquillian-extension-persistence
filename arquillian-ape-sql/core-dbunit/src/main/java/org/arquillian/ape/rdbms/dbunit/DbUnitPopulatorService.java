@@ -32,7 +32,7 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     @Override
     public void connect(URI jdbc, String username, String password, Class<?> driver, Map<String, Object> customOptions) {
         try {
-            this.databaseConnection = lookupDataSourceConnection(jdbc.toString())
+            this.databaseConnection = lookupDataSourceConnection(jdbc.toString(), customOptions)
                 .orElseGet(() -> connectUsingJdbc(driver.getName(), jdbc.toString(), username, password, customOptions));
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -48,7 +48,12 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
                    jdbcDatabaseTester.setSchema((String) customOptions.get(DbUnitOptions.SCHEMA));
             }
 
-            return jdbcDatabaseTester.getConnection();
+            final IDatabaseConnection connection = jdbcDatabaseTester.getConnection();
+            DbUnitOptions dbUnitOptions = new DbUnitOptions(customOptions);
+            dbUnitOptions.configure(connection.getConfig());
+
+            return connection;
+
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -106,7 +111,8 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
     @Inject
     private Instance<Context> contextInstance;
 
-    private Optional<IDatabaseConnection> lookupDataSourceConnection(String dataSourceName) {
+    private Optional<IDatabaseConnection> lookupDataSourceConnection(String dataSourceName,
+        Map<String, Object> customOptions) {
 
         try {
 
@@ -119,7 +125,15 @@ public class DbUnitPopulatorService implements RdbmsPopulatorService<DbUnit> {
                 return Optional.empty();
             }
             final Connection connection = ((DataSource) context.lookup(dataSourceName)).getConnection();
-            return Optional.of(new DatabaseConnection(connection));
+
+            final DatabaseConnection databaseConnection = new DatabaseConnection(connection);
+
+            if (customOptions.size() > 0) {
+                DbUnitOptions dbUnitOptions = new DbUnitOptions(customOptions);
+                dbUnitOptions.configure(databaseConnection.getConfig());
+            }
+
+            return Optional.of(databaseConnection);
         } catch (NamingException | SQLException | DatabaseUnitException e) {
             log.warning("Failed performing datasource [" + dataSourceName + "] lookup. Cause: " + e.getMessage());
             return Optional.empty();

@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.arquillian.ape.rdbms.dbunit.DbUnitOptions.options;
 import static org.assertj.db.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -38,6 +39,9 @@ public class PersonTest {
             .withUsername("sa")
             .withPassword("")
             .usingDataSet("person.xml")
+            .withOptions(options()
+                            .caseSensitiveTableNames(true)
+                            .build())
             .execute();
 
         Table table = new Table(new Source("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""), "person");
