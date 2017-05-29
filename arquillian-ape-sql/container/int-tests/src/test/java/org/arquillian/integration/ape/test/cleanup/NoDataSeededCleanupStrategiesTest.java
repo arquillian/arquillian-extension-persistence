@@ -20,6 +20,7 @@ package org.arquillian.integration.ape.test.cleanup;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CreateSchema;
@@ -66,13 +67,13 @@ public class NoDataSeededCleanupStrategiesTest {
     }
 
     @Test
-    @Cleanup(strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @CleanupStrategy(BuiltInCleanupStrategy.USED_TABLES_ONLY)
     public void should_not_have_any_user_in_database_used_tables_only_strategy() throws Exception {
         assertNoUserAccountsStored();
     }
 
     @Test
-    @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @CleanupStrategy(BuiltInCleanupStrategy.USED_ROWS_ONLY)
     public void should_not_have_any_user_in_database_used_rows_only_strategy() throws Exception {
         assertNoUserAccountsStored();
     }

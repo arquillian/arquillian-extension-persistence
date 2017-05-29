@@ -17,7 +17,7 @@
  */
 package org.arquillian.ape.rdbms.dbunit.cleanup;
 
-import org.arquillian.ape.rdbms.CleanupStrategy.StrategyProvider;
+import org.arquillian.ape.rdbms.BuiltInCleanupStrategy.StrategyProvider;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.dbunit.database.DatabaseConnection;

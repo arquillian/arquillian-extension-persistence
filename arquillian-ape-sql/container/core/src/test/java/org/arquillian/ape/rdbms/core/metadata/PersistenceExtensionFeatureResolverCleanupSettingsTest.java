@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -74,7 +75,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
         public void shouldPassCleanupAndAfterPhaseDefined() {
         }
 
-        @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+        @CleanupStrategy(BuiltInCleanupStrategy.USED_ROWS_ONLY)
         public void shouldPassStrategyOnly() {
         }
 

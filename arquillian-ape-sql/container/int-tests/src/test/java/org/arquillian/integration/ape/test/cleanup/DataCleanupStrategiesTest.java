@@ -43,6 +43,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.arquillian.ape.rdbms.BuiltInCleanupStrategy.STRICT;
+import static org.arquillian.ape.rdbms.BuiltInCleanupStrategy.USED_ROWS_ONLY;
+import static org.arquillian.ape.rdbms.BuiltInCleanupStrategy.USED_TABLES_ONLY;
 
 @RunWith(Arquillian.class)
 public class DataCleanupStrategiesTest {
@@ -64,7 +67,8 @@ public class DataCleanupStrategiesTest {
     @Test
     @InSequence(1)
     @UsingDataSet("users.yml")
-    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.STRICT)
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    @CleanupStrategy(STRICT)
     @DatabaseShouldBeEmptyAfterTest
     public void should_cleanup_whole_database_content_when_using_strict_mode() {
         em.persist(new Address("Kryptonite", 1, "Metropolis", 7272));
@@ -73,7 +77,8 @@ public class DataCleanupStrategiesTest {
     @Test
     @InSequence(2)
     @UsingDataSet("users.yml")
-    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    @CleanupStrategy(USED_ROWS_ONLY)
     @DatabaseShouldContainAfterTest("expected-address.yml")
     public void should_cleanup_entries_added_using_data_set() {
         em.persist(new Address("Testing Street", 7, "JavaPolis", 1234));
@@ -84,7 +89,8 @@ public class DataCleanupStrategiesTest {
     @ApplyScriptBefore({"delete-all.sql", "one-address.sql"})
     @UsingDataSet("users.yml")
     @ShouldMatchDataSet(value = {"users.yml", "lex-luthor.yml", "expected-address.yml"}, excludeColumns = {"id"})
-    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    @CleanupStrategy(USED_ROWS_ONLY)
     @DatabaseShouldContainAfterTest({"expected-address.yml", "lex-luthor.yml"})
     public void should_cleanup_entries_added_using_data_set_but_not_by_script() {
         em.persist(new UserAccount("Lex", "Luthor", "LexCorp", "Injustice Gang"));
@@ -94,7 +100,8 @@ public class DataCleanupStrategiesTest {
     @InSequence(4)
     @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
     @UsingDataSet("users.yml")
-    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    @CleanupStrategy(USED_TABLES_ONLY)
     @DatabaseShouldContainAfterTest({"expected-address.yml"})
     @ShouldBeEmptyAfterTest("useraccount")
     public void should_cleanup_all_tables_defined_in_data_set() {
@@ -105,7 +112,8 @@ public class DataCleanupStrategiesTest {
     @InSequence(5)
     @ApplyScriptBefore({"delete-all.sql", "one-address.sql", "lex-luthor.sql"})
     @UsingDataSet("users.yml")
-    @Cleanup(phase = TestExecutionPhase.AFTER, strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @Cleanup(phase = TestExecutionPhase.AFTER)
+    @CleanupStrategy(USED_TABLES_ONLY)
     @DatabaseShouldContainAfterTest({"expected-address.yml"})
     @ShouldBeEmptyAfterTest("useraccount")
     public void should_seed_using_both_custom_scripts_and_datasets_and_cleanup_all_tables_defined_in_data_set() {

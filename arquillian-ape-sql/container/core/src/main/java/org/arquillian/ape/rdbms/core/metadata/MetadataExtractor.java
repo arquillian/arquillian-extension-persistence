@@ -23,6 +23,7 @@ import java.util.Map;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.Cleanup;
+import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.CreateSchema;
 import org.arquillian.ape.rdbms.DataSource;
@@ -84,6 +85,10 @@ public class MetadataExtractor {
 
     public AnnotationInspector<Cleanup> cleanup() {
         return using(Cleanup.class);
+    }
+
+    public AnnotationInspector<CleanupStrategy> cleanupStrategy() {
+        return using(CleanupStrategy.class);
     }
 
     public AnnotationInspector<CleanupUsingScript> cleanupUsingScript() {
