@@ -17,6 +17,7 @@
  */
 package org.jboss.arquillian.persistence.core.metadata;
 
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -74,7 +75,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
         public void shouldPassCleanupAndAfterPhaseDefined() {
         }
 
-        @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+        @CleanupStrategy(BuiltInCleanupStrategy.USED_ROWS_ONLY)
         public void shouldPassStrategyOnly() {
         }
 

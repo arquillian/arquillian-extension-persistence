@@ -23,6 +23,7 @@ import java.util.Map;
 import org.jboss.arquillian.persistence.ApplyScriptAfter;
 import org.jboss.arquillian.persistence.ApplyScriptBefore;
 import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.CreateSchema;
 import org.jboss.arquillian.persistence.DataSource;
@@ -84,6 +85,10 @@ public class MetadataExtractor {
 
     public AnnotationInspector<Cleanup> cleanup() {
         return using(Cleanup.class);
+    }
+
+    public AnnotationInspector<CleanupStrategy> cleanupStrategy() {
+        return using(CleanupStrategy.class);
     }
 
     public AnnotationInspector<CleanupUsingScript> cleanupUsingScript() {

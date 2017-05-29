@@ -24,6 +24,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
 import org.jboss.arquillian.integration.persistence.util.Query;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CreateSchema;
@@ -66,13 +67,13 @@ public class NoDataSeededCleanupStrategiesTest {
     }
 
     @Test
-    @Cleanup(strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @CleanupStrategy(BuiltInCleanupStrategy.USED_TABLES_ONLY)
     public void should_not_have_any_user_in_database_used_tables_only_strategy() throws Exception {
         assertNoUserAccountsStored();
     }
 
     @Test
-    @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @CleanupStrategy(BuiltInCleanupStrategy.USED_ROWS_ONLY)
     public void should_not_have_any_user_in_database_used_rows_only_strategy() throws Exception {
         assertNoUserAccountsStored();
     }

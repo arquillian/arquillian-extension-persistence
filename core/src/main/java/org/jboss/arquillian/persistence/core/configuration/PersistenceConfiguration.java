@@ -18,7 +18,7 @@
 package org.jboss.arquillian.persistence.core.configuration;
 
 import java.io.Serializable;
-import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -42,7 +42,7 @@ public class PersistenceConfiguration extends Configuration implements Serializa
 
     private TestExecutionPhase defaultCleanupPhase = TestExecutionPhase.AFTER;
 
-    private CleanupStrategy defaultCleanupStrategy = CleanupStrategy.STRICT;
+    private BuiltInCleanupStrategy defaultCleanupStrategy = BuiltInCleanupStrategy.STRICT;
 
     public PersistenceConfiguration() {
         super("persistence", "arquillian.extension.persistence.");
@@ -130,16 +130,16 @@ public class PersistenceConfiguration extends Configuration implements Serializa
         this.defaultCleanupPhase = defaultCleanupPhase;
     }
 
-    public CleanupStrategy getDefaultCleanupStrategy() {
+    public BuiltInCleanupStrategy getDefaultCleanupStrategy() {
         return defaultCleanupStrategy;
     }
 
     /**
      * @param defaultCleanupStrategy
      *     Defines strategy of cleaninig database content for the test.
-     *     Default value is {@link CleanupStrategy#STRICT}
+     *     Default value is {@link BuiltInCleanupStrategy#STRICT}
      */
-    public void setDefaultCleanupStrategy(CleanupStrategy defaultCleanupStrategy) {
+    public void setDefaultCleanupStrategy(BuiltInCleanupStrategy defaultCleanupStrategy) {
         this.defaultCleanupStrategy = defaultCleanupStrategy;
     }
 

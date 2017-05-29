@@ -33,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * You can change this behaviour by setting up {@link #strategy()} field.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- * @see {@link TestExecutionPhase}, {@link CleanupStrategy}
+ * @see {@link TestExecutionPhase}, {@link BuiltInCleanupStrategy}
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
@@ -42,5 +42,4 @@ public @interface Cleanup {
 
     TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
 
-    CleanupStrategy strategy() default CleanupStrategy.DEFAULT;
 }

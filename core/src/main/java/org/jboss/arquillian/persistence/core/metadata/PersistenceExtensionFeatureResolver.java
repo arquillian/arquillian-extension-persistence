@@ -18,6 +18,7 @@
 package org.jboss.arquillian.persistence.core.metadata;
 
 import java.lang.reflect.Method;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.persistence.Cleanup;
 import org.jboss.arquillian.persistence.CleanupStrategy;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -86,12 +87,12 @@ public class PersistenceExtensionFeatureResolver {
         return phase;
     }
 
-    public CleanupStrategy getCleanupStrategy() {
-        final Cleanup cleanup = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
-        if (cleanup == null || CleanupStrategy.DEFAULT.equals(cleanup.strategy())) {
+    public BuiltInCleanupStrategy getCleanupStrategy() {
+        final CleanupStrategy cleanup = metadataExtractor.cleanupStrategy().fetchUsingFirst(testMethod);
+        if (cleanup == null || BuiltInCleanupStrategy.DEFAULT.equals(cleanup.value())) {
             return configuration.getDefaultCleanupStrategy();
         }
-        return cleanup.strategy();
+        return cleanup.value();
     }
 
     public DataSeedStrategy getDataSeedStrategy() {

@@ -19,6 +19,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_TABLES_ONLY;
+
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.BEFORE)
 public class EmptyTablesYamlDataSetTest {
@@ -47,7 +49,8 @@ public class EmptyTablesYamlDataSetTest {
     @Test
     @InSequence(2)
     @UsingDataSet("empty/empty-tables.yml")
-    @Cleanup(phase = TestExecutionPhase.BEFORE, strategy = CleanupStrategy.USED_TABLES_ONLY)
+    @Cleanup(phase = TestExecutionPhase.BEFORE)
+    @CleanupStrategy(USED_TABLES_ONLY)
     public void should_clean_when_yaml_with_empty_tables_provided() throws Exception {
         new UserPersistenceAssertion(em).assertNoUserAccountsStored();
     }

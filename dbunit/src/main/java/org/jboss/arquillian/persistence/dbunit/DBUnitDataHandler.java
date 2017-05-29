@@ -27,7 +27,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.persistence.DataSeedStrategy;
 import org.jboss.arquillian.persistence.core.data.DataHandler;
 import org.jboss.arquillian.persistence.core.event.CleanupData;
@@ -158,7 +158,7 @@ public class DBUnitDataHandler implements DataHandler<PrepareDBUnitData, Compare
         return dataSeedStrategy.provide(new DBUnitDataSeedStrategyProvider(useIdentityInsert));
     }
 
-    private void cleanDatabase(CleanupStrategy cleanupStrategy) {
+    private void cleanDatabase(BuiltInCleanupStrategy cleanupStrategy) {
         final CleanupStrategyExecutor cleanupStrategyExecutor = cleanupStrategy.provide(new CleanupStrategyProvider(
             databaseConnection.get(), dataSetRegister.get(), dbunitConfigurationInstance.get()));
         cleanupStrategyExecutor.cleanupDatabase(dbunitConfigurationInstance.get().getExcludeTablesFromCleanup());

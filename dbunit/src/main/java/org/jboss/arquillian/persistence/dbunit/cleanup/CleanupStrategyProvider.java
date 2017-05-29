@@ -18,7 +18,7 @@
 package org.jboss.arquillian.persistence.dbunit.cleanup;
 
 import org.dbunit.database.DatabaseConnection;
-import org.jboss.arquillian.persistence.CleanupStrategy.StrategyProvider;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy.StrategyProvider;
 import org.jboss.arquillian.persistence.dbunit.configuration.DBUnitConfiguration;
 import org.jboss.arquillian.persistence.dbunit.dataset.DataSetRegister;
 

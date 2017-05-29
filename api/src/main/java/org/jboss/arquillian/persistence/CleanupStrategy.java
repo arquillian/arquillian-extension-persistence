@@ -17,66 +17,19 @@
  */
 package org.jboss.arquillian.persistence;
 
-/**
- * Defines strategy to be applied for {@link @Cleanup} operation.
- *
- * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- */
-public enum CleanupStrategy {
-    /**
-     * Cleans entire database.
-     * Might require turning off database constraints (e.g. referential integrity).
-     */
-    STRICT {
-        @Override
-        public <T> T provide(StrategyProvider<T> provider) {
-            return provider.strictStrategy();
-        }
-    },
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-    /**
-     * Deletes only those entries which were defined in data sets.
-     */
-    USED_ROWS_ONLY {
-        @Override
-        public <T> T provide(StrategyProvider<T> provider) {
-            return provider.usedRowsOnlyStrategy();
-        }
-    },
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    /**
-     * Deletes only those tables which were used in data sets.
-     */
-    USED_TABLES_ONLY {
-        @Override
-        public <T> T provide(StrategyProvider<T> provider) {
-            return provider.usedTablesOnlyStrategy();
-        }
-    },
+@Target({TYPE, METHOD})
+@Retention(RUNTIME)
+@Inherited
+public @interface CleanupStrategy {
 
-    /**
-     * This is guarding enum instance used to indicate
-     * that use has not defined cleanup strategy explicitly.
-     * Therefore one defined globally in <code>arquillian.xml</code>
-     * should be used.
-     */
-    DEFAULT {
-        @Override
-        public <T> T provide(StrategyProvider<T> provider) {
-            return provider.defaultStrategy();
-        }
-    };
-
-    public abstract <T> T provide(StrategyProvider<T> provider);
-
-    public interface StrategyProvider<T> {
-        T strictStrategy();
-
-        T usedTablesOnlyStrategy();
-
-        T usedRowsOnlyStrategy();
-
-        T defaultStrategy();
-    }
+    BuiltInCleanupStrategy value() default BuiltInCleanupStrategy.DEFAULT;
 
 }

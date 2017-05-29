@@ -37,9 +37,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_ROWS_ONLY;
 
 @RunWith(Arquillian.class)
-public class UsedRowsOnlyCleanupStrategyTest {
+public class UsedRowsOnlyBuiltInCleanupStrategyTest {
 
     @PersistenceContext
     EntityManager em;
@@ -65,7 +66,8 @@ public class UsedRowsOnlyCleanupStrategyTest {
     @Test
     @InSequence(2)
     @UsingDataSet("users.yml") // both users are without nicknames
-    @Cleanup(phase = TestExecutionPhase.BEFORE, strategy = CleanupStrategy.USED_ROWS_ONLY)
+    @Cleanup(phase = TestExecutionPhase.BEFORE)
+    @CleanupStrategy(USED_ROWS_ONLY)
     public void should_cleanup_database_content_matching_users_from_dataset() {
         UserAccount clarkKent = em.find(UserAccount.class, 2L);
         assertThat(clarkKent.getNickname()).isNullOrEmpty();

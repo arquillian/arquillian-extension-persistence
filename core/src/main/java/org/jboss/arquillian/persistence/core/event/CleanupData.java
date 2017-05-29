@@ -17,14 +17,14 @@
  */
 package org.jboss.arquillian.persistence.core.event;
 
-import org.jboss.arquillian.persistence.CleanupStrategy;
+import org.jboss.arquillian.persistence.BuiltInCleanupStrategy;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 public class CleanupData extends TestEvent implements PersistenceEvent {
 
-    public final CleanupStrategy cleanupStrategy;
+    public final BuiltInCleanupStrategy cleanupStrategy;
 
-    public CleanupData(TestEvent testEvent, CleanupStrategy cleanupStrategy) {
+    public CleanupData(TestEvent testEvent, BuiltInCleanupStrategy cleanupStrategy) {
         super(testEvent.getTestInstance(), testEvent.getTestMethod());
         this.cleanupStrategy = cleanupStrategy;
     }
