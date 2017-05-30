@@ -61,10 +61,8 @@ after_error:
   - 'if [ $FORCE_DOC_GEN == 0 ] || [ $GENERATE_DOC == 0 ]; then
       docker logs adoc-to-html;
     fi'
-  - sudo netstat -pna | grep 5432
 
 after_failure:
   - 'if [ $FORCE_DOC_GEN == 0 ] || [ $GENERATE_DOC == 0 ]; then
       docker logs adoc-to-html;
     fi'
-  - sudo netstat -pna | grep 5432
