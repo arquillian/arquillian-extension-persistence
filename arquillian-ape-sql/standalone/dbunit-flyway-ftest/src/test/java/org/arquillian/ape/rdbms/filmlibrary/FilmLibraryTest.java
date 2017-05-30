@@ -26,7 +26,7 @@ public class FilmLibraryTest {
 
     @ClassRule
     public static ContainerDslRule postgresql = new ContainerDslRule("postgres:9.6.2-alpine")
-        .withPortBinding(5432)
+        .withPortBinding("15432->5432")
         .withEnvironment("POSTGRES_PASSWORD", PASSWORD,
             "POSTGRES_USER", USERNAME,
             "POSTGRES_DB", DB)
@@ -42,7 +42,6 @@ public class FilmLibraryTest {
     @DbUnit
     @ArquillianResource
     RdbmsPopulator dbUnitRdbmsPopulator;
-
 
     @Test
     public void should_find_all_hollywood_films() {
