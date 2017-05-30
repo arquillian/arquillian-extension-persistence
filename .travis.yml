@@ -38,8 +38,7 @@ before_install:
 before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
-  - docker --version
-  - sudo netstat -pna | grep 5432
+  - docker pull lordofthejars/messenger:1.0.0
 
 before_script: ./mvnw install -q -U -DskipTests=true
 
