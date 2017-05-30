@@ -18,6 +18,7 @@
 package org.arquillian.ape.rdbms.core.metadata;
 
 import java.lang.reflect.Method;
+import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -86,12 +87,12 @@ public class PersistenceExtensionFeatureResolver {
         return phase;
     }
 
-    public CleanupStrategy getCleanupStrategy() {
-        final Cleanup cleanup = metadataExtractor.cleanup().fetchUsingFirst(testMethod);
-        if (cleanup == null || CleanupStrategy.DEFAULT.equals(cleanup.strategy())) {
+    public BuiltInCleanupStrategy getCleanupStrategy() {
+        final CleanupStrategy cleanup = metadataExtractor.cleanupStrategy().fetchUsingFirst(testMethod);
+        if (cleanup == null || BuiltInCleanupStrategy.DEFAULT.equals(cleanup.value())) {
             return configuration.getDefaultCleanupStrategy();
         }
-        return cleanup.strategy();
+        return cleanup.value();
     }
 
     public DataSeedStrategy getDataSeedStrategy() {

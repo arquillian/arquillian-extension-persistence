@@ -17,6 +17,7 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
 import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
@@ -154,10 +155,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
                 new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
-        CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
+        BuiltInCleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
 
         // then
-        assertThat(cleanupStragety).isEqualTo(CleanupStrategy.STRICT);
+        assertThat(cleanupStragety).isEqualTo(BuiltInCleanupStrategy.STRICT);
     }
 
     @Test
@@ -170,10 +171,10 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
                 new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
-        CleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
+        BuiltInCleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
 
         // then
-        assertThat(cleanupStragety).isEqualTo(CleanupStrategy.USED_ROWS_ONLY);
+        assertThat(cleanupStragety).isEqualTo(BuiltInCleanupStrategy.USED_ROWS_ONLY);
     }
 
     // ----------------------------------------------------------------------------------------
@@ -202,7 +203,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
         public void shouldPassCleanupAndAfterPhaseDefined() {
         }
 
-        @Cleanup(strategy = CleanupStrategy.USED_ROWS_ONLY)
+        @CleanupStrategy(BuiltInCleanupStrategy.USED_ROWS_ONLY)
         public void shouldPassStrategyOnly() {
         }
 
