@@ -39,6 +39,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - docker --version
+  - sudo netstat -pna | grep 5432
 
 before_script: ./mvnw install -q -U -DskipTests=true
 
@@ -60,8 +61,10 @@ after_error:
   - 'if [ $FORCE_DOC_GEN == 0 ] || [ $GENERATE_DOC == 0 ]; then
       docker logs adoc-to-html;
     fi'
+  - sudo netstat -pna | grep 5432
 
 after_failure:
   - 'if [ $FORCE_DOC_GEN == 0 ] || [ $GENERATE_DOC == 0 ]; then
       docker logs adoc-to-html;
     fi'
+  - sudo netstat -pna | grep 5432
