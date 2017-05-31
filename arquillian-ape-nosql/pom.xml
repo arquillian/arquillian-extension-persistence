@@ -97,12 +97,14 @@
     <module>mongodb-ftest</module>
     <module>redis</module>
     <module>redis-ftest</module>
+    <module>redis-declarative-rule-ftest</module>
     <module>vault</module>
     <module>vault-ftest</module>
     <module>couchdb</module>
     <module>couchdb-ftest</module>
     <module>infinispan</module>
     <module>infinispan-ftest</module>
+    <module>polyglot-nosql-ftest</module>
   </modules>
 
 </project>

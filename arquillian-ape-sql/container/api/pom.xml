@@ -14,6 +14,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <version>7.0</version>

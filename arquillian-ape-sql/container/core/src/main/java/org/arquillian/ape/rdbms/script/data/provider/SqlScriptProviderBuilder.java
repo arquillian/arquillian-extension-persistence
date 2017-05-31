@@ -18,7 +18,7 @@ package org.arquillian.ape.rdbms.script.data.provider;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.ValueExtractor;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 
@@ -29,7 +29,7 @@ public class SqlScriptProviderBuilder<K extends Annotation> {
 
     private Class<K> annotation;
     private FileNamingStrategy<String> scriptFileNamingStrategy;
-    private MetadataExtractor metadataExtractor;
+    private DbUnitMetadataExtractor metadataExtractor;
     private ScriptingConfiguration configuration;
 
     static <K extends Annotation> SqlScriptProviderBuilder<K> create(Class<K> annotation) {
@@ -50,7 +50,7 @@ public class SqlScriptProviderBuilder<K extends Annotation> {
             this.builder = builder;
         }
 
-        public SqlScriptProviderBuilder.Naming<K> extractingMetadataUsing(MetadataExtractor extractor) {
+        public SqlScriptProviderBuilder.Naming<K> extractingMetadataUsing(DbUnitMetadataExtractor extractor) {
             builder.metadataExtractor = extractor;
             return new SqlScriptProviderBuilder.Naming<K>(builder);
         }

@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.dbunit.configuration;
 
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.dbunit.configuration.annotations.Feature;

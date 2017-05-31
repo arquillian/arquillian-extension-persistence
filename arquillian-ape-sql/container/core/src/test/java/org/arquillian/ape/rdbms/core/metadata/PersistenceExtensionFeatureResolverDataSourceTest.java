@@ -17,8 +17,8 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.DataSource;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotDefinedException;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
@@ -44,7 +44,7 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()),
+                new DbUnitMetadataExtractor(testEvent.getTestClass()),
                 TestConfigurationLoader.createPersistenceConfigurationFrom(
                     "arquillian-without-persistence-properties.xml"));
 
@@ -63,7 +63,7 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
             DataSourceAnnotated.class.getMethod("shouldPassWithDataSourceDefinedOnMethodLevel"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -80,7 +80,7 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
             DataSourceAnnotated.class.getMethod("shouldPassWithoutDataSourceDefinedOnMethodLevel"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -97,7 +97,7 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         String dataSourceName = persistenceExtensionFeatureResolver.getDataSourceName();
@@ -115,7 +115,7 @@ public class PersistenceExtensionFeatureResolverDataSourceTest {
             DataSourceExpectedFromDefaultConfiguration.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()),
+                new DbUnitMetadataExtractor(testEvent.getTestClass()),
                 TestConfigurationLoader.createPersistenceConfigurationFrom(
                     "arquillian-without-persistence-properties.xml"));
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.arquillian.ape.core.RunnerExpressionParser;
 import org.ektorp.http.StdHttpClient;
 
 public class CouchDbOptions implements Map<String, Object> {
@@ -112,8 +113,39 @@ public class CouchDbOptions implements Map<String, Object> {
         }
 
         if (this.options.containsKey(SSL_FACTORY_SOCKET)) {
-            httpBuilder.sslSocketFactory((org.apache.http.conn.ssl.SSLSocketFactory) this.options.get(SSL_FACTORY_SOCKET));
+            httpBuilder.sslSocketFactory(
+                (org.apache.http.conn.ssl.SSLSocketFactory) this.options.get(SSL_FACTORY_SOCKET));
         }
+    }
+
+    public static CouchDbOptions from(CouchDbConfiguration couchDbConfiguration) {
+
+        final Map<String, Object> options = new HashMap<>();
+
+        if (!couchDbConfiguration.username().isEmpty()) {
+            options.put(USERNAME, RunnerExpressionParser.parseExpressions(couchDbConfiguration.username()));
+        }
+
+        if (!couchDbConfiguration.password().isEmpty()) {
+            options.put(PASSWORD, RunnerExpressionParser.parseExpressions(couchDbConfiguration.password()));
+        }
+
+        if (!couchDbConfiguration.caching().isEmpty()) {
+            options.put(CACHING,
+                Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchDbConfiguration.caching())));
+        }
+
+        if (!couchDbConfiguration.enableSsl().isEmpty()) {
+            options.put(ENABLE_SSL,
+                Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchDbConfiguration.enableSsl())));
+        }
+
+        if (!couchDbConfiguration.relaxedSsl().isEmpty()) {
+            options.put(RELAXED_SSL,
+                Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchDbConfiguration.relaxedSsl())));
+        }
+
+        return new CouchDbOptions(options);
     }
 
     public static class CouchDbConfigurationOptions {

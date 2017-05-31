@@ -24,13 +24,13 @@ import org.jboss.arquillian.test.spi.TestClass;
  */
 public class PersistenceExtensionEnabler {
 
-    private final MetadataExtractor metadataExtractor;
+    private final DbUnitMetadataExtractor metadataExtractor;
 
     public PersistenceExtensionEnabler(TestClass testClass) {
-        this.metadataExtractor = new MetadataExtractor(testClass);
+        this.metadataExtractor = new DbUnitMetadataExtractor(testClass);
     }
 
-    public PersistenceExtensionEnabler(MetadataExtractor metadataExtractor) {
+    public PersistenceExtensionEnabler(DbUnitMetadataExtractor metadataExtractor) {
         this.metadataExtractor = metadataExtractor;
     }
 

@@ -2,6 +2,7 @@ package org.arquillian.ape.nosql.couchdb;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.spi.Populator;
+import org.arquillian.ape.api.DeclarativeSupport;
 import org.arquillian.ape.spi.junit.rule.JUnitRuleSupport;
 import org.arquillian.ape.nosql.NoSqlPopulator;
 import org.arquillian.ape.nosql.NoSqlPopulatorEnricher;
@@ -14,7 +15,8 @@ public class CouchDbPopulatorExtension implements LoadableExtension, JUnitRuleSu
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, CouchDbPopulatorService.class)
-            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
+            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class)
+            .observer(CouchDbDeclarativeSupport.class);
     }
 
     @Override
@@ -30,5 +32,10 @@ public class CouchDbPopulatorExtension implements LoadableExtension, JUnitRuleSu
     @Override
     public Class<? extends Populator> populator() {
         return NoSqlPopulator.class;
+    }
+
+    @Override
+    public DeclarativeSupport declarativeSupport() {
+        return new CouchDbDeclarativeSupport();
     }
 }

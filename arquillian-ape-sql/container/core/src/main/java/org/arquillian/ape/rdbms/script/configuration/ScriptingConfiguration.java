@@ -18,7 +18,7 @@
 package org.arquillian.ape.rdbms.script.configuration;
 
 import java.nio.charset.Charset;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.script.splitter.DefaultStatementSplitter;
 

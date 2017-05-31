@@ -24,7 +24,7 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.arquillian.ape.rdbms.JpaCacheEvictionStrategy;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.Configuration;
 import org.arquillian.ape.rdbms.core.container.RemotePersistenceExtension;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;

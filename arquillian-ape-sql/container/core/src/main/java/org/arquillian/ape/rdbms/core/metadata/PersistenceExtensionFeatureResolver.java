@@ -18,14 +18,14 @@
 package org.arquillian.ape.rdbms.core.metadata;
 
 import java.lang.reflect.Method;
+import org.arquillian.ape.api.Cleanup;
 import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
-import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.DataSeedStrategy;
 import org.arquillian.ape.rdbms.DataSource;
 import org.arquillian.ape.rdbms.SeedDataUsing;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.core.exception.DataSourceNotDefinedException;
 import org.arquillian.ape.rdbms.core.util.Strings;
@@ -37,11 +37,11 @@ public class PersistenceExtensionFeatureResolver {
 
     private final PersistenceConfiguration configuration;
 
-    private final MetadataExtractor metadataExtractor;
+    private final DbUnitMetadataExtractor metadataExtractor;
 
     private final Method testMethod;
 
-    public PersistenceExtensionFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor,
+    public PersistenceExtensionFeatureResolver(Method testMethod, DbUnitMetadataExtractor metadataExtractor,
         PersistenceConfiguration configuration) {
         this.metadataExtractor = metadataExtractor;
         this.configuration = configuration;

@@ -17,7 +17,7 @@
  */
 package org.arquillian.integration.ape.example;
 
-import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.integration.ape.util.Query;
 import org.dbunit.database.DatabaseConnection;
 import org.jboss.arquillian.container.test.api.Deployment;

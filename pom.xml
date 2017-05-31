@@ -29,6 +29,7 @@
     <module>arquillian-ape-nosql</module>
     <module>arquillian-ape-rest</module>
     <module>arquillian-ape-spi</module>
+    <module>arquillian-ape-api</module>
     <module>arquillian-ape-junit-rule</module>
   </modules>
 

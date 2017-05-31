@@ -2,6 +2,7 @@ package org.arquillian.ape.rdbms.dbunit;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.spi.Populator;
+import org.arquillian.ape.api.DeclarativeSupport;
 import org.arquillian.ape.spi.junit.rule.JUnitRuleSupport;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.arquillian.ape.rdbms.core.RdbmsPopulatorEnricher;
@@ -29,5 +30,10 @@ public class DbUnitPopulatorExtension implements LoadableExtension, JUnitRuleSup
     @Override
     public Class<? extends Populator> populator() {
         return RdbmsPopulator.class;
+    }
+
+    @Override
+    public DeclarativeSupport declarativeSupport() {
+        throw new UnsupportedOperationException();
     }
 }

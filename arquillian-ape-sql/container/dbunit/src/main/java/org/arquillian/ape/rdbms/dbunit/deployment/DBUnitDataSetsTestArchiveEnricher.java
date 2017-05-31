@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.arquillian.ape.api.AnnotationInspector;
 import org.arquillian.ape.rdbms.core.data.descriptor.DtdFileResourceDescriptor;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.dbunit.dataset.xml.DtdResolver;
-import org.arquillian.ape.rdbms.core.metadata.AnnotationInspector;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
@@ -100,9 +100,9 @@ public class DBUnitDataSetsTestArchiveEnricher implements ApplicationArchiveProc
         final Set<ResourceDescriptor<?>> allDataSets = new HashSet<ResourceDescriptor<?>>();
 
         final DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
+            new DataSetProvider(new DbUnitMetadataExtractor(testClass), dbunitConfigurationInstance.get());
         final ExpectedDataSetProvider expectedDataSetProvider =
-            new ExpectedDataSetProvider(new MetadataExtractor(testClass), dbunitConfigurationInstance.get());
+            new ExpectedDataSetProvider(new DbUnitMetadataExtractor(testClass), dbunitConfigurationInstance.get());
 
         allDataSets.addAll(dataSetProvider.getDescriptors(testClass));
         allDataSets.addAll(expectedDataSetProvider.getDescriptors(testClass));

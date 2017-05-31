@@ -17,11 +17,11 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.api.Cleanup;
 import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
-import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -40,7 +40,7 @@ public class PersistenceExtensionFeatureResolverCleanupSettingsTest {
             CleanupUsingScriptOnMethodLevelSettings.class.getMethod("shouldPassWhenCleanupUsingScriptDefined"));
         PersistenceExtensionScriptingFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionScriptingFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupUsingScriptAfter = persistenceExtensionFeatureResolver.shouldCleanupUsingScriptAfter();

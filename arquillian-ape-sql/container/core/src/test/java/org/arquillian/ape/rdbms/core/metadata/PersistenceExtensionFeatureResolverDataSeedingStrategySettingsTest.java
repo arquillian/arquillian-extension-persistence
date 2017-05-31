@@ -37,7 +37,7 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
             DefaultDataSeedSettings.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -53,7 +53,7 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
             ClassLevelDataSeedCleanInsertSettings.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -69,7 +69,7 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
             MethodLevelDataSeedSettings.class.getMethod("shouldPassUpdateStrategy"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();
@@ -84,7 +84,7 @@ public class PersistenceExtensionFeatureResolverDataSeedingStrategySettingsTest 
             MethodLevelDataSeedSettings.class.getMethod("shouldPassUsingClassLevelDefinition"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         DataSeedStrategy dataSeedStrategy = persistenceExtensionFeatureResolver.getDataSeedStrategy();

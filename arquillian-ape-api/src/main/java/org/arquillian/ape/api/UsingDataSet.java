@@ -15,9 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape.rdbms;
+package org.arquillian.ape.api;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -51,7 +53,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
+@Repeatable(UsingDataSets.class)
 public @interface UsingDataSet {
 
     String[] value() default "";
+    Class<? extends Annotation> type() default NoType.class;
 }

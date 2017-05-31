@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
 import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
@@ -36,7 +36,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 public class DataSetHandler {
 
     @Inject
-    private Instance<MetadataExtractor> metadataExtractorInstance;
+    private Instance<DbUnitMetadataExtractor> metadataExtractorInstance;
 
     @Inject
     private Instance<DBUnitConfiguration> configurationInstance;
@@ -68,7 +68,7 @@ public class DataSetHandler {
             persistenceExtensionFeatureResolverInstance.get();
 
         if (persistenceExtensionFeatureResolver.shouldVerifyDataAfterTest()) {
-            final MetadataExtractor metadataExtractor = metadataExtractorInstance.get();
+            final DbUnitMetadataExtractor metadataExtractor = metadataExtractorInstance.get();
             final ExpectedDataSetProvider dataSetProvider =
                 new ExpectedDataSetProvider(metadataExtractor, configurationInstance.get());
             final Method testMethod = afterPersistenceTest.getTestMethod();

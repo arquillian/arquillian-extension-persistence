@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.deployment.ResourceAppender;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
@@ -47,7 +47,7 @@ public class PersistenceTestExtensionDynamicDependencyAppender implements Applic
         }
 
         final CleanupVerificationDataSetProvider dataSetProvider =
-            new CleanupVerificationDataSetProvider(testClass, new MetadataExtractor(testClass), configuration.get());
+            new CleanupVerificationDataSetProvider(testClass, new DbUnitMetadataExtractor(testClass), configuration.get());
         final Collection<DataSetResourceDescriptor> dataSets = dataSetProvider.getDescriptors(testClass);
         if (!dataSets.isEmpty()) {
             ResourceAppender.addResources(applicationArchive, toJavaArchive(dataSets));

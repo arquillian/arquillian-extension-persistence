@@ -2,9 +2,9 @@ package org.arquillian.integration.ape.test.boundary;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.arquillian.ape.rdbms.Cleanup;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
-import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.api.Cleanup;
+import org.arquillian.ape.api.UsingDataSet;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.util.Query;
 import org.arquillian.integration.ape.util.UserPersistenceAssertion;
