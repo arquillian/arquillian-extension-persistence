@@ -14,7 +14,8 @@ public class FlywayPopulatorExtension implements LoadableExtension, JUnitRuleSup
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, FlywayPopulatorService.class)
-            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
+            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class)
+            .observer(FlywayDeclarativeSupport.class);
     }
 
     @Override
@@ -34,6 +35,6 @@ public class FlywayPopulatorExtension implements LoadableExtension, JUnitRuleSup
 
     @Override
     public DeclarativeSupport declarativeSupport() {
-        throw new UnsupportedOperationException();
+        return new FlywayDeclarativeSupport();
     }
 }

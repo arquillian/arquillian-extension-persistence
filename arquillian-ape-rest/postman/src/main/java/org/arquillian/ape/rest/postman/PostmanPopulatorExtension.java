@@ -14,7 +14,8 @@ public class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSu
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, PostmanPopulatorService.class)
-            .service(ResourceProvider.class, RestPopulatorEnricher.class);
+            .service(ResourceProvider.class, RestPopulatorEnricher.class)
+            .observer(PostmanDeclarativeSupport.class);
     }
 
     @Override
@@ -34,6 +35,6 @@ public class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSu
 
     @Override
     public DeclarativeSupport declarativeSupport() {
-        throw new UnsupportedOperationException();
+        return new PostmanDeclarativeSupport();
     }
 }

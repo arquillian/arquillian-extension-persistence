@@ -10,20 +10,15 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- *  All attributes can be set by system property or environment variable by using:
- *
- * ${property:default_value}
+ * Annotation used by Rdbms systems to configure driver.
  */
 @Target({TYPE})
 @Retention(RUNTIME)
 @Inherited
-@Repeatable(Servers.class)
-public @interface Server {
+@Repeatable(Drivers.class)
+public @interface Driver {
 
-    String host();
-    String port() default "0";
-    String storage() default "";
-
+    Class<?> value();
     Class<? extends Annotation> type() default NoType.class;
 
 }

@@ -43,7 +43,20 @@ public class MetadataExtractor {
         return using(Uri.class);
     }
 
+    public AnnotationInspector<Variable> variable() {
+        return using(Variable.class);
+    }
+
+    public AnnotationInspector<UrlOverride> urlOverride() {
+        return using(UrlOverride.class);
+    }
+
     public AnnotationInspector<Authentication> authentication() {
         return using(Authentication.class);
     }
+
+    public AnnotationInspector<Driver> driver() {
+        return using(Driver.class);
+    }
+
 }
