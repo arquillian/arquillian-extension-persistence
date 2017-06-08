@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface CouchbaseConfiguration {
 
     String bucketPassword() default "";
-    String createBucker() default "";
+    String createBucket() default "";
     String clusterUsername() default "";
     String clusterPassword() default "";
 

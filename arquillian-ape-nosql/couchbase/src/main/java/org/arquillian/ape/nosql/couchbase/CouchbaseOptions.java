@@ -94,8 +94,8 @@ public class CouchbaseOptions implements Map<String, Object> {
             options.put(BUCKET_PASSWORD, RunnerExpressionParser.parseExpressions(couchbaseConfiguration.bucketPassword()));
         }
 
-        if (! couchbaseConfiguration.createBucker().isEmpty()) {
-            options.put(CREATE_BUCKET, Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchbaseConfiguration.createBucker())));
+        if (! couchbaseConfiguration.createBucket().isEmpty()) {
+            options.put(CREATE_BUCKET, Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchbaseConfiguration.createBucket())));
         }
 
         if (! couchbaseConfiguration.clusterUsername().isEmpty()) {
