@@ -52,6 +52,7 @@ public class DataCleanupUsingScriptEventHandlingTest {
             .addPackage(UserAccount.class.getPackage())
             // required for remote containers in order to run tests with FEST-Asserts
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml");
     }

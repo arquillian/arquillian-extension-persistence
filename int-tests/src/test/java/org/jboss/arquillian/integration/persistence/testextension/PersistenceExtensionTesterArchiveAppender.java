@@ -34,6 +34,7 @@ public class PersistenceExtensionTesterArchiveAppender extends CachedAuxilliaryA
                     PersistenceExtensionTester.class),
                 this.getClass().getPackage())
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsServiceProvider(RemoteLoadableExtension.class, PersistenceExtensionRemoteTester.class);
     }
 }

@@ -37,6 +37,7 @@ public class UserPersistenceJarDeploymentTest extends NonDeployableUserPersisten
             .addPackage(UserAccount.class.getPackage())
             .addClass(Query.class)
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }

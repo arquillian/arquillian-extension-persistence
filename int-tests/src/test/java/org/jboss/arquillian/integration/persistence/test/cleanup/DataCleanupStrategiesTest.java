@@ -62,6 +62,7 @@ public class DataCleanupStrategiesTest {
             .addClass(Query.class)
             // required for remote containers in order to run tests with FEST-Asserts
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
