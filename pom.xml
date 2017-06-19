@@ -89,9 +89,9 @@
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
-    <jdk.min.version>1.5</jdk.min.version>
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
+    <jdk.min.version>1.7</jdk.min.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
   </properties>
 
   <dependencyManagement>
