@@ -17,9 +17,16 @@
  */
 package org.jboss.arquillian.integration.persistence.test.cleanup;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.STRICT;
+import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_ROWS_ONLY;
+import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_TABLES_ONLY;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.integration.persistence.example.Address;
 import org.jboss.arquillian.integration.persistence.example.UserAccount;
@@ -42,11 +49,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.STRICT;
-import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_ROWS_ONLY;
-import static org.jboss.arquillian.persistence.BuiltInCleanupStrategy.USED_TABLES_ONLY;
-
 @RunWith(Arquillian.class)
 public class DataCleanupStrategiesTest {
 
@@ -60,6 +62,7 @@ public class DataCleanupStrategiesTest {
             .addClass(Query.class)
             // required for remote containers in order to run tests with FEST-Asserts
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }
@@ -117,9 +120,8 @@ public class DataCleanupStrategiesTest {
     @DatabaseShouldContainAfterTest({"expected-address.yml"})
     @ShouldBeEmptyAfterTest("useraccount")
     public void should_seed_using_both_custom_scripts_and_datasets_and_cleanup_all_tables_defined_in_data_set() {
-        final List<UserAccount> users =
-            (List<UserAccount>) em.createQuery(Query.selectAllInJPQL(UserAccount.class)).getResultList();
-        final List<Address> addresses = em.createQuery(Query.selectAllInJPQL(Address.class)).getResultList();
+        final List<UserAccount> users = em.createQuery(Query.selectAllInJPQL(UserAccount.class), UserAccount.class).getResultList();
+        final List<Address> addresses = em.createQuery(Query.selectAllInJPQL(Address.class), Address.class).getResultList();
 
         assertThat(users).hasSize(3);
         assertThat(addresses).hasSize(1);

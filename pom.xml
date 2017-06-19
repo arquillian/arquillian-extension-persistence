@@ -69,14 +69,16 @@
     <version.arquillian_core>1.1.13.Final</version.arquillian_core>
     <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
     <version.shrinkwrap.resolver>3.0.0-alpha-4</version.shrinkwrap.resolver>
+    <version.shrinkwrap.descriptors>2.0.0</version.shrinkwrap.descriptors>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.3</version.dbunit>
     <version.mysql.driver>5.1.21</version.mysql.driver>
-
+    <version.slf4j>1.7.20</version.slf4j>
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.0</version.findbugs.annotations>
     <version.assertj.core>2.6.0</version.assertj.core>
     <version.mockito>1.10.19</version.mockito>
+    <version.cdi>2.0</version.cdi>
 
     <!-- Containers -->
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
@@ -86,12 +88,12 @@
 
     <!-- Maven plugins -->
     <version.docker.plugin>0.15.16</version.docker.plugin>
-    <version.build.helper.plugin>1.10</version.build.helper.plugin>
+    <version.build.helper.plugin>3.0.0</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
-    <jdk.min.version>1.5</jdk.min.version>
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
+    <jdk.min.version>1.7</jdk.min.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
   </properties>
 
   <dependencyManagement>
@@ -103,6 +105,15 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+
+     <dependency>
+       <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+       <artifactId>shrinkwrap-descriptors-bom</artifactId>
+       <version>${version.shrinkwrap.descriptors}</version>
+       <scope>import</scope>
+       <type>pom</type>
+      </dependency>
+
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
@@ -165,7 +176,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
   <build>
     <testResources>
       <testResource>

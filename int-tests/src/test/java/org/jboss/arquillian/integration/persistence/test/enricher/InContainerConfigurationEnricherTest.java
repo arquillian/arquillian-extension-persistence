@@ -32,7 +32,9 @@ public class InContainerConfigurationEnricherTest {
     @Deployment
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(JavaArchive.class, "dummy.jar")
+            .addClass(org.jboss.arquillian.integration.persistence.test.enricher.InContainerConfigurationEnricherTest.class)
             .addPackages(true, "org.assertj.core")
+            .addPackages(true,  "org.apache.tools")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsManifestResource("test-persistence.xml", "persistence.xml");
     }

@@ -271,7 +271,7 @@ public class ScriptExecutorTest {
         verify(connection.createStatement(), times(1)).execute(statementsCaptor.capture());
         assertThat(statementsCaptor.getAllValues()).containsSequence(
             "insert into useraccount (id, firstname, lastname, username, password)" +
-                " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;')\nGO"
+                " values (1, 'John', 'Smith & Company', 'doovde;;', '&amp;test&copy;')" + System.lineSeparator() +"GO"
         );
     }
 
