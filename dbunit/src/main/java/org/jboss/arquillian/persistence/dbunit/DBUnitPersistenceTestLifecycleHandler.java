@@ -115,8 +115,12 @@ public class DBUnitPersistenceTestLifecycleHandler {
 
     private void createDatabaseConnection() {
 
-        if (databaseConnectionProducer.get() == null || databaseConnectionProducer.get().getConnection().isClosed()) {
-            configureDatabaseConnection();
+        try {
+            if (databaseConnectionProducer.get() == null || databaseConnectionProducer.get().getConnection().isClosed()) {
+                configureDatabaseConnection();
+            }
+        } catch (SQLException e) {
+            throw new DBUnitInitializationException("Unable to createDatabaseConnection database connection for DBUnit module.", e);
         }
     }
 
