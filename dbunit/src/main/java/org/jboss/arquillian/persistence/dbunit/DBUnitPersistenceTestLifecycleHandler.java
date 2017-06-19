@@ -115,7 +115,7 @@ public class DBUnitPersistenceTestLifecycleHandler {
 
     private void createDatabaseConnection() {
 
-        if (databaseConnectionProducer.get() == null) {
+        if (databaseConnectionProducer.get() == null || databaseConnectionProducer.get().getConnection().isClosed()) {
             configureDatabaseConnection();
         }
     }
