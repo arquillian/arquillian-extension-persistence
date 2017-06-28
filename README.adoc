@@ -16,7 +16,52 @@ ifndef::generated-doc[]
 To read complete documentation visit http://arquillian.org/arquillian-extension-persistence/
 endif::generated-doc[]
 
+
+== Meet APE
+
+This is a new version of Arquillian Persistence Extension, which will be called APE from now on (because we take care of tasks which monkeys can do for you ;)).
+
+We are working on quite a bunch of new features:
+
+* Support for NoSQL databases
+* Support for interacting with REST endpoints (through Postman)
+* Standalone DBUnit support (not required to run in application server, a.k.a. in-container)
+
+== Migration from Arquillian Persistence Extension 1.x to 2.x
+
+If you are using version 1.x for your in-container JPA tests jumping to 2.x train is fairly easy.
+
+First of all change your old dependency
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-persistence-dbunit</artifactId>
+    <version>${version.arquillian.persistence}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+to
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.arquillian.ape</groupId>
+  <artifactId>arquillian-ape-sql-container-dbunit</artifactId>
+  <version>${version.ape}</version>
+  <scope>test</scope>
+</dependency>
+----
+
+Then you will have to rename packages, as we changed the namespace from `org.jboss.arquillian.persistence` to `org.arquillian.ape.rdbms`. For example `org.jboss.arquillian.persistence.UsingDataSet` becomes `org.arquillian.ape.rdbms.UsingDataSet`.
+
+NOTE: `@DataSet` annotations will be still subject of change, as we will also provide support for them for tests which are not in-container and DBUnit specific.
+
 == Overview
+
+NOTE: This is still Work In Progress. Documentation below captures only functionalities of Arquillian Persistence Extension 1.x. We will be publishing new documentation together with version `2.0.0`, till then please have a look at functional tests in the project.
 
 [[what-is-this]]
 === What Is This?
