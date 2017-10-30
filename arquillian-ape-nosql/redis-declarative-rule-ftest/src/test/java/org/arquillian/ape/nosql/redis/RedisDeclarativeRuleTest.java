@@ -27,10 +27,7 @@ public class RedisDeclarativeRuleTest {
     @UsingDataSet("books.json")
     public void should_populate_redis() {
 
-        int redisPort = Integer.parseInt(System.getProperty("arq.cube.docker.redis_3_2_6.port.6379"));
-        final String redisHost = System.getProperty("arq.cube.docker.redis_3_2_6.ip");
-
-        Jedis jedis = new Jedis(redisHost, redisPort);
+        final Jedis jedis = JedisClientFactory.createJedisInstance();
         final Map<String, String> fieldsOfTheHobbitBook = jedis.hgetAll("The Hobbit");
 
         assertThat(fieldsOfTheHobbitBook)
