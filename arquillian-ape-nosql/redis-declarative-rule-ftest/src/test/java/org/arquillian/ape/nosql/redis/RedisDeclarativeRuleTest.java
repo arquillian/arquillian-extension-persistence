@@ -22,13 +22,12 @@ public class RedisDeclarativeRuleTest {
     @Rule
     public DeclarativeArquillianPersistenceRule declarativeArquillianPersistenceRule = new DeclarativeArquillianPersistenceRule();
 
-
     @Test
     @UsingDataSet("books.json")
     public void should_populate_redis() {
 
-        final Jedis jedis = JedisClientFactory.createJedisInstance();
-        final Map<String, String> fieldsOfTheHobbitBook = jedis.hgetAll("The Hobbit");
+        final BookService bookService = new BookService();
+        final Map<String, String> fieldsOfTheHobbitBook = bookService.findBookByTitle("The Hobbit");
 
         assertThat(fieldsOfTheHobbitBook)
             .containsEntry("title", "The Hobbit")
