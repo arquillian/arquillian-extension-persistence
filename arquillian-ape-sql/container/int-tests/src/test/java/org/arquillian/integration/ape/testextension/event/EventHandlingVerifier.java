@@ -20,7 +20,7 @@ package org.arquillian.integration.ape.testextension.event;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.event.PersistenceEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;

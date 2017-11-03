@@ -19,7 +19,7 @@ package org.arquillian.ape.rdbms.core.metadata;
 
 import java.lang.reflect.Method;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
 
 /**
@@ -29,11 +29,11 @@ public class PersistenceExtensionScriptingFeatureResolver {
 
     private final ScriptingConfiguration configuration;
 
-    private final MetadataExtractor metadataExtractor;
+    private final DbUnitMetadataExtractor metadataExtractor;
 
     private final Method testMethod;
 
-    public PersistenceExtensionScriptingFeatureResolver(Method testMethod, MetadataExtractor metadataExtractor,
+    public PersistenceExtensionScriptingFeatureResolver(Method testMethod, DbUnitMetadataExtractor metadataExtractor,
         ScriptingConfiguration configuration) {
         this.metadataExtractor = metadataExtractor;
         this.configuration = configuration;

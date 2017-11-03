@@ -17,11 +17,11 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.api.Cleanup;
 import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
-import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
 import org.arquillian.ape.rdbms.testutils.TestConfigurationLoader;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -40,7 +40,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             DefaultCleanupSettings.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -56,7 +56,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             ClassLevelCleanupAfterSettings.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -72,7 +72,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -88,7 +88,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -104,7 +104,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassPhaseOnly"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         TestExecutionPhase phase = persistenceExtensionFeatureResolver.getCleanupTestPhase();
@@ -120,7 +120,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             DefaultCleanupSettings.class.getMethod("shouldPass"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
@@ -136,7 +136,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassCleanupAndAfterPhaseDefined"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         boolean shouldCleanupAfter = persistenceExtensionFeatureResolver.shouldCleanupAfter();
@@ -152,7 +152,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassUsingDefaults"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         BuiltInCleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();
@@ -168,7 +168,7 @@ public class PersistenceScriptingExtensionFeatureResolverCleanupSettingsTest {
             MethodLevelCleanupSettings.class.getMethod("shouldPassStrategyOnly"));
         PersistenceExtensionFeatureResolver persistenceExtensionFeatureResolver =
             new PersistenceExtensionFeatureResolver(testEvent.getTestMethod(),
-                new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+                new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         BuiltInCleanupStrategy cleanupStragety = persistenceExtensionFeatureResolver.getCleanupStrategy();

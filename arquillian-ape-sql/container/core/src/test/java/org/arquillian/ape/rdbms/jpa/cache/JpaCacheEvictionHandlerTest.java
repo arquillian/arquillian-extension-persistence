@@ -24,7 +24,7 @@ import javax.persistence.EntityManager;
 import net.jcip.annotations.NotThreadSafe;
 import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.arquillian.ape.rdbms.JpaCacheEvictionStrategy;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.jboss.arquillian.core.api.Instance;

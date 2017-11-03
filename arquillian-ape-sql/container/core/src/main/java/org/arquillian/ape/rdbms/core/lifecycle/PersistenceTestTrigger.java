@@ -24,7 +24,7 @@ import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceClass;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
 import org.arquillian.ape.rdbms.core.event.InitializeConfiguration;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionEnabler;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionScriptingFeatureResolver;
@@ -52,7 +52,7 @@ public class PersistenceTestTrigger {
 
     @Inject
     @ClassScoped
-    private InstanceProducer<MetadataExtractor> metadataExtractorProducer;
+    private InstanceProducer<DbUnitMetadataExtractor> metadataExtractorProducer;
 
     @Inject
     @ClassScoped
@@ -93,7 +93,7 @@ public class PersistenceTestTrigger {
     private Instance<ServiceLoader> serviceLoaderInstance;
 
     public void beforeClass(@Observes BeforeClass beforeClass) {
-        metadataExtractorProducer.set(new MetadataExtractor(beforeClass.getTestClass()));
+        metadataExtractorProducer.set(new DbUnitMetadataExtractor(beforeClass.getTestClass()));
         persistenceExtensionEnabler.set(new PersistenceExtensionEnabler(metadataExtractorProducer.get()));
 
         if (persistenceExtensionEnabler.get().shouldPersistenceExtensionBeActivated()) {

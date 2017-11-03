@@ -25,10 +25,10 @@ import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.CreateSchema;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.ape.rdbms.core.data.naming.FileNamingStrategy;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.ValueExtractor;
 import org.arquillian.ape.rdbms.script.ScriptLoader;
 import org.arquillian.ape.rdbms.script.configuration.ScriptingConfiguration;
@@ -51,7 +51,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
 
     private final ValueExtractor<T> extractor;
 
-    SqlScriptProvider(Class<T> annotation, MetadataExtractor metadataExtractor, ValueExtractor<T> extractor,
+    SqlScriptProvider(Class<T> annotation, DbUnitMetadataExtractor metadataExtractor, ValueExtractor<T> extractor,
         FileNamingStrategy<String> scriptFileNamingStrategy, ScriptingConfiguration configuration) {
         super(annotation, metadataExtractor);
         this.configuration = configuration;
@@ -68,7 +68,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(CleanupUsingScript.class)
             .usingConfiguration(configuration)
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .extractingMetadataUsing(new DbUnitMetadataExtractor(testClass))
             .namingFollows(new PrefixedScriptFileNamingStrategy("cleanup-", "sql"))
             .build(new ValueExtractor<CleanupUsingScript>() {
                 @Override
@@ -87,7 +87,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(ApplyScriptAfter.class)
             .usingConfiguration(configuration)
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .extractingMetadataUsing(new DbUnitMetadataExtractor(testClass))
             .namingFollows(new PrefixedScriptFileNamingStrategy("after-", "sql"))
             .build(new ValueExtractor<ApplyScriptAfter>() {
                 @Override
@@ -106,7 +106,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(ApplyScriptBefore.class)
             .usingConfiguration(configuration)
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .extractingMetadataUsing(new DbUnitMetadataExtractor(testClass))
             .namingFollows(new PrefixedScriptFileNamingStrategy("before-", "sql"))
             .build(new ValueExtractor<ApplyScriptBefore>() {
                 @Override
@@ -125,7 +125,7 @@ public class SqlScriptProvider<T extends Annotation> extends ResourceProvider<Sq
         ScriptingConfiguration configuration) {
         return SqlScriptProvider.forAnnotation(CreateSchema.class)
             .usingConfiguration(configuration)
-            .extractingMetadataUsing(new MetadataExtractor(testClass))
+            .extractingMetadataUsing(new DbUnitMetadataExtractor(testClass))
             .namingFollows(new FileNamingStrategy<String>("sql") {
                 @Override
                 public String getFileExtension() {

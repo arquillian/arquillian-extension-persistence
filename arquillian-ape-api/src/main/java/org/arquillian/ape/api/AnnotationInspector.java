@@ -15,15 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape.rdbms.core.metadata;
+package org.arquillian.ape.api;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
@@ -31,7 +37,7 @@ import org.jboss.arquillian.test.spi.TestClass;
  */
 public class AnnotationInspector<T extends Annotation> {
 
-    private final Map<Method, T> annotatedMethods;
+    private final Map<Method, List<T>> annotatedMethods;
 
     private final TestClass testClass;
 
@@ -44,12 +50,14 @@ public class AnnotationInspector<T extends Annotation> {
     }
 
     public Collection<T> fetchAll() {
-        final Set<T> all = new HashSet<T>();
-        all.addAll(annotatedMethods.values());
-        final T annotationOnClassLevel = getAnnotationOnClassLevel();
-        if (annotationOnClassLevel != null) {
-            all.add(annotationOnClassLevel);
-        }
+        final Set<T> all = new HashSet<>();
+
+        final Collection<List<T>> values = annotatedMethods.values();
+        values.stream().forEach(all::addAll);
+
+        Collection<T> annotationsOnClassLevel = getAnnotationsOnClassLevel();
+        all.addAll(annotationsOnClassLevel);
+
         return all;
     }
 
@@ -62,7 +70,28 @@ public class AnnotationInspector<T extends Annotation> {
     }
 
     public T fetchFrom(Method method) {
+        final List<T> allAnnotations = annotatedMethods.get(method);
+
+        if (allAnnotations == null || allAnnotations.size() == 0) {
+            return null;
+        }
+
+        return allAnnotations.get(0);
+
+    }
+
+    public Collection<T> fetchAllFrom(Method method) {
         return annotatedMethods.get(method);
+    }
+
+    public Collection<T> fetchAllFrom(Method method, Predicate<T> predicate) {
+        final List<T> annotations = annotatedMethods.get(method);
+
+        if (annotations != null) {
+            return annotations.stream().filter(predicate).collect(Collectors.toList());
+        }
+
+        return annotations;
     }
 
     public boolean isDefinedOnClassLevel() {
@@ -71,6 +100,16 @@ public class AnnotationInspector<T extends Annotation> {
 
     public T getAnnotationOnClassLevel() {
         return testClass.getAnnotation(annotationClass);
+    }
+
+    public Collection<T> getAnnotationsOnClassLevel() {
+        return Arrays.asList(testClass.getJavaClass().getAnnotationsByType(annotationClass));
+    }
+
+    public Collection<T> getAnnotationsOnClassLevel(Predicate<T> predicate) {
+        return Arrays.asList(testClass.getJavaClass().getAnnotationsByType(annotationClass)).stream()
+                                                .filter(predicate)
+                                                .collect(Collectors.toList());
     }
 
     /**
@@ -88,16 +127,32 @@ public class AnnotationInspector<T extends Annotation> {
         return usedAnnotation;
     }
 
+    public Collection<T> fetchUsingFirst(Method testMethod, Predicate<T> predicate) {
+        Collection<T> usedAnnotations = getAnnotationsOnClassLevel(predicate);
+
+        if (isDefinedOn(testMethod)) {
+            usedAnnotations = fetchAllFrom(testMethod, predicate);
+        }
+
+        return usedAnnotations;
+
+    }
+
     // Private
 
-    private Map<Method, T> fetch(Class<T> annotation) {
-        final Map<Method, T> map = new HashMap<Method, T>();
+    private Map<Method, List<T>> fetch(Class<T> annotation) {
+        final Map<Method, List<T>> map = new HashMap<>();
 
-        for (Method testMethod : testClass.getMethods(annotation)) {
-            map.put(testMethod, testMethod.getAnnotation(annotation));
+        for (Method testMethod : testClass.getJavaClass().getMethods()) {
+            final T[] annotationsByType = testMethod.getAnnotationsByType(annotation);
+            if (annotationsByType.length > 0) {
+                map.putIfAbsent(testMethod, new ArrayList<>());
+                map.get(testMethod).addAll(Arrays.asList(annotationsByType));
+            }
         }
 
         return map;
     }
+
 }
 

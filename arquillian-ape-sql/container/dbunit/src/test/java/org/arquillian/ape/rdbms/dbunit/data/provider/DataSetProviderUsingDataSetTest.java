@@ -20,11 +20,11 @@ package org.arquillian.ape.rdbms.dbunit.data.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.testutils.DataSetDescriptorAssert;
@@ -58,7 +58,7 @@ public class DataSetProviderUsingDataSetTest {
         // given
         TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<DataSetResourceDescriptor> dataSetDescriptors =
@@ -76,7 +76,7 @@ public class DataSetProviderUsingDataSetTest {
         String expectedDataFile = XML_DATA_SET_ON_METHOD_LEVEL;
         TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -91,7 +91,7 @@ public class DataSetProviderUsingDataSetTest {
         String expectedDataFile = XML_DATA_SET_ON_CLASS_LEVEL;
         TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<String> dataFiles = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -106,7 +106,7 @@ public class DataSetProviderUsingDataSetTest {
         Format expectedFormat = Format.EXCEL;
         TestEvent testEvent = createTestEvent("shouldPassWithDataAndFormatDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         List<Format> dataFormats = new ArrayList<Format>(dataSetProvider.getDataFormats(testEvent.getTestMethod()));
@@ -121,7 +121,7 @@ public class DataSetProviderUsingDataSetTest {
         Format expectedFormat = Format.XML;
         TestEvent testEvent = createTestEvent("shouldPassWithDataButWithoutFormatDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         List<Format> dataFormats = new ArrayList<Format>(dataSetProvider.getDataFormats(testEvent.getTestMethod()));
@@ -136,7 +136,7 @@ public class DataSetProviderUsingDataSetTest {
         Format expectedFormat = Format.XML;
         TestEvent testEvent = createTestEvent("shouldPassWithoutDataDefinedOnMethodLevel");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         List<Format> dataFormats = new ArrayList<Format>(dataSetProvider.getDataFormats(testEvent.getTestMethod()));
@@ -151,7 +151,7 @@ public class DataSetProviderUsingDataSetTest {
         TestEvent testEvent = new TestEvent(new UsingDataSetAnnotationWithUnsupportedFormat(),
             UsingDataSetAnnotationWithUnsupportedFormat.class.getMethod("shouldFailWithNonSupportedFileExtension"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<Format> dataFormats = dataSetProvider.getDataFormats(testEvent.getTestMethod());
@@ -166,7 +166,7 @@ public class DataSetProviderUsingDataSetTest {
         String expectedFileName = DEFAULT_FILENAME_FOR_TEST_METHOD;
         TestEvent testEvent = createTestEvent("shouldPassWithDataFileNotSpecified");
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<String> files = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -182,7 +182,7 @@ public class DataSetProviderUsingDataSetTest {
         TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedOnClassLevelOnly(),
             UsingDataSetAnnotatedOnClassLevelOnly.class.getMethod("shouldPass"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<String> files = dataSetProvider.getResourceFileNames(testEvent.getTestMethod());
@@ -200,7 +200,7 @@ public class DataSetProviderUsingDataSetTest {
         TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedClass(),
             UsingDataSetAnnotatedClass.class.getMethod("shouldPassWithMultipleFilesDefined"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         List<DataSetResourceDescriptor> dataSetDescriptors =
@@ -216,7 +216,7 @@ public class DataSetProviderUsingDataSetTest {
         TestEvent testEvent = new TestEvent(new UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile(),
             UsingDataSetAnnotatedOnClassLevelOnlyNonExistingFile.class.getMethod("shouldFail"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<DataSetResourceDescriptor> dataSetDescriptors =
@@ -233,7 +233,7 @@ public class DataSetProviderUsingDataSetTest {
             UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
                 "shouldFailForNonExistingFile"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         Collection<DataSetResourceDescriptor> dataSetDescriptors =
@@ -254,7 +254,7 @@ public class DataSetProviderUsingDataSetTest {
             UsingDataSetOnTestMethodLevelWithNonExistingFileAndDefaultLocation.class.getMethod(
                 "shouldPassForFileStoredInDefaultLocation"));
         DataSetProvider dataSetProvider =
-            new DataSetProvider(new MetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
+            new DataSetProvider(new DbUnitMetadataExtractor(testEvent.getTestClass()), defaultConfiguration);
 
         // when
         List<DataSetResourceDescriptor> dataSetDescriptors =

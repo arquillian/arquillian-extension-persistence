@@ -1,10 +1,16 @@
 package org.arquillian.ape.nosql.infinispan;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import org.arquillian.ape.core.RunnerExpressionParser;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
 public class InfinispanOptions implements Map<String, Object> {
@@ -87,6 +93,43 @@ public class InfinispanOptions implements Map<String, Object> {
     void configure(ConfigurationBuilder configurationBuilder) {
         if (this.options.containsKey(PROPERTIES)) {
             configurationBuilder.withProperties((Properties) this.options.get(PROPERTIES));
+        }
+    }
+
+    public static InfinispanOptions from(InfinispanConfiguration infinispanConfiguration) {
+        final Map<String, Object> options = new HashMap<>();
+
+        if (! infinispanConfiguration.propertiesFile().isEmpty()) {
+            File fileLocation = new File(RunnerExpressionParser.parseExpressions(infinispanConfiguration.propertiesFile()));
+            try {
+                options.put(PROPERTIES, loadProperties(new FileInputStream(fileLocation)));
+            } catch (FileNotFoundException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        if (! infinispanConfiguration.propertiesResource().isEmpty()) {
+            String classPathLocation = RunnerExpressionParser.parseExpressions(infinispanConfiguration.propertiesResource());
+
+            if (! classPathLocation.startsWith("/")) {
+                classPathLocation = "/" + classPathLocation;
+            }
+
+            options.put(PROPERTIES, loadProperties(Class.class.getResourceAsStream(classPathLocation)));
+
+        }
+
+        return new InfinispanOptions(options);
+
+    }
+
+    private static Properties loadProperties(InputStream inputStream) {
+        final Properties properties = new Properties();
+        try {
+            properties.load(inputStream);
+            return properties;
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 

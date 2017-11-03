@@ -17,6 +17,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.arquillian.ape</groupId>
+      <artifactId>arquillian-ape-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.dbunit</groupId>
       <artifactId>dbunit</artifactId>
       <version>${version.dbunit}</version>

@@ -1,9 +1,13 @@
 package org.arquillian.ape.rdbms.flyway;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.arquillian.ape.core.RunnerExpressionParser;
 import org.flywaydb.core.api.callback.FlywayCallback;
 import org.flywaydb.core.api.resolver.MigrationResolver;
 
@@ -15,7 +19,7 @@ public class FlywayOptions implements Map<String, Object> {
     final static String IGNORE_FUTURE_MIGRATIONS = "ignoreFutureMigrations";
     final static String IGNORE_FAILED_FUTURE_MIGRATIONS = "ignoreFailedFutureMigrations";
     final static String VALIDATE_ON_MIGRATE = "validateOnMigrate";
-    final static String CLEAN_ON_VALIDATION_ERROR=  "cleanOnValidationError";
+    final static String CLEAN_ON_VALIDATION_ERROR = "cleanOnValidationError";
     final static String ENCODING = "encoding";
     final static String SCHEMAS = "schemas";
     final static String TABLE = "table";
@@ -33,8 +37,10 @@ public class FlywayOptions implements Map<String, Object> {
     final static String BASELINE_ON_MIGRATE = "baselineOnMigrate";
     final static String OUT_OF_ORDER = "outOfOrder";
     final static String CALLBACKS = "callbacks";
+    final static String CALLBACKS_STRING = "callbacksString";
     final static String SKIP_DEFAULT_CALLBACK = "skipDefaultCallback";
     final static String RESOLVERS = "resolvers";
+    final static String RESOLVERS_STRING = "resolversString";
     final static String SKIP_DEFAULT_RESOLVERS = "skipDefaultResolvers";
 
     private Map<String, Object> options = new HashMap<>();
@@ -215,9 +221,164 @@ public class FlywayOptions implements Map<String, Object> {
             flyway.setCallbacks((FlywayCallback[]) this.options.get(CALLBACKS));
         }
 
+        if (this.options.containsKey(CALLBACKS_STRING)) {
+            flyway.setCallbacksAsClassNames((String[]) this.options.get(CALLBACKS_STRING));
+        }
+
         if (this.options.containsKey(RESOLVERS)) {
             flyway.setResolvers((MigrationResolver[]) this.options.get(RESOLVERS));
         }
+
+        if (this.options.containsKey(RESOLVERS_STRING)) {
+            flyway.setResolversAsClassNames((String[]) this.options.get(RESOLVERS_STRING));
+        }
+    }
+
+    public static FlywayOptions from(FlywayConfiguration flywayConfiguration) {
+        final Map<String, Object> options = new HashMap<>();
+
+        if (!flywayConfiguration.installedBy().isEmpty()) {
+            options.put(INSTALLED_BY, RunnerExpressionParser.parseExpressions(flywayConfiguration.installedBy()));
+        }
+
+        if (!flywayConfiguration.allowMixedMigrations().isEmpty()) {
+            options.put(ALLOW_MIXED_MIGRATIONS, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.allowMixedMigrations())));
+        }
+
+        if (!flywayConfiguration.ignoreMissingMigrations().isEmpty()) {
+            options.put(IGNORE_MISSING_MIGRATIONS, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.ignoreMissingMigrations())));
+        }
+
+        if (!flywayConfiguration.ignoreFutureMigrations().isEmpty()) {
+            options.put(IGNORE_FUTURE_MIGRATIONS, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.ignoreFutureMigrations())));
+        }
+
+        if (!flywayConfiguration.ignoreFailedFutureMigrations().isEmpty()) {
+            options.put(IGNORE_FAILED_FUTURE_MIGRATIONS, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.ignoreFailedFutureMigrations())));
+        }
+
+        if (!flywayConfiguration.validateOnMigrate().isEmpty()) {
+            options.put(VALIDATE_ON_MIGRATE, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.validateOnMigrate())));
+        }
+
+        if (!flywayConfiguration.cleanOnValidationError().isEmpty()) {
+            options.put(CLEAN_ON_VALIDATION_ERROR, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.cleanOnValidationError())));
+        }
+
+        if (!flywayConfiguration.encoding().isEmpty()) {
+            options.put(ENCODING, RunnerExpressionParser.parseExpressions(flywayConfiguration.encoding()));
+        }
+
+        if (flywayConfiguration.schemas().length > 0) {
+            List<String> resolved = Arrays.stream(flywayConfiguration.schemas())
+                .map(RunnerExpressionParser::parseExpressions)
+                .collect(Collectors.toList());
+
+            options.put(SCHEMAS, resolved.toArray(new String[resolved.size()]));
+        }
+
+        if (!flywayConfiguration.table().isEmpty()) {
+            options.put(TABLE, RunnerExpressionParser.parseExpressions(flywayConfiguration.table()));
+        }
+
+        if (!flywayConfiguration.target().isEmpty()) {
+            options.put(TARGET, RunnerExpressionParser.parseExpressions(flywayConfiguration.target()));
+        }
+
+        if(flywayConfiguration.placeholders().length > 0) {
+            final Map<String, String> placeholders = Arrays.stream(flywayConfiguration.placeholders())
+                .collect(Collectors.toMap(p -> p.key(), p -> RunnerExpressionParser.parseExpressions(p.value())));
+
+            options.put(PLACEHOLDERS, placeholders);
+        }
+
+        if (!flywayConfiguration.placeholderReplacement().isEmpty()) {
+            options.put(PLACEHOLDER_REPLACEMENT, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.placeholderReplacement())));
+        }
+
+        if (!flywayConfiguration.placeholderSuffix().isEmpty()) {
+            options.put(PLACEHOLDER_SUFFIX,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.placeholderSuffix()));
+        }
+
+        if (!flywayConfiguration.placeholderPrefix().isEmpty()) {
+            options.put(PLACEHOLDER_PREFIX,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.placeholderPrefix()));
+        }
+
+        if (!flywayConfiguration.sqlMigrationPrefix().isEmpty()) {
+            options.put(SQL_MIGRATION_PREFIX,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.sqlMigrationPrefix()));
+        }
+
+        if (!flywayConfiguration.repeatableSqlMigrationPrefix().isEmpty()) {
+            options.put(REPEATABLE_SQL_MIGRATION_PREFIX,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.repeatableSqlMigrationPrefix()));
+        }
+
+        if (!flywayConfiguration.sqlMigrationSeparator().isEmpty()) {
+            options.put(SQL_MIGRATION_SEPARATOR,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.sqlMigrationSeparator()));
+        }
+
+        if (!flywayConfiguration.sqlMigrationSuffix().isEmpty()) {
+            options.put(SQL_MIGRATION_SUFFIX,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.sqlMigrationSuffix()));
+        }
+
+        if (!flywayConfiguration.baselineVersion().isEmpty()) {
+            options.put(BASELINE_VERSION, RunnerExpressionParser.parseExpressions(flywayConfiguration.baselineVersion()));
+        }
+
+        if (!flywayConfiguration.baselineDescription().isEmpty()) {
+            options.put(BASELINE_DESCRIPTION,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.baselineDescription()));
+        }
+
+        if (!flywayConfiguration.baselineOnMigrate().isEmpty()) {
+            options.put(BASELINE_ON_MIGRATE,
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.baselineOnMigrate()));
+        }
+
+        if (!flywayConfiguration.outOfOrder().isEmpty()) {
+            options.put(OUT_OF_ORDER, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.outOfOrder())));
+        }
+
+        if (flywayConfiguration.callbacks().length > 0) {
+            List<String> callbacks = Arrays.stream(flywayConfiguration.callbacks())
+                .map(RunnerExpressionParser::parseExpressions)
+                .collect(Collectors.toList());
+
+            options.put(CALLBACKS_STRING, callbacks.toArray(new String[callbacks.size()]));
+        }
+
+        if (!flywayConfiguration.skipDefaultCallback().isEmpty()) {
+            options.put(SKIP_DEFAULT_CALLBACK, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.skipDefaultCallback())));
+        }
+
+        if (flywayConfiguration.resolvers().length > 0) {
+            List<String> resolvers = Arrays.stream(flywayConfiguration.resolvers())
+                .map(RunnerExpressionParser::parseExpressions)
+                .collect(Collectors.toList());
+
+            options.put(RESOLVERS_STRING, resolvers.toArray(new String[resolvers.size()]));
+        }
+
+        if (!flywayConfiguration.skipDefaultResolvers().isEmpty()) {
+            options.put(SKIP_DEFAULT_RESOLVERS, Boolean.parseBoolean(
+                RunnerExpressionParser.parseExpressions(flywayConfiguration.skipDefaultResolvers())));
+        }
+
+        return new FlywayOptions(options);
     }
 
     public static class FlywayConfigurationOptions {

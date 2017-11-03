@@ -20,11 +20,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.arquillian.ape.rdbms.UsingDataSet;
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.rdbms.dbunit.data.naming.DataSetFileNamingStrategy;
@@ -39,7 +39,7 @@ public class DataSetProvider extends ResourceProvider<DataSetResourceDescriptor>
 
     private final DBUnitConfiguration configuration;
 
-    public DataSetProvider(MetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
+    public DataSetProvider(DbUnitMetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
         super(UsingDataSet.class, metadataExtractor);
         this.configuration = configuration;
     }

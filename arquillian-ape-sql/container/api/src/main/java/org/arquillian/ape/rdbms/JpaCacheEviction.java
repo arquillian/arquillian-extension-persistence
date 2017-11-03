@@ -23,6 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.persistence.Cache;
 import javax.persistence.EntityManager;
+import org.arquillian.ape.api.TestExecutionPhase;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

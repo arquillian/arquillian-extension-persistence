@@ -17,12 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
+import org.arquillian.ape.api.AnnotationInspector;
+import org.arquillian.ape.api.MetadataExtractor;
 import org.arquillian.ape.rdbms.ApplyScriptAfter;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
-import org.arquillian.ape.rdbms.Cleanup;
 import org.arquillian.ape.rdbms.CleanupStrategy;
 import org.arquillian.ape.rdbms.CleanupUsingScript;
 import org.arquillian.ape.rdbms.CreateSchema;
@@ -31,33 +29,17 @@ import org.arquillian.ape.rdbms.JpaCacheEviction;
 import org.arquillian.ape.rdbms.PersistenceTest;
 import org.arquillian.ape.rdbms.SeedDataUsing;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.arquillian.test.spi.TestClass;
 
 /**
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  */
-public class MetadataExtractor {
+public class DbUnitMetadataExtractor extends MetadataExtractor {
 
-    private final TestClass testClass;
-
-    private final Map<Class<?>, AnnotationInspector<?>> inspectors = new HashMap<Class<?>, AnnotationInspector<?>>();
-
-    public MetadataExtractor(TestClass testClass) {
-        this.testClass = testClass;
+    public DbUnitMetadataExtractor(TestClass testClass) {
+        super(testClass);
     }
 
-    public <K extends Annotation> void register(final TestClass testClass, final Class<K> annotation) {
-        inspectors.put(annotation, new AnnotationInspector<K>(testClass, annotation));
-    }
-
-    @SuppressWarnings("unchecked")
-    public <K extends Annotation> AnnotationInspector<K> using(final Class<K> annotation) {
-        if (inspectors.get(annotation) == null) {
-            register(testClass, annotation);
-        }
-        return (AnnotationInspector<K>) inspectors.get(annotation);
-    }
 
     public AnnotationInspector<DataSource> dataSource() {
         return using(DataSource.class);
@@ -65,10 +47,6 @@ public class MetadataExtractor {
 
     public AnnotationInspector<SeedDataUsing> dataSeedStrategy() {
         return using(SeedDataUsing.class);
-    }
-
-    public AnnotationInspector<UsingDataSet> usingDataSet() {
-        return using(UsingDataSet.class);
     }
 
     public AnnotationInspector<ShouldMatchDataSet> shouldMatchDataSet() {
@@ -81,10 +59,6 @@ public class MetadataExtractor {
 
     public AnnotationInspector<ApplyScriptAfter> applyScriptAfter() {
         return using(ApplyScriptAfter.class);
-    }
-
-    public AnnotationInspector<Cleanup> cleanup() {
-        return using(Cleanup.class);
     }
 
     public AnnotationInspector<CleanupStrategy> cleanupStrategy() {

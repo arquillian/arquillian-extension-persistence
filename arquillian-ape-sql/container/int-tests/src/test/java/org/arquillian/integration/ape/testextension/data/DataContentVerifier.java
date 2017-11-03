@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.test.AssertionErrorCollector;
 import org.arquillian.ape.rdbms.dbunit.DataSetComparator;
 import org.arquillian.ape.rdbms.dbunit.DataSetUtils;
@@ -51,7 +51,7 @@ public class DataContentVerifier {
     private Instance<DBUnitConfiguration> dbunitConfiguration;
 
     @Inject
-    private Instance<MetadataExtractor> metadataExtractor;
+    private Instance<DbUnitMetadataExtractor> metadataExtractor;
 
     @Inject
     private Instance<AssertionErrorCollector> assertionErrorCollector;

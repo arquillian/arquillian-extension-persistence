@@ -2,6 +2,7 @@ package org.arquillian.ape.rdbms.flyway;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.spi.Populator;
+import org.arquillian.ape.api.DeclarativeSupport;
 import org.arquillian.ape.spi.junit.rule.JUnitRuleSupport;
 import org.arquillian.ape.rdbms.core.RdbmsPopulator;
 import org.arquillian.ape.rdbms.core.RdbmsPopulatorEnricher;
@@ -13,7 +14,8 @@ public class FlywayPopulatorExtension implements LoadableExtension, JUnitRuleSup
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, FlywayPopulatorService.class)
-            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class);
+            .service(ResourceProvider.class, RdbmsPopulatorEnricher.class)
+            .observer(FlywayDeclarativeSupport.class);
     }
 
     @Override
@@ -29,5 +31,10 @@ public class FlywayPopulatorExtension implements LoadableExtension, JUnitRuleSup
     @Override
     public Class<? extends Populator> populator() {
         return RdbmsPopulator.class;
+    }
+
+    @Override
+    public DeclarativeSupport declarativeSupport() {
+        return new FlywayDeclarativeSupport();
     }
 }

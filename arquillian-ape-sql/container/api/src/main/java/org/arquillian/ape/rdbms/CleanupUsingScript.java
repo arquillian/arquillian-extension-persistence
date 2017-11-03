@@ -20,6 +20,7 @@ package org.arquillian.ape.rdbms;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import org.arquillian.ape.api.TestExecutionPhase;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

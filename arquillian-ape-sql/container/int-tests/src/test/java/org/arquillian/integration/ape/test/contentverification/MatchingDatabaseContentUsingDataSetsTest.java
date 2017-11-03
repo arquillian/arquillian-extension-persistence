@@ -2,8 +2,8 @@ package org.arquillian.integration.ape.test.contentverification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.dbunit.api.CustomColumnFilter;
 import org.arquillian.integration.ape.example.Address;
 import org.arquillian.integration.ape.example.UserAccount;

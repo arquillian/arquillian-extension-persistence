@@ -17,10 +17,10 @@
  */
 package org.arquillian.ape.rdbms.core.metadata;
 
+import org.arquillian.ape.api.UsingDataSet;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
 import org.arquillian.ape.rdbms.PersistenceTest;
 import org.arquillian.ape.rdbms.ShouldMatchDataSet;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 import org.junit.Test;
 

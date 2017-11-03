@@ -16,11 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Arquillian.class)
 public class RedisTest {
 
-    @HostPort(containerName = "redis", value = 6379)
-    int port;
     @ArquillianResource
     @Redis
     NoSqlPopulator populator;
+
+    @HostPort(containerName = "redis", value = 6379)
+    int port;
+
     @HostIp
     private String hostIp;
 

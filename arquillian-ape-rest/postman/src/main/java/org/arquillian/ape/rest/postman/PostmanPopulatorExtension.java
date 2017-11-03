@@ -2,6 +2,7 @@ package org.arquillian.ape.rest.postman;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.spi.Populator;
+import org.arquillian.ape.api.DeclarativeSupport;
 import org.arquillian.ape.spi.junit.rule.JUnitRuleSupport;
 import org.arquillian.ape.rest.RestPopulator;
 import org.arquillian.ape.rest.RestPopulatorEnricher;
@@ -13,7 +14,8 @@ public class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSu
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, PostmanPopulatorService.class)
-            .service(ResourceProvider.class, RestPopulatorEnricher.class);
+            .service(ResourceProvider.class, RestPopulatorEnricher.class)
+            .observer(PostmanDeclarativeSupport.class);
     }
 
     @Override
@@ -29,5 +31,10 @@ public class PostmanPopulatorExtension implements LoadableExtension, JUnitRuleSu
     @Override
     public Class<? extends Populator> populator() {
         return RestPopulator.class;
+    }
+
+    @Override
+    public DeclarativeSupport declarativeSupport() {
+        return new PostmanDeclarativeSupport();
     }
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.arquillian.ape.core.RunnerExpressionParser;
 
 public class CouchbaseOptions implements Map<String, Object> {
 
@@ -15,6 +16,10 @@ public class CouchbaseOptions implements Map<String, Object> {
     private Map<String, Object> options = new HashMap<>();
 
     private CouchbaseOptions() {
+    }
+
+    protected CouchbaseOptions(Map<String, Object> options) {
+        this.options.putAll(options);
     }
 
     public static CouchbaseConfigurationOptions options() {
@@ -79,6 +84,29 @@ public class CouchbaseOptions implements Map<String, Object> {
     @Override
     public Set<Entry<String, Object>> entrySet() {
         return options.entrySet();
+    }
+
+    public static CouchbaseOptions from(CouchbaseConfiguration couchbaseConfiguration) {
+
+        final Map<String, Object> options = new HashMap<>();
+
+        if (! couchbaseConfiguration.bucketPassword().isEmpty()) {
+            options.put(BUCKET_PASSWORD, RunnerExpressionParser.parseExpressions(couchbaseConfiguration.bucketPassword()));
+        }
+
+        if (! couchbaseConfiguration.createBucket().isEmpty()) {
+            options.put(CREATE_BUCKET, Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(couchbaseConfiguration.createBucket())));
+        }
+
+        if (! couchbaseConfiguration.clusterUsername().isEmpty()) {
+            options.put(CLUSTER_USERNAME, RunnerExpressionParser.parseExpressions(couchbaseConfiguration.clusterUsername()));
+        }
+
+        if (! couchbaseConfiguration.clusterPassword().isEmpty()) {
+            options.put(CLUSTER_PASSWORD, RunnerExpressionParser.parseExpressions(couchbaseConfiguration.clusterPassword()));
+        }
+
+        return new CouchbaseOptions(options);
     }
 
     public static class CouchbaseConfigurationOptions {

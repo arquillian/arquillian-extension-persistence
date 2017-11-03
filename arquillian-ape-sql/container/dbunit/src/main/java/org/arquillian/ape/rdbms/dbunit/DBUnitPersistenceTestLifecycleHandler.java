@@ -28,7 +28,7 @@ import org.arquillian.ape.rdbms.core.dbunit.dataset.DataSetRegister;
 import org.arquillian.ape.rdbms.core.dbunit.exception.DBUnitInitializationException;
 import org.arquillian.ape.rdbms.core.event.AfterPersistenceTest;
 import org.arquillian.ape.rdbms.core.event.BeforePersistenceTest;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.PersistenceExtensionFeatureResolver;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfigurationPropertyMapper;
@@ -57,7 +57,7 @@ public class DBUnitPersistenceTestLifecycleHandler {
     private Instance<DataSource> dataSourceInstance;
 
     @Inject
-    private Instance<MetadataExtractor> metadataExtractorInstance;
+    private Instance<DbUnitMetadataExtractor> metadataExtractorInstance;
 
     @Inject
     private Instance<DBUnitConfiguration> dbUnitConfigurationInstance;

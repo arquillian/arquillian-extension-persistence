@@ -15,11 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.ape.rdbms;
+package org.arquillian.ape.api;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import org.arquillian.ape.api.TestExecutionPhase;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -30,16 +33,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * is {@link TestExecutionPhase#AFTER}. You can set it also globally in <code>arquillian.xml</code>.
  * <p>
  * If not specified otherwise the whole database is erased.
- * You can change this behaviour by setting up {@link #strategy()} field.
+ * You can change this behaviour by setting up {@link org.arquillian.ape.rdbms.CleanupStrategy} field.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- * @see {@link TestExecutionPhase}, {@link BuiltInCleanupStrategy}
+ * @see {@link TestExecutionPhase}, {@link org.arquillian.ape.rdbms.BuiltInCleanupStrategy}
  */
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @Inherited
+@Repeatable(Cleansup.class)
 public @interface Cleanup {
 
     TestExecutionPhase phase() default TestExecutionPhase.DEFAULT;
+    Class<? extends Annotation> type() default NoType.class;
 
 }

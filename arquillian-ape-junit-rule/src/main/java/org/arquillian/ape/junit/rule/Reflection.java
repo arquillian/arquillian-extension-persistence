@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +17,21 @@ import org.arquillian.ape.spi.PopulatorService;
 class Reflection {
 
     private Reflection() {
+    }
+
+    public static boolean isClassWithAnnotation(final Class<?> source,
+        final Class<? extends Annotation> annotationClass) {
+        return AccessController.doPrivileged((PrivilegedAction<Boolean>) () -> {
+            boolean annotationPresent = false;
+            Class<?> nextSource = source;
+            while (nextSource != Object.class) {
+                if (nextSource.isAnnotationPresent(annotationClass)) {
+                    return true;
+                }
+                nextSource = nextSource.getSuperclass();
+            }
+            return annotationPresent;
+        });
     }
 
     public static final List<Field> getAllFieldsAnnotatedWith(Class<?> clazz, Class<? extends Annotation> annotation) {

@@ -26,7 +26,7 @@ import org.arquillian.ape.rdbms.ShouldMatchDataSet;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.rdbms.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
@@ -38,7 +38,7 @@ public class ExpectedDataSetProvider extends ResourceProvider<DataSetResourceDes
 
     private final DBUnitConfiguration configuration;
 
-    public ExpectedDataSetProvider(MetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
+    public ExpectedDataSetProvider(DbUnitMetadataExtractor metadataExtractor, DBUnitConfiguration configuration) {
         super(ShouldMatchDataSet.class, metadataExtractor);
         this.configuration = configuration;
     }

@@ -2,6 +2,7 @@ package org.arquillian.ape.nosql.vault;
 
 import java.lang.annotation.Annotation;
 import org.arquillian.ape.spi.Populator;
+import org.arquillian.ape.api.DeclarativeSupport;
 import org.arquillian.ape.spi.junit.rule.JUnitRuleSupport;
 import org.arquillian.ape.nosql.NoSqlPopulator;
 import org.arquillian.ape.nosql.NoSqlPopulatorEnricher;
@@ -14,7 +15,8 @@ public class VaultPopulatorExtension implements LoadableExtension, JUnitRuleSupp
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(PopulatorService.class, VaultPopulatorService.class)
-            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class);
+            .service(ResourceProvider.class, NoSqlPopulatorEnricher.class)
+            .observer(VaultDeclarativeSupport.class);
     }
 
     @Override
@@ -30,5 +32,10 @@ public class VaultPopulatorExtension implements LoadableExtension, JUnitRuleSupp
     @Override
     public Class<? extends Populator> populator() {
         return NoSqlPopulator.class;
+    }
+
+    @Override
+    public DeclarativeSupport declarativeSupport() {
+        return new VaultDeclarativeSupport();
     }
 }

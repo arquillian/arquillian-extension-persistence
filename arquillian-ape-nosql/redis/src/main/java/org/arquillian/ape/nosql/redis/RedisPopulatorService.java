@@ -21,12 +21,15 @@ class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
 
     @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
-        jedis = new Jedis(host, port);
+        RedisOptions redisOptions = new RedisOptions(customOptions);
+
+        jedis = new Jedis(host, port, redisOptions.isSsl());
         jedis.connect();
     }
 
     @Override
     public void connect(URI uri, String database, Map<String, Object> customOptions) {
+        // Jedis does not offer the ssl option in URI because it is explicitly in protocol.
         jedis = new Jedis(uri);
         jedis.connect();
     }

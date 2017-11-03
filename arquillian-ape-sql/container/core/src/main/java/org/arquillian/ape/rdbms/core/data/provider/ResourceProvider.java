@@ -27,10 +27,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.arquillian.ape.rdbms.ApplyScriptBefore;
-import org.arquillian.ape.rdbms.UsingDataSet;
 import org.arquillian.ape.rdbms.core.data.descriptor.ResourceDescriptor;
 import org.arquillian.ape.rdbms.core.exception.InvalidResourceLocation;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.core.metadata.MetadataProcessingException;
 import org.arquillian.ape.rdbms.core.util.Strings;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -47,11 +46,11 @@ import org.jboss.arquillian.test.spi.TestClass;
  */
 public abstract class ResourceProvider<T extends ResourceDescriptor<?>> {
 
-    protected final MetadataExtractor metadataExtractor;
+    protected final DbUnitMetadataExtractor metadataExtractor;
 
     protected final Class<? extends Annotation> resourceAnnotation;
 
-    public ResourceProvider(Class<? extends Annotation> resourceAnnotation, MetadataExtractor metadataExtractor) {
+    public ResourceProvider(Class<? extends Annotation> resourceAnnotation, DbUnitMetadataExtractor metadataExtractor) {
         this.resourceAnnotation = resourceAnnotation;
         this.metadataExtractor = metadataExtractor;
     }

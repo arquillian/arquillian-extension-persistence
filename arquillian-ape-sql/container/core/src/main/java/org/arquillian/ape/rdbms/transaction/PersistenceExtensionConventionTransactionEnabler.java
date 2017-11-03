@@ -19,7 +19,7 @@ package org.arquillian.ape.rdbms.transaction;
 
 import java.lang.reflect.Method;
 import org.arquillian.ape.rdbms.core.configuration.PersistenceConfiguration;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
@@ -32,7 +32,7 @@ public class PersistenceExtensionConventionTransactionEnabler implements Transac
     Instance<PersistenceConfiguration> persistenceConfiguration;
 
     @Inject
-    Instance<MetadataExtractor> metadataExtractor;
+    Instance<DbUnitMetadataExtractor> metadataExtractor;
 
     @Override
     public boolean isTransactionHandlingDefinedOnClassLevel(TestEvent testEvent) {

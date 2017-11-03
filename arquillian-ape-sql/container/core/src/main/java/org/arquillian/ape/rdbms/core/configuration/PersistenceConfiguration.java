@@ -20,7 +20,7 @@ package org.arquillian.ape.rdbms.core.configuration;
 import java.io.Serializable;
 import org.arquillian.ape.rdbms.BuiltInCleanupStrategy;
 import org.arquillian.ape.rdbms.DataSeedStrategy;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 
 public class PersistenceConfiguration extends Configuration implements Serializable {

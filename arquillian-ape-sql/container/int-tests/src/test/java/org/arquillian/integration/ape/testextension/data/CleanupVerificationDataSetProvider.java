@@ -20,11 +20,11 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import org.arquillian.ape.api.AnnotationInspector;
 import org.arquillian.ape.rdbms.core.data.provider.ResourceProvider;
 import org.arquillian.ape.rdbms.core.dbunit.data.descriptor.Format;
 import org.arquillian.ape.rdbms.core.exception.UnsupportedDataFormatException;
-import org.arquillian.ape.rdbms.core.metadata.AnnotationInspector;
-import org.arquillian.ape.rdbms.core.metadata.MetadataExtractor;
+import org.arquillian.ape.rdbms.core.metadata.DbUnitMetadataExtractor;
 import org.arquillian.ape.rdbms.dbunit.configuration.DBUnitConfiguration;
 import org.arquillian.ape.rdbms.dbunit.data.descriptor.DataSetResourceDescriptor;
 import org.arquillian.ape.rdbms.dbunit.data.naming.ExpectedDataSetFileNamingStrategy;
@@ -40,7 +40,7 @@ public class CleanupVerificationDataSetProvider extends ResourceProvider<DataSet
 
     private final DBUnitConfiguration configuration;
 
-    public CleanupVerificationDataSetProvider(TestClass testClass, MetadataExtractor metadataExtractor,
+    public CleanupVerificationDataSetProvider(TestClass testClass, DbUnitMetadataExtractor metadataExtractor,
         DBUnitConfiguration configuration) {
         super(DatabaseShouldContainAfterTest.class, metadataExtractor);
         this.configuration = configuration;

@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.arquillian.ape.api.MetadataExtractor;
+import org.arquillian.ape.core.RunnerExpressionParser;
 
 public class VaultOptions implements Map<String, Object> {
 
@@ -128,6 +130,37 @@ public class VaultOptions implements Map<String, Object> {
             vaultConfig.readTimeout((Integer) this.options.get(READ_TIMEOUT));
         }
 
+    }
+
+    public static VaultOptions from(VaultConfiguration vaultConfiguration) {
+        final Map<String, Object> options = new HashMap<>();
+        options.put(TOKEN, RunnerExpressionParser.parseExpressions(vaultConfiguration.token()));
+
+        if (! vaultConfiguration.sslPemUtf8().isEmpty()) {
+            options.put(SSL_PEM_UTF_8, RunnerExpressionParser.parseExpressions(vaultConfiguration.sslPemUtf8()));
+        }
+
+        if (! vaultConfiguration.sslPemFile().isEmpty()) {
+            options.put(SSL_PEM_UTF_8, new File(RunnerExpressionParser.parseExpressions(vaultConfiguration.sslPemFile())));
+        }
+
+        if (! vaultConfiguration.sslPemResource().isEmpty()) {
+            options.put(SSL_PEM_RESOURCE, RunnerExpressionParser.parseExpressions(vaultConfiguration.sslPemResource()));
+        }
+
+        if (! vaultConfiguration.sslVerify().isEmpty()) {
+            options.put(SSL_VERIFY, Boolean.parseBoolean(RunnerExpressionParser.parseExpressions(vaultConfiguration.sslVerify())));
+        }
+
+        if (! vaultConfiguration.openTimeout().isEmpty()) {
+            options.put(OPEN_TIMEOUT, Integer.parseInt(RunnerExpressionParser.parseExpressions(vaultConfiguration.openTimeout())));
+        }
+
+        if (! vaultConfiguration.readTimeout().isEmpty()) {
+            options.put(READ_TIMEOUT, Integer.parseInt(RunnerExpressionParser.parseExpressions(vaultConfiguration.readTimeout())));
+        }
+
+        return new VaultOptions(options);
     }
 
     public static class VaultConfigurationOptions {

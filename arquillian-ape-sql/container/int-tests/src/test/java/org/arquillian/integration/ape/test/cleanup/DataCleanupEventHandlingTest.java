@@ -19,9 +19,9 @@ package org.arquillian.integration.ape.test.cleanup;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.arquillian.ape.rdbms.Cleanup;
+import org.arquillian.ape.api.Cleanup;
 import org.arquillian.ape.rdbms.PersistenceTest;
-import org.arquillian.ape.rdbms.TestExecutionPhase;
+import org.arquillian.ape.api.TestExecutionPhase;
 import org.arquillian.integration.ape.example.UserAccount;
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupShouldBeTriggered;
 import org.arquillian.integration.ape.testextension.event.annotation.CleanupShouldNotBeTriggered;
