@@ -4,11 +4,16 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.yaml.snakeyaml.Yaml;
 
 public class WildflySwarmLoader {
 
     static final Map<String, String> DEFAULT_DRIVER_NAMES = new HashMap<>();
+    public static final String SWARM = "swarm";
+    public static final String DATASOURCES = "datasources";
+    public static final String DATA_SOURCES = "data-sources";
+    public static final String JDBC_DRIVERS = "jdbc-drivers";
 
     static {
         DEFAULT_DRIVER_NAMES.put("mysql", "com.mysql.jdbc.Driver");
@@ -46,11 +51,16 @@ public class WildflySwarmLoader {
         final Yaml yaml = new Yaml();
         final Map<String, Object> configuration = (Map<String, Object>) yaml.load(configurationFile);
 
-        final Map<String, Object> swarm = (Map<String, Object>) configuration.get("swarm");
-        final Map<String, Object> datasources = (Map<String, Object>) swarm.get("datasources");
+        final Map<String, Object> swarm = (Map<String, Object>) configuration.get(SWARM);
 
-        final Map<String, Object> data_sources = (Map<String, Object>) datasources.get("data-sources");
-        final Map<String, Object> jdbc_drivers = (Map<String, Object>) datasources.get("jdbc-drivers");
+        final Map<String, Object> datasources = Objects.requireNonNull((Map < String, Object >) swarm.get(DATASOURCES),
+            String.format("Configuration file %s does not contain %s field", location, DATASOURCES));
+
+        final Map<String, Object> data_sources = Objects.requireNonNull((Map<String, Object>) datasources.get(DATA_SOURCES),
+            String.format("Configuration file %s does not contain %s field", location, DATA_SOURCES));
+
+        final Map<String, Object> jdbc_drivers = Objects.requireNonNull((Map<String, Object>) datasources.get(JDBC_DRIVERS),
+            String.format("Configuration file %s does not contain %s field", location, JDBC_DRIVERS));
 
         final String dataSourceName = getDataSourceName(name, data_sources);
         final Map<String, Object> dataSource = (Map<String, Object>) data_sources.get(dataSourceName);
