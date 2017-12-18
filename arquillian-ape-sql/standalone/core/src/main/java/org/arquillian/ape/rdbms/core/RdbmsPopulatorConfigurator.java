@@ -1,6 +1,5 @@
 package org.arquillian.ape.rdbms.core;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +13,7 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     private static final String DEFAULT_SPRING_BOOT_CONFIGURATION_PROPERTIES_FILE = "application.properties";
     private static final String DEFAULT_JPA_CONFIGURATION_FILE = "META-INF/persistence.xml";
+    private static final String DEFAULT_SWARM_CONFIGURATION_FILE = "project-defaults.yml";
 
     private RdbmsPopulatorService populatorService;
     private URI jdbc;
@@ -45,6 +45,24 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
 
     public RdbmsPopulatorConfigurator fromSpringBootConfiguration(String location) {
         final DatabaseConfiguration databaseConfiguration = SpringBootLoader.load(location);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration() {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(null, DEFAULT_SWARM_CONFIGURATION_FILE);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration(String name) {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(name, DEFAULT_SWARM_CONFIGURATION_FILE);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration(String name, String location) {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(name, location);
         fillDatabaseConfiguration(databaseConfiguration);
         return this;
     }

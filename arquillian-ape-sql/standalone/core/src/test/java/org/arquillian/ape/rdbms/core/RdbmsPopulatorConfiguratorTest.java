@@ -48,4 +48,58 @@ public class RdbmsPopulatorConfiguratorTest {
                 new HashMap<>());
     }
 
+    @Test
+    public void should_load_wildfly_swarm_from_default_location() {
+
+        // given
+        RdbmsPopulatorConfigurator rdbmsPopulatorConfigurator =
+            new RdbmsPopulatorConfigurator(null, rdbmsPopulatorService);
+
+        // when
+        rdbmsPopulatorConfigurator.fromWildflySwarmConfiguration().execute();
+
+        // then
+        Mockito.verify(rdbmsPopulatorService, times(1))
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", String.class,
+                new HashMap<>());
+    }
+
+    @Test
+    public void should_load_wildfly_swarm_from_default_location_and_concrete_name() {
+
+        // given
+        RdbmsPopulatorConfigurator rdbmsPopulatorConfigurator =
+            new RdbmsPopulatorConfigurator(null, rdbmsPopulatorService);
+
+        // when
+        rdbmsPopulatorConfigurator.fromWildflySwarmConfiguration("MyDS").execute();
+
+        // then
+        Mockito.verify(rdbmsPopulatorService, times(1))
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", String.class,
+                new HashMap<>());
+    }
+
+    @Test
+    public void should_load_wildfly_swarm_from_specific_location_and_autoresolution_of_driver() {
+
+        try {
+            // given
+            WildflySwarmLoader.DEFAULT_DRIVER_NAMES.put("h2", "java.lang.String");
+            RdbmsPopulatorConfigurator rdbmsPopulatorConfigurator =
+                new RdbmsPopulatorConfigurator(null, rdbmsPopulatorService);
+
+            // when
+            rdbmsPopulatorConfigurator.fromWildflySwarmConfiguration("MyDS", "custom-project-defaults.yml").execute();
+
+            // then
+            Mockito.verify(rdbmsPopulatorService, times(1))
+                .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa",
+                    String.class,
+                    new HashMap<>());
+        } finally {
+            WildflySwarmLoader.DEFAULT_DRIVER_NAMES.put("h2", "org.h2.Driver");
+        }
+    }
+
 }
