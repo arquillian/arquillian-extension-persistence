@@ -2,6 +2,7 @@ package org.arquillian.ape.rdbms.core;
 
 import java.net.URI;
 import java.util.HashMap;
+import org.h2.Driver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,7 +29,7 @@ public class RdbmsPopulatorConfiguratorTest {
 
         // then
         Mockito.verify(rdbmsPopulatorService, times(1))
-            .connect(URI.create("jdbc:postgresql://localhost:5432/books"), "postgres", "postgres", String.class,
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", Driver.class,
                 new HashMap<>());
     }
 
@@ -44,7 +45,7 @@ public class RdbmsPopulatorConfiguratorTest {
 
         // then
         Mockito.verify(rdbmsPopulatorService, times(1))
-            .connect(URI.create("jdbc:postgresql://192.168.99.100:5432/conference"), "postgres", "postgres", String.class,
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", Driver.class,
                 new HashMap<>());
     }
 
@@ -60,7 +61,7 @@ public class RdbmsPopulatorConfiguratorTest {
 
         // then
         Mockito.verify(rdbmsPopulatorService, times(1))
-            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", String.class,
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", org.h2.Driver.class,
                 new HashMap<>());
     }
 
@@ -76,30 +77,25 @@ public class RdbmsPopulatorConfiguratorTest {
 
         // then
         Mockito.verify(rdbmsPopulatorService, times(1))
-            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", String.class,
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa", org.h2.Driver.class,
                 new HashMap<>());
     }
 
     @Test
     public void should_load_wildfly_swarm_from_specific_location_and_autoresolution_of_driver() {
 
-        try {
-            // given
-            WildflySwarmLoader.DEFAULT_DRIVER_NAMES.put("h2", "java.lang.String");
-            RdbmsPopulatorConfigurator rdbmsPopulatorConfigurator =
-                new RdbmsPopulatorConfigurator(null, rdbmsPopulatorService);
+        // given
+        RdbmsPopulatorConfigurator rdbmsPopulatorConfigurator =
+            new RdbmsPopulatorConfigurator(null, rdbmsPopulatorService);
 
-            // when
-            rdbmsPopulatorConfigurator.fromWildflySwarmConfiguration("MyDS", "custom-project-defaults.yml").execute();
+        // when
+        rdbmsPopulatorConfigurator.fromWildflySwarmConfiguration("MyDS", "custom-project-defaults.yml").execute();
 
-            // then
-            Mockito.verify(rdbmsPopulatorService, times(1))
-                .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa",
-                    String.class,
-                    new HashMap<>());
-        } finally {
-            WildflySwarmLoader.DEFAULT_DRIVER_NAMES.put("h2", "org.h2.Driver");
-        }
+        // then
+        Mockito.verify(rdbmsPopulatorService, times(1))
+            .connect(URI.create("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"), "sa", "sa",
+                org.h2.Driver.class,
+                new HashMap<>());
     }
 
 }

@@ -59,8 +59,7 @@ public class WildflySwarmLoader {
         final Map<String, Object> data_sources = Objects.requireNonNull((Map<String, Object>) datasources.get(DATA_SOURCES),
             String.format("Configuration file %s does not contain %s field", location, DATA_SOURCES));
 
-        final Map<String, Object> jdbc_drivers = Objects.requireNonNull((Map<String, Object>) datasources.get(JDBC_DRIVERS),
-            String.format("Configuration file %s does not contain %s field", location, JDBC_DRIVERS));
+        final Map<String, Object> jdbc_drivers =(Map<String, Object>) datasources.get(JDBC_DRIVERS);
 
         final String dataSourceName = getDataSourceName(name, data_sources);
         final Map<String, Object> dataSource = (Map<String, Object>) data_sources.get(dataSourceName);
