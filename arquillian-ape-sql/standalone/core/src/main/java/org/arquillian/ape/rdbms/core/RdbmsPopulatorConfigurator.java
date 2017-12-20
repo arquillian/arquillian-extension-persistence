@@ -11,6 +11,10 @@ import org.arquillian.ape.spi.Populator;
 
 public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurator {
 
+    private static final String DEFAULT_SPRING_BOOT_CONFIGURATION_PROPERTIES_FILE = "application.properties";
+    private static final String DEFAULT_JPA_CONFIGURATION_FILE = "META-INF/persistence.xml";
+    private static final String DEFAULT_SWARM_CONFIGURATION_FILE = "project-defaults.yml";
+
     private RdbmsPopulatorService populatorService;
     private URI jdbc;
     private String username;
@@ -23,6 +27,51 @@ public class RdbmsPopulatorConfigurator implements Populator.PopulatorConfigurat
     RdbmsPopulatorConfigurator(URI jdbcUrl, RdbmsPopulatorService populatorService) {
         this.jdbc = jdbcUrl;
         this.populatorService = populatorService;
+    }
+
+    public RdbmsPopulatorConfigurator fromJpaPersistence() {
+        return this.fromJpaPersistence(DEFAULT_JPA_CONFIGURATION_FILE);
+    }
+
+    public RdbmsPopulatorConfigurator fromJpaPersistence(String location) {
+        final DatabaseConfiguration databaseConfiguration = JpaPersistenceLoader.load(location);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromSpringBootConfiguration() {
+        return fromSpringBootConfiguration(DEFAULT_SPRING_BOOT_CONFIGURATION_PROPERTIES_FILE);
+    }
+
+    public RdbmsPopulatorConfigurator fromSpringBootConfiguration(String location) {
+        final DatabaseConfiguration databaseConfiguration = SpringBootLoader.load(location);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration() {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(null, DEFAULT_SWARM_CONFIGURATION_FILE);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration(String name) {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(name, DEFAULT_SWARM_CONFIGURATION_FILE);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    public RdbmsPopulatorConfigurator fromWildflySwarmConfiguration(String name, String location) {
+        final DatabaseConfiguration databaseConfiguration = WildflySwarmLoader.load(name, location);
+        fillDatabaseConfiguration(databaseConfiguration);
+        return this;
+    }
+
+    private void fillDatabaseConfiguration(DatabaseConfiguration databaseConfiguration) {
+        this.driverName = databaseConfiguration.getJdbcDriver();
+        this.jdbc = databaseConfiguration.getJdbc();
+        this.username = databaseConfiguration.getUsername();
+        this.password = databaseConfiguration.getPassword();
     }
 
     public RdbmsPopulatorConfigurator withUsername(String username) {

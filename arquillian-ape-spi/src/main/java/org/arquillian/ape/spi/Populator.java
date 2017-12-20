@@ -48,6 +48,11 @@ public abstract class Populator<T extends PopulatorService, R extends Populator.
         return createExecutor();
     }
 
+    public R project() {
+        this.uri = URI.create("");
+        return createExecutor();
+    }
+
     /**
      * Initial method for Populators DSL
      *
