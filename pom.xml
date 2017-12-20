@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>22</version>
+    <version>25</version>
     <relativePath/>
   </parent>
 
@@ -24,7 +24,7 @@
   <description>Arquillian Persistence Extension Aggregator</description>
 
   <prerequisites>
-    <maven>3.2.1</maven>
+    <maven>3.3.9</maven>
   </prerequisites>
 
   <modules>
