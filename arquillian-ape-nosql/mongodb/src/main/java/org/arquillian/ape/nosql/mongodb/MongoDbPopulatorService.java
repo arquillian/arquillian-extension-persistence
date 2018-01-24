@@ -86,7 +86,7 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
 
                 MongoCollection dbCollection = database.getCollection(collectionName);
                 // Delete ALL, No DROP
-                dbCollection.deleteOne(new Document());
+                dbCollection.deleteMany(new Document());
             }
         }
     }
