@@ -69,7 +69,7 @@
 
   <properties>
     <!-- Arquillian dependencies -->
-    <version.arquillian_core>1.1.13.Final</version.arquillian_core>
+    <version.arquillian_core>1.4.0.Final</version.arquillian_core>
     <version.arquillian_transaction>1.0.3.Final</version.arquillian_transaction>
     <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
