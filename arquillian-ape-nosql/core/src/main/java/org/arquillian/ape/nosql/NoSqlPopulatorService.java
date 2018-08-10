@@ -3,6 +3,8 @@ package org.arquillian.ape.nosql;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.arquillian.ape.spi.PopulatorService;
 
 /**
@@ -11,6 +13,18 @@ import org.arquillian.ape.spi.PopulatorService;
  * You can think about this interface as wrapper to real connection against service.
  */
 public interface NoSqlPopulatorService<T> extends PopulatorService<T> {
+
+    /**
+     * This method is used to set directly the connection to the service.
+     *
+     * Useful for embedded inmemory connections where there is no network implied or for mocking.
+     *
+     * @param embeddedConnection to use.
+     * @param database to use.
+     * @param customOptions to use for connection.
+     */
+    void connect(Object embeddedConnection, String database, Map<String, Object> customOptions);
+
     /**
      * Methods called to connect to the backend.
      *

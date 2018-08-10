@@ -14,6 +14,13 @@ class VaultPopulatorService implements NoSqlPopulatorService<Vault>  {
     private VaultConfig vaultConfig;
 
     @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+        this.vaultConfig = (VaultConfig) embeddedConnection;
+        VaultOptions vaultOptions = new VaultOptions(customOptions);
+        vaultOptions.configure(vaultConfig);
+    }
+
+    @Override
     public void connect(String host, int bindPort, String database, Map<String, Object> customOptions) {
         this.vaultConfig = new VaultConfig();
         vaultConfig.address(host + ":" + bindPort);

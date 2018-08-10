@@ -20,6 +20,11 @@ class CouchDbPopulatorService implements NoSqlPopulatorService<CouchDb> {
     private CouchDbConnector couchDbConnector;
 
     @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+        this.couchDbConnector = (CouchDbConnector) embeddedConnection;
+    }
+
+    @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
         this.couchDbConnector = couchDbConnector(createCouchDbClusterUri(host, port), database, customOptions);
     }

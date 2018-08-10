@@ -20,6 +20,12 @@ class RedisPopulatorService implements NoSqlPopulatorService<Redis> {
     private Jedis jedis;
 
     @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+        this.jedis = (Jedis) embeddedConnection;
+        this.jedis.connect();
+    }
+
+    @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
         RedisOptions redisOptions = new RedisOptions(customOptions);
 
