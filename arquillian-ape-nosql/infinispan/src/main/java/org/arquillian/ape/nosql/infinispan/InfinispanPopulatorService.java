@@ -10,10 +10,24 @@ import org.arquillian.ape.nosql.NoSqlPopulatorService;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.commons.api.BasicCache;
+import org.infinispan.commons.api.BasicCacheContainer;
 
 class InfinispanPopulatorService implements NoSqlPopulatorService<Infinispan> {
 
     private BasicCache<Object, Object> infinispanBasicCache;
+
+    @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+
+        BasicCacheContainer cacheContainer = (BasicCacheContainer) embeddedConnection;
+
+        if (database == null) {
+            infinispanBasicCache = cacheContainer.getCache();
+        } else {
+            infinispanBasicCache = cacheContainer.getCache(database);
+        }
+
+    }
 
     @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {

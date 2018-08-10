@@ -21,6 +21,16 @@ class CouchbasePopulatorService implements NoSqlPopulatorService<Couchbase> {
     private Bucket bucket;
 
     @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+        if (database == null) {
+            database = "default";
+        }
+
+        this.couchbaseCluster = (CouchbaseCluster) embeddedConnection;
+        connectToBucket(database, customOptions);
+    }
+
+    @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
         if (database == null) {
             database = "default";

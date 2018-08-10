@@ -113,6 +113,15 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
         return this;
     }
 
+    public void execute(Object connection) {
+        try {
+            connect(connection);
+            populatorService.execute(Collections.unmodifiableList(datasets));
+        } finally {
+            populatorService.disconnect();
+        }
+    }
+
     @Override
     public void execute() {
         // TODO Improve this so connect and disconnect only happens once.
@@ -123,6 +132,10 @@ public class NoSqlPopulatorConfigurator implements Populator.PopulatorConfigurat
         } finally {
             populatorService.disconnect();
         }
+    }
+
+    private void connect(Object connection) {
+        populatorService.connect(connection, database, options);
     }
 
     private void connect() {

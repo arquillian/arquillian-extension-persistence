@@ -25,6 +25,16 @@ class MongoDbPopulatorService implements NoSqlPopulatorService<MongoDb> {
     private MongoDatabase database;
 
     @Override
+    public void connect(Object embeddedConnection, String database, Map<String, Object> customOptions) {
+        if (database == null) {
+            database = "test";
+        }
+
+        this.mongoClient = (MongoClient) embeddedConnection;
+        this.database = mongoClient.getDatabase(database);
+    }
+
+    @Override
     public void connect(String host, int port, String database, Map<String, Object> customOptions) {
         if (database == null) {
             database = "test";
