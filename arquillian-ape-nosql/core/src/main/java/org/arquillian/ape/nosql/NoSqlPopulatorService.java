@@ -3,8 +3,6 @@ package org.arquillian.ape.nosql;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import org.arquillian.ape.spi.PopulatorService;
 
 /**
