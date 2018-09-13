@@ -14,7 +14,7 @@
   <description>Demonstrates usage of Arquillian Ape SQL Container extension.</description>
 
   <properties>
-    <version.cdi>1.0-SP1</version.cdi>
+    <version.cdi>2.0</version.cdi>
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.chameleon>1.0.0.Beta1</version.chameleon>
