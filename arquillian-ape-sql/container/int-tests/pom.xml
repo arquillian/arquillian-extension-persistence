@@ -18,7 +18,7 @@
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.chameleon>1.0.0.Beta1</version.chameleon>
-    <version.poi>3.14</version.poi>
+    <version.poi>4.0.0</version.poi>
     <server.version>${version.wildfly}</server.version>
     <!-- Chameleon container mode -->
     <mode>managed</mode>
