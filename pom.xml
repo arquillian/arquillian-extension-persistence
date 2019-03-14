@@ -79,7 +79,7 @@
     <version.jackson>1.9.11</version.jackson>
     <version.mysql.driver>5.1.21</version.mysql.driver>
     <version.gson>2.8.0</version.gson>
-    <version.okhttp>3.6.0</version.okhttp>
+    <version.okhttp>3.14.0</version.okhttp>
 
     <!-- Testing dependencies -->
     <version.findbugs.annotations>3.0.1u2</version.findbugs.annotations>
