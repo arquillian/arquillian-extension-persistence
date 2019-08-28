@@ -16,7 +16,7 @@
     <version.couchdb>1.4.4</version.couchdb>
     <version.awaitility>2.0.0</version.awaitility>
     <version.nosqlunit>1.0.0-rc.5</version.nosqlunit>
-    <version.vault>2.0.0</version.vault>
+    <version.vault>5.0.0</version.vault>
   </properties>
 
   <artifactId>arquillian-ape-nosql-parent</artifactId>
