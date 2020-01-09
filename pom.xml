@@ -96,7 +96,7 @@
     <version.wildfly>8.2.1.Final</version.wildfly>
 
     <!-- Maven plugins -->
-    <version.docker.plugin>0.15.16</version.docker.plugin>
+    <version.docker.plugin>0.32.0</version.docker.plugin>
     <version.build.helper.plugin>1.10</version.build.helper.plugin>
 
     <!-- Overridden from parent -->
