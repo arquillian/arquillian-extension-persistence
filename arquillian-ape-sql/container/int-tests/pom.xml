@@ -466,7 +466,7 @@
         <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
-          <version>9.3-1102-jdbc41</version>
+          <version>42.2.16</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -549,7 +549,7 @@
         <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
-          <version>9.3-1102-jdbc41</version>
+          <version>42.2.16</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
