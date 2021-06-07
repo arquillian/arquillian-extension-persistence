@@ -75,7 +75,7 @@
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.dbunit>2.5.3</version.dbunit>
     <version.flyway>4.1.2</version.flyway>
-    <version.snakeyaml>1.18</version.snakeyaml>
+    <version.snakeyaml>1.26</version.snakeyaml>
     <version.jackson>1.9.11</version.jackson>
     <version.mysql.driver>5.1.21</version.mysql.driver>
     <version.gson>2.8.0</version.gson>
