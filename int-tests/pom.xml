@@ -22,7 +22,7 @@
     <version.validation.api>1.0.0.GA</version.validation.api>
     <version.javaee-api.openejb>6.0-5</version.javaee-api.openejb>
     <version.chameleon>1.0.0.Beta1</version.chameleon>
-    <version.poi>3.14</version.poi>
+    <version.poi>4.1.1</version.poi>
     <version.maven-dependency-plugin>2.3</version.maven-dependency-plugin>
     <server.version>8.1.0.Final</server.version>
     <!-- Chameleon container mode -->
